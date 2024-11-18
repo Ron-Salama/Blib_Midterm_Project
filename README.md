@@ -72,8 +72,8 @@ This project is developed by:
 * **Yuval Kogan**
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/yuval-kogan) [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](https://github.com/KoganTheDev)
 <br>
-* **MY NAME**
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](My linkedIn URL)  [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](MY GITHUB PROFILE LINK)
+* **Daniel Lachmakov**
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/daniel-lachmakov-94761b288/)  [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](MY GITHUB PROFILE LINK)
 <br>
 * **MY NAME**
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](My linkedIn URL)  [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](MY GITHUB PROFILE LINK)
