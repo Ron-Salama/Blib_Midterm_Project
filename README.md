@@ -75,7 +75,7 @@ This project is developed by:
 * **Daniel Lachmakov**  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/daniel-lachmakov-94761b288/) [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](https://github.com/Danielon05423)
 
-* **Almog Raz**
+* **Almog Raz**  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/almog-raz/) [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](https://github.com/almograz1)
 
 * **MY NAME**
