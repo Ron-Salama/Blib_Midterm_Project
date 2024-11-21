@@ -78,8 +78,8 @@ This project is developed by:
 * **Almog Raz**  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/almog-raz/) [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](https://github.com/almograz1)
 
-* **MY NAME**
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](My linkedIn URL)  [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](MY GITHUB PROFILE LINK)
+* **Ron Salama**
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)]([My linkedIn URL](https://www.linkedin.com/in/ron-salama-3860a0107/))  [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)]([MY GITHUB PROFILE LINK](https://github.com/RS-OG))
 
 * **MY NAME**
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](My linkedIn URL)  [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github)](MY GITHUB PROFILE LINK)
