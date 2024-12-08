@@ -26,3 +26,6 @@ replay_pid*
 # Excel Files
 # *.xlsx
 FullName_Emails_IDs.xlsx
+
+# Ignore VP backup files.
+*.vpp.bak*
