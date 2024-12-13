@@ -29,3 +29,4 @@ FullName_Emails_IDs.xlsx
 
 # Ignore VP backup files.
 *.vpp.bak*
+/.metadata/
