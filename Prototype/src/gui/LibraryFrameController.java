@@ -37,45 +37,6 @@ public  class LibraryFrameController   {
 		return idtxt.getText();
 	}
 	
-	/*public void Send(ActionEvent event) throws Exception {
-	    String id;
-	    FXMLLoader loader = new FXMLLoader();
-	    
-	    id = getID();
-	    if (id.trim().isEmpty()) {
-	        System.out.println("You must enter an id number");  
-	    } else {
-	        // Send the ID to the server through the ClientController
-	        ClientUI.chat.accept("Fetch:" + id);  // This will trigger the server-side action to search for the subscriber
-	        
-	        // Check if the subscriber exists and if the ID was found
-	        if (ChatClient.s1.getSubscriber_id() == -1) {
-	            System.out.println("Subscriber ID Not Found");
-	            // You may want to display an error message to the user here
-	        } else {
-	            System.out.println("Subscriber ID does not exist.");
-
-	            // Hide the current window
-	            ((Node) event.getSource()).getScene().getWindow().hide(); 
-
-	            // Load the SubscriberForm window
-	            Stage primaryStage = new Stage();
-	            loader.setLocation(getClass().getResource("/gui/SubscriberForm.fxml"));
-	            Pane root = loader.load();
-	            SubscriberFormController subscriberFormController = loader.getController(); 
-
-	            // Load the subscriber details into the form
-	            subscriberFormController.loadSubscriber(ChatClient.s1);
-
-	            // Create and display the new scene
-	            Scene scene = new Scene(root);
-	            scene.getStylesheets().add(getClass().getResource("/gui/SubscriberForm.css").toExternalForm());
-	            primaryStage.setTitle("Subscriber Management Tool");
-	            primaryStage.setScene(scene);        
-	            primaryStage.show();
-	        }
-	    }
-	}*/
 	
 	
 	
@@ -100,10 +61,8 @@ public  class LibraryFrameController   {
 	
 	private void checkSubscriberResponse(ActionEvent event) {
 	    if (ChatClient.s1.getSubscriber_id() == -1) {
-	        System.out.println("Subscriber ID Not Found");
+	        System.out.println("Please Enter Valid ID");
 	    } else {
-	        System.out.println("Subscriber ID Found");
-
 	        try {
 	            // Hide the current window
 	            ((Node) event.getSource()).getScene().getWindow().hide();
