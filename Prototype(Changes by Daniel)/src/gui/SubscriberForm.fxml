@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberFormController">
+   <children>
+      <Label id="lblSubscriber_id" layoutX="34.0" layoutY="107.0" text="Subscriber's ID:" />
+      <Label id="lblSubscriber_name" layoutX="34.0" layoutY="130.0" text="Subscriber's Name:" />
+      <Label id="lblSubscriber_phoneNumber" layoutX="34.0" layoutY="153.0" text="Subscriber's PhoneNumber:" />
+      <Label id="lblSubscriber_email" layoutX="34.0" layoutY="180.0" text="Subscriber's Email:" />
+      <Label id="lblSubscriber_detailedSubscriptionHistory" layoutX="34.0" layoutY="203.0" text="Subscriber's DetailedSubscriptionHistory" />
+      
+      <Button id="btnClose" fx:id="btnClose" layoutX="500.0" layoutY="500.0" mnemonicParsing="false" onAction="#getbtnClose" text="Close" />
+      <Button id="btnUpdate" fx:id="btnUpdate" layoutX="34.0" layoutY="500.0" mnemonicParsing="false" onAction="#btnUpdate" text="Update" />
+      
+      
+      <TextField id="lblSubscriber_id" fx:id="txtSubscriber_id" layoutX="300.0" layoutY="102.0" />
+      <TextField id="lblSubscriber_name" fx:id="txtSubscriber_name" layoutX="300.0" layoutY="125.0" />
+      <TextField id="lblSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="300.0" layoutY="148.0" />
+      <TextField id="lblSubscriber_email" fx:id="txtSubscriber_email" layoutX="300.0" layoutY="175.0" />
+      <TextField id="lblSubscriber_detailedSubscriptionHistory" fx:id="txtSubscriber_detailedSubscriptionHistory" layoutX="300.0" layoutY="198.0" />
+   </children>
+</AnchorPane>
