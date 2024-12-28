@@ -1,1 +1,3 @@
 --module-path "C:\Users\Daniel Lachmakov\Desktop\javafx-sdk-23.0.1\lib" --add-modules javafx.controls,javafx.fxml
+
+Yuval's version: --module-path "C:\javafx-sdk-23.0.1\lib" --add-modules javafx.controls,javafx.fxml
