@@ -24,6 +24,7 @@ import java.io.*;
  */
 public class ChatClient extends AbstractClient
 {
+	
   //Instance variables **********************************************
   
   /**
@@ -82,12 +83,17 @@ public class ChatClient extends AbstractClient
           } catch (Exception e) {
               System.out.println("Error parsing subscriber data: " + e.getMessage());
               s1.setSubscriber_id(-1); // Mark as not found
-          }
-      } else if (msg.equals("Subscriber ID does not exist.")) {
+          }	  
+  	  }else if (msg.equals("Subscriber ID does not exist.")) {
           // Mark the subscriber as not found
           s1.setSubscriber_id(-1);
+      } else if (((String) msg).startsWith("Could not connect to the server.")) {
+    	  ClientUI.isIPValid = false; // Turn on the flag for the IP controller.
+      } else if (((String) msg).startsWith("Client connected to IP: ")) {
+    	  ClientUI.isIPValid = true; // Turn off the flag when the IP is correct.
       }
   }
+  
   public void handleMessageFromClientUI(String message) {
 	    awaitResponse = true;
 	    try {
@@ -125,8 +131,7 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 
-  
-  
+
   
   
   

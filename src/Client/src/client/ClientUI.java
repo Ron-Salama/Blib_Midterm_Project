@@ -1,37 +1,37 @@
 package client;
 
+import gui.IPInputWindow.IPInputController;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.util.Scanner;
-import gui.LibraryFrameController;
 
 public class ClientUI extends Application {
     public static ClientController chat; // only one instance
-
-    public static void main(String[] args) throws Exception {
-        // Prompt the user for the IP address
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the server IP address: ");
-        String ip = scanner.nextLine();
-        scanner.close();
-
-        // Pass the IP address as a system property for use in the Application
-        System.setProperty("server.ip", ip);
-
+    final public static int DEFAULT_PORT = 5555;
+    public static boolean isIPValid;
+    
+    public static void main(String args[]) throws Exception {   
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Retrieve the IP from the system property
-        String ip = System.getProperty("server.ip");
-        int port = 5555; // Default port
-
-        // Initialize the client controller with the user-provided IP and default port
-        chat = new ClientController(ip, port);
-
-        // Initialize and start the library frame
-        LibraryFrameController aFrame = new LibraryFrameController();
-        aFrame.start(primaryStage);
+        // Load the IP Input Frame (initial frame to enter IP)
+        Parent root = FXMLLoader.load(getClass().getResource("/gui/IPInputWindow/IPInputFrame.fxml"));
+        
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/IPInputWindow/IPInputFrame.css").toExternalForm());
+        primaryStage.setTitle("IP Input");
+        primaryStage.setScene(scene);
+        
+        primaryStage.show();
+        
+        // Retrieve the IP from the system property (if any) or use a default IP
+        String ip = System.getProperty("server.ip");  // default to localhost if no property is set
+        
+        // Initialize the client controller with the provided IP and default port
+        chat = new ClientController(ip, DEFAULT_PORT);
     }
 }

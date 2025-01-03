@@ -1,11 +1,13 @@
 package server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
 import common.ConnectToDb;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+
 
 /**
  * This class overrides some of the methods in the abstract 
@@ -95,7 +97,20 @@ public class EchoServer extends AbstractServer {
                 } else {
                     client.sendToClient("Invalid message format. Expected 'Update:ID,Phone,Email'.");
                 }
-            } else {
+            }  else if (((String) msg).startsWith("IP:")) { // Format: IP
+            	String IPaddress = msg.toString().substring(3);
+            	
+                // This if-else checks if the IP given by the client is the same IP on the server.
+            	String[] parsedMessage = InetAddress.getLocalHost().toString().split("/");
+            	String hostIP = parsedMessage[1];
+                if (IPaddress.equals(hostIP)) { 
+                	client.sendToClient("Client connected to IP: " + IPaddress);
+                }
+                else {
+                	client.sendToClient("Could not connect to the server.\nThe IP: " + IPaddress + " is not the IP of the server.");
+                }
+            }
+            else {
                 client.sendToClient("Unknown command.");
             }
 

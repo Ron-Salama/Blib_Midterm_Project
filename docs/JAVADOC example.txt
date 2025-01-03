@@ -1,0 +1,231 @@
+/**
+ * A library management system for handling books, subscribers, and librarians.
+ * 
+ * <p>This system allows searching, borrowing, and reserving books. It also manages
+ * subscribers and librarians with distinct functionalities for each role.</p>
+ *
+ * @author Yuval Kogan
+ * @version 1.0
+ * @since 2024-12-27
+ */
+public class LibraryManagementSystem {
+
+    /**
+     * Represents a book in the library.
+     */
+    static class Book {
+        private String title;
+        private String author;
+        private boolean isAvailable;
+        private boolean isReserved;
+
+        /**
+         * Constructs a new Book.
+         *
+         * @param title  the title of the book.
+         * @param author the author of the book.
+         */
+        public Book(String title, String author) {
+            this.title = title;
+            this.author = author;
+            this.isAvailable = true;
+            this.isReserved = false;
+        }
+
+        /**
+         * Gets the title of the book.
+         *
+         * @return the title of the book.
+         */
+        public String getTitle() {
+            return title;
+        }
+
+        /**
+         * Checks if the book is available.
+         *
+         * @return {@code true} if the book is available; {@code false} otherwise.
+         */
+        public boolean isAvailable() {
+            return isAvailable;
+        }
+
+        /**
+         * Borrows the book if it is available.
+         *
+         * @return {@code true} if the book was successfully borrowed; {@code false} otherwise.
+         */
+        public boolean borrowBook() {
+            if (isAvailable) {
+                isAvailable = false;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Reserves the book if it is not already reserved.
+         *
+         * @return {@code true} if the book was successfully reserved; {@code false} otherwise.
+         */
+        public boolean reserveBook() {
+            if (!isReserved) {
+                isReserved = true;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Returns the book, making it available again.
+         */
+        public void returnBook() {
+            isAvailable = true;
+            isReserved = false;
+        }
+    }
+
+    /**
+     * Represents a subscriber in the library system.
+     */
+    static class Subscriber {
+        private String name;
+
+        /**
+         * Constructs a new Subscriber.
+         *
+         * @param name the name of the subscriber.
+         */
+        public Subscriber(String name) {
+            this.name = name;
+        }
+
+        /**
+         * Searches for a book by title.
+         *
+         * @param books the array of books in the library.
+         * @param title the title of the book to search for.
+         * @return the matching book, or {@code null} if not found.
+         */
+        public Book searchBook(Book[] books, String title) {
+            for (Book book : books) {
+                if (book.getTitle().equalsIgnoreCase(title)) {
+                    return book;
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Borrows a book.
+         *
+         * @param book the book to borrow.
+         * @return {@code true} if the borrowing was successful; {@code false} otherwise.
+         */
+        public boolean borrowBook(Book book) {
+            return book.borrowBook();
+        }
+
+        /**
+         * Reserves a book.
+         *
+         * @param book the book to reserve.
+         * @return {@code true} if the reservation was successful; {@code false} otherwise.
+         */
+        public boolean reserveBook(Book book) {
+            return book.reserveBook();
+        }
+    }
+
+    /**
+     * Represents a librarian in the library system.
+     */
+    static class Librarian {
+        private String name;
+
+        /**
+         * Constructs a new Librarian.
+         *
+         * @param name the name of the librarian.
+         */
+        public Librarian(String name) {
+            this.name = name;
+        }
+
+        /**
+         * Adds a new book to the library.
+         *
+         * @param books the array of books in the library.
+         * @param newBook the new book to add.
+         * @return the updated array of books.
+         */
+        public Book[] addBook(Book[] books, Book newBook) {
+            Book[] updatedBooks = new Book[books.length + 1];
+            System.arraycopy(books, 0, updatedBooks, 0, books.length);
+            updatedBooks[books.length] = newBook;
+            return updatedBooks;
+        }
+
+        /**
+         * Removes a book from the library.
+         *
+         * @param books the array of books in the library.
+         * @param title the title of the book to remove.
+         * @return the updated array of books.
+         */
+        public Book[] removeBook(Book[] books, String title) {
+            int index = -1;
+            for (int i = 0; i < books.length; i++) {
+                if (books[i].getTitle().equalsIgnoreCase(title)) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1) {
+                return books;
+            }
+
+            Book[] updatedBooks = new Book[books.length - 1];
+            System.arraycopy(books, 0, updatedBooks, 0, index);
+            System.arraycopy(books, index + 1, updatedBooks, index, books.length - index - 1);
+            return updatedBooks;
+        }
+    }
+
+    /**
+     * The main method demonstrating the library management system.
+     *
+     * @param args command-line arguments (not used).
+     */
+    public static void main(String[] args) {
+        Book[] books = {
+            new Book("1984", "George Orwell"),
+            new Book("To Kill a Mockingbird", "Harper Lee")
+        };
+
+        Subscriber subscriber = new Subscriber("Alice");
+        Librarian librarian = new Librarian("Bob");
+
+        System.out.println("Searching for '1984':");
+        Book book = subscriber.searchBook(books, "1984");
+        if (book != null) {
+            System.out.println("Found book: " + book.getTitle());
+            System.out.println("Borrowing book: " + subscriber.borrowBook(book));
+            System.out.println("Reserving book: " + subscriber.reserveBook(book));
+            book.returnBook();
+            System.out.println("Book returned.");
+        }
+
+        System.out.println("Adding a new book:");
+        books = librarian.addBook(books, new Book("Brave New World", "Aldous Huxley"));
+        for (Book b : books) {
+            System.out.println(b.getTitle());
+        }
+
+        System.out.println("Removing '1984':");
+        books = librarian.removeBook(books, "1984");
+        for (Book b : books) {
+            System.out.println(b.getTitle());
+        }
+    }
+}

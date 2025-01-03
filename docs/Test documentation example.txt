@@ -1,0 +1,154 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for the {@link Library} class.
+ * Tests methods for searching, borrowing, and reserving books.
+ */
+public class LibraryTest {
+    private Library library;
+    private Book book1;
+    private Book book2;
+
+    /**
+     * Sets up the test environment.
+     * Initializes a new {@link Library} and some {@link Book} objects before each test.
+     * This method is annotated with {@link BeforeEach} to run before each test case.
+     */
+    @BeforeEach
+    public void setUp() {
+        // Initialize a new Library and some books before each test
+        library = new Library();
+        book1 = new Book("Java Programming", true);
+        book2 = new Book("Data Structures", true);
+
+        library.addBook(book1);
+        library.addBook(book2);
+    }
+
+    /**
+     * Tests the {@link Library#searchBook(String)} method when the book is found in the library.
+     * <p>
+     * Verifies that the search returns the correct book when it exists in the library.
+     * </p>
+     */
+    @Test
+    public void testSearchBookFound() {
+        // Search for the book "Java Programming"
+        Book result = library.searchBook("Java Programming");
+
+        // Check that the result is not null and the title matches
+        assertNotNull(result, "The book should be found");
+        assertEquals("Java Programming", result.getTitle(), "The book title should match");
+    }
+
+    /**
+     * Tests the {@link Library#searchBook(String)} method when the book is not found in the library.
+     * <p>
+     * Verifies that the search returns {@code null} when the book does not exist.
+     * </p>
+     */
+    @Test
+    public void testSearchBookNotFound() {
+        // Search for a nonexistent book
+        Book result = library.searchBook("Nonexistent Book");
+
+        // Assert that no book is found
+        assertNull(result, "The book should not be found");
+    }
+
+    /**
+     * Tests the {@link Library#borrowBook(String)} method when the book is available.
+     * <p>
+     * Verifies that a book can be borrowed if it is available in the library.
+     * </p>
+     */
+    @Test
+    public void testBorrowBookAvailable() {
+        // Borrow the book "Java Programming"
+        boolean result = library.borrowBook("Java Programming");
+
+        // Assert that the borrow operation was successful
+        assertTrue(result, "The book should be borrowed successfully");
+
+        // Assert that the book is now marked as unavailable
+        assertFalse(book1.isAvailable(), "The book should be marked as unavailable");
+    }
+
+    /**
+     * Tests the {@link Library#borrowBook(String)} method when the book is not available.
+     * <p>
+     * Verifies that a book cannot be borrowed again if it has already been borrowed.
+     * </p>
+     */
+    @Test
+    public void testBorrowBookNotAvailable() {
+        // Borrow the book first
+        library.borrowBook("Java Programming");
+
+        // Try to borrow the same book again
+        boolean result = library.borrowBook("Java Programming");
+
+        // Assert that the borrow operation fails because the book is not available
+        assertFalse(result, "The book should not be available for borrowing again");
+    }
+
+    /**
+     * Tests the {@link Library#reserveBook(String)} method when the book is borrowed and unavailable.
+     * <p>
+     * Verifies that a book can be reserved if it is already borrowed (unavailable).
+     * </p>
+     */
+    @Test
+    public void testReserveBook() {
+        // Borrow the book "Java Programming" first to make it unavailable
+        library.borrowBook("Java Programming");
+
+        // Now reserve the same book
+        boolean result = library.reserveBook("Java Programming");
+
+        // Assert that the book was successfully reserved
+        assertTrue(result, "The book should be successfully reserved");
+
+        // Assert that the book is now marked as reserved
+        assertTrue(book1.isReserved(), "The book should be marked as reserved");
+    }
+
+    /**
+     * Tests the {@link Library#reserveBook(String)} method when the book is available.
+     * <p>
+     * Verifies that a book cannot be reserved if it is still available for borrowing.
+     * </p>
+     */
+    @Test
+    public void testReserveBookNotAvailable() {
+        // Try to reserve a book that is still available
+        boolean result = library.reserveBook("Data Structures");
+
+        // Assert that the book cannot be reserved because it is still available
+        assertFalse(result, "The book should not be reserved if it is available");
+    }
+
+    /**
+     * Tests the {@link Library#reserveBook(String)} method when the book is already reserved.
+     * <p>
+     * Verifies that a book cannot be reserved again if it is already reserved.
+     * </p>
+     */
+    @Test
+    public void testReserveBookAlreadyReserved() {
+        // Borrow the book first to make it unavailable
+        library.borrowBook("Java Programming");
+
+        // Reserve the book
+        library.reserveBook("Java Programming");
+
+        // Try to reserve the book again
+        boolean result = library.reserveBook("Java Programming");
+
+        // Assert that the book cannot be reserved again because it's already reserved
+        assertFalse(result, "The book should not be reserved again if already reserved");
+    }
+}
