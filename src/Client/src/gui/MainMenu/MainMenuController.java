@@ -69,8 +69,8 @@ public class MainMenuController {
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
 	            Pane root = loader.load();
 
-	            SearchFrameController searchWindowController = loader.getController();
-	            //mainMenuController.loadSubscriber(ChatClient.s1);
+	            SearchFrameController searchFrameController = loader.getController();
+//	            mainMenuController.loadSubscriber(ChatClient.s1);
 
 	            Stage primaryStage = new Stage();
 	            Scene scene = new Scene(root);
