@@ -1,9 +1,12 @@
 package server;
 
+import java.awt.print.Book;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+
 import common.ConnectToDb;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -109,7 +112,33 @@ public class EchoServer extends AbstractServer {
                 else {
                 	client.sendToClient("Could not connect to the server.\nThe IP: " + IPaddress + " is not the IP of the server.");
                 }
+            }else if (((String) msg).startsWith("GetBooks")) { 
+                System.out.println("Received GetBooks request from client");
+
+                try {
+                    // Fetch the list of books as strings
+                    List<String> booksData = ConnectToDb.fetchBooksData(dbConnection);
+
+                    // Check if the result is null or empty
+                    if (booksData == null || booksData.isEmpty()) {
+                        client.sendToClient("returnedBookData:NoBooksFound"); // Include the indicator with the message
+                    } else {
+                        // Convert the list to a single string to send to the client
+                        String booksDataString = String.join(";", booksData); // Use ";" to separate book records
+                        client.sendToClient("returnedBookData:" + booksDataString); // Include the indicator with the serialized books list
+                    }
+
+                } catch (Exception e) {
+                    // Handle any unexpected errors
+                    System.out.println("Error while processing GetBooks request: " + e.getMessage());
+                    try {
+                        client.sendToClient("returnedBookData:Error:CouldNotFetchBooks"); // Include the indicator with the error message
+                    } catch (IOException ioException) {
+                        System.out.println("Error sending error message to client: " + ioException.getMessage());
+                    }
+                }
             }
+
             else {
                 client.sendToClient("Unknown command.");
             }
