@@ -25,7 +25,7 @@ import logic.Subscriber;
 
 
 public class SubcriberRequestsWindowsController   {
-	private SubcriberRequestsWindowsController lfc;	
+	private SubcriberRequestsWindowsController srwc;	
 	
 	@FXML
 	private Button btnExit = null;

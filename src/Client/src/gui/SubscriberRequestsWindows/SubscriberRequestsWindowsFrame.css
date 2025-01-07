@@ -1,89 +1,16 @@
-/* General background and padding for the AnchorPane */
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/* #btnStudentInfo {*/
+
+/*TODO: Subscriber window */
+
+.button {	-fx-font-size: 14px ;
+	/*-fx-background-color: rgba(255, 255, 255, .80);*/
+	-fx-background-color: blue;
+	-fx-text-fill: red;
+	-fx-padding: 6 6 6 6;
+	-fx-border-radius: 20;
+	-fx-font-weight : bold;
+}
 .root {
-    -fx-background-color: #f4f4f9;  /* Light background color */
-}
-
-/* Styling for the main login label */
-#loginLabel {
-    -fx-font-size: 34px;  /* Large font size for the title */
-    -fx-font-weight: bold;  /* Bold font weight for emphasis */
-    -fx-text-fill: #333;  /* Dark text color for contrast */
-}
-
-/* Styling for the "Enter User ID" label */
-.label {
-    -fx-font-size: 14px;  /* Slightly smaller text */
-    -fx-font-weight: bold;
-    -fx-text-fill: #333;  /* Dark gray color */
-}
-
-/* Styling for the TextField */
-.text-field {
-    -fx-background-color: #fff;  /* White background for the text field */
-    -fx-border-color: #ccc;  /* Light gray border */
-    -fx-border-radius: 5px;  /* Rounded corners */
-    -fx-font-size: 14px;  /* Readable font size */
-    -fx-text-fill: #333;  /* Dark text color */
-    -fx-focus-color: #4e91f5;  /* Focused color when clicked */
-}
-
-/* Styling for the buttons */
-.button {
-    -fx-background-color: #4e91f5;  /* Blue background for the button */
-    -fx-text-fill: white;  /* White text color */
-    -fx-font-size: 14px;  /* Button text size */
-    -fx-font-weight: bold;  /* Bold text for emphasis */
-    -fx-border-radius: 5px;  /* Rounded corners */
-    -fx-cursor: hand;  /* Change cursor to hand when hovering */
-    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
-}
-
-.button:hover {
-    -fx-background-color: #3577d4;  /* Darker blue background on hover */
-}
-
-/* Exit button (red) styling */
-#btnExit {
-    -fx-background-color: #e74c3c;  /* Red background for the Exit button */
-}
-
-#btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red on hover for Exit button */
-}
-
-/* Styling for awaiting login text (green) */
-#awaitingLoginText {
-    -fx-font-size: 20px;  /* Larger font size for feedback text */
-    -fx-font-weight: bold;  /* Bold text for emphasis */
-    -fx-text-fill: #4dc03e;  /* Green text color */
-}
-
-/* Add margins and spacing between components */
-.text-field, .button {
-    -fx-spacing: 10px;
-}
-
-#btnExit {
-    -fx-margin-top: 20px;  /* Space between the Exit button and other components */
-}
-
-/* Adjust positioning of the labels and buttons for better alignment */
-#btnSend {
-    -fx-layout-x: 347.0;
-    -fx-layout-y: 104.0;
-}
-
-#btnExit {
-    -fx-layout-x: 376.0;
-    -fx-layout-y: 14.0;
-}
-
-#idtxt {
-    -fx-layout-x: 189.0;
-    -fx-layout-y: 104.0;
-}
-
-#awaitingLoginText {
-    -fx-layout-x: 109.0;
-    -fx-layout-y: 137.0;
+	-fx-background-color: #deb887;
 }
