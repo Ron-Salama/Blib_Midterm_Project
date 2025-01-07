@@ -100,11 +100,18 @@ public class LibraryFrameController   {
 
 	    // Schedule a task to check the response without blocking
 	    PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1)); // Adjusted to 1 second for checking
-	    pause.setOnFinished(e -> handleResponse(event));
+	    pause.setOnFinished(e -> {
+			try {
+				handleResponse(event);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 	    pause.play();
 	}
 
-	private void handleResponse(ActionEvent event) {
+	private void handleResponse(ActionEvent event) throws Exception {
 	    // Debugging logs to check both IDs
 	    System.out.println("Librarian ID: " + ChatClient.l1.getLibrarian_id());
 	    System.out.println("Subscriber ID: " + ChatClient.s1.getSubscriber_id());
@@ -120,6 +127,8 @@ public class LibraryFrameController   {
 	        System.out.println("Subscriber ID Found");
 	        awaitingLoginText.setStyle("-fx-text-fill: green;");
 	        awaitingLoginText.setText("Welcome Back Subscriber " + ChatClient.s1.getSubscriber_name());
+	        navigateToSubscriberWindow(event);
+	        
 	    }
 	    // Handle the case where neither Librarian nor Subscriber is found
 	    else {
@@ -173,5 +182,18 @@ public class LibraryFrameController   {
 		System.out.println("message");
 		
 	}
+	
+	private void navigateToSubscriberWindow(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberWindow/SubscriberWindow.fxml"));
+        Parent root = loader.load();
+
+        // Set up the scene and stage
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/SubscriberWindow/SubscriberWindow.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setTitle("Library Management Tool");
+        stage.show();
+    }
 	
 }

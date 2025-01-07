@@ -76,81 +76,82 @@ public class EchoServer extends AbstractServer {
         System.out.println("Message received: " + msg + " from " + client);
 
         try {
-            if (((String) msg).startsWith("Fetch:")) { // Format: Fetch:ID
-                String subscriberId = msg.toString().substring(6).trim(); // Extract ID after "Fetch:"
-                String librarianId = msg.toString().substring(6).trim();
-                // Check if subscriber ID exists in the database
-                if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)){
-                    String subscriberData = ConnectToDb.fetchSubscriberData(dbConnection, subscriberId);
-                    
-                    client.sendToClient(subscriberData);
-                }
-                else if (ConnectToDb.checkLibrarianExists(dbConnection, librarianId)) {
-                	String librarianData = ConnectToDb.fetchLibrarianData(dbConnection, librarianId);
-                	client.sendToClient(librarianData);
-                }  
-                 else {
-                    client.sendToClient("Subscriber ID does not exist.");
-                }
-                
-            } else if (((String) msg).startsWith("Update:")) { // Format: Update:ID,Phone,Email
-                String[] parts = msg.toString().substring(7).split(","); // Remove "Update:" and split
-                if (parts.length == 3) {
-                    String subscriberId = parts[0].trim();
-                    String phone = parts[1].trim();
-                    String email = parts[2].trim();
-                    if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)) {
-                        ConnectToDb.updateSubscriber(dbConnection, subscriberId, phone, email);
-                        client.sendToClient("Subscriber updated successfully.");
+            String message = (String) msg;
+            int delimiterIndex = message.indexOf(":");
+            if (delimiterIndex == -1) {
+                client.sendToClient("Invalid command format.");
+                return;
+            }
+
+            String prefix = message.substring(0, delimiterIndex).trim(); // Extract the prefix
+            String body = message.substring(delimiterIndex + 1).trim(); // Extract the body after the prefix
+
+            switch (prefix) {
+                case "Fetch": // Handle Fetch:ID
+                    String identifier = body;
+
+                    if (ConnectToDb.checkSubscriberExists(dbConnection, identifier)) {
+                        String subscriberData = ConnectToDb.fetchSubscriberData(dbConnection, identifier);
+                        client.sendToClient(subscriberData);
+                    } else if (ConnectToDb.checkLibrarianExists(dbConnection, identifier)) {
+                        String librarianData = ConnectToDb.fetchLibrarianData(dbConnection, identifier);
+                        client.sendToClient(librarianData);
                     } else {
-                        client.sendToClient("Subscriber ID does not exist.");
+                        client.sendToClient("ID does not exist.");
                     }
-                } else {
-                    client.sendToClient("Invalid message format. Expected 'Update:ID,Phone,Email'.");
-                }
-            }  else if (((String) msg).startsWith("IP:")) { // Format: IP
-            	String IPaddress = msg.toString().substring(3);
-            	
-                // This if-else checks if the IP given by the client is the same IP on the server.
-            	String[] parsedMessage = InetAddress.getLocalHost().toString().split("/");
-            	String hostIP = parsedMessage[1];
-                if (IPaddress.equals(hostIP)) { 
-                	client.sendToClient("Client connected to IP: " + IPaddress);
-                }
-                else {
-                	client.sendToClient("Could not connect to the server.\nThe IP: " + IPaddress + " is not the IP of the server.");
-                }
-            }else if (((String) msg).startsWith("GetBooks")) { 
-                System.out.println("Received GetBooks request from client");
+                    break;
 
-                try {
-                    // Fetch the list of books as strings
-                    List<String> booksData = ConnectToDb.fetchBooksData(dbConnection);
+                case "Update": // Handle Update:ID,Phone,Email
+                    String[] parts = body.split(",");
+                    if (parts.length == 3) {
+                        String subscriberId = parts[0].trim();
+                        String phone = parts[1].trim();
+                        String email = parts[2].trim();
 
-                    // Check if the result is null or empty
-                    if (booksData == null || booksData.isEmpty()) {
-                        client.sendToClient("returnedBookData:NoBooksFound"); // Include the indicator with the message
+                        if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)) {
+                            ConnectToDb.updateSubscriber(dbConnection, subscriberId, phone, email);
+                            client.sendToClient("Subscriber updated successfully.");
+                        } else {
+                            client.sendToClient("Subscriber ID does not exist.");
+                        }
                     } else {
-                        // Convert the list to a single string to send to the client
-                        String booksDataString = String.join(";", booksData); // Use ";" to separate book records
-                        client.sendToClient("returnedBookData:" + booksDataString); // Include the indicator with the serialized books list
+                        client.sendToClient("Invalid Update command format. Expected 'Update:ID,Phone,Email'.");
                     }
+                    break;
 
-                } catch (Exception e) {
-                    // Handle any unexpected errors
-                    System.out.println("Error while processing GetBooks request: " + e.getMessage());
+                case "IP": // Handle IP:<Address>
+                    String clientIP = body;
+                    String serverIP = InetAddress.getLocalHost().getHostAddress();
+
+                    if (clientIP.equals(serverIP)) {
+                        client.sendToClient("Client connected to IP: " + clientIP);
+                    } else {
+                        client.sendToClient("Could not connect to the server. The IP: " + clientIP + " does not match the server.");
+                    }
+                    break;
+
+                case "GetBooks": // Handle GetBooks:
+                    System.out.println("Received GetBooks request from client");
+
                     try {
-                        client.sendToClient("returnedBookData:Error:CouldNotFetchBooks"); // Include the indicator with the error message
-                    } catch (IOException ioException) {
-                        System.out.println("Error sending error message to client: " + ioException.getMessage());
+                        List<String> booksData = ConnectToDb.fetchBooksData(dbConnection);
+
+                        if (booksData == null || booksData.isEmpty()) {
+                            client.sendToClient("returnedBookData:NoBooksFound");
+                        } else {
+                            String booksDataString = String.join(";", booksData);
+                            client.sendToClient("returnedBookData:" + booksDataString);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error while processing GetBooks request: " + e.getMessage());
+                        client.sendToClient("returnedBookData:Error:CouldNotFetchBooks");
                     }
-                }
-            }
+                    break;
 
-            else {
-                client.sendToClient("Unknown command.");
+                default: // Handle unknown commands
+                    client.sendToClient("Unknown command.");
+                    break;
             }
-
         } catch (SQLException | IOException e) {
             System.out.println("Error handling client message: " + e.getMessage());
             try {
@@ -160,6 +161,7 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
+
 
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
