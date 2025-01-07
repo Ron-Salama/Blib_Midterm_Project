@@ -21,7 +21,7 @@ public class ConnectToDb {
         }
 
         // Return the established connection
-        return DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST&allowPublicKeyRetrieval=true&useSSL=false", "root", "Vdsa0512!");
+        return DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST&allowPublicKeyRetrieval=true&useSSL=false", "root", "Aa123456");
     }
     /*
         // Method to fetch all data from the subscriber table
