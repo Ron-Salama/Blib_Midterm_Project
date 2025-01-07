@@ -100,8 +100,8 @@ public class SearchFrameController implements Initializable {
 
     // Load books into the TableView
     private void loadBooks() {
-        // Send "GetBooks" request to the server to fetch the books
-        ClientUI.chat.accept("GetBooks");
+        // Send "GetBooks:" request to the server to fetch the books
+        ClientUI.chat.accept("GetBooks:");
 
         // Ensure bookList is not empty
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
@@ -117,7 +117,7 @@ public class SearchFrameController implements Initializable {
 
     // Method for searching books
     public void Search(ActionEvent event) throws Exception {
-        ClientUI.chat.accept("GetBooks");  // Get the latest books
+        ClientUI.chat.accept("GetBooks:");  // Get the latest books
 
         // Ensure bookList is not empty
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {

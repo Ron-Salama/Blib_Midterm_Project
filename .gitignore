@@ -19,6 +19,9 @@
 *.tar.gz
 *.rar
 
+# Allow mySQL jar connector to upload.
+!mysql-connector-java-8.0.13.jar
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
