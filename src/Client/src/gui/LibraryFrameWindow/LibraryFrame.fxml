@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="255.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibraryFrameWindow.LibraryFrameController">
+<AnchorPane prefHeight="255.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibraryFrameWindow.SubcriberRequestsWindowsController">
    <children>
       <Button id="btnSubscriberInfo" fx:id="btnSend" layoutX="387.0" layoutY="104.0" mnemonicParsing="false" onAction="#Send" text="Send" />
       <Button id="btnExit" fx:id="btnExit" layoutX="408.0" layoutY="14.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit To Main Menu" />

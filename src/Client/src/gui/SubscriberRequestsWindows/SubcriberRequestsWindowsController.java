@@ -1,4 +1,4 @@
-package gui.LibraryFrameWindow;
+package gui.SubscriberRequestsWindows;
 
 import java.io.IOException;
 
@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 import logic.Subscriber;
 
 
-public class LibraryFrameController   {
-	private LibraryFrameController lfc;	
+public class SubcriberRequestsWindowsController   {
+	private SubcriberRequestsWindowsController lfc;	
 	
 	@FXML
 	private Button btnExit = null;
