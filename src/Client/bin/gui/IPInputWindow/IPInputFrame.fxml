@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="300.0" prefWidth="357.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
+<AnchorPane prefHeight="207.0" prefWidth="246.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
    <children>
       <!-- Welcome Label -->
       <Label fx:id="welcomeLabel" layoutX="40.0" layoutY="10.0" prefWidth="280.0" text="Welcome to Blib system">
