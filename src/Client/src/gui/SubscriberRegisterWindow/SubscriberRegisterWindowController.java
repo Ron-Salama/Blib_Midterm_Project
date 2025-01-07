@@ -20,7 +20,7 @@ import logic.Subscriber;
 
 public class SubscriberRegisterWindowController implements Initializable {
     private Subscriber s;
-
+    
     @FXML
     private Label lblSubscriber_id;
     @FXML
@@ -29,8 +29,6 @@ public class SubscriberRegisterWindowController implements Initializable {
     private Label lblSubscriber_phoneNumber;
     @FXML
     private Label lblSubscriber_email;
-    @FXML
-    private Label lblSubscriber_detailedSubscriptionHistory;
 
     @FXML
     private TextField txtSubscriber_id;
@@ -40,14 +38,12 @@ public class SubscriberRegisterWindowController implements Initializable {
     private TextField txtSubscriber_phoneNumber;
     @FXML
     private TextField txtSubscriber_email;
-    @FXML
-    private TextField txtSubscriber_detailedSubscriptionHistory;
 
     @FXML
-    private Button btnClose = null;
+    private Button btnReturnToMainMenu = null;
 
     @FXML
-    private Button btnUpdate = null;
+    private Button btnRegister = null;
 
     ObservableList<String> list;
 
@@ -57,37 +53,37 @@ public class SubscriberRegisterWindowController implements Initializable {
         this.txtSubscriber_name.setText(s.getSubscriber_name()); // Assuming this is already a String
         this.txtSubscriber_phoneNumber.setText(s.getSubscriber_phone_number()); // Assuming this is already a String
         this.txtSubscriber_email.setText(s.getSubscriber_email()); // Assuming this is already a String
-        this.txtSubscriber_detailedSubscriptionHistory.setText(String.valueOf(s.getDetailed_subscription_history())); // Convert int to String
     }
 
-    public void getbtnClose(ActionEvent event) throws Exception {
-        navigateToLibraryFrame(event);
+    public void getbtnReturnToMainMenu(ActionEvent event) throws Exception {
+        returnToMainMenu(event);
     }
 
-    public void btnUpdate(ActionEvent event) throws Exception {
+    public void btnRegister(ActionEvent event) throws Exception {
         // Get the updated values from the text fields
         String id = txtSubscriber_id.getText();
         String phoneNumber = txtSubscriber_phoneNumber.getText();
         String email = txtSubscriber_email.getText();
-
+        String name = txtSubscriber_name.getText();
+        
         // Prepare the update message
-        String obj = "Update:" + id + "," + phoneNumber + "," + email;
+        String obj = "Register" + id + "," + name + "," + phoneNumber + "," + email;
 
         // Send the update message to the server
         ClientUI.chat.accept(obj);
 
         // Navigate back to the LibraryFrame
-        navigateToLibraryFrame(event);
+        returnToMainMenu(event);
     }
 
-    private void navigateToLibraryFrame(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscraberFormWindow/SubscriberForm.fxml"));
+    private void returnToMainMenu(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
         Parent root = loader.load();
 
         // Set up the scene and stage
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/SubscraberFormWindow/SubscriberForm.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("Library Management Tool");
         stage.show();

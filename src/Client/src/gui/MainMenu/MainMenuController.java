@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import gui.LibraryFrameWindow.LibraryFrameController;
 import gui.SearchWindow.SearchFrameController;
+import gui.SubscriberRegisterWindow.SubscriberRegisterWindowController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ public class MainMenuController {
 		private MainMenuController mmc;	
 		
 		@FXML
-		private Button btnExit = null;
+		private Button btnRegister = null;
 		
 		@FXML
 		private Button btnSearch = null;
@@ -104,6 +105,29 @@ public class MainMenuController {
 	            Stage primaryStage = new Stage();
 	            Scene scene = new Scene(root);
 	            scene.getStylesheets().add(getClass().getResource("/gui/LibraryFrameWindow/LibraryFrame.css").toExternalForm());
+	            primaryStage.setTitle("Login");
+	            primaryStage.setScene(scene);
+	            primaryStage.show();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		}
+		
+		public void openRegisterWindow(ActionEvent event){
+			try {
+	            // Hide the current window
+	            ((Node) event.getSource()).getScene().getWindow().hide();
+
+	            // Load the SubscriberForm window
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.fxml"));
+	            Pane root = loader.load();
+
+	            SubscriberRegisterWindowController RegisterWindowFrameController = loader.getController();
+//	            mainMenuController.loadSubscriber(ChatClient.s1);
+
+	            Stage primaryStage = new Stage();
+	            Scene scene = new Scene(root);
+	            scene.getStylesheets().add(getClass().getResource("/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.css").toExternalForm());
 	            primaryStage.setTitle("Login");
 	            primaryStage.setScene(scene);
 	            primaryStage.show();

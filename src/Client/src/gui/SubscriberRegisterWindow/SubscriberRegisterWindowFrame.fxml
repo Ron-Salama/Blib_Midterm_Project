@@ -8,24 +8,27 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindowFrame">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindow.SubscriberRegisterWindowController">
    <children>
       <Label id="lblSubscriber_id" layoutX="34.0" layoutY="107.0" text="ID:" />
       <Label id="lblSubscriber_name" layoutX="34.0" layoutY="130.0" text="Full Name:" />
       <Label id="lblPhoneNumber" layoutX="34.0" layoutY="152.0" text="Phone Number:" />
       <Label id="lblSubscriber_email" layoutX="34.0" layoutY="174.0" text="Email:" />
       
-      <Button id="btnClose" fx:id="btnClose" layoutX="500.0" layoutY="1.0" mnemonicParsing="false" onAction="#getbtnClose" text="Return to Main Menu" />
-      <Button id="btnRegister" fx:id="btnUpdate" layoutX="227.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="86.0" prefWidth="182.0" text="Register">
+      <Button id="btnReturnToMainMenu" fx:id="btnReturnToMainMenu" layoutX="500.0" layoutY="1.0" mnemonicParsing="false" onAction="#getbtnReturnToMainMenu" text="Return to Main Menu" />
+      <Button id="btnRegister" fx:id="btnRegister" layoutX="227.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnRegister" prefHeight="86.0" prefWidth="182.0" text="Register">
          <font>
             <Font size="32.0" />
-         </font></Button>
-      <TextField id="lblFullName" fx:id="txtSubscriber_name" layoutX="300.0" layoutY="125.0" />
-      <TextField id="lblSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="300.0" layoutY="148.0" />
-      <TextField id="lblSubscriberEmail" fx:id="txtSubscriber_phoneNumber1" layoutX="300.0" layoutY="170.0" />
-      <TextField id="lblSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber2" layoutX="300.0" layoutY="103.0" />
+         </font>
+      </Button>
+      
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="300.0" layoutY="125.0" />
+      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="300.0" layoutY="148.0" />
+      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="300.0" layoutY="170.0" />
+      
       <Line endX="100.0" startX="-100.0" />
       <Line endX="100.0" layoutX="287.0" layoutY="31.0" startX="-100.0" />
+      
       <Text layoutX="227.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register to The Library" />
    </children>
 </AnchorPane>
