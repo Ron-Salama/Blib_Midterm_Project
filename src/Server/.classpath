@@ -7,8 +7,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="data/mysql-connector-java-8.0.13.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
-	<classpathentry kind="lib" path="D:/BLib_MidTerm_Project/data/mysql-connector-java-8.0.13.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
