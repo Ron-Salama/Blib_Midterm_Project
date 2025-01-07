@@ -1,4 +1,4 @@
-package gui.SubscriberFormWindow;
+package gui.SubscriberRegisterWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logic.Subscriber;
 
-public class SubscriberFormController implements Initializable {
+public class SubscriberRegisterWindowController implements Initializable {
     private Subscriber s;
 
     @FXML

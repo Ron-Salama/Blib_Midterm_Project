@@ -116,7 +116,6 @@ public class ChatClient extends AbstractClient
                 bookList.add(new Book(id, name, description, subject, availableCopies, location));
                 
             }
-
         }
     } else {
         System.out.println("Unknown response from server: " + msg);

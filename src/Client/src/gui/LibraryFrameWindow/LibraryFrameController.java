@@ -8,7 +8,7 @@ import client.ClientController;
 import client.ClientUI;
 import common.ChatIF;
 import gui.MainMenu.MainMenuController;
-import gui.SubscriberFormWindow.SubscriberFormController;
+import gui.SubscriberRegisterWindow.SubscriberRegisterWindowController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
