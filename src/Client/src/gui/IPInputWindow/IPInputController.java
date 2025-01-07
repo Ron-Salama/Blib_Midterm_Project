@@ -8,6 +8,7 @@ import client.ClientController;
 import client.ClientUI;
 import common.ChatIF;
 import gui.MainMenu.MainMenuController;
+import gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -98,7 +99,6 @@ public class IPInputController {
 		    alert.showAndWait();
 		}
 
-		
 		private void openMainMenu(ActionEvent event){
 			try {
 	            // Hide the current window
@@ -108,6 +108,7 @@ public class IPInputController {
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
 	            Pane root = loader.load();
 
+	            //
 	            MainMenuController mainMenuController = loader.getController();
 	            //mainMenuController.loadSubscriber(ChatClient.s1);
 

@@ -48,34 +48,13 @@ public class LibrarianController implements Initializable {
 
     ObservableList<String> list;
 
-    public void loadSubscriber(Librarian l1) {
-        this.l = l1;
-        this.txtLibrarian_id.setText(String.valueOf(s.getSubscriber_id())); // Convert int to String
-        this.txtLibrarian_name.setText(s.getSubscriber_name()); // Assuming this is already a String
-        this.txtLibrarian_phoneNumber.setText(s.getSubscriber_phone_number()); // Assuming this is already a String
-        this.txtLibrarian_email.setText(s.getSubscriber_email()); // Assuming this is already a String
-        this.txtSubscriber_detailedSubscriptionHistory.setText(String.valueOf(s.getDetailed_subscription_history())); // Convert int to String
-    }
+
 
     public void getbtnClose(ActionEvent event) throws Exception {
         navigateToLibraryFrame(event);
     }
 
-    public void btnUpdate(ActionEvent event) throws Exception {
-        // Get the updated values from the text fields
-        String id = txtSubscriber_id.getText();
-        String phoneNumber = txtSubscriber_phoneNumber.getText();
-        String email = txtSubscriber_email.getText();
 
-        // Prepare the update message
-        String obj = "Update:" + id + "," + phoneNumber + "," + email;
-
-        // Send the update message to the server
-        ClientUI.chat.accept(obj);
-
-        // Navigate back to the LibraryFrame
-        navigateToLibraryFrame(event);
-    }
 
     private void navigateToLibraryFrame(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscraberFormWindow/SubscriberForm.fxml"));
