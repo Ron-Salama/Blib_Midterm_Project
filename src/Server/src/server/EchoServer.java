@@ -78,13 +78,21 @@ public class EchoServer extends AbstractServer {
         try {
             if (((String) msg).startsWith("Fetch:")) { // Format: Fetch:ID
                 String subscriberId = msg.toString().substring(6).trim(); // Extract ID after "Fetch:"
+                String librarianId = msg.toString().substring(6).trim();
                 // Check if subscriber ID exists in the database
-                if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)) {
+                if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)){
                     String subscriberData = ConnectToDb.fetchSubscriberData(dbConnection, subscriberId);
+                    
                     client.sendToClient(subscriberData);
-                } else {
+                }
+                else if (ConnectToDb.checkLibrarianExists(dbConnection, librarianId)) {
+                	String librarianData = ConnectToDb.fetchLibrarianData(dbConnection, librarianId);
+                	client.sendToClient(librarianData);
+                }  
+                 else {
                     client.sendToClient("Subscriber ID does not exist.");
                 }
+                
             } else if (((String) msg).startsWith("Update:")) { // Format: Update:ID,Phone,Email
                 String[] parts = msg.toString().substring(7).split(","); // Remove "Update:" and split
                 if (parts.length == 3) {

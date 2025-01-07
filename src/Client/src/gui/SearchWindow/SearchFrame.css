@@ -1,12 +1,110 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-#btnSubscribertInfo {
-	/*-fx-background-color: rgba(255, 255, 255, .80);*/
-	-fx-background-color: skyblue;
-	-fx-text-fill: red;
-	-fx-padding: 6 6 6 6;
-	-fx-border-radius: 8;
-	-fx-font-weight : bold;
-}
+/* General background and padding for the AnchorPane */
 .root {
-	-fx-background-color: #deb887;
+    -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
+}
+
+/* Text and Titles */
+.text {
+    -fx-fill: #333333;  /* Dark text color for visibility */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Search Section */
+#nameInput, #descriptionInput, #subjectInput {
+    -fx-font-size: 14px;  /* Font size for inputs */
+    -fx-background-color: #ffffff;  /* White background for input fields */
+    -fx-border-color: #cccccc;  /* Light border color */
+    -fx-border-radius: 5px;  /* Rounded corners */
+    -fx-border-width: 1px;
+}
+
+#nameInput:focused, #descriptionInput:focused, #subjectInput:focused {
+    -fx-border-color: #4e91f5;  /* Focused input border becomes blue */
+    -fx-background-color: #f4f4f9;  /* Slightly different background on focus */
+}
+
+/* Labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: #4e91f5;  /* Blue background for buttons */
+    -fx-text-fill: white;  /* White text color */
+    -fx-font-size: 14px;  /* Font size for buttons */
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;  /* Rounded corners */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+}
+
+.button:hover {
+    -fx-background-color: #3577d4;  /* Darker blue background on hover */
+}
+
+/* Exit Button */
+#btnExit {
+    -fx-background-color: #e74c3c;  /* Red background */
+}
+
+#btnExit:hover {
+    -fx-background-color: #c0392b;  /* Darker red background on hover */
+}
+
+/* Search Button */
+#btnSearchBooks {
+    -fx-background-color: #f2fc71;  /* Green background for search button */
+    -fx-pref-height: 46px;
+    -fx-pref-width: 109px;
+}
+
+#btnSearchBooks:hover {
+    -fx-background-color: #fcf501;  /* Darker green background on hover */
+}
+
+/* TableView Styling */
+.table-view {
+    -fx-font-size: 14px;  /* Set font size for table */
+    -fx-background-color: #ffffff;  /* White background for the table */
+    -fx-border-color: #cccccc;  /* Light border around the table */
+    -fx-border-radius: 5px;  /* Rounded corners */
+}
+
+.table-column {
+    -fx-font-weight: bold;  /* Make column headers bold */
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #4e91f5;  /* Blue background for table headers */
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: #f9f9f9;  /* Light gray for even rows */
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #ffffff;  /* White for odd rows */
+}
+
+/* Line between Search Fields and Results */
+#line {
+    -fx-stroke: #4e91f5;  /* Blue line between search section and results */
+    -fx-stroke-width: 2px;
+}
+
+/* Text for Result Section */
+#tableView {
+    -fx-background-color: #ffffff;  /* White background for table */
+    -fx-border-radius: 5px;  /* Rounded corners */
+    -fx-border-color: #cccccc;  /* Light border around the table */
+    -fx-border-width: 1px;
+}
+
+/* Styling for the TextField when focused */
+#nameInput:focused, #descriptionInput:focused, #subjectInput:focused {
+    -fx-background-color: #e6f7ff;  /* Light blue background when focused */
+    -fx-border-color: #007acc;  /* Blue border when focused */
 }

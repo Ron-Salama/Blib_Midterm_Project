@@ -2,6 +2,7 @@ package gui.IPInputWindow;
 
 import java.io.IOException;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import client.ChatClient;
 import client.ClientController;
 import client.ClientUI;
@@ -14,7 +15,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -32,6 +35,10 @@ public class IPInputController {
 		
 		@FXML
 		private TextField IPtxt;
+		@FXML
+		private Label awaitingLoginText;
+		@FXML
+		private Label welcomeLabel;
 		
 		private String getIP() {
 			return IPtxt.getText();
@@ -39,27 +46,56 @@ public class IPInputController {
 		
 		
 		public void Send(ActionEvent event) throws Exception {
-		    String ip = getIP();
+		    String ip = getIP();  // Assuming getIP() fetches the IP entered in a TextField
 		    if (ip.trim().isEmpty()) {
-		    	//TODO: enter an alert here.
+		        // Display error if IP is empty
+		        awaitingLoginText.setText("You must enter an IP address.");
+		        awaitingLoginText.setStyle("-fx-text-fill: red;");
 		        System.out.println("You must enter an IP address.");
 		        return;
 		    }
-		    
+
+		    // Set the system property for the server IP
 		    System.setProperty("server.ip", ip);
-		    ClientUI.chat.accept("IP:" + ip); // Send the request
-		    
+		    ClientUI.chat.accept("IP:" + ip); // Send the request to the server
+
 		    // Simulate asynchronous handling of the response
-		    PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.5));
+		    PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1)); // Short delay
 		    pause.setOnFinished(e -> {
 		        if (!ClientUI.isIPValid) {
+		            // If the IP is not valid
+		            awaitingLoginText.setText("Invalid IP address.");
+		            awaitingLoginText.setStyle("-fx-text-fill: red;");
 		            System.out.println("ALERT: Invalid IP detected!");
-		            // TODO: enter an alert here.
+
+		            // Use Platform.runLater to ensure the alert is shown after the transition
+		            Platform.runLater(() -> {
+		                showAlert("Error", "Invalid IP address. Please try again.");
+		            });
 		        } else {
-		            openMainMenu(event);
+		            // If the IP is valid
+		            awaitingLoginText.setText("Connected successfully to IP: " + ip);
+		            awaitingLoginText.setStyle("-fx-text-fill: green;");
+		            System.out.println("Connected successfully to IP: " + ip);
+
+		            // Create a small pause before opening the main menu
+		            PauseTransition pause1 = new PauseTransition(javafx.util.Duration.seconds(1)); // Wait 1 seconds before moving on
+		            pause1.setOnFinished(e1 -> {
+		                openMainMenu(event);  // Navigate to the main menu
+		            });
+		            pause1.play();
 		        }
 		    });
-		    pause.play();
+		    pause.play();  // Start the initial delay
+		}
+
+		// Method to show an alert dialog
+		private void showAlert(String title, String message) {
+		    Alert alert = new Alert(Alert.AlertType.ERROR);
+		    alert.setTitle(title);
+		    alert.setHeaderText(null);
+		    alert.setContentText(message);
+		    alert.showAndWait();
 		}
 
 		
