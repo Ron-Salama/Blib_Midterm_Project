@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.Book;
 
@@ -169,8 +171,26 @@ public class SearchFrameController implements Initializable {
 
     // Handle exit button
     public void getExitBtn(ActionEvent event) {
-        System.out.println("Exiting Library Tool");
-        System.exit(1);
+		try {
+            // Hide the current window
+            ((Node) event.getSource()).getScene().getWindow().hide();
+
+            // Load the SubscriberForm window
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
+            Pane root = loader.load();
+
+            MainMenuController mainMenuController = loader.getController();
+            //mainMenuController.loadSubscriber(ChatClient.s1);
+
+            Stage primaryStage = new Stage();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
+            primaryStage.setTitle("MainMenu");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }

@@ -83,6 +83,30 @@ public class ConnectToDb {
             return "Error fetching subscriber data.";
         }
     }
+    public static String fetchLibrarianData(Connection conn, String librarianId) {
+        String query = "SELECT * FROM librarian WHERE librarian_id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, Integer.parseInt(librarianId));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Check if a record exists
+                if (rs.next()) {
+                    int id = rs.getInt("librarian_id");
+                    String name = rs.getString("librarian_name");
+
+                    return "librarian_id:" + id + ", librarian_name:" + name;
+
+                } else {
+                    return "No labrarian found";
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while fetching subscriber data: " + e.getMessage());
+            return "Error fetching subscriber data.";
+        }
+    }
+    
     
     public static List<String> fetchBooksData(Connection conn) {
         String query = "SELECT * FROM blib.books"; // Adjust the query as needed
@@ -139,7 +163,15 @@ public class ConnectToDb {
             }
         }
     }
-
+    public static boolean checkLibrarianExists(Connection conn, String librarianId) throws SQLException {
+        String query = "SELECT * FROM librarian WHERE librarian_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, Integer.parseInt(librarianId));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();  // Returns true if subscriber exists, otherwise false
+            }
+        }
+    }
     // Update a subscriber's phone and email
     public static void updateSubscriber(Connection conn, String subscriberId, String phone, String email) throws SQLException {
         String query = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";

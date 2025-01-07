@@ -2,6 +2,7 @@ package gui.MainMenu;
 
 import java.io.IOException;
 
+import gui.LibraryFrameWindow.LibraryFrameController;
 import gui.SearchWindow.SearchFrameController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,9 +29,14 @@ public class MainMenuController {
 		private Button btnBack = null;
 		
 		public void search(ActionEvent event) throws Exception {
-		        openSearchWindow(event);
+		    openSearchWindow(event);
 		}
-		
+		public void login(ActionEvent event) throws Exception {
+	        openLoginWindow(event);
+		}
+		public void back(ActionEvent event) throws Exception {
+	        openIPWindow(event);
+		}
 //		private void checkSubscriberResponse(ActionEvent event) {
 //		    if (ChatClient.s1.getSubscriber_id() == -1) {
 //		        System.out.println("Subscriber ID Not Found");
@@ -82,7 +88,30 @@ public class MainMenuController {
 	            e.printStackTrace();
 	        }
 		}
+		
+		private void openLoginWindow(ActionEvent event){
+			try {
+	            // Hide the current window
+	            ((Node) event.getSource()).getScene().getWindow().hide();
 
+	            // Load the SubscriberForm window
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LibraryFrameWindow/LibraryFrame.fxml"));
+	            Pane root = loader.load();
+
+	            LibraryFrameController libraryFrameController = loader.getController();
+//	            mainMenuController.loadSubscriber(ChatClient.s1);
+
+	            Stage primaryStage = new Stage();
+	            Scene scene = new Scene(root);
+	            scene.getStylesheets().add(getClass().getResource("/gui/LibraryFrameWindow/LibraryFrame.css").toExternalForm());
+	            primaryStage.setTitle("Login");
+	            primaryStage.setScene(scene);
+	            primaryStage.show();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		}
+		
 		public void start(Stage primaryStage) throws Exception {	
 			Parent root = FXMLLoader.load(getClass().getResource("/gui/MainMenuController/MainMenuFrame.fxml"));
 					
@@ -97,5 +126,22 @@ public class MainMenuController {
 		public void getExitBtn(ActionEvent event) throws Exception {
 			System.out.println("exit Library Tool");	
 			System.exit(1);
+		}
+		
+		public void openIPWindow(ActionEvent event) throws Exception {
+			((Node) event.getSource()).getScene().getWindow().hide();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/IPInputWindow/IPInputFrame.fxml"));
+            Pane root = loader.load();
+
+//            IPInputController iPInputController = loader.getController();
+
+            Stage primaryStage = new Stage();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/gui/IPInputWindow/IPInputFrame.css").toExternalForm());
+            primaryStage.setTitle("Login");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
 		}
 }

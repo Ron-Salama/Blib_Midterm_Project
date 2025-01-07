@@ -1,12 +1,67 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-#btnSubscribertInfo {
-	/*-fx-background-color: rgba(255, 255, 255, .80);*/
-	-fx-background-color: skyblue;
-	-fx-text-fill: red;
-	-fx-padding: 6 6 6 6;
-	-fx-border-radius: 8;
-	-fx-font-weight : bold;
-}
+/* General styles for the AnchorPane */
 .root {
-	-fx-background-color: #deb887;
+    -fx-background-color: #f4f4f9;  /* Light background color */
+}
+
+/* Styling for the "Welcome to Blib system" label */
+#welcomeLabel {
+    -fx-background-color: #4e91f5;  /* Blue background */
+    -fx-text-fill: white;  /* White text color */
+    -fx-font-size: 20px;  /* Larger font size */
+    -fx-font-weight: bold;  /* Bold text */
+    -fx-padding: 10px;  /* Padding around the text */
+    -fx-alignment: center;  /* Center the text within the label */
+    -fx-border-radius: 5px;  /* Optional rounded corners for a softer look */
+    -fx-background-radius: 5px;  /* Rounded corners for the background */
+}
+
+/* Styling for the Label (Server IP) */
+.label {
+    -fx-font-size: 14px;  /* Slightly larger text for clarity */
+    -fx-font-weight: bold;  /* Make the label text bold */
+    -fx-text-fill: #333;  /* Dark gray text for good contrast */
+}
+
+/* TextField styling */
+.text-field {
+    -fx-background-color: #fff;  /* White background for the input field */
+    -fx-border-color: #ccc;  /* Light gray border for the text field */
+    -fx-border-radius: 5px;  /* Rounded corners for the text field */
+    -fx-font-size: 14px;  /* Clear font size for text */
+    -fx-text-fill: #333;  /* Dark text color */
+    -fx-focus-color: #4e91f5;  /* Focus color on text field */
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: #4e91f5;  /* Blue background for buttons */
+    -fx-text-fill: white;  /* White text on buttons */
+    -fx-font-size: 14px;  /* Button text size */
+    -fx-font-weight: bold;  /* Bold text for emphasis */
+    -fx-border-radius: 5px;  /* Rounded corners on buttons */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+}
+
+.button:hover {
+    -fx-background-color: #3577d4;  /* Darken button background on hover */
+}
+
+/* Exit Button Styling (Red) */
+#btnExit {
+    -fx-background-color: #e74c3c;  /* Red background for the Exit button */
+}
+
+#btnExit:hover {
+    -fx-background-color: #c0392b;  /* Darker red on hover for Exit button */
+}
+
+/* Add some spacing between components */
+.text-field, .button {
+    -fx-spacing: 10px;
+}
+
+/* Add spacing between the buttons themselves */
+#btnExit {
+    -fx-margin-top: 10px;
 }

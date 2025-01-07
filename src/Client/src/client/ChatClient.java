@@ -5,6 +5,7 @@ import client.*;
 import common.ChatIF;
 import logic.Book;
 import logic.Subscriber;
+import logic.Librarian;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.util.Duration;
@@ -32,6 +33,7 @@ public class ChatClient extends AbstractClient
    */
   ChatIF clientUI; 
   public static Subscriber s1 = new Subscriber(0, 0, null, null, null);
+  public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
   
   public static boolean awaitResponse = false;
@@ -65,28 +67,22 @@ public class ChatClient extends AbstractClient
     System.out.println("--> handleMessageFromServer");
     System.out.println(msg);
     
+ // Handle the message based on its type
     if (((String) msg).startsWith("subscriber_id:")) {
-        // Extract subscriber details from the response message
-        try {
-            String[] parts = ((String) msg).split(",");
-            String subscriberId = parts[0].split(":")[1].trim();
-            String subscriberName = parts[1].split(":")[1].trim();
-            String subscriptionHistory = parts[2].split(":")[1].trim();
-            String phone = parts[3].split(":")[1].trim();
-            String email = parts[4].split(":")[1].trim();
-            
-            // Set the values to the Subscriber object
-            s1.setSubscriber_id(Integer.parseInt(subscriberId));
-            s1.setSubscriber_name(subscriberName);
-            s1.setDetailed_subscription_history(Integer.parseInt(subscriptionHistory));
-            s1.setSubscriber_phone_number(phone);
-            s1.setSubscriber_email(email);
-        } catch (Exception e) {
-            System.out.println("Error parsing subscriber data: " + e.getMessage());
-            s1.setSubscriber_id(-1); // Mark as not found
-        }  
+        // Process subscriber data
+    	l1.setLibrarian_id(-1);
+        processSubscriberData((String) msg);
+    } else if (((String) msg).startsWith("librarian_id:")) {
+        // Process librarian data
+    	s1.setSubscriber_id(-1);
+        processLibrarianData((String) msg);
     } else if (msg.equals("Subscriber ID does not exist.")) {
-        // Mark the subscriber as not found
+        // Handle case where subscriber doesn't exist
+    	l1.setLibrarian_id(-1);
+        s1.setSubscriber_id(-1);
+    }else if (msg.equals("Librarian ID does not exist.")) {
+            // Handle case where subscriber doesn't exist
+    	l1.setLibrarian_id(-1);
         s1.setSubscriber_id(-1);
     } else if (((String) msg).startsWith("Could not connect to the server.")) {
         ClientUI.isIPValid = false; // Turn on the flag for the IP controller.
@@ -163,7 +159,45 @@ public class ChatClient extends AbstractClient
             quit();
         }
     }
+  private void processSubscriberData(String msg) {
+      try {
+          String[] parts = msg.split(",");
+          String subscriberId = extractValue(parts[0]);
+          String subscriberName = extractValue(parts[1]);
+          String subscriptionHistory = extractValue(parts[2]);
+          String phone = extractValue(parts[3]);
+          String email = extractValue(parts[4]);
 
+          // Set values to the Subscriber object
+          s1.setSubscriber_id(Integer.parseInt(subscriberId));
+          s1.setSubscriber_name(subscriberName);
+          s1.setDetailed_subscription_history(Integer.parseInt(subscriptionHistory));
+          s1.setSubscriber_phone_number(phone);
+          s1.setSubscriber_email(email);
+      } catch (Exception e) {
+          System.out.println("Error parsing subscriber data: " + e.getMessage());
+          s1.setSubscriber_id(-1); // Mark as not found
+      }
+  }
+
+  private void processLibrarianData(String msg) {
+      try {
+          String[] parts = msg.split(",");
+          String librarianId = extractValue(parts[0]);
+          String librarianName = extractValue(parts[1]);
+
+          // Set values to the Librarian object
+          l1.setLibrarian_id(Integer.parseInt(librarianId));
+          l1.setLibrarian_name(librarianName);
+      } catch (Exception e) {
+          System.out.println("Error parsing librarian data: " + e.getMessage());
+          l1.setLibrarian_id(-1); // Mark as not found
+      }
+  }
+
+  private String extractValue(String part) {
+      return part.split(":")[1].trim();
+  }
   /**
    * This method terminates the client.
    */
