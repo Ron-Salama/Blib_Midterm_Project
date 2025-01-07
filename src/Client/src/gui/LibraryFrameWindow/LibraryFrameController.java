@@ -142,7 +142,7 @@ public class LibraryFrameController   {
 		primaryStage.show();	 	   
 	}
 	
-	public void getExitBtn(ActionEvent event) throws Exception {
+	public void getExitBtn(ActionEvent event) throws Exception { // test
 		try {
             // Hide the current window
             ((Node) event.getSource()).getScene().getWindow().hide();
