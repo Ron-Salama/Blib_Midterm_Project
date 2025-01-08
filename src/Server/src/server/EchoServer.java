@@ -163,6 +163,46 @@ public class EchoServer extends AbstractServer {
                         client.sendToClient("BookInfo:Error:CouldNotFetchBookInfo");
                     }
                     break;
+                case "BorrowRequest": // Handle BorrowRequest
+                    System.out.println("Received BorrowRequest from client");
+                    String[] borrowParts = body.split(",");
+                    if (borrowParts.length == 6) {
+                        String subscriberId = borrowParts[0].trim();
+                        String subscriberName = borrowParts[1].trim();
+                        String bookBorrowId = borrowParts[2].trim();
+                        String bookName = borrowParts[3].trim();
+                        String placeHolder1 = borrowParts[4].trim(); // Not used
+                        String placeHolder2 = borrowParts[5].trim(); // Not used
+
+                        // Debugging: Log the parameters before inserting
+                        System.out.println("Subscriber ID: " + subscriberId);
+                        System.out.println("Subscriber Name: " + subscriberName);
+                        System.out.println("Book Borrow ID: " + bookBorrowId);
+                        System.out.println("Book Name: " + bookName);
+                        System.out.println("Placeholders: " + placeHolder1 + ", " + placeHolder2);
+
+                        try {
+                            // Example values for the time-related fields (can be empty strings if not needed)
+                            String borrowTime = ""; // You can pass the actual borrow time if you have it
+                            String returnTime = ""; // Leave empty if not used
+                            String extendTime = ""; // Leave empty if not used
+
+                            // Send the data to insertRequest
+                            ConnectToDb.insertRequest(dbConnection, 
+                                                       "Borrow For Subscriber", // requestType
+                                                       subscriberId,             // requestedByID
+                                                       subscriberName,           // requestedByName
+                                                       bookName,                 // bookName
+                                                       bookBorrowId,             // bookId
+                                                       borrowTime,               // borrowTime (empty string if not available)
+                                                       returnTime,               // returnTime (empty string if not available)
+                                                       extendTime);              // extendTime (empty string if not available)
+                        } catch (Exception e) {
+                            client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
 
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");

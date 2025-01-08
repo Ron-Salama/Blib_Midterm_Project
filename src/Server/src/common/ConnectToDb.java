@@ -229,4 +229,38 @@ public class ConnectToDb {
             return "Error fetching book info.";
         }
     }
+    public static void insertRequest(Connection conn, String requestType, String requestedByID, String requestedByName,
+            String bookName, String bookId, String borrowTime, String returnTime, String extendTime)
+            throws SQLException {
+
+    // SQL query to insert a new record into the requests table
+    String query = "INSERT INTO requests (requestType, requestedByID, requestedByName, bookName, bookId, borrowTime, returnTime, extendTime) "
+                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        // Set the values for each field in the query
+        pstmt.setString(1, requestType);
+        pstmt.setString(2, requestedByID);
+        pstmt.setString(3, requestedByName);
+        pstmt.setString(4, bookName);
+        pstmt.setString(5, bookId);
+        pstmt.setString(6, (borrowTime != null && !borrowTime.isEmpty()) ? borrowTime : "");
+        pstmt.setString(7, (returnTime != null && !returnTime.isEmpty()) ? returnTime : "");
+        pstmt.setString(8, (extendTime != null && !extendTime.isEmpty()) ? extendTime : "");
+
+        // Execute the insert and get the number of affected rows
+        int affectedRows = pstmt.executeUpdate();
+
+        // Debugging: Check if rows were inserted
+        if (affectedRows > 0) {
+            System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
+        } else {
+            System.out.println("Insert failed: No rows inserted.");
+        }
+    }
+}
+
+
+
+
 }

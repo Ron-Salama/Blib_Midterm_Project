@@ -2,17 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="255.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibraryFrameWindow.SubcriberRequestsWindowsController">
+<AnchorPane prefHeight="477.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="408.0" layoutY="14.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit To Main Menu" />
       <Label layoutX="109.0" layoutY="95.0" text="Request Type:" />
@@ -27,5 +21,7 @@
       <Label fx:id="LBL3" layoutX="109.0" layoutY="257.0" text="Request Type:" />
       <TextField fx:id="TXTF4" layoutX="207.0" layoutY="287.0" />
       <Label fx:id="LBL4" layoutX="109.0" layoutY="291.0" text="Request Type:" />
+      <TextField fx:id="TXTF5" layoutX="207.0" layoutY="328.0" />
+      <Label fx:id="LBL5" layoutX="109.0" layoutY="332.0" text="Request Type:" />
    </children>
 </AnchorPane>
