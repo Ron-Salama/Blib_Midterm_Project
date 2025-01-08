@@ -8,6 +8,7 @@ import client.ClientController;
 import client.ClientUI;
 import common.ChatIF;
 import gui.MainMenu.MainMenuController;
+import gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
