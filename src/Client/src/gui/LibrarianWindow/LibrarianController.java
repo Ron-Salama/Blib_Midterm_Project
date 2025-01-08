@@ -118,6 +118,7 @@ public class LibrarianController implements Initializable {
         stage.setScene(scene);
         stage.setTitle("Library Management Tool");
         stage.show();
+        SearchFrameController.FlagForSearch = "";
     }
 
     @Override

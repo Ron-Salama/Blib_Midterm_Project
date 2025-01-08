@@ -108,23 +108,22 @@ public class SearchFrameController extends BaseController implements Initializab
         	btnBackF.setVisible(true);
         }else if(FlagForSearch=="Librarian") {
         	btnBackF.setVisible(true);
+        }else if(FlagForSearch=="SubscriberBorrower"){
+        	btnBackF.setVisible(true);
         }
-        
         // Fetch and populate books
         new Thread(() -> {
+        	ClientUI.chat.accept("GetBooks:");
             Platform.runLater(this::loadBooks); // Populate the table after data is fetched
         }).start();
     }
-    
-    
-    
     /**
      * Loads books into the TableView by fetching them from the server.
      * If no books are available, displays a message in the console.
      */
     private void loadBooks() {
         // Send "GetBooks" request to the server to fetch the books
-        ClientUI.chat.accept("GetBooks:");
+        //ClientUI.chat.accept("GetBooks:");
 
         // Ensure bookList is not empty
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
@@ -203,6 +202,7 @@ public class SearchFrameController extends BaseController implements Initializab
      * @param event the event triggered by clicking the exit button.
      */
     public void getExitBtn(ActionEvent event) {
+    	SearchFrameController.FlagForSearch = "";
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",
     			"/gui/MainMenu/MainMenuFrame.css",
@@ -221,6 +221,12 @@ public class SearchFrameController extends BaseController implements Initializab
 	    			"/gui/LibrarianWindow/LibrarianFrame.css",
 	    			"MainMenu");
 	    	FlagForSearch = "";
+    	}else if(FlagForSearch=="SubscriberBorrower") {
+    		openWindow(event,
+	    			"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
+	    			"/gui/BorrowBookWindow/BorrowBookFrame.css",
+	    			"MainMenu");
+    		FlagForSearch = "";
     	}
 
     }

@@ -35,6 +35,7 @@ public class ChatClient extends AbstractClient
   public static Subscriber s1 = new Subscriber(0, 0, null, null, null);
   public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
+  public static String[] BorrowedBookInfo ;
   
   public static boolean awaitResponse = false;
 
@@ -87,8 +88,36 @@ public class ChatClient extends AbstractClient
 	        handleServerConnectionIssue(true);
 	    } else if (response.startsWith("returnedBookData:")) {
 	        handleBookData(response.substring("returnedBookData:".length()));
-	    } else {
-	        handleUnknownResponse(response);
+	    } else if (response.startsWith("BookInfo:")){
+	    	handleBookInfo(response.substring("BookInfo:".length()));
+	    }else {
+	    	handleUnknownResponse(response);
+	    }
+	}
+  private void handleBookInfo(String data) {
+	    try {
+	        if (data.equals("NoBooksFound")) {
+	            System.out.println("No books found in the database.");
+	            BorrowedBookInfo = null;
+	        } else if (data.startsWith("Error")) {
+	            System.out.println("Error from server: " + data);
+	            BorrowedBookInfo = null;
+	        } else {
+	            BorrowedBookInfo = data.split(",");
+	            if (BorrowedBookInfo.length < 6) {
+	                throw new IllegalArgumentException("Incomplete book data received.");
+	            }
+	          /*  System.out.println("Book ID: " + BorrowedBookInfo[0] + "\n" +
+	                    "Book Name: " + BorrowedBookInfo[1] + "\n" +
+	                    "Subject: " + BorrowedBookInfo[2] + "\n" +
+	                    "Description: " + BorrowedBookInfo[3] + "\n" +
+	                    "Available Copies: " + BorrowedBookInfo[4] + "\n" +
+	                    "Location on Shelf: "+ BorrowedBookInfo[5]);
+	          */
+	        }
+	    } catch (Exception e) {
+	        System.out.println("Error handling book info: " + e.getMessage());
+	        BorrowedBookInfo = null;
 	    }
 	}
 
