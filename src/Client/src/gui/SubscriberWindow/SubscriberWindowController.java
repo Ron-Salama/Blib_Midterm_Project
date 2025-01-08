@@ -52,6 +52,7 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @throws Exception if an error occurs while loading the Search window
      */
     public void search(ActionEvent event) throws Exception {
+    	SearchFrameController.FlagForSearch = "Subscriber";
 	    openWindow(event,
 	    		"/gui/SearchWindow/SearchFrame.fxml",
 	    		"/gui/SearchWindow/SearchFrame.css",
@@ -65,6 +66,7 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @throws Exception if an error occurs while loading the main menu window
      */
     public void getbtnBack(ActionEvent event) throws Exception {
+    	
         openWindow(event,
         		"/gui/MainMenu/MainMenuFrame.fxml",
         		"/gui/MainMenu/MainMenuFrame.css",

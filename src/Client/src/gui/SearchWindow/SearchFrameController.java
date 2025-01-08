@@ -29,13 +29,16 @@ import logic.Book;
  */
 public class SearchFrameController extends BaseController implements Initializable {
 	private SearchFrameController sfc;
-   
+    public static String FlagForSearch = "";
 	@FXML
     private Button btnExit;
 
     @FXML
     private Button btnSearchBooks;
-
+    
+    @FXML
+    private Button btnBackF;
+    
     @FXML
     private TableView<Book> tableView;
 
@@ -99,13 +102,22 @@ public class SearchFrameController extends BaseController implements Initializab
 
         subjectInput.setValue(""); 
 
+        if(FlagForSearch=="") {
+        	btnBackF.setVisible(false);
+        }else if(FlagForSearch=="Subscriber") {
+        	btnBackF.setVisible(true);
+        }else if(FlagForSearch=="Librarian") {
+        	btnBackF.setVisible(true);
+        }
+        
         // Fetch and populate books
         new Thread(() -> {
-            ClientUI.chat.accept("GetBooks:"); // Fetch books from the server
             Platform.runLater(this::loadBooks); // Populate the table after data is fetched
         }).start();
     }
-
+    
+    
+    
     /**
      * Loads books into the TableView by fetching them from the server.
      * If no books are available, displays a message in the console.
@@ -195,5 +207,21 @@ public class SearchFrameController extends BaseController implements Initializab
     			"/gui/MainMenu/MainMenuFrame.fxml",
     			"/gui/MainMenu/MainMenuFrame.css",
     			"MainMenu");
+    }
+    public void backFromUser(ActionEvent event) {
+    	if(FlagForSearch=="Subscriber") {
+	    	openWindow(event,
+	    			"/gui/SubscriberWindow/SubscriberWindow.fxml",
+	    			"/gui/SubscriberWindow/SubscriberWindow.css",
+	    			"MainMenu");
+	    	FlagForSearch = "";
+    	}else if(FlagForSearch=="Librarian") {
+	    	openWindow(event,
+	    			"/gui/LibrarianWindow/LibrarianFrame.fxml",
+	    			"/gui/LibrarianWindow/LibrarianFrame.css",
+	    			"MainMenu");
+	    	FlagForSearch = "";
+    	}
+
     }
 }
