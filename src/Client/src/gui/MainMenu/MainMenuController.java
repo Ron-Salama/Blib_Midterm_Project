@@ -2,7 +2,7 @@ package gui.MainMenu;
 
 import java.io.IOException;
 
-import gui.LibraryFrameWindow.LibraryFrameController;
+import gui.LoginWindow.LoginController;
 import gui.SearchWindow.SearchFrameController;
 import gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController;
 import gui.baseController.BaseController;
@@ -103,15 +103,15 @@ public class MainMenuController extends BaseController {
 	            ((Node) event.getSource()).getScene().getWindow().hide();
 
 	            // Load the SubscriberForm window
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LibraryFrameWindow/LibraryFrame.fxml"));
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LoginWindow/LoginFrame.fxml"));
 	            Pane root = loader.load();
 
-	            LibraryFrameController libraryFrameController = loader.getController();
+	            LoginController loginController = loader.getController();
 //	            mainMenuController.loadSubscriber(ChatClient.s1);
 
 	            Stage primaryStage = new Stage();
 	            Scene scene = new Scene(root);
-	            scene.getStylesheets().add(getClass().getResource("/gui/LibraryFrameWindow/LibraryFrame.css").toExternalForm());
+	            scene.getStylesheets().add(getClass().getResource("/gui/LoginWindow/LoginFrame.css").toExternalForm());
 	            primaryStage.setTitle("Login");
 	            primaryStage.setScene(scene);
 	            primaryStage.show();

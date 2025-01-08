@@ -84,7 +84,13 @@ public class ChatClient extends AbstractClient
             // Handle case where subscriber doesn't exist
     	l1.setLibrarian_id(-1);
         s1.setSubscriber_id(-1);
-    } else if (((String) msg).startsWith("Could not connect to the server.")) {
+    }
+     else if (msg.equals("ID does not exist.")) {
+             // Handle case where subscriber doesn't exist
+     	l1.setLibrarian_id(-1);
+        s1.setSubscriber_id(-1);
+    }
+    else if (((String) msg).startsWith("Could not connect to the server.")) {
         ClientUI.isIPValid = false; // Turn on the flag for the IP controller.
     } else if (((String) msg).startsWith("Client connected to IP: ")) {
         ClientUI.isIPValid = true; // Turn off the flag when the IP is correct.

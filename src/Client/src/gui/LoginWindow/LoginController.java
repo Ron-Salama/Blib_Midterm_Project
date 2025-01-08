@@ -1,4 +1,4 @@
-package gui.LibraryFrameWindow;
+package gui.LoginWindow;
 
 import client.ChatClient;
 import client.ClientUI;
@@ -20,9 +20,9 @@ import logic.Subscriber;
  *
  * @since 1.0
  */
-public class LibraryFrameController extends BaseController {
+public class LoginController extends BaseController {
 
-    private LibraryFrameController lfc;
+    private LoginController lfc;
 
     @FXML
     private Button btnExit = null;
@@ -60,7 +60,8 @@ public class LibraryFrameController extends BaseController {
             awaitingLoginText.setText("You must enter an ID number.");
             return;
         }
-
+        ChatClient.s1.setSubscriber_id(-1);
+        ChatClient.l1.setLibrarian_id(-1);
         ClientUI.chat.accept("Fetch:" + id);
 
         PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
@@ -92,6 +93,7 @@ public class LibraryFrameController extends BaseController {
             System.out.println("Librarian ID Found");
             awaitingLoginText.setStyle("-fx-text-fill: green;");
             awaitingLoginText.setText("Welcome Back Librarian " + ChatClient.l1.getLibrarian_name());
+            navigateToLibrarianWindow(event);
         } else if (ChatClient.s1.getSubscriber_id() != -1) {
             System.out.println("Subscriber ID Found");
             awaitingLoginText.setStyle("-fx-text-fill: green;");
@@ -163,4 +165,10 @@ public class LibraryFrameController extends BaseController {
                    "/gui/SubscriberWindow/SubscriberWindow.css", 
                    "Library Management Tool");
     }
+    private void navigateToLibrarianWindow(ActionEvent event) throws Exception {
+        openWindow(event, 
+                   "/gui/LibrarianWindow/LibrarianFrame.fxml", 
+                   "/gui/LibrarianWindow/LibrarianFrame.css", 
+                   "Library Management Tool");
+}
 }
