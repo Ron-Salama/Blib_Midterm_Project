@@ -19,9 +19,19 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logic.Subscriber;
 
+/**
+ * The SubscriberFormController class is responsible for managing the subscriber form window in the GUI.
+ * It allows users to view and update subscriber information such as ID, name, phone number, email, and subscription history.
+ * The class also provides navigation back to the main subscriber form window.
+ * 
+ * <p>This class extends {@link BaseController} and implements {@link Initializable} for GUI initialization.
+ * It interacts with the backend server via {@link ClientUI#chat} to send updates and manage subscriber data.</p>
+ */
 public class SubscriberFormController extends BaseController implements Initializable {
-    private Subscriber s;
+	/** The current subscriber object. */
+	private Subscriber s;
 
+	// Labels for displaying subscriber information
     @FXML
     private Label lblSubscriber_id;
     @FXML
@@ -33,6 +43,7 @@ public class SubscriberFormController extends BaseController implements Initiali
     @FXML
     private Label lblSubscriber_detailedSubscriptionHistory;
 
+    // Text fields for inputting and updating subscriber information
     @FXML
     private TextField txtSubscriber_id;
     @FXML
@@ -44,14 +55,21 @@ public class SubscriberFormController extends BaseController implements Initiali
     @FXML
     private TextField txtSubscriber_detailedSubscriptionHistory;
 
+    // Buttons for closing and updating the form
     @FXML
     private Button btnClose = null;
 
     @FXML
     private Button btnUpdate = null;
 
+    /** A list for storing observable data. */
     ObservableList<String> list;
 
+    /**
+     * Loads the subscriber details into the form for viewing or editing.
+     * 
+     * @param s1 the {@link Subscriber} object containing the subscriber's details
+     */
     public void loadSubscriber(Subscriber s1) {
         this.s = s1;
         this.txtSubscriber_id.setText(String.valueOf(s.getSubscriber_id())); // Convert int to String
@@ -61,7 +79,13 @@ public class SubscriberFormController extends BaseController implements Initiali
         this.txtSubscriber_detailedSubscriptionHistory.setText(String.valueOf(s.getDetailed_subscription_history())); // Convert int to String
     }
 
-
+    /**
+     * Updates the subscriber information based on the input fields.
+     * Sends the update message to the server and navigates back to the main subscriber form window.
+     * 
+     * @param event the {@link ActionEvent} triggered by the update button
+     * @throws Exception if an error occurs during navigation or communication with the server
+     */
     public void btnUpdate(ActionEvent event) throws Exception {
         // Get the updated values from the text fields
         String id = txtSubscriber_id.getText();
@@ -78,6 +102,12 @@ public class SubscriberFormController extends BaseController implements Initiali
         getbtnClose(event);
     }
 
+    /**
+     * Handles the close button action and navigates back to the main subscriber form window.
+     * 
+     * @param event the {@link ActionEvent} triggered by the close button
+     * @throws Exception if an error occurs during navigation
+     */
     public void getbtnClose(ActionEvent event) throws Exception {
     	openWindow(event,
     			"/gui/SubscraberFormWindow/SubscriberForm.fxml",
@@ -85,6 +115,13 @@ public class SubscriberFormController extends BaseController implements Initiali
     			"Library Management Tool");
     }
 
+    /**
+     * Initializes the subscriber form controller.
+     * This method is called automatically when the FXML file is loaded.
+     * 
+     * @param arg0 the location of the FXML file
+     * @param arg1 the resources for the FXML file
+     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         // Initialization logic, if needed

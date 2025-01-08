@@ -1,6 +1,5 @@
 package gui.SearchWindow;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,25 +7,26 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
-import gui.MainMenu.MainMenuController;
+import gui.baseController.BaseController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import logic.Book;
-import gui.baseController.*;
 
+/**
+ * Controller for the Search Window in the Library Management Tool.
+ * 
+ * <p>This class allows users to search for books based on name, description, 
+ * and subject filters, and displays the results in a TableView. It also provides 
+ * an option to navigate back to the Main Menu.</p>
+ */
 public class SearchFrameController extends BaseController implements Initializable {
 	private SearchFrameController sfc;
    
@@ -67,7 +67,13 @@ public class SearchFrameController extends BaseController implements Initializab
     @FXML
     private ComboBox<String> subjectInput;
 
-
+    /**
+     * Initializes the Search Window by setting up the TableView and ComboBox.
+     * Populates the table with all available books when the page loads.
+     *
+     * @param url the location of the FXML file.
+     * @param resourceBundle the resource bundle for internationalization.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize TableView columns
@@ -97,7 +103,10 @@ public class SearchFrameController extends BaseController implements Initializab
         loadBooks();
     }
 
-    // Load books into the TableView
+    /**
+     * Loads books into the TableView by fetching them from the server.
+     * If no books are available, displays a message in the console.
+     */
     private void loadBooks() {
         // Send "GetBooks" request to the server to fetch the books
         ClientUI.chat.accept("GetBooks");
@@ -114,7 +123,13 @@ public class SearchFrameController extends BaseController implements Initializab
         }
     }
 
-    // Method for searching books
+    /**
+     * Searches for books based on filters entered in the name, description, and subject fields.
+     * Displays the filtered results in the TableView.
+     *
+     * @param event the event triggered by clicking the search button.
+     * @throws Exception if an error occurs during the search.
+     */
     public void Search(ActionEvent event) throws Exception {
         ClientUI.chat.accept("GetBooks");  // Get the latest books
 
@@ -167,7 +182,11 @@ public class SearchFrameController extends BaseController implements Initializab
     }
 
 
-    // Handle exit button
+    /**
+     * Handles the Exit button action, navigating back to the Main Menu.
+     *
+     * @param event the event triggered by clicking the exit button.
+     */
     public void getExitBtn(ActionEvent event) {
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",

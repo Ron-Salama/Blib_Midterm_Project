@@ -17,26 +17,40 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * The SubscriberWindowController class manages the Subscriber Window in the GUI.
+ * This window allows users to perform actions such as searching for books, viewing borrowed books,
+ * and returning to the main menu. 
+ * 
+ * <p>This class extends {@link BaseController} and implements {@link Initializable} for GUI initialization.</p>
+ * 
+ * <p>Some methods and functionality have been commented out but retained for future use, such as accessing
+ * the "My Books" and "Borrow" windows.</p>
+ */
 public class SubscriberWindowController extends BaseController implements Initializable {
 
-
-    
+	/** The button to open the Search window. */
     @FXML
 	private Button btnSearch = null;
     
+    /** The button to open the My Books window. */
     @FXML
     private Button btnMyBooks = null;
 
+    /** The button to open the Borrow window. */
     @FXML
     private Button btnBorrow = null;
     
+    /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
 
-
-
-   
-    
+    /**
+     * Opens the Search window, allowing the user to search for books in the library.
+     * 
+     * @param event the {@link ActionEvent} triggered by clicking the Search button
+     * @throws Exception if an error occurs while loading the Search window
+     */
     public void search(ActionEvent event) throws Exception {
 	    openWindow(event,
 	    		"/gui/SearchWindow/SearchFrame.fxml",
@@ -44,6 +58,12 @@ public class SubscriberWindowController extends BaseController implements Initia
 	    		"Search a Book");
 	}
 
+    /**
+     * Navigates back to the main menu window.
+     * 
+     * @param event the {@link ActionEvent} triggered by clicking the Back button
+     * @throws Exception if an error occurs while loading the main menu window
+     */
     public void getbtnBack(ActionEvent event) throws Exception {
         openWindow(event,
         		"/gui/MainMenu/MainMenuFrame.fxml",
@@ -101,7 +121,12 @@ public class SubscriberWindowController extends BaseController implements Initia
 	}
     */
     
-    
+    /**
+     * Starts the Subscriber Window application.
+     * 
+     * @param primaryStage the primary stage for the application
+     * @throws Exception if an error occurs while loading the Subscriber window
+     */
     public void start(Stage primaryStage) throws Exception {
     	start(primaryStage,
     			"/gui/SubscriberWindow/SubscriberWindow.fxml",
@@ -109,6 +134,13 @@ public class SubscriberWindowController extends BaseController implements Initia
     			"Library Managment Tool");
     }
 
+    /**
+     * Initializes the SubscriberWindowController.
+     * This method is called automatically when the FXML file is loaded.
+     * 
+     * @param arg0 the location of the FXML file
+     * @param arg1 the resources for the FXML file
+     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         // Initialization logic, if needed

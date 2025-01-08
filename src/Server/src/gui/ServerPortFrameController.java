@@ -58,12 +58,14 @@ public class ServerPortFrameController  {
 		}
 	}
 
+	
+	// TODO: Put BaseController in the Server`s project so this function will look much better.
 	public void start(Stage primaryStage) throws Exception {	
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/ServerPort.fxml"));
 				
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
-		primaryStage.setTitle("Client");
+		primaryStage.setTitle("Server - Enter Port");
 		primaryStage.setScene(scene);
 		
 		primaryStage.show();		
