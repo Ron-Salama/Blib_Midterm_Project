@@ -1,28 +1,20 @@
 package gui;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
-import javafx.collections.FXCollections;
+import gui.baseController.BaseController;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import server.EchoServer;
 import server.ServerUI;
 
-public class ServerPortFrameController  {
+public class ServerPortFrameController extends BaseController{
 	
 	String temp="";
 	
@@ -55,20 +47,19 @@ public class ServerPortFrameController  {
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
 			ServerUI.runServer(p);
+			
+			openWindow(event,
+					"/gui/ServerLog/ServerLogFrame.fxml",
+					"/gui/ServerLog/ServerLogFrame.css",
+					"Server Log");
 		}
 	}
 
-	
-	// TODO: Put BaseController in the Server`s project so this function will look much better.
 	public void start(Stage primaryStage) throws Exception {	
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/ServerPort.fxml"));
-				
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
-		primaryStage.setTitle("Server - Enter Port");
-		primaryStage.setScene(scene);
-		
-		primaryStage.show();		
+		start(primaryStage,
+			  "/gui/ServerPort.fxml",
+			  "/gui/ServerPort.css",
+			  "Server - Enter Port");
 	}
 	
 	public void getExitBtn(ActionEvent event) throws Exception {

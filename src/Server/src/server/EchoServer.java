@@ -1,6 +1,5 @@
 package server;
 
-import java.awt.print.Book;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -8,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import common.ConnectToDb;
+import gui.ServerLog.ServerLogFrameController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -28,6 +28,8 @@ public class EchoServer extends AbstractServer {
         super(port);
     }
 
+    private ServerLogFrameController logController;
+    
     // Instance methods ************************************************
     @Override
     protected void serverStarted() {
@@ -52,6 +54,10 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
+    
+    public void setLogController(ServerLogFrameController logController) {
+    	this.logController = logController;
+    }
 
     @Override
     public void clientConnected(ConnectionToClient client) {
@@ -59,11 +65,18 @@ public class EchoServer extends AbstractServer {
         String clientIP = client.getInetAddress().getHostAddress();
         String clientHost = client.getInetAddress().getHostName();
         String connectionStatus = isOpen(client) ? "Connected" : "Disconnected";
-
-        System.out.println("Client connected:");
-        System.out.println("Client IP: " + clientIP);
-        System.out.println("Client Hostname: " + clientHost);
-        System.out.println("Connection Status: " + connectionStatus);
+        
+        String IPMessege = "Client connected.\n"
+        		+ "Client IP:" + clientIP + "\n"
+        		+ "Client Hostname: " + clientHost + "\n"
+        		+ "Connection Status: " + connectionStatus;
+        
+        // Print both to CMD and Server Log
+        System.out.println(IPMessege);
+        log(IPMessege);
+        		
+        
+        
         // Send a message to the client to inform them of the successful connection
         try {
             client.sendToClient("You have successfully connected to the server.");
@@ -178,6 +191,12 @@ public class EchoServer extends AbstractServer {
         }
     }
 
+    private void log(String message) {
+        if (logController != null) {
+            logController.appendLog(message);  // Call appendLog to add message to log window
+        }
+    }
+    
 
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
