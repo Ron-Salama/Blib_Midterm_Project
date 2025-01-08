@@ -13,8 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import gui.baseController.*;
 
-public class MainMenuController {
+public class MainMenuController extends BaseController{
 
 		private MainMenuController mmc;	
 		
@@ -29,119 +30,38 @@ public class MainMenuController {
 		private Button btnBack = null;
 		
 		public void search(ActionEvent event) throws Exception {
-		    openSearchWindow(event);
+		    openWindow(event,
+		    		"/gui/SearchWindow/SearchFrame.fxml",
+		    		"/gui/SearchWindow/SearchFrame.css",
+		    		"Search a Book");
 		}
+		
 		public void login(ActionEvent event) throws Exception {
-	        openLoginWindow(event);
+	        openWindow(event,
+	        		"/gui/LibraryFrameWindow/LibraryFrame.fxml",
+	        		"/gui/LibraryFrameWindow/LibraryFrame.css",
+	        		"Login");
 		}
 		public void back(ActionEvent event) throws Exception {
-	        openIPWindow(event);
-		}
-//		private void checkSubscriberResponse(ActionEvent event) {
-//		    if (ChatClient.s1.getSubscriber_id() == -1) {
-//		        System.out.println("Subscriber ID Not Found");
-//		    } else {
-//		        System.out.println("Subscriber ID Found");
-//
-//		        try {
-//		            // Hide the current window
-//		            ((Node) event.getSource()).getScene().getWindow().hide();
-//
-//		            // Load the SubscriberForm window
-//		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberForm.fxml"));
-//		            Pane root = loader.load();
-//
-//		            SubscriberFormController subscriberFormController = loader.getController();
-//		            subscriberFormController.loadSubscriber(ChatClient.s1);
-//
-//		            Stage primaryStage = new Stage();
-//		            Scene scene = new Scene(root);
-//		            scene.getStylesheets().add(getClass().getResource("/gui/SubscriberForm.css").toExternalForm());
-//		            primaryStage.setTitle("Subscriber Management Tool");
-//		            primaryStage.setScene(scene);
-//		            primaryStage.show();
-//		        } catch (IOException e) {
-//		            e.printStackTrace();
-//		        }
-//		    }
-		
-		
-		private void openSearchWindow(ActionEvent event){
-			try {
-	            // Hide the current window
-	            ((Node) event.getSource()).getScene().getWindow().hide();
-
-	            // Load the SubscriberForm window
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
-	            Pane root = loader.load();
-
-	            SearchFrameController searchFrameController = loader.getController();
-//	            mainMenuController.loadSubscriber(ChatClient.s1);
-
-	            Stage primaryStage = new Stage();
-	            Scene scene = new Scene(root);
-	            scene.getStylesheets().add(getClass().getResource("/gui/SearchWindow/SearchFrame.css").toExternalForm());
-	            primaryStage.setTitle("Search a Book");
-	            primaryStage.setScene(scene);
-	            primaryStage.show();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+	        openWindow(event,
+	        		"/gui/IPInputWindow/IPInputFrame.fxml",
+	        		"/gui/IPInputWindow/IPInputFrame.css",
+	        		"Login");
 		}
 		
-		private void openLoginWindow(ActionEvent event){
-			try {
-	            // Hide the current window
-	            ((Node) event.getSource()).getScene().getWindow().hide();
-
-	            // Load the SubscriberForm window
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LibraryFrameWindow/LibraryFrame.fxml"));
-	            Pane root = loader.load();
-
-	            LibraryFrameController libraryFrameController = loader.getController();
-//	            mainMenuController.loadSubscriber(ChatClient.s1);
-
-	            Stage primaryStage = new Stage();
-	            Scene scene = new Scene(root);
-	            scene.getStylesheets().add(getClass().getResource("/gui/LibraryFrameWindow/LibraryFrame.css").toExternalForm());
-	            primaryStage.setTitle("Login");
-	            primaryStage.setScene(scene);
-	            primaryStage.show();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-		}
 		
 		public void start(Stage primaryStage) throws Exception {	
-			Parent root = FXMLLoader.load(getClass().getResource("/gui/MainMenuController/MainMenuFrame.fxml"));
-					
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/gui/MainMenuController/MainMenuFrame.css").toExternalForm());
-			primaryStage.setTitle("Library Managment Tool");
-			primaryStage.setScene(scene);
-			
-			primaryStage.show();	 	   
+			start(primaryStage,
+					"/gui/MainMenuController/MainMenuFrame.fxml",
+					"/gui/MainMenuController/MainMenuFrame.css",
+					"Library Managment Tool");	 	   
 		}
 		
+		
+		//TODO: placeholder for subscriber registration.
 		public void getExitBtn(ActionEvent event) throws Exception {
 			System.out.println("exit Library Tool");	
 			System.exit(1);
 		}
 		
-		public void openIPWindow(ActionEvent event) throws Exception {
-			((Node) event.getSource()).getScene().getWindow().hide();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/IPInputWindow/IPInputFrame.fxml"));
-            Pane root = loader.load();
-
-//            IPInputController iPInputController = loader.getController();
-
-            Stage primaryStage = new Stage();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/gui/IPInputWindow/IPInputFrame.css").toExternalForm());
-            primaryStage.setTitle("Login");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-		}
 }

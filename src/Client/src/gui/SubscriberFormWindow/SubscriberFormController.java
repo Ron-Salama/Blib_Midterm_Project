@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import gui.baseController.BaseController;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logic.Subscriber;
 
-public class SubscriberFormController implements Initializable {
+public class SubscriberFormController extends BaseController implements Initializable {
     private Subscriber s;
 
     @FXML
@@ -60,9 +61,6 @@ public class SubscriberFormController implements Initializable {
         this.txtSubscriber_detailedSubscriptionHistory.setText(String.valueOf(s.getDetailed_subscription_history())); // Convert int to String
     }
 
-    public void getbtnClose(ActionEvent event) throws Exception {
-        navigateToLibraryFrame(event);
-    }
 
     public void btnUpdate(ActionEvent event) throws Exception {
         // Get the updated values from the text fields
@@ -77,20 +75,14 @@ public class SubscriberFormController implements Initializable {
         ClientUI.chat.accept(obj);
 
         // Navigate back to the LibraryFrame
-        navigateToLibraryFrame(event);
+        getbtnClose(event);
     }
 
-    private void navigateToLibraryFrame(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscraberFormWindow/SubscriberForm.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/SubscraberFormWindow/SubscriberForm.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("Library Management Tool");
-        stage.show();
+    public void getbtnClose(ActionEvent event) throws Exception {
+    	openWindow(event,
+    			"/gui/SubscraberFormWindow/SubscriberForm.fxml",
+    			"/gui/SubscraberFormWindow/SubscriberForm.css",
+    			"Library Management Tool");
     }
 
     @Override

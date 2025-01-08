@@ -2,19 +2,16 @@ package gui.LibraryFrameWindow;
 
 import java.io.IOException;
 
-import javafx.animation.PauseTransition;
 import client.ChatClient;
-import client.ClientController;
 import client.ClientUI;
-import common.ChatIF;
 import gui.MainMenu.MainMenuController;
-import gui.SubscriberFormWindow.SubscriberFormController;
+import gui.baseController.BaseController;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +21,7 @@ import javafx.stage.Stage;
 import logic.Subscriber;
 
 
-public class LibraryFrameController   {
+public class LibraryFrameController extends BaseController{
 	private LibraryFrameController lfc;	
 	
 	@FXML
@@ -43,47 +40,6 @@ public class LibraryFrameController   {
 	private String getID() {
 		return idtxt.getText();
 	}
-	
-	/*public void Send(ActionEvent event) throws Exception {
-	    String id;
-	    FXMLLoader loader = new FXMLLoader();
-	    
-	    id = getID();
-	    if (id.trim().isEmpty()) {
-	        System.out.println("You must enter an id number");  
-	    } else {
-	        // Send the ID to the server through the ClientController
-	        ClientUI.chat.accept("Fetch:" + id);  // This will trigger the server-side action to search for the subscriber
-	        
-	        // Check if the subscriber exists and if the ID was found
-	        if (ChatClient.s1.getSubscriber_id() == -1) {
-	            System.out.println("Subscriber ID Not Found");
-	            // You may want to display an error message to the user here
-	        } else {
-	            System.out.println("Subscriber ID does not exist.");
-
-	            // Hide the current window
-	            ((Node) event.getSource()).getScene().getWindow().hide(); 
-
-	            // Load the SubscriberForm window
-	            Stage primaryStage = new Stage();
-	            loader.setLocation(getClass().getResource("/gui/SubscriberForm.fxml"));
-	            Pane root = loader.load();
-	            SubscriberFormController subscriberFormController = loader.getController(); 
-
-	            // Load the subscriber details into the form
-	            subscriberFormController.loadSubscriber(ChatClient.s1);
-
-	            // Create and display the new scene
-	            Scene scene = new Scene(root);
-	            scene.getStylesheets().add(getClass().getResource("/gui/SubscriberForm.css").toExternalForm());
-	            primaryStage.setTitle("Subscriber Management Tool");
-	            primaryStage.setScene(scene);        
-	            primaryStage.show();
-	        }
-	    }
-	}*/
-	
 	
 	public void Send(ActionEvent event) throws Exception {
 	    String id = getID();
@@ -140,38 +96,20 @@ public class LibraryFrameController   {
 
 
 	public void start(Stage primaryStage) throws Exception {	
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/LibraryFramehWindow/LibraryFrame.fxml"));
-				
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/LibraryFramehWindow/LibraryFrame.css").toExternalForm());
-		primaryStage.setTitle("Library Managment Tool");
-		primaryStage.setScene(scene);
-        awaitingLoginText.setStyle("-fx-text-fill: green;");
-		awaitingLoginText.setText ( "");
-		primaryStage.show();	 	   
+		start(primaryStage,
+				"/gui/LibraryFramehWindow/LibraryFrame.fxml",
+				"/gui/LibraryFramehWindow/LibraryFrame.css",
+				"Library Managment Tool",
+				null,
+				"",
+				"-fx-text-fill: green;");	 	   
 	}
 	
 	public void getExitBtn(ActionEvent event) throws Exception {
-		try {
-            // Hide the current window
-            ((Node) event.getSource()).getScene().getWindow().hide();
-
-            // Load the SubscriberForm window
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
-            Pane root = loader.load();
-
-            MainMenuController mainMenuController = loader.getController();
-            //mainMenuController.loadSubscriber(ChatClient.s1);
-
-            Stage primaryStage = new Stage();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
-            primaryStage.setTitle("MainMenu");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		openWindow(event,
+				"/gui/MainMenu/MainMenuFrame.fxml",
+				"/gui/MainMenu/MainMenuFrame.css",
+				"Main Menu");
 	}
 	
 	public void loadSubscriber(Subscriber s1) {
@@ -184,16 +122,9 @@ public class LibraryFrameController   {
 	}
 	
 	private void navigateToSubscriberWindow(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberWindow/SubscriberWindow.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/SubscriberWindow/SubscriberWindow.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("Library Management Tool");
-        stage.show();
+		openWindow(event,
+				"/gui/SubscriberWindow/SubscriberWindow.fxml",
+				"/gui/SubscriberWindow/SubscriberWindow.css",
+				"Library Management Tool");
     }
-	
 }
