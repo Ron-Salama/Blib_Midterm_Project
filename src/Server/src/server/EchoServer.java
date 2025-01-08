@@ -147,22 +147,6 @@ public class EchoServer extends AbstractServer {
                         client.sendToClient("returnedBookData:Error:CouldNotFetchBooks");
                     }
                     break;
-                case "GetBookInfo": // Handle GetBookInfo:BookId
-                    String bookId = body; // The body contains the BookId
-                    try {
-                        // Fetch book information from the database
-                        String bookInfo = ConnectToDb.fetchBookInfo(dbConnection, bookId);
-
-                        if (bookInfo != null) {
-                            client.sendToClient("BookInfo:" + bookInfo);
-                        } else {
-                            client.sendToClient("BookInfo:NotFound");
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Error while processing GetBookInfo request: " + e.getMessage());
-                        client.sendToClient("BookInfo:Error:CouldNotFetchBookInfo");
-                    }
-                    break;
 
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");

@@ -119,12 +119,12 @@ public class ConnectToDb {
             // Check if ResultSet has any rows
             if (!rs.next()) {
                 System.out.println("No data found in books table.");
-                return booksList; // Return empty list if no rows are found
+                return booksList;  // Return empty list if no rows are found
             }
 
             // Loop through the result set and convert each row into a string
             do {
-                String id = rs.getString("ISBN"); // Treat ISBN as a String
+                int id = rs.getInt("ISBN");
                 String name = rs.getString("Name");
                 String subject = rs.getString("Subject");
                 String description = rs.getString("ShortDescription");
@@ -132,28 +132,26 @@ public class ConnectToDb {
                 String location = rs.getString("ShelfLocation");
 
                 // Handle potential null values
-                if (id == null) id = "Unknown ID";
                 if (name == null) name = "Unknown";
                 if (subject == null) subject = "N/A";
                 if (description == null) description = "No description available";
                 if (location == null) location = "Unknown location";
 
                 // Format the book data into a single string (e.g., CSV format)
-                String bookData = id + "," + name + "," + subject + "," + description + ","
+                String bookData = id + "," + name + "," + subject + "," + description + "," 
                                   + availableCopies + "," + location;
 
                 booksList.add(bookData); // Add the formatted string to the list
             } while (rs.next());
 
         } catch (SQLException e) {
-            e.printStackTrace(); // This will show the full exception stack trace
+            e.printStackTrace();  // This will show the full exception stack trace
             System.out.println("Error while fetching books data: " + e.getMessage());
             return null; // Return null in case of an error (or handle this as needed)
         }
 
-        return booksList; // Return the list of books as strings
+        return booksList;  // Return the list of books as strings
     }
-
 
     // Check if a subscriber exists based on their ID(PK)
     public static boolean checkSubscriberExists(Connection conn, String subscriberId) throws SQLException {
@@ -195,38 +193,6 @@ public class ConnectToDb {
             } else {
                 System.out.println("Update failed: No rows updated. Subscriber ID might not exist.");
             }
-        }
-    }
-    public static String fetchBookInfo(Connection conn, String bookId) {
-        String query = "SELECT * FROM books WHERE ISBN = ?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, bookId); // Use setString
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    String id = rs.getString("ISBN"); // Get ID as String
-                    String name = rs.getString("Name");
-                    String subject = rs.getString("Subject");
-                    String description = rs.getString("ShortDescription");
-                    int availableCopies = rs.getInt("NumCopies");
-                    String location = rs.getString("ShelfLocation");
-
-                    name = (name == null) ? "Unknown" : name;
-                    subject = (subject == null) ? "N/A" : subject;
-                    description = (description == null) ? "No description available" : description;
-                    location = (location == null) ? "Unknown location" : location;
-
-                    return String.format(
-                            "%s,%s,%s,%s,%d,%s",
-                            id, name, subject, description, availableCopies, location);
-                } else {
-                    return "No book found";
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error while fetching book info: " + e.getMessage());
-            return "Error fetching book info.";
         }
     }
 }

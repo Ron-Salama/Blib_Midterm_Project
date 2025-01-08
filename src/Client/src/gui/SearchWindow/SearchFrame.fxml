@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="533.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SearchWindow.SearchFrameController">
    <children>
       <Button id="btnSearchBooks" fx:id="btnSearchBooks" layoutX="441.0" layoutY="86.0" mnemonicParsing="false" onAction="#Search" prefHeight="46.0" prefWidth="109.0" text="Search" />
-      <Button id="btnExit" fx:id="btnExit" layoutX="26.0" layoutY="13.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
+      <Button id="btnExit" fx:id="btnExit" layoutX="1039.0" layoutY="15.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
       <Text layoutX="551.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search A Book" textAlignment="CENTER" wrappingWidth="178.13675498962402">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -38,6 +38,5 @@
             <TableColumn fx:id="tableLocation" prefWidth="176.0" text="Location on Shelf" />
         </columns>
       </TableView>
-      <Button id="btnExit" fx:id="btnBackF" layoutX="1128.0" layoutY="15.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
    </children>
 </AnchorPane>

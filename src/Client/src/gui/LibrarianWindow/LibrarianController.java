@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
-import gui.SearchWindow.SearchFrameController;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,7 +93,6 @@ public class LibrarianController implements Initializable {
     
     
     public void navigateToSearchWindow(ActionEvent event) throws Exception {
-    	SearchFrameController.FlagForSearch = "Librarian";
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
         Parent root = loader.load();
 
@@ -118,7 +116,6 @@ public class LibrarianController implements Initializable {
         stage.setScene(scene);
         stage.setTitle("Library Management Tool");
         stage.show();
-        SearchFrameController.FlagForSearch = "";
     }
 
     @Override
