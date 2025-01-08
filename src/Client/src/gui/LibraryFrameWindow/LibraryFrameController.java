@@ -90,7 +90,8 @@ public class LibraryFrameController   {
 	        awaitingLoginText.setText("You must enter an ID number.");
 	        return; // Early exit if ID is not provided
 	    }
-	    
+	    ChatClient.l1.setLibrarian_id(-1);
+	    ChatClient.s1.setSubscriber_id(-1);
 	    // Send the request and handle the response asynchronously
 	    ClientUI.chat.accept("Fetch:" + id);
 
@@ -119,7 +120,7 @@ public class LibraryFrameController   {
         stage.show();
     }
 	private void handleResponse(ActionEvent event) throws Exception {
-	    // Debugging logs to check both IDs
+		// Debugging logs to check both IDs
 	    System.out.println("Librarian ID: " + ChatClient.l1.getLibrarian_id());
 	    System.out.println("Subscriber ID: " + ChatClient.s1.getSubscriber_id());
 
