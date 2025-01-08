@@ -44,7 +44,7 @@ public class LibrarianController implements Initializable {
 		System.exit(1);
 	}
     
-    private void navigateToViewReports(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING VIEW REPORTS WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
+    public void navigateToViewReports(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING VIEW REPORTS WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
 		/*
 		 * FXMLLoader loader = new
 		 * FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
@@ -60,7 +60,7 @@ public class LibrarianController implements Initializable {
     }
     
     
-    private void navigateToSearchSubscriber(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING SEARCH SUBSCRIBER WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
+    public void navigateToSearchSubscriber(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING SEARCH SUBSCRIBER WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
 		/*
 		 * FXMLLoader loader = new
 		 * FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
@@ -75,7 +75,7 @@ public class LibrarianController implements Initializable {
 		 */
     }
     
-    private void navigateToSubscriberRequests(ActionEvent event) throws Exception { // REMOVE NOTES AFTER YANIV AND YUVAL FINISH CREATING THIS WINDOW
+    public void navigateToSubscriberRequests(ActionEvent event) throws Exception { // REMOVE NOTES AFTER YANIV AND YUVAL FINISH CREATING THIS WINDOW
 		/*
 		 * FXMLLoader loader = new FXMLLoader(getClass().getResource(
 		 * "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml"));
@@ -92,7 +92,7 @@ public class LibrarianController implements Initializable {
     }
     
     
-    private void navigateToSearchWindow(ActionEvent event) throws Exception {
+    public void navigateToSearchWindow(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
         Parent root = loader.load();
 
@@ -105,7 +105,7 @@ public class LibrarianController implements Initializable {
         stage.show();
     }
 
-    private void navigateToMainMenu(ActionEvent event) throws Exception {
+    public void navigateToMainMenu(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
         Parent root = loader.load();
 
