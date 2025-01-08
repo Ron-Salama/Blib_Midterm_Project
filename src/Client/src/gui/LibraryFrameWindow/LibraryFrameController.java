@@ -2,19 +2,15 @@ package gui.LibraryFrameWindow;
 
 import java.io.IOException;
 
-import javafx.animation.PauseTransition;
 import client.ChatClient;
-import client.ClientController;
 import client.ClientUI;
-import common.ChatIF;
 import gui.MainMenu.MainMenuController;
-import gui.SubscriberFormWindow.SubscriberFormController;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -100,11 +96,29 @@ public class LibraryFrameController   {
 
 	    // Schedule a task to check the response without blocking
 	    PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1)); // Adjusted to 1 second for checking
-	    pause.setOnFinished(e -> handleResponse(event));
+	    pause.setOnFinished(e -> {
+			try {
+				handleResponse(event);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 	    pause.play();
 	}
+    private void navigateToLibrarianMenu(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LibrarianWindow/LibrarianFrame.fxml"));
+        Parent root = loader.load();
 
-	private void handleResponse(ActionEvent event) {
+        // Set up the scene and stage
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/LibrarianWindow/LibrarianFrame.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setTitle("Library Management Tool");
+        stage.show();
+    }
+	private void handleResponse(ActionEvent event) throws Exception {
 	    // Debugging logs to check both IDs
 	    System.out.println("Librarian ID: " + ChatClient.l1.getLibrarian_id());
 	    System.out.println("Subscriber ID: " + ChatClient.s1.getSubscriber_id());
@@ -114,6 +128,7 @@ public class LibraryFrameController   {
 	        System.out.println("Librarian ID Found");
 	        awaitingLoginText.setStyle("-fx-text-fill: green;");
 	        awaitingLoginText.setText("Welcome Back Librarian " + ChatClient.l1.getLibrarian_name());
+	        navigateToLibrarianMenu(event);
 	    }
 	    // Check if Subscriber ID is found next
 	    else if (ChatClient.s1.getSubscriber_id() != -1) {

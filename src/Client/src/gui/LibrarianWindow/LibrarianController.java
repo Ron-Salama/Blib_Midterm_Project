@@ -19,51 +19,100 @@ import javafx.stage.Stage;
 import logic.Subscriber;
 
 public class LibrarianController implements Initializable {
-    private LibrarianController l;
+    private LibrarianController lc;
 
     @FXML
-    private Label lblLibrarian_id;
-    @FXML
-    private Label lblLibrarian_name;
-    @FXML
-    private Label lblLibrarian_phoneNumber;
-    @FXML
-    private Label lblLibrarian_email;
-    @FXML
-    private TextField txtLibrarian_id;
-    @FXML
-    private TextField txtLibrarian_name;
-    @FXML
-    private TextField txtLibrarian_phoneNumber;
-    @FXML
-    private TextField txtLibrarian_email;
-    @FXML
-    private TextField txtSubscriber_detailedSubscriptionHistory;
+    private Button btnExit = null;
 
     @FXML
-    private Button btnClose = null;
+    private Button btnReturnToMainMenu = null;
 
     @FXML
-    private Button btnUpdate = null;
+    private Button btnSearchBook = null;
 
-    ObservableList<String> list;
+    @FXML
+    private Button btnSearchSubscriber = null;
 
+    @FXML
+    private Button btnSubscriberRequests = null;
 
+    @FXML
+    private Button btnViewReports = null;
 
-    public void getbtnClose(ActionEvent event) throws Exception {
-        navigateToLibraryFrame(event);
+    public void getExitBtn(ActionEvent event) throws Exception {
+		System.out.println("exit Library Tool");	
+		System.exit(1);
+	}
+    
+    private void navigateToViewReports(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING VIEW REPORTS WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
+		/*
+		 * FXMLLoader loader = new
+		 * FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
+		 * Parent root = loader.load();
+		 * 
+		 * // Set up the scene and stage Stage stage = (Stage) ((Node)
+		 * event.getSource()).getScene().getWindow(); Scene scene = new Scene(root);
+		 * scene.getStylesheets().add(getClass().getResource(
+		 * "/gui/SearchWindow/SearchFrame.css").toExternalForm());
+		 * stage.setScene(scene); stage.setTitle("Library Management Tool");
+		 * stage.show();
+		 */
     }
-
-
-
-    private void navigateToLibraryFrame(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscraberFormWindow/SubscriberForm.fxml"));
+    
+    
+    private void navigateToSearchSubscriber(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING SEARCH SUBSCRIBER WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
+		/*
+		 * FXMLLoader loader = new
+		 * FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
+		 * Parent root = loader.load();
+		 * 
+		 * // Set up the scene and stage Stage stage = (Stage) ((Node)
+		 * event.getSource()).getScene().getWindow(); Scene scene = new Scene(root);
+		 * scene.getStylesheets().add(getClass().getResource(
+		 * "/gui/SearchWindow/SearchFrame.css").toExternalForm());
+		 * stage.setScene(scene); stage.setTitle("Library Management Tool");
+		 * stage.show();
+		 */
+    }
+    
+    private void navigateToSubscriberRequests(ActionEvent event) throws Exception { // REMOVE NOTES AFTER YANIV AND YUVAL FINISH CREATING THIS WINDOW
+		/*
+		 * FXMLLoader loader = new FXMLLoader(getClass().getResource(
+		 * "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml"));
+		 * Parent root = loader.load();
+		 * 
+		 * // Set up the scene and stage Stage stage = (Stage) ((Node)
+		 * event.getSource()).getScene().getWindow(); Scene scene = new Scene(root);
+		 * scene.getStylesheets().add(getClass().getResource(
+		 * "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.css").
+		 * toExternalForm()); stage.setScene(scene);
+		 * stage.setTitle("Library Management Tool"); stage.show();
+		 */
+    	
+    }
+    
+    
+    private void navigateToSearchWindow(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
         Parent root = loader.load();
 
         // Set up the scene and stage
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/SubscraberFormWindow/SubscriberForm.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/SearchWindow/SearchFrame.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setTitle("Library Management Tool");
+        stage.show();
+    }
+
+    private void navigateToMainMenu(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
+        Parent root = loader.load();
+
+        // Set up the scene and stage
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("Library Management Tool");
         stage.show();
