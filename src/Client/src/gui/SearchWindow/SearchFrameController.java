@@ -99,8 +99,11 @@ public class SearchFrameController extends BaseController implements Initializab
 
         subjectInput.setValue(""); 
 
-        // Initially populate the table when the page loads
-        loadBooks();
+        // Fetch and populate books
+        new Thread(() -> {
+            ClientUI.chat.accept("GetBooks:"); // Fetch books from the server
+            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
+        }).start();
     }
 
     /**
