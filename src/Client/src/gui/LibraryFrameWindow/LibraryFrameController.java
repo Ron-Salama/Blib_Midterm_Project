@@ -5,6 +5,7 @@ import java.io.IOException;
 import client.ChatClient;
 import client.ClientUI;
 import gui.MainMenu.MainMenuController;
+import gui.SubscriberRegisterWindow.SubscriberRegisterWindowController;
 import gui.baseController.BaseController;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
