@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianController">
+   <children>
+      <Button id="btnUpdate" fx:id="btnSearch" layoutX="60.0" layoutY="188.0" mnemonicParsing="false" onAction="#searchFromLibrarianMenu" prefHeight="58.0" prefWidth="119.0" text="Search Book" />
+      <Button id="btnUpdate" fx:id="btnRegisterSubscriber" layoutX="190.0" layoutY="188.0" mnemonicParsing="false" onAction="#searchFromLibrarianMenu" prefHeight="58.0" prefWidth="119.0" text="Register Subscriber" />
+      <Button id="btnUpdate" fx:id="btnBorrowBookToSubscriber" layoutX="151.0" layoutY="271.0" mnemonicParsing="false" onAction="#searchFromLibrarianMenu" prefHeight="58.0" prefWidth="158.0" text="Borrow Book to Subscriber" />
+      <Button id="btnUpdate" fx:id="btnReturnBookFromSubscriber" layoutX="319.0" layoutY="271.0" mnemonicParsing="false" onAction="#searchFromLibrarianMenu" prefHeight="58.0" prefWidth="170.0" text="Return Book from Subscriber" />
+      <Button id="btnUpdate" fx:id="btnSearchSubscriber" layoutX="319.0" layoutY="188.0" mnemonicParsing="false" onAction="#searchFromLibrarianMenu" prefHeight="58.0" prefWidth="119.0" text="Search Subscriber" />
+      <Button id="btnUpdate" fx:id="btnViewReports" layoutX="447.0" layoutY="188.0" mnemonicParsing="false" onAction="#searchFromLibrarianMenu" prefHeight="58.0" prefWidth="119.0" text="View Reports" />
+   </children>
+</AnchorPane>
