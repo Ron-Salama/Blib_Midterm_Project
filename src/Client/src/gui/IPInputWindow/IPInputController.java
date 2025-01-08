@@ -22,8 +22,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.Subscriber;
+import gui.baseController.*;
 
-public class IPInputController {
+public class IPInputController extends BaseController {
 
 		private IPInputController lipc;	
 		
@@ -88,85 +89,19 @@ public class IPInputController {
 		    });
 		    pause.play();  // Start the initial delay
 		}
-
-		// Method to show an alert dialog
-		private void showAlert(String title, String message) {
-		    Alert alert = new Alert(Alert.AlertType.ERROR);
-		    alert.setTitle(title);
-		    alert.setHeaderText(null);
-		    alert.setContentText(message);
-		    alert.showAndWait();
-		}
-
 		
 		private void openMainMenu(ActionEvent event){
-			try {
-	            // Hide the current window
-	            ((Node) event.getSource()).getScene().getWindow().hide();
-
-	            // Load the SubscriberForm window
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
-	            Pane root = loader.load();
-
-	            MainMenuController mainMenuController = loader.getController();
-	            //mainMenuController.loadSubscriber(ChatClient.s1);
-
-	            Stage primaryStage = new Stage();
-	            Scene scene = new Scene(root);
-	            scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
-	            primaryStage.setTitle("MainMenu");
-	            primaryStage.setScene(scene);
-	            primaryStage.show();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+			openWindow(event,
+					"/gui/MainMenu/MainMenuFrame.fxml",
+					"/gui/MainMenu/MainMenuFrame.css",
+					"MainMenu");
 		}
 
-
-//		private void checkSubscriberResponse(ActionEvent event) {
-//		    if (ChatClient.s1.getSubscriber_id() == -1) {
-//		        System.out.println("Subscriber ID Not Found");
-//		    } else {
-//		        System.out.println("Subscriber ID Found");
-//
-//		        try {
-//		            // Hide the current window
-//		            ((Node) event.getSource()).getScene().getWindow().hide();
-//
-//		            // Load the SubscriberForm window
-//		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberForm.fxml"));
-//		            Pane root = loader.load();
-//
-//		            SubscriberFormController subscriberFormController = loader.getController();
-//		            subscriberFormController.loadSubscriber(ChatClient.s1);
-//
-//		            Stage primaryStage = new Stage();
-//		            Scene scene = new Scene(root);
-//		            scene.getStylesheets().add(getClass().getResource("/gui/SubscriberForm.css").toExternalForm());
-//		            primaryStage.setTitle("Subscriber Management Tool");
-//		            primaryStage.setScene(scene);
-//		            primaryStage.show();
-//		        } catch (IOException e) {
-//		            e.printStackTrace();
-//		        }
-//		    }
-		
-		
-
-		
-		
-		
-		
-
-		public void start(Stage primaryStage) throws Exception {	
-			Parent root = FXMLLoader.load(getClass().getResource("/gui/IPInputWindow/IPInputFrame.fxml"));
-					
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/gui/IPInputWindow/IPInputFrame.css").toExternalForm());
-			primaryStage.setTitle("Library Managment Tool");
-			primaryStage.setScene(scene);
-			
-			primaryStage.show();	 	   
+		public void start(Stage primaryStage) throws Exception {
+			start(primaryStage,
+					"/gui/IPInputWindow/IPInputFrame.fxml",
+					"/gui/IPInputWindow/IPInputFrame.css",
+					"Library Managment Tool"); 	   
 		}
 		
 		public void getExitBtn(ActionEvent event) throws Exception {

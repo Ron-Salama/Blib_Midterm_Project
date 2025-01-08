@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import client.ClientUI;
 import gui.SearchWindow.SearchFrameController;
-import javafx.collections.ObservableList;
+import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +14,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.Subscriber;
 
-public class SubscriberWindowController implements Initializable {
+public class SubscriberWindowController extends BaseController implements Initializable {
 
 
     
@@ -42,13 +38,18 @@ public class SubscriberWindowController implements Initializable {
    
     
     public void search(ActionEvent event) throws Exception {
-	    openSearchWindow(event);
+	    openWindow(event,
+	    		"/gui/SearchWindow/SearchFrame.fxml",
+	    		"/gui/SearchWindow/SearchFrame.css",
+	    		"Search a Book");
 	}
 
     public void getbtnBack(ActionEvent event) throws Exception {
-        navigateToMainMenu(event);
+        openWindow(event,
+        		"/gui/MainMenu/MainMenuFrame.fxml",
+        		"/gui/MainMenu/MainMenuFrame.css",
+        		"Library Management Tool");;
     }
-
    
    //***DONT DELETE IMPORTANT FOR LATER USE***
    /* public void getbtnMyBooks(ActionEvent event) throws Exception {
@@ -63,28 +64,6 @@ public class SubscriberWindowController implements Initializable {
 	}
     */
     
-    private void openSearchWindow(ActionEvent event){
-		try {
-            // Hide the current window
-            ((Node) event.getSource()).getScene().getWindow().hide();
-
-            // Load the SubscriberForm window
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
-            Pane root = loader.load();
-
-            SearchFrameController searchFrameController = loader.getController();
-//            mainMenuController.loadSubscriber(ChatClient.s1);
-
-            Stage primaryStage = new Stage();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/gui/SearchWindow/SearchFrame.css").toExternalForm());
-            primaryStage.setTitle("Search a Book");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-	}
     
     
     
@@ -124,26 +103,10 @@ public class SubscriberWindowController implements Initializable {
     
     
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/SubscriberWindow/SubscriberWindow.fxml"));
-
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/SubscriberWindow/SubscriberWindow.css").toExternalForm());
-        primaryStage.setTitle("Library Managment Tool");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    private void navigateToMainMenu(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("Library Management Tool");
-        stage.show();
+    	start(primaryStage,
+    			"/gui/SubscriberWindow/SubscriberWindow.fxml",
+    			"/gui/SubscriberWindow/SubscriberWindow.css", 
+    			"Library Managment Tool");
     }
 
     @Override
