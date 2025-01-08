@@ -5,38 +5,45 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-
+import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import gui.baseController.BaseController;
-import javafx.stage.Stage;
+
+import java.lang.reflect.Method;
 
 /**
  * Unit test for BaseController class.
  */
 public class BaseControllerTest extends ApplicationTest {
 
-    private BaseController controller;
+    // A concrete subclass of BaseController for testing
+    private static class TestBaseController extends BaseController {
+        // No additional methods or overrides are needed for now
+    }
+
+    private TestBaseController controller;
 
     @BeforeEach
     public void setUp() {
-        // Create a concrete implementation of BaseController for testing
-        controller = new BaseController() {
-        };
+        // Initialize the concrete subclass for testing
+        controller = new TestBaseController();
     }
 
     @Test
-    public void testShowAlert() {
-        // Call the showAlert method
+    public void testShowAlert() throws Exception {
+        // Use reflection to access the protected showAlert method
+        Method showAlertMethod = BaseController.class.getDeclaredMethod("showAlert", String.class, String.class);
+        showAlertMethod.setAccessible(true); // Make the protected method accessible
+
+        // Call the method using reflection
         String title = "Test Alert";
         String message = "This is a test message.";
-
-        // Use TestFX to simulate the alert dialog
-        assertDoesNotThrow(() -> controller.showAlert(title, message));
+        assertDoesNotThrow(() -> showAlertMethod.invoke(controller, title, message));
     }
 
     @Test
@@ -59,7 +66,7 @@ public class BaseControllerTest extends ApplicationTest {
         ActionEvent event = mock(ActionEvent.class);
         when(event.getSource()).thenReturn(mock(javafx.scene.Node.class));
 
-        // Call the openWindow method (ensure no exceptions are thrown)
+        // Call the openWindow method and verify no exceptions are thrown
         assertDoesNotThrow(() -> controller.openWindow(event, "/path/to/fxml", null, "New Window Title"));
     }
 }

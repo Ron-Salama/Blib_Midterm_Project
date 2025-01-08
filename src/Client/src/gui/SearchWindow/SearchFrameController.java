@@ -77,31 +77,28 @@ public class SearchFrameController extends BaseController implements Initializab
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize TableView columns
-        tableID.setCellValueFactory(new PropertyValueFactory<Book, Integer>("id"));
-        tableName.setCellValueFactory(new PropertyValueFactory<Book, String>("name"));
-        tableDescription.setCellValueFactory(new PropertyValueFactory<Book, String>("description"));
-        tableSubject.setCellValueFactory(new PropertyValueFactory<Book, String>("subject"));
-        tableCopies.setCellValueFactory(new PropertyValueFactory<Book, Integer>("availableCopies"));
-        tableLocation.setCellValueFactory(new PropertyValueFactory<Book, String>("location"));
-        
+        tableID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tableName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tableDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        tableSubject.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        tableCopies.setCellValueFactory(new PropertyValueFactory<>("availableCopies"));
+        tableLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+
         // Add subjects to the ComboBox
-        subjectInput.getItems().add("");  // Empty string for clear selection
-        subjectInput.getItems().add("Fantasy");
-        subjectInput.getItems().add("Fiction");
-        subjectInput.getItems().add("History");
-        subjectInput.getItems().add("Romance");
-        subjectInput.getItems().add("Epic");
-        subjectInput.getItems().add("Drama");
-        subjectInput.getItems().add("Historical");
-        subjectInput.getItems().add("Mystery");
-        subjectInput.getItems().add("Thriller");
-        subjectInput.getItems().add("Dystopian");
+        subjectInput.getItems().add(""); // Empty string for clear selection
+        subjectInput.getItems().addAll(
+            "Fantasy", "Fiction", "History", "Romance", "Epic",
+            "Drama", "Historical", "Mystery", "Thriller", "Dystopian"
+        );
+        subjectInput.setValue("");
 
-        subjectInput.setValue(""); 
-
-        // Initially populate the table when the page loads
-        loadBooks();
+        // Fetch and populate books
+        new Thread(() -> {
+            ClientUI.chat.accept("GetBooks:"); // Fetch books from the server
+            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
+        }).start();
     }
+
 
     /**
      * Loads books into the TableView by fetching them from the server.
@@ -114,10 +111,8 @@ public class SearchFrameController extends BaseController implements Initializab
         // Ensure bookList is not empty
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
             // Populate the TableView with all books initially
-            Platform.runLater(() -> {
                 tableView.getItems().clear();  // Clear any existing data
                 tableView.getItems().addAll(ChatClient.bookList);  // Add all books to the table
-            });
         } else {
             System.out.println("No books to display.");
         }
