@@ -109,7 +109,7 @@ public class SearchFrameController extends BaseController implements Initializab
      */
     private void loadBooks() {
         // Send "GetBooks" request to the server to fetch the books
-        ClientUI.chat.accept("GetBooks");
+        ClientUI.chat.accept("GetBooks:");
 
         // Ensure bookList is not empty
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
@@ -131,7 +131,7 @@ public class SearchFrameController extends BaseController implements Initializab
      * @throws Exception if an error occurs during the search.
      */
     public void Search(ActionEvent event) throws Exception {
-        ClientUI.chat.accept("GetBooks");  // Get the latest books
+        ClientUI.chat.accept("GetBooks:");  // Get the latest books
 
         // Ensure bookList is not empty
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
