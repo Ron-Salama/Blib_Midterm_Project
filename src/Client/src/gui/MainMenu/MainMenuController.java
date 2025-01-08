@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import gui.LibraryFrameWindow.LibraryFrameController;
 import gui.SearchWindow.SearchFrameController;
-import gui.SubscriberRegisterWindow.SubscriberRegisterWindowController;
+import gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController;
+import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import gui.baseController.*;
 
 /**
  * Controller for the Main Menu of the Library Management Tool.
@@ -129,7 +129,7 @@ public class MainMenuController extends BaseController {
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.fxml"));
 	            Pane root = loader.load();
 
-	            SubscriberRegisterWindowController RegisterWindowFrameController = loader.getController();
+	            SubscriberRegisterWindowFrameController RegisterWindowFrameController = loader.getController();
 //	            mainMenuController.loadSubscriber(ChatClient.s1);
 
 	            Stage primaryStage = new Stage();
