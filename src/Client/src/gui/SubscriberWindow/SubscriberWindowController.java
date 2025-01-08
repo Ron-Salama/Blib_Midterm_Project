@@ -52,6 +52,7 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @throws Exception if an error occurs while loading the Search window
      */
     public void search(ActionEvent event) throws Exception {
+    	SearchFrameController.FlagForSearch = "Subscriber";
 	    openWindow(event,
 	    		"/gui/SearchWindow/SearchFrame.fxml",
 	    		"/gui/SearchWindow/SearchFrame.css",
@@ -65,6 +66,7 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @throws Exception if an error occurs while loading the main menu window
      */
     public void getbtnBack(ActionEvent event) throws Exception {
+    	SearchFrameController.FlagForSearch = "";
         openWindow(event,
         		"/gui/MainMenu/MainMenuFrame.fxml",
         		"/gui/MainMenu/MainMenuFrame.css",
@@ -78,30 +80,24 @@ public class SubscriberWindowController extends BaseController implements Initia
     */
     
    
-    //***DONT DELETE IMPORTANT FOR LATER USE***
-	/*public void getbtnBorrow(ActionEvent event) throws Exception {
+   
+	public void getbtnBorrow(ActionEvent event) throws Exception {
 	    openBorrowWindow(event);
 	}
-    */
     
     
     
     
     
     
-    //*******DONT DELETE, THIS IS IMPORTANT FOR LATER FOR THE USE OF GOING TO THE BORROW WINDOW AFTER PUSHING THE BORROW BUTTON******
-   /* private void openBorrowWindow(ActionEvent event) {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/BorrowWindowController/BorrowWindow.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/BorrowWindowController/BorrowWindow.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("TEST--WILL--CHANGE--LATER");
-        stage.show();
-	}*/
+    
+  
+   private void openBorrowWindow(ActionEvent event) {
+	   openWindow(event,
+       		"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
+       		"/gui/BorrowBookWindow/BorrowBookFrame.css",
+       		"Library Management Tool");;
+	}
     
      
     
