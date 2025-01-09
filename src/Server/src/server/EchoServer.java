@@ -3,13 +3,13 @@ package server;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 import common.ConnectToDb;
-import gui.ServerLog.ServerLogFrameController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -34,26 +34,25 @@ public class EchoServer extends AbstractServer {
     @Override
     protected void serverStarted() {
     	initializeLogFile();
-    	
-    	log("Server listening for connections on port " + getPort());
-        System.out.println("Server listening for connections on port " + getPort());
+
+        outputInOutputStreamAndLog("Server listening for connections on port " + getPort());
         try {
             dbConnection = ConnectToDb.getConnection(); // Open the connection
-            System.out.println("Connected to the database.");
+            outputInOutputStreamAndLog("Connected to the database.");
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database: " + e.getMessage());
+            System.err.println("Error connecting to the database: " + e.getMessage());
         }
     }
 
     @Override
     protected void serverStopped() {
-        System.out.println("Server has stopped listening for connections.");
+        outputInOutputStreamAndLog("Server has stopped listening for connections.");
         if (dbConnection != null) {
             try {
                 dbConnection.close(); // Close the connection
                 System.out.println("Database connection closed.");
             } catch (SQLException e) {
-                System.out.println("Error closing the database connection: " + e.getMessage());
+                System.err.println("Error closing the database connection: " + e.getMessage());
             }
         }
     }
@@ -70,9 +69,7 @@ public class EchoServer extends AbstractServer {
         		+ "Client Hostname: " + clientHost + "\n"
         		+ "Connection Status: " + connectionStatus;
         
-        // Print both to CMD and Server Log
-        System.out.println(IPMessege);
-        log(IPMessege);
+        outputInOutputStreamAndLog(IPMessege);
         		
         
         
@@ -80,7 +77,7 @@ public class EchoServer extends AbstractServer {
         try {
             client.sendToClient("You have successfully connected to the server.");
         } catch (IOException e) {
-            System.out.println("Error sending connection message to client: " + e.getMessage());
+            System.err.println("Error sending connection message to client: " + e.getMessage());
         }
     }
 
@@ -138,7 +135,7 @@ public class EchoServer extends AbstractServer {
                     if (clientIP.equals(serverIP)) {
                         client.sendToClient("Client connected to IP: " + clientIP);
                     } else {
-                        client.sendToClient("Could not connect to the server. The IP: " + clientIP + " does not match the server.");
+                        client.sendToClient("Could not connect to the server. The IP: " + clientIP + " does not match the IP of the server.");
                     }
                     break;
 
@@ -191,12 +188,17 @@ public class EchoServer extends AbstractServer {
     }
 
     private void log(String message) {
-    	 // Append the message to the log file
+    	// Append the message to the log file
         try (FileWriter writer = new FileWriter("logic/serverLog.txt", true)) { // 'true' enables append mode
             writer.write(message + System.lineSeparator()); // Add a new line after each message
         } catch (IOException e) {
-            System.out.println("Error writing to log file: " + e.getMessage());
+            System.err.println("Error writing to log file: " + e.getMessage());
         }
+    }
+    
+    private void outputInOutputStreamAndLog(String msg){
+    	System.out.println(msg);
+    	log(msg);
     }
     
     private void initializeLogFile() {
@@ -204,17 +206,26 @@ public class EchoServer extends AbstractServer {
             File logFile = new File("logic/serverLog.txt");
             File parentDir = logFile.getParentFile();
             
+            // Create directories if they do not exist
             if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs(); // Create directories if they do not exist
+                parentDir.mkdirs();
             }
             
-            if (!logFile.exists()) {
-                logFile.createNewFile(); // Create the file if it does not exist
+            // Flush log file for a new server run
+            if (logFile.exists()) {
+                PrintWriter writer = new PrintWriter(logFile);
+                writer.print(""); // Clear the content
+                writer.close();
+            } else {
+                // Create the file if it does not exist
+                logFile.createNewFile();
             }
         } catch (IOException e) {
-            System.out.println("Error initializing log file: " + e.getMessage());
+            System.err.println("Error initializing log file: " + e.getMessage());
         }
     }
+
+    
     
 
     private boolean isOpen(ConnectionToClient client) {
