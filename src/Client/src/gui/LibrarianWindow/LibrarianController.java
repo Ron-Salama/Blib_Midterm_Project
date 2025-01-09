@@ -3,7 +3,8 @@ package gui.LibrarianWindow;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import gui.SearchWindow.SearchFrameController;
+import client.ClientUI;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +13,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import gui.baseController.BaseController;
+import logic.Subscriber;
 
-public class LibrarianController extends BaseController implements Initializable  {
+public class LibrarianController implements Initializable {
     private LibrarianController lc;
 
     @FXML
@@ -72,11 +75,19 @@ public class LibrarianController extends BaseController implements Initializable
 		 */
     }
     
-    public void navigateToSubscriberRequests(ActionEvent event) throws Exception { 
-        openWindow(event, 
-                "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml", 
-                "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.css", 
-                "Library Management Tool");
+    public void navigateToSubscriberRequests(ActionEvent event) throws Exception { // REMOVE NOTES AFTER YANIV AND YUVAL FINISH CREATING THIS WINDOW
+		/*
+		 * FXMLLoader loader = new FXMLLoader(getClass().getResource(
+		 * "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml"));
+		 * Parent root = loader.load();
+		 * 
+		 * // Set up the scene and stage Stage stage = (Stage) ((Node)
+		 * event.getSource()).getScene().getWindow(); Scene scene = new Scene(root);
+		 * scene.getStylesheets().add(getClass().getResource(
+		 * "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.css").
+		 * toExternalForm()); stage.setScene(scene);
+		 * stage.setTitle("Library Management Tool"); stage.show();
+		 */
     	
     }
     
