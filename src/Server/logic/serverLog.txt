@@ -1,10 +1,2 @@
 Server listening for connections on port 5555
 Connected to the database.
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
