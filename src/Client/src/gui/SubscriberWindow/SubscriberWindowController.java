@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import client.ChatClient;
 import gui.SearchWindow.SearchFrameController;
 import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.Subscriber;
 
 /**
  * The SubscriberWindowController class manages the Subscriber Window in the GUI.
@@ -44,7 +46,11 @@ public class SubscriberWindowController extends BaseController implements Initia
     /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
-
+    
+    
+    
+    public static Subscriber currentSubscriber = new Subscriber(ChatClient.s1.getSubscriber_id(),ChatClient.s1.getDetailed_subscription_history(),ChatClient.s1.getSubscriber_name(),ChatClient.s1.getSubscriber_phone_number(),ChatClient.s1.getSubscriber_email());
+        
     /**
      * Opens the Search window, allowing the user to search for books in the library.
      * 
@@ -52,6 +58,7 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @throws Exception if an error occurs while loading the Search window
      */
     public void search(ActionEvent event) throws Exception {
+    	SearchFrameController.FlagForSearch = "Subscriber";
 	    openWindow(event,
 	    		"/gui/SearchWindow/SearchFrame.fxml",
 	    		"/gui/SearchWindow/SearchFrame.css",
@@ -65,6 +72,7 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @throws Exception if an error occurs while loading the main menu window
      */
     public void getbtnBack(ActionEvent event) throws Exception {
+    	SearchFrameController.FlagForSearch = "";
         openWindow(event,
         		"/gui/MainMenu/MainMenuFrame.fxml",
         		"/gui/MainMenu/MainMenuFrame.css",
@@ -78,30 +86,24 @@ public class SubscriberWindowController extends BaseController implements Initia
     */
     
    
-    //***DONT DELETE IMPORTANT FOR LATER USE***
-	/*public void getbtnBorrow(ActionEvent event) throws Exception {
+   
+	public void getbtnBorrow(ActionEvent event) throws Exception {
 	    openBorrowWindow(event);
 	}
-    */
     
     
     
     
     
     
-    //*******DONT DELETE, THIS IS IMPORTANT FOR LATER FOR THE USE OF GOING TO THE BORROW WINDOW AFTER PUSHING THE BORROW BUTTON******
-   /* private void openBorrowWindow(ActionEvent event) {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/BorrowWindowController/BorrowWindow.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/BorrowWindowController/BorrowWindow.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("TEST--WILL--CHANGE--LATER");
-        stage.show();
-	}*/
+    
+  
+   private void openBorrowWindow(ActionEvent event) {
+	   openWindow(event,
+       		"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
+       		"/gui/BorrowBookWindow/BorrowBookFrame.css",
+       		"Library Management Tool");;
+	}
     
      
     
@@ -141,8 +143,11 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @param arg0 the location of the FXML file
      * @param arg1 the resources for the FXML file
      */
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // Initialization logic, if needed
-    }
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+	}
 }

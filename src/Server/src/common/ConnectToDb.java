@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.omg.CORBA.Request;
 
 
 public class ConnectToDb {
@@ -119,12 +120,12 @@ public class ConnectToDb {
             // Check if ResultSet has any rows
             if (!rs.next()) {
                 System.out.println("No data found in books table.");
-                return booksList;  // Return empty list if no rows are found
+                return booksList; // Return empty list if no rows are found
             }
 
             // Loop through the result set and convert each row into a string
             do {
-                int id = rs.getInt("ISBN");
+                String id = rs.getString("ISBN"); // Treat ISBN as a String
                 String name = rs.getString("Name");
                 String subject = rs.getString("Subject");
                 String description = rs.getString("ShortDescription");
@@ -132,26 +133,28 @@ public class ConnectToDb {
                 String location = rs.getString("ShelfLocation");
 
                 // Handle potential null values
+                if (id == null) id = "Unknown ID";
                 if (name == null) name = "Unknown";
                 if (subject == null) subject = "N/A";
                 if (description == null) description = "No description available";
                 if (location == null) location = "Unknown location";
 
                 // Format the book data into a single string (e.g., CSV format)
-                String bookData = id + "," + name + "," + subject + "," + description + "," 
+                String bookData = id + "," + name + "," + subject + "," + description + ","
                                   + availableCopies + "," + location;
 
                 booksList.add(bookData); // Add the formatted string to the list
             } while (rs.next());
 
         } catch (SQLException e) {
-            e.printStackTrace();  // This will show the full exception stack trace
+            e.printStackTrace(); // This will show the full exception stack trace
             System.out.println("Error while fetching books data: " + e.getMessage());
             return null; // Return null in case of an error (or handle this as needed)
         }
 
-        return booksList;  // Return the list of books as strings
+        return booksList; // Return the list of books as strings
     }
+
 
     // Check if a subscriber exists based on their ID(PK)
     public static boolean checkSubscriberExists(Connection conn, String subscriberId) throws SQLException {
@@ -195,4 +198,210 @@ public class ConnectToDb {
             }
         }
     }
+    public static String fetchBookInfo(Connection conn, String bookId) {
+        String query = "SELECT * FROM books WHERE ISBN = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, bookId); // Use setString
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String id = rs.getString("ISBN"); // Get ID as String
+                    String name = rs.getString("Name");
+                    String subject = rs.getString("Subject");
+                    String description = rs.getString("ShortDescription");
+                    int availableCopies = rs.getInt("NumCopies");
+                    String location = rs.getString("ShelfLocation");
+
+                    name = (name == null) ? "Unknown" : name;
+                    subject = (subject == null) ? "N/A" : subject;
+                    description = (description == null) ? "No description available" : description;
+                    location = (location == null) ? "Unknown location" : location;
+
+                    return String.format(
+                            "%s,%s,%s,%s,%d,%s",
+                            id, name, subject, description, availableCopies, location);
+                } else {
+                    return "No book found";
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while fetching book info: " + e.getMessage());
+            return "Error fetching book info.";
+        }
+    }
+    public static void insertRequest(Connection conn, String requestType, String requestedByID, String requestedByName,
+            String bookName, String bookId, String borrowTime, String returnTime, String extendTime)
+            throws SQLException {
+
+    // SQL query to insert a new record into the requests table
+    String query = "INSERT INTO requests (requestType, requestedByID, requestedByName, bookName, bookId, borrowTime, returnTime, extendTime) "
+                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        // Set the values for each field in the query
+        pstmt.setString(1, requestType);
+        pstmt.setString(2, requestedByID);
+        pstmt.setString(3, requestedByName);
+        pstmt.setString(4, bookName);
+        pstmt.setString(5, bookId);
+        pstmt.setString(6, (borrowTime != null && !borrowTime.isEmpty()) ? borrowTime : "temp");
+        pstmt.setString(7, (returnTime != null && !returnTime.isEmpty()) ? returnTime : "temp");
+        pstmt.setString(8, (extendTime != null && !extendTime.isEmpty()) ? extendTime : "temp");
+
+        // Execute the insert and get the number of affected rows
+        int affectedRows = pstmt.executeUpdate();
+
+        // Debugging: Check if rows were inserted
+        if (affectedRows > 0) {
+            System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
+        } else {
+            System.out.println("Insert failed: No rows inserted.");
+        }
+    }
+}
+    public static String fetchBorrowRequest(Connection conn) throws SQLException {
+        StringBuilder result = new StringBuilder();
+
+        // SQL query to fetch Borrow request based on the requestedByID and bookId
+        String query = "SELECT * FROM requests WHERE requestType = 'Borrow For Subscriber'";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            // Execute the query and get the result set
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Process each result
+                while (rs.next()) {
+                    // Concatenate the fields with commas
+                    result.append(rs.getString("requestType")).append(",")
+                          .append(rs.getString("requestedByID")).append(",")
+                          .append(rs.getString("requestedByName")).append(",")
+                          .append(rs.getString("bookName")).append(",")
+                          .append(rs.getString("bookId")).append(",")
+                          .append(rs.getString("borrowTime")).append(",")
+                          .append(rs.getString("returnTime")).append(",")
+                          .append(rs.getString("extendTime"));
+
+                    // Append a semicolon to separate each request
+                    result.append(";");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        // Remove the trailing semicolon if there are any results
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+
+        return result.toString();
+    }
+
+    public static List<String[]> fetchReturnRequest(Connection conn) throws SQLException {
+        List<String[]> requests = new ArrayList<>();
+
+        // SQL query to fetch Return request based on the requestedByID and bookId
+        String query = "SELECT * FROM requests WHERE requestType = 'Return For Subscriber'";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            // Execute the query and get the result set
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Process each result
+                while (rs.next()) {
+                    // Create a String array for each request
+                    String[] request = new String[8];  // We expect 8 columns in the result
+                    request[0] = rs.getString("requestType");
+                    request[1] = rs.getString("requestedByID");
+                    request[2] = rs.getString("requestedByName");
+                    request[3] = rs.getString("bookName");
+                    request[4] = rs.getString("bookId");
+                    request[5] = rs.getString("borrowTime");
+                    request[6] = rs.getString("returnTime");
+                    request[7] = rs.getString("extendTime");
+
+                    // Add the request array to the list
+                    requests.add(request);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return requests;
+    }
+    public static List<String[]> fetchExtendRequest(Connection conn) throws SQLException {
+        List<String[]> requests = new ArrayList<>();
+
+        // SQL query to fetch Extend request based on the requestedByID and bookId
+        String query = "SELECT * FROM requests WHERE requestType = 'Extend For Subscriber'";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            // Execute the query and get the result set
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Process each result
+                while (rs.next()) {
+                    // Create a String array for each request
+                    String[] request = new String[8];  // We expect 8 columns in the result
+                    request[0] = rs.getString("requestType");
+                    request[1] = rs.getString("requestedByID");
+                    request[2] = rs.getString("requestedByName");
+                    request[3] = rs.getString("bookName");
+                    request[4] = rs.getString("bookId");
+                    request[5] = rs.getString("borrowTime");
+                    request[6] = rs.getString("returnTime");
+                    request[7] = rs.getString("extendTime");
+
+                    // Add the request array to the list
+                    requests.add(request);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return requests;
+    }
+    public static List<String[]> fetchRegisterRequest(Connection conn) throws SQLException {
+        List<String[]> requests = new ArrayList<>();
+
+        // SQL query to fetch Register request based on the requestedByID and bookId
+        String query = "SELECT * FROM requests WHERE requestType = 'Register For Subscriber'";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            // Execute the query and get the result set
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Process each result
+                while (rs.next()) {
+                    // Create a String array for each request
+                    String[] request = new String[8];  // We expect 8 columns in the result
+                    request[0] = rs.getString("requestType");
+                    request[1] = rs.getString("requestedByID");
+                    request[2] = rs.getString("requestedByName");
+                    request[3] = rs.getString("bookName");
+                    request[4] = rs.getString("bookId");
+                    request[5] = rs.getString("borrowTime");
+                    request[6] = rs.getString("returnTime");
+                    request[7] = rs.getString("extendTime");
+
+                    // Add the request array to the list
+                    requests.add(request);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
+
+
+
+
+
 }
