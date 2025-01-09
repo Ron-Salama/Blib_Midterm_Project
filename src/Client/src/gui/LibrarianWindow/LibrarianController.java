@@ -113,4 +113,52 @@ public class LibrarianController extends BaseController implements Initializable
     public void initialize(URL arg0, ResourceBundle arg1) {
         // Initialization logic, if needed
     }
+
+	public Button getBtnExit() {
+		return btnExit;
+	}
+
+	public void setBtnExit(Button btnExit) {
+		this.btnExit = btnExit;
+	}
+
+	public Button getBtnSearchBook() {
+		return btnSearchBook;
+	}
+
+	public void setBtnSearchBook(Button btnSearchBook) {
+		this.btnSearchBook = btnSearchBook;
+	}
+
+	public Button getBtnReturnToMainMenu() {
+		return btnReturnToMainMenu;
+	}
+
+	public void setBtnReturnToMainMenu(Button btnReturnToMainMenu) {
+		this.btnReturnToMainMenu = btnReturnToMainMenu;
+	}
+
+	public Button getBtnSearchSubscriber() {
+		return btnSearchSubscriber;
+	}
+
+	public void setBtnSearchSubscriber(Button btnSearchSubscriber) {
+		this.btnSearchSubscriber = btnSearchSubscriber;
+	}
+
+	public Button getBtnSubscriberRequests() {
+		return btnSubscriberRequests;
+	}
+
+	public void setBtnSubscriberRequests(Button btnSubscriberRequests) {
+		this.btnSubscriberRequests = btnSubscriberRequests;
+	}
+
+	public Button getBtnViewReports() {
+		return btnViewReports;
+	}
+
+	public void setBtnViewReports(Button btnViewReports) {
+		this.btnViewReports = btnViewReports;
+	}
 }

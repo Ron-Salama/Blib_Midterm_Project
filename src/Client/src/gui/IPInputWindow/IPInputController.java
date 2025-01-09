@@ -55,7 +55,7 @@ public class IPInputController extends BaseController {
      * @return the IP address entered in the {@link #IPtxt} TextField.
      */
     private String getIP() {
-        return IPtxt.getText();
+        return getIPtxt().getText();
     }
 
     /**
@@ -67,8 +67,8 @@ public class IPInputController extends BaseController {
     public void Send(ActionEvent event) throws Exception {
         String ip = getIP();
         if (ip.trim().isEmpty()) {
-            awaitingLoginText.setText("You must enter an IP address.");
-            awaitingLoginText.setStyle("-fx-text-fill: red;");
+            getAwaitingLoginText().setText("You must enter an IP address.");
+            getAwaitingLoginText().setStyle("-fx-text-fill: red;");
             System.out.println("You must enter an IP address.");
             return;
         }
@@ -79,13 +79,13 @@ public class IPInputController extends BaseController {
         PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
         pause.setOnFinished(e -> {
             if (!ClientUI.isIPValid) {
-                awaitingLoginText.setText("Invalid IP address.");
-                awaitingLoginText.setStyle("-fx-text-fill: red;");
+                getAwaitingLoginText().setText("Invalid IP address.");
+                getAwaitingLoginText().setStyle("-fx-text-fill: red;");
                 System.out.println("ALERT: Invalid IP detected!");
                 Platform.runLater(() -> showAlert("Error", "Invalid IP address. Please try again."));
             } else {
-                awaitingLoginText.setText("Connected successfully to IP: " + ip);
-                awaitingLoginText.setStyle("-fx-text-fill: green;");
+                getAwaitingLoginText().setText("Connected successfully to IP: " + ip);
+                getAwaitingLoginText().setStyle("-fx-text-fill: green;");
                 System.out.println("Connected successfully to IP: " + ip);
 
                 PauseTransition pause1 = new PauseTransition(javafx.util.Duration.seconds(1));
@@ -138,7 +138,7 @@ public class IPInputController extends BaseController {
      * @param s1 the {@link Subscriber} object to load.
      */
     public void loadSubscriber(Subscriber s1) {
-        this.lipc.loadSubscriber(s1);
+        this.getLipc().loadSubscriber(s1);
     }
 
     /**
@@ -149,4 +149,45 @@ public class IPInputController extends BaseController {
     public void display(String message) {
         System.out.println(message);
     }
+
+	public Button getBtnExit() {
+		return btnExit;
+	}
+
+	public void setBtnExit(Button btnExit) {
+		this.btnExit = btnExit;
+	}
+
+	public TextField getIPtxt() {
+		return IPtxt;
+	}
+
+	public void setIPtxt(TextField iPtxt) {
+		IPtxt = iPtxt;
+	}
+
+	public Label getAwaitingLoginText() {
+		return awaitingLoginText;
+	}
+
+	public void setAwaitingLoginText(Label awaitingLoginText) {
+		this.awaitingLoginText = awaitingLoginText;
+	}
+
+	public Button getBtnSend() {
+		return btnSend;
+	}
+
+	public void setBtnSend(Button btnSend) {
+		this.btnSend = btnSend;
+	}
+
+	public IPInputController getLipc() {
+		return lipc;
+	}
+
+	public void setLipc(IPInputController lipc) {
+		this.lipc = lipc;
+	}
+	
 }

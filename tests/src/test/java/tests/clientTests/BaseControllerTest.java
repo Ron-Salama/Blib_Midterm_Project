@@ -1,4 +1,4 @@
-package tests;
+package tests.clientTests;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
