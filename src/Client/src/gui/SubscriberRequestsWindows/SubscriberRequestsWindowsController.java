@@ -2,9 +2,12 @@ package gui.SubscriberRequestsWindows;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import client.ChatClient;
+import client.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,6 +59,8 @@ public class SubscriberRequestsWindowsController implements Initializable {
     @FXML
     private ComboBox<String> RequestedByCB;
 
+    private List<String[]> borrowRequests = new ArrayList<>();
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize request types
@@ -80,7 +85,7 @@ public class SubscriberRequestsWindowsController implements Initializable {
 
         // Clear the RequestedByCB ComboBox
         RequestedByCB.getItems().clear();
-
+        
         // Set the fields and populate the RequestedByCB based on the selected request type
         switch (selectedRequestType) {
             case "Registers":
@@ -99,6 +104,8 @@ public class SubscriberRequestsWindowsController implements Initializable {
                 LBL5.setText("Borrow Time:");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
+                ClientUI.chat.accept("FetchBorrowRequest:"); 
+                handleFetchedBorrowedBooks();
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
@@ -131,6 +138,35 @@ public class SubscriberRequestsWindowsController implements Initializable {
     }
    
 
+    public void handleFetchedBorrowedBooks() {
+        borrowRequests.clear();  // Clear the existing list to avoid duplicate data
+
+        // Ensure ChatClient.br is not null or empty
+        if (ChatClient.br != null && ChatClient.br.size() > 0) {
+            // Iterate over each row in ChatClient.br (each row is a borrow request)
+            for (int i = 0; i < ChatClient.br.size(); i++) {
+                String[][] borrowRequestArray = ChatClient.br.get(i); // Get the i-th 2D array
+
+                // Iterate over each borrow request in the i-th 2D array (assuming each request has 8 fields)
+                for (String[] request : borrowRequestArray) {
+                    if (request.length == 8) {
+                        borrowRequests.add(request);  // Add the borrow request (which is a String array) to the list
+                    } else {
+                        System.out.println("Invalid borrow request data at index " + i + ": " + String.join(",", request));
+                    }
+                }
+            }
+
+            // Populate the ComboBox with subscriber names from the borrow requests
+            ObservableList<String> requestedByList = FXCollections.observableArrayList();
+            for (String[] borrowRequest : borrowRequests) {
+                requestedByList.add(borrowRequest[2]);  // Assuming the name is at index 2
+            }
+            RequestedByCB.setItems(requestedByList);
+        } else {
+            System.out.println("No borrow requests available.");
+        }
+    }
 
     public void getExitBtn(ActionEvent event) throws Exception {
         try {

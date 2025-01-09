@@ -202,8 +202,17 @@ public class EchoServer extends AbstractServer {
                             e.printStackTrace();
                         }
                     }
-                    break;
+                case "FetchBorrowRequest": // Handle FetchBorrowRequest
+                    System.out.println("Received FetchBorrowRequest from client");
 
+                        try {
+                            String borrowRequests = ConnectToDb.fetchBorrowRequest(dbConnection);
+                            client.sendToClient("FetchedBorrowedBooks:"+borrowRequests);
+                        } catch (Exception e) {
+                            client.sendToClient("An error occurred while fetching the borrow request data: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
