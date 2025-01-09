@@ -1,5 +1,7 @@
 package server;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -27,12 +29,13 @@ public class EchoServer extends AbstractServer {
     public EchoServer(int port) {
         super(port);
     }
-
-    private ServerLogFrameController logController;
     
     // Instance methods ************************************************
     @Override
     protected void serverStarted() {
+    	initializeLogFile();
+    	
+    	log("Server listening for connections on port " + getPort());
         System.out.println("Server listening for connections on port " + getPort());
         try {
             dbConnection = ConnectToDb.getConnection(); // Open the connection
@@ -53,10 +56,6 @@ public class EchoServer extends AbstractServer {
                 System.out.println("Error closing the database connection: " + e.getMessage());
             }
         }
-    }
-    
-    public void setLogController(ServerLogFrameController logController) {
-    	this.logController = logController;
     }
 
     @Override
@@ -192,8 +191,28 @@ public class EchoServer extends AbstractServer {
     }
 
     private void log(String message) {
-        if (logController != null) {
-            logController.appendLog(message);  // Call appendLog to add message to log window
+    	 // Append the message to the log file
+        try (FileWriter writer = new FileWriter("logic/serverLog.txt", true)) { // 'true' enables append mode
+            writer.write(message + System.lineSeparator()); // Add a new line after each message
+        } catch (IOException e) {
+            System.out.println("Error writing to log file: " + e.getMessage());
+        }
+    }
+    
+    private void initializeLogFile() {
+        try {
+            File logFile = new File("logic/serverLog.txt");
+            File parentDir = logFile.getParentFile();
+            
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs(); // Create directories if they do not exist
+            }
+            
+            if (!logFile.exists()) {
+                logFile.createNewFile(); // Create the file if it does not exist
+            }
+        } catch (IOException e) {
+            System.out.println("Error initializing log file: " + e.getMessage());
         }
     }
     
