@@ -1,8 +1,7 @@
 package gui.ServerLog;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.ResourceBundle;
@@ -21,7 +20,10 @@ public class ServerLogFrameController extends BaseController implements Initiali
     @FXML
     private TextArea logTextArea;
 
-    private static final String LOG_FILE_PATH = "logic/serverLog.txt";
+    private static final String LOG_FILE_PATH = "src/logic/serverLog.txt";
+
+    // File pointer to track the last read position
+    private long filePointer = 0;
 
     /**
      * Appends a message to the log.
@@ -42,27 +44,7 @@ public class ServerLogFrameController extends BaseController implements Initiali
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logTextArea.appendText("Server log initialized..\n");
-        loadLogFile(); // Load the existing log file content
         startFileWatcher(); // Start monitoring the log file for updates
-    }
-
-    /**
-     * Reads the entire log file and loads its content into the TextArea.
-     */
-    public void loadLogFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE_PATH))) {
-            StringBuilder logContent = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                logContent.append(line).append("\n");
-            }
-
-            // Update the TextArea with the file content on the JavaFX Application thread
-            Platform.runLater(() -> logTextArea.setText(logContent.toString()));
-        } catch (IOException e) {
-            System.out.println("Error reading the log file: " + e.getMessage());
-        }
     }
 
     /**
@@ -83,8 +65,8 @@ public class ServerLogFrameController extends BaseController implements Initiali
                         if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY &&
                             logFilePath.getFileName().equals(event.context())) {
 
-                            // Read the new content and update the TextArea
-                            Platform.runLater(this::appendNewLogEntries);
+                            // Read and append only the new content
+                            appendNewLogEntries();
                         }
                     }
                     key.reset();
@@ -102,17 +84,23 @@ public class ServerLogFrameController extends BaseController implements Initiali
      * Appends only the new log entries from the log file to the TextArea.
      */
     private void appendNewLogEntries() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE_PATH))) {
+        try (RandomAccessFile reader = new RandomAccessFile(LOG_FILE_PATH, "r")) {
+            // Move to the last known position
+            reader.seek(filePointer);
+
             String line;
             StringBuilder newLogEntries = new StringBuilder();
 
-            // Read each line and append to the TextArea
+            // Read all new lines
             while ((line = reader.readLine()) != null) {
                 newLogEntries.append(line).append("\n");
             }
 
-            // Append the new content to the TextArea
-            logTextArea.appendText(newLogEntries.toString());
+            // Update the TextArea with new content on the JavaFX Application thread
+            Platform.runLater(() -> logTextArea.appendText(newLogEntries.toString()));
+
+            // Update the file pointer to the current position
+            filePointer = reader.getFilePointer();
         } catch (IOException e) {
             System.out.println("Error reading the log file: " + e.getMessage());
         }

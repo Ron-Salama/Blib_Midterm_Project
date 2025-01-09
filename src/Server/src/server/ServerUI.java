@@ -1,8 +1,8 @@
 package server;
 
+import gui.ServerPort.ServerPortFrameController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import gui.ServerPortFrameController;
 
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;

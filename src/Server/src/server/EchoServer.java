@@ -43,14 +43,15 @@ public class EchoServer extends AbstractServer {
             System.err.println("Error connecting to the database: " + e.getMessage());
         }
     }
-
+    
     @Override
     protected void serverStopped() {
         outputInOutputStreamAndLog("Server has stopped listening for connections.");
         if (dbConnection != null) {
             try {
                 dbConnection.close(); // Close the connection
-                System.out.println("Database connection closed.");
+                outputInOutputStreamAndLog("Database connection closed.");
+                
             } catch (SQLException e) {
                 System.err.println("Error closing the database connection: " + e.getMessage());
             }
@@ -82,7 +83,7 @@ public class EchoServer extends AbstractServer {
     }
 
     public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        System.out.println("Message received: " + msg + " from " + client);
+        outputInOutputStreamAndLog("Message received: " + msg + " from " + client);
 
         try {
             String message = (String) msg;
@@ -140,7 +141,7 @@ public class EchoServer extends AbstractServer {
                     break;
 
                 case "GetBooks": // Handle GetBooks:
-                    System.out.println("Received GetBooks request from client");
+                	outputInOutputStreamAndLog("Received GetBooks request from client");
 
                     try {
                         List<String> booksData = ConnectToDb.fetchBooksData(dbConnection);
@@ -152,7 +153,7 @@ public class EchoServer extends AbstractServer {
                             client.sendToClient("returnedBookData:" + booksDataString);
                         }
                     } catch (Exception e) {
-                        System.out.println("Error while processing GetBooks request: " + e.getMessage());
+                        System.err.println("Error while processing GetBooks request: " + e.getMessage());
                         client.sendToClient("returnedBookData:Error:CouldNotFetchBooks");
                     }
                     break;
@@ -168,7 +169,7 @@ public class EchoServer extends AbstractServer {
                             client.sendToClient("BookInfo:NotFound");
                         }
                     } catch (Exception e) {
-                        System.out.println("Error while processing GetBookInfo request: " + e.getMessage());
+                        System.err.println("Error while processing GetBookInfo request: " + e.getMessage());
                         client.sendToClient("BookInfo:Error:CouldNotFetchBookInfo");
                     }
                     break;
@@ -178,18 +179,18 @@ public class EchoServer extends AbstractServer {
                     break;
             }
         } catch (SQLException | IOException e) {
-            System.out.println("Error handling client message: " + e.getMessage());
+            System.err.println("Error handling client message: " + e.getMessage());
             try {
                 client.sendToClient("Server error: " + e.getMessage());
             } catch (IOException ioException) {
-                System.out.println("Error sending message to client: " + ioException.getMessage());
+                System.err.println("Error sending message to client: " + ioException.getMessage());
             }
         }
     }
 
     private void log(String message) {
     	// Append the message to the log file
-        try (FileWriter writer = new FileWriter("logic/serverLog.txt", true)) { // 'true' enables append mode
+        try (FileWriter writer = new FileWriter("src/logic/serverLog.txt", true)) { // 'true' enables append mode
             writer.write(message + System.lineSeparator()); // Add a new line after each message
         } catch (IOException e) {
             System.err.println("Error writing to log file: " + e.getMessage());
@@ -203,7 +204,7 @@ public class EchoServer extends AbstractServer {
     
     private void initializeLogFile() {
         try {
-            File logFile = new File("logic/serverLog.txt");
+            File logFile = new File("src/logic/serverLog.txt");
             File parentDir = logFile.getParentFile();
             
             // Create directories if they do not exist
@@ -224,8 +225,6 @@ public class EchoServer extends AbstractServer {
             System.err.println("Error initializing log file: " + e.getMessage());
         }
     }
-
-    
     
 
     private boolean isOpen(ConnectionToClient client) {
