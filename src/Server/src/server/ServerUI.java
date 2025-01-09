@@ -1,8 +1,8 @@
 package server;
 
+import gui.ServerPort.ServerPortFrameController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import gui.ServerPortFrameController;
 
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
@@ -10,7 +10,7 @@ public class ServerUI extends Application {
 	public static void main( String args[] ) throws Exception
 	   {   
 		 launch(args);
-	  } // end main
+	  }
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -18,6 +18,8 @@ public class ServerUI extends Application {
 		ServerPortFrameController aFrame = new ServerPortFrameController(); // create StudentFrame
 		 
 		aFrame.start(primaryStage);
+		
+		
 	}
 	
 	public static void runServer(String p)

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gui.ServerLog.ServerLogFrameController"
+      spacing="10"
+      alignment="CENTER"
+      prefWidth="400"
+      prefHeight="300">
+    <TextArea fx:id="logTextArea"
+              editable="false"
+              wrapText="true"
+              prefHeight="300"
+              prefWidth="400" />
+</VBox>
+
