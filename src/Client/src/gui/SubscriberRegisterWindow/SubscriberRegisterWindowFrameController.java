@@ -101,7 +101,7 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
     public void initialize(URL arg0, ResourceBundle arg1) {
         // Initialization logic, if needed
     }
-    
+    //test
     
     
 }
