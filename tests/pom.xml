@@ -98,6 +98,11 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+      	<groupId>org.testfx</groupId>
+      	<artifactId>testfx-junit5</artifactId>
+      	<version>4.0.16-alpha</version>
+      </plugin>
     </plugins>
   </build>
 </project>
