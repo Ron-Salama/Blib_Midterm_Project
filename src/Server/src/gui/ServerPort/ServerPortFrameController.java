@@ -41,8 +41,6 @@ public class ServerPortFrameController extends BaseController{
 		else
 		{
 			((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
-//			Stage primaryStage = new Stage();
-//			FXMLLoader loader = new FXMLLoader();
 			ServerUI.runServer(p);
 			
 			openWindow(event,
@@ -63,5 +61,4 @@ public class ServerPortFrameController extends BaseController{
 		System.out.println("exit Academic Tool");
 		System.exit(0);			
 	}
-
 }

@@ -3,7 +3,13 @@ package gui.ServerLog;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.ResourceBundle;
 
 import gui.baseController.BaseController;
@@ -11,6 +17,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+
 
 /**
  * Controller class for the message log window. Displays a dynamic log of messages received by the server.
@@ -25,25 +32,8 @@ public class ServerLogFrameController extends BaseController implements Initiali
     // File pointer to track the last read position
     private long filePointer = 0;
 
-    /**
-     * Appends a message to the log.
-     *
-     * @param message The message to append to the log.
-     */
-    public void appendLog(String message) {
-        System.out.println("Appending to TextArea: " + message);
-        Platform.runLater(() -> {
-            if (logTextArea != null) {
-                logTextArea.appendText(message + "\n");
-            } else {
-                System.out.println("logTextArea is null!");
-            }
-        });
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        logTextArea.appendText("Server log initialized..\n");
         startFileWatcher(); // Start monitoring the log file for updates
     }
 
