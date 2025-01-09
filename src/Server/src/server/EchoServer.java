@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -98,130 +99,25 @@ public class EchoServer extends AbstractServer {
 
             switch (prefix) {
                 case "Fetch": // Handle Fetch:ID
-                    String identifier = body;
-
-                    if (ConnectToDb.checkSubscriberExists(dbConnection, identifier)) {
-                        String subscriberData = ConnectToDb.fetchSubscriberData(dbConnection, identifier);
-                        client.sendToClient(subscriberData);
-                    } else if (ConnectToDb.checkLibrarianExists(dbConnection, identifier)) {
-                        String librarianData = ConnectToDb.fetchLibrarianData(dbConnection, identifier);
-                        client.sendToClient(librarianData);
-                    } else {
-                        client.sendToClient("ID does not exist.");
-                    }
+                    handleFetchCase(client, body);
                     break;
-
                 case "Update": // Handle Update:ID,Phone,Email
-                    String[] parts = body.split(",");
-                    if (parts.length == 3) {
-                        String subscriberId = parts[0].trim();
-                        String phone = parts[1].trim();
-                        String email = parts[2].trim();
-
-                        if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)) {
-                            ConnectToDb.updateSubscriber(dbConnection, subscriberId, phone, email);
-                            client.sendToClient("Subscriber updated successfully.");
-                        } else {
-                            client.sendToClient("Subscriber ID does not exist.");
-                        }
-                    } else {
-                        client.sendToClient("Invalid Update command format. Expected 'Update:ID,Phone,Email'.");
-                    }
+                	handleUpdateCase(client, body);
                     break;
-
                 case "IP": // Handle IP:<Address>
-                    String clientIP = body;
-                    String serverIP = InetAddress.getLocalHost().getHostAddress();
-
-                    if (clientIP.equals(serverIP)) {
-                        client.sendToClient("Client connected to IP: " + clientIP);
-                    } else {
-                        client.sendToClient("Could not connect to the server. The IP: " + clientIP + " does not match the IP of the server.");
-                    }
+                    handleIPCase(client, body);
                     break;
-
                 case "GetBooks": // Handle GetBooks:
-                	outputInOutputStreamAndLog("Received GetBooks request from client");
-
-                    try {
-                        List<String> booksData = ConnectToDb.fetchBooksData(dbConnection);
-
-                        if (booksData == null || booksData.isEmpty()) {
-                            client.sendToClient("returnedBookData:NoBooksFound");
-                        } else {
-                            String booksDataString = String.join(";", booksData);
-                            client.sendToClient("returnedBookData:" + booksDataString);
-                        }
-                    } catch (Exception e) {
-                        System.err.println("Error while processing GetBooks request: " + e.getMessage());
-                        client.sendToClient("returnedBookData:Error:CouldNotFetchBooks");
-                    }
+                	handleGetBooksCase(client, body);
                     break;
                 case "GetBookInfo": // Handle GetBookInfo:BookId
-                    String bookId = body; // The body contains the BookId
-                    try {
-                        // Fetch book information from the database
-                        String bookInfo = ConnectToDb.fetchBookInfo(dbConnection, bookId);
-
-                        if (bookInfo != null) {
-                            client.sendToClient("BookInfo:" + bookInfo);
-                        } else {
-                            client.sendToClient("BookInfo:NotFound");
-                        }
-                    } catch (Exception e) {
-                        System.err.println("Error while processing GetBookInfo request: " + e.getMessage());
-                        client.sendToClient("BookInfo:Error:CouldNotFetchBookInfo");
-                    }
+                    handleGetBookInfoCase(client, body);
                     break;
                 case "BorrowRequest": // Handle BorrowRequest
-                    System.out.println("Received BorrowRequest from client");
-                    String[] borrowParts = body.split(",");
-                    if (borrowParts.length == 6) {
-                        String subscriberId = borrowParts[0].trim();
-                        String subscriberName = borrowParts[1].trim();
-                        String bookBorrowId = borrowParts[2].trim();
-                        String bookName = borrowParts[3].trim();
-                        String placeHolder1 = borrowParts[4].trim(); // Not used
-                        String placeHolder2 = borrowParts[5].trim(); // Not used
-
-                        // Debugging: Log the parameters before inserting
-                        System.out.println("Subscriber ID: " + subscriberId);
-                        System.out.println("Subscriber Name: " + subscriberName);
-                        System.out.println("Book Borrow ID: " + bookBorrowId);
-                        System.out.println("Book Name: " + bookName);
-                        System.out.println("Placeholders: " + placeHolder1 + ", " + placeHolder2);
-
-                        try {
-                            // Example values for the time-related fields (can be empty strings if not needed)
-                            String borrowTime = ""; // You can pass the actual borrow time if you have it
-                            String returnTime = ""; // Leave empty if not used
-                            String extendTime = ""; // Leave empty if not used
-
-                            // Send the data to insertRequest
-                            ConnectToDb.insertRequest(dbConnection, 
-                                                       "Borrow For Subscriber", // requestType
-                                                       subscriberId,             // requestedByID
-                                                       subscriberName,           // requestedByName
-                                                       bookName,                 // bookName
-                                                       bookBorrowId,             // bookId
-                                                       borrowTime,               // borrowTime (empty string if not available)
-                                                       returnTime,               // returnTime (empty string if not available)
-                                                       extendTime);              // extendTime (empty string if not available)
-                        } catch (Exception e) {
-                            client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
+                	handleBorrowRequestCase(client, body);
+                	break;
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
-                    System.out.println("Received FetchBorrowRequest from client");
-
-                        try {
-                            String borrowRequests = ConnectToDb.fetchBorrowRequest(dbConnection);
-                            client.sendToClient("FetchedBorrowedBooks:"+borrowRequests);
-                        } catch (Exception e) {
-                            client.sendToClient("An error occurred while fetching the borrow request data: " + e.getMessage());
-                            e.printStackTrace();
-                        }
+                	handleFetchBorrowRequestCase(client, body);
                     break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
@@ -236,7 +132,132 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
+    
+    private void handleFetchCase(ConnectionToClient client, String body) throws SQLException, IOException {
+    	String identifier = body;
 
+        if (ConnectToDb.checkSubscriberExists(dbConnection, identifier)) {
+            String subscriberData = ConnectToDb.fetchSubscriberData(dbConnection, identifier);
+            client.sendToClient(subscriberData);
+        } else if (ConnectToDb.checkLibrarianExists(dbConnection, identifier)) {
+            String librarianData = ConnectToDb.fetchLibrarianData(dbConnection, identifier);
+            client.sendToClient(librarianData);
+        } else {
+            client.sendToClient("ID does not exist.");
+        }
+    }
+    
+    private void handleUpdateCase(ConnectionToClient client, String body) throws SQLException, IOException {
+    	String[] parts = body.split(",");
+        if (parts.length == 3) {
+            String subscriberId = parts[0].trim();
+            String phone = parts[1].trim();
+            String email = parts[2].trim();
+
+            if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)) {
+                ConnectToDb.updateSubscriber(dbConnection, subscriberId, phone, email);
+                client.sendToClient("Subscriber updated successfully.");
+            } else {
+                client.sendToClient("Subscriber ID does not exist.");
+            }
+        } else {
+            client.sendToClient("Invalid Update command format. Expected 'Update:ID,Phone,Email'.");
+        }
+    }
+
+    private void handleIPCase(ConnectionToClient client, String body) throws IOException   {
+    	String clientIP = body;
+        String serverIP = InetAddress.getLocalHost().getHostAddress();
+
+        if (clientIP.equals(serverIP)) {
+            client.sendToClient("Client connected to IP: " + clientIP);
+        } else {
+            client.sendToClient("Could not connect to the server. The IP: " + clientIP + " does not match the IP of the server.");
+        }
+    }
+    
+    private void handleGetBooksCase(ConnectionToClient client, String body) throws IOException {
+    	outputInOutputStreamAndLog("Received GetBooks request from client");
+
+        try {
+            List<String> booksData = ConnectToDb.fetchBooksData(dbConnection);
+
+            if (booksData == null || booksData.isEmpty()) {
+                client.sendToClient("returnedBookData:NoBooksFound");
+            } else {
+                String booksDataString = String.join(";", booksData);
+                client.sendToClient("returnedBookData:" + booksDataString);
+            }
+        } catch (Exception e) {
+            System.err.println("Error while processing GetBooks request: " + e.getMessage());
+            client.sendToClient("returnedBookData:Error:CouldNotFetchBooks");
+        }
+    }
+    
+    private void handleGetBookInfoCase(ConnectionToClient client, String body) throws IOException {
+    	String bookId = body; // The body contains the BookId
+        try {
+            // Fetch book information from the database
+            String bookInfo = ConnectToDb.fetchBookInfo(dbConnection, bookId);
+
+            if (bookInfo != null) {
+                client.sendToClient("BookInfo:" + bookInfo);
+            } else {
+                client.sendToClient("BookInfo:NotFound");
+            }
+        } catch (Exception e) {
+            System.err.println("Error while processing GetBookInfo request: " + e.getMessage());
+            client.sendToClient("BookInfo:Error:CouldNotFetchBookInfo");
+        }
+    }
+    
+    private void handleBorrowRequestCase(ConnectionToClient client, String body) throws IOException {
+    	 outputInOutputStreamAndLog("Received BorrowRequest from client");
+         String[] borrowParts = body.split(",");
+         if (borrowParts.length == 6) {
+             String subscriberId = borrowParts[0].trim();
+             String subscriberName = borrowParts[1].trim();
+             String bookBorrowId = borrowParts[2].trim();
+             String bookName = borrowParts[3].trim();
+             String placeHolder1 = borrowParts[4].trim(); // Not used
+             String placeHolder2 = borrowParts[5].trim(); // Not used
+
+
+             try {
+                 // Example values for the time-related fields (can be empty strings if not needed)
+                 String borrowTime = ""; // You can pass the actual borrow time if you have it
+                 String returnTime = ""; // Leave empty if not used
+                 String extendTime = ""; // Leave empty if not used
+
+                 // Send the data to insertRequest
+                 ConnectToDb.insertRequest(dbConnection, 
+                                            "Borrow For Subscriber", // requestType
+                                            subscriberId,             // requestedByID
+                                            subscriberName,           // requestedByName
+                                            bookName,                 // bookName
+                                            bookBorrowId,             // bookId
+                                            borrowTime,               // borrowTime (empty string if not available)
+                                            returnTime,               // returnTime (empty string if not available)
+                                            extendTime);              // extendTime (empty string if not available)
+             } catch (Exception e) {
+                 client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
+                 e.printStackTrace();
+             }
+         }
+    }
+    
+    private void handleFetchBorrowRequestCase(ConnectionToClient client, String body) throws IOException{
+    	outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
+
+         try {
+             String borrowRequests = ConnectToDb.fetchBorrowRequest(dbConnection);
+             client.sendToClient("FetchedBorrowedBooks:"+borrowRequests);
+         } catch (Exception e) {
+             client.sendToClient("An error occurred while fetching the borrow request data: " + e.getMessage());
+             e.printStackTrace();
+         }
+    }
+    
     private void log(String message) {
     	// Append the message to the log file
         try (FileWriter writer = new FileWriter("src/logic/serverLog.txt", true)) { // 'true' enables append mode
@@ -279,4 +300,5 @@ public class EchoServer extends AbstractServer {
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
     }
+
 }
