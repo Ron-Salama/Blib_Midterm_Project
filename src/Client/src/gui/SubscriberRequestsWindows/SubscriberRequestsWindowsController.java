@@ -58,21 +58,26 @@ public class SubscriberRequestsWindowsController implements Initializable {
 
     @FXML
     private ComboBox<String> RequestedByCB;
-
+    @FXML
+    private ComboBox<String> RequestCB;
+    
     private List<String[]> borrowRequests = new ArrayList<>();
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize request types
         RequestTypeCB.getItems().addAll("", "Registers", "Extend Book Borrow", "Borrow For Subscriber", "Return For Subscriber");
-        RequestedByCB.getItems().add("");
+        RequestedByCB.getItems().add(""); // Add an empty item for default value
 
-        // Set an event listener to handle ComboBox changes
+        // Set event listeners
+        RequestedByCB.setOnAction(event -> autofillSubscriberData()); // Set the event listener for ComboBox selection change
         RequestTypeCB.setOnAction(event -> updateLabels());
         
-        
+        ClientUI.chat.accept("FetchBorrowRequest:");
+        handleFetchedBorrowedBooks();
     }
 
+    // Method to update labels based on the selected request type
     public void updateLabels() {
         String selectedRequestType = RequestTypeCB.getValue();
 
@@ -85,7 +90,7 @@ public class SubscriberRequestsWindowsController implements Initializable {
 
         // Clear the RequestedByCB ComboBox
         RequestedByCB.getItems().clear();
-        
+
         // Set the fields and populate the RequestedByCB based on the selected request type
         switch (selectedRequestType) {
             case "Registers":
@@ -104,8 +109,8 @@ public class SubscriberRequestsWindowsController implements Initializable {
                 LBL5.setText("Borrow Time:");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
-                ClientUI.chat.accept("FetchBorrowRequest:"); 
-                handleFetchedBorrowedBooks();
+                ClientUI.chat.accept("FetchBorrowRequest:");
+                handleFetchedBorrowedBooks(); // Call the method to handle the fetched data
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
@@ -136,8 +141,57 @@ public class SubscriberRequestsWindowsController implements Initializable {
                 break;
         }
     }
-   
 
+    // Method to autofill text fields based on the selected subscriber
+    private void autofillSubscriberData() {
+        String selectedName = RequestedByCB.getValue();
+
+        if (selectedName != null && !selectedName.isEmpty()) {
+            // Clear the RequestCB ComboBox before adding new items
+            RequestCB.getItems().clear();
+
+            // Create a list to store borrow requests for the selected subscriber
+            List<String[]> selectedRequests = new ArrayList<>();
+
+            // Search for the selected subscriber's borrow requests
+            for (String[] request : borrowRequests) {
+                if (request[2].equals(selectedName)) { // Assuming name is in index 2
+                    selectedRequests.add(request);  // Add the borrow request to the list
+                }
+            }
+
+            // Populate the RequestCB ComboBox with book names and book IDs
+            for (String[] request : selectedRequests) {
+                // Format the book information as "Book Name (Book ID)"
+                RequestCB.getItems().add(request[3] + " (Book ID: " + request[4] + ")");
+            }
+
+            // Set an action listener for RequestCB to autofill the text fields when a request is selected
+            RequestCB.setOnAction(event -> autofillRequestData(selectedRequests));
+        }
+    }
+
+    // Method to autofill text fields based on the selected borrow request in RequestCB
+    private void autofillRequestData(List<String[]> selectedRequests) {
+        String selectedRequest = RequestCB.getValue();
+
+        if (selectedRequest != null && !selectedRequest.isEmpty()) {
+            // Iterate through the selected requests and autofill the text fields based on the selected request
+            for (String[] request : selectedRequests) {
+                // Match the selected request format with "Book Name (Book ID)"
+                if ((request[3] + " (Book ID: " + request[4] + ")").equals(selectedRequest)) {
+                    // Autofill the text fields based on the selected borrow request
+                    TXTF1.setText(request[2]);  // Subscriber Name
+                    TXTF2.setText(request[1]);  // Subscriber ID
+                    TXTF3.setText(request[3]);  // Book Name
+                    TXTF4.setText(request[4]);  // Book ID
+                    TXTF5.setText(request[5]);  // Borrow Time (or any other relevant field)
+                    break;
+                }
+            }
+        }
+    }
+    // Method to handle the fetched borrow requests from ChatClient
     public void handleFetchedBorrowedBooks() {
         borrowRequests.clear();  // Clear the existing list to avoid duplicate data
 
@@ -168,6 +222,7 @@ public class SubscriberRequestsWindowsController implements Initializable {
         }
     }
 
+    // Method to handle Exit button click
     public void getExitBtn(ActionEvent event) throws Exception {
         try {
             ((Node) event.getSource()).getScene().getWindow().hide();
@@ -188,6 +243,7 @@ public class SubscriberRequestsWindowsController implements Initializable {
         }
     }
 
+    // Method to display messages (for debugging or logging)
     public void display(String message) {
         System.out.println(message);
     }
