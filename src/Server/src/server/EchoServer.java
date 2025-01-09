@@ -8,9 +8,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Clock;
 import java.util.List;
 
 import common.ConnectToDb;
+import logic.ClockController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -22,7 +24,9 @@ import ocsf.server.ConnectionToClient;
 public class EchoServer extends AbstractServer {
     // Class variables *************************************************
     final public static int DEFAULT_PORT = 5555;
-
+    
+    private ClockController clock = new ClockController();
+    
     // Instance variables ***********************************************
     private Connection dbConnection; // Single DB connection
 
@@ -119,6 +123,8 @@ public class EchoServer extends AbstractServer {
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
                 	handleFetchBorrowRequestCase(client, body);
                     break;
+                case "GetDate": // Handle GetDate
+                	handleGetDate(client, body);
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -131,6 +137,11 @@ public class EchoServer extends AbstractServer {
                 System.err.println("Error sending message to client: " + ioException.getMessage());
             }
         }
+    }
+    
+    private void handleGetDate(ConnectionToClient client, String body) throws IOException {
+    	String currentDate = clock.getCurrentDate();
+    	client.sendToClient(currentDate);
     }
     
     private void handleFetchCase(ConnectionToClient client, String body) throws SQLException, IOException {

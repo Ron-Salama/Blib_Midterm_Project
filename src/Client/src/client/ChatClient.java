@@ -36,7 +36,7 @@ public class ChatClient extends AbstractClient
   public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
   public static List<String[][]> br = new ArrayList<>(); 
-  public static String[] BorrowedBookInfo ;
+  public static String[] BorrowedBookInfo;
   
   public static boolean awaitResponse = false;
 
@@ -81,7 +81,9 @@ public class ChatClient extends AbstractClient
 	        handleSubscriberData(response);
 	    } else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
-	    } else if (response.equals("Subscriber ID does not exist.") || response.equals("Librarian ID does not exist.") || response.equals("ID does not exist.")) {
+	    } else if (response.equals("Subscriber ID does not exist.") ||
+	    		response.equals("Librarian ID does not exist.") ||
+	    		response.equals("ID does not exist.")) {
 	        handleNonexistentID();
 	    } else if (response.startsWith("Could not connect to the server.")) {
 	        handleServerConnectionIssue(false);
@@ -93,10 +95,14 @@ public class ChatClient extends AbstractClient
 	    	handleBookInfo(response.substring("BookInfo:".length()));
 	    } else if (response.startsWith("FetchedBorrowedBooks:")){
 	    	handleFetchedBorrowedBooks(response.substring("FetchedBorrowedBooks:".length()));
+	    }else if (response.startsWith("GetDate:")) {
+	    	// NOT IMPLEMENTED YET. TODO implement for borrowing books.
+	    	return;
 	    }else {
 	    	handleUnknownResponse(response);
 	    }
 	}
+  
   private void handleBookInfo(String data) {
 	    try {
 	        if (data.equals("NoBooksFound")) {
@@ -158,6 +164,7 @@ public class ChatClient extends AbstractClient
 	        }
 	    }
 	}
+	
 	private void handleServerConnectionIssue(boolean isConnected) {
 	    ClientUI.isIPValid = isConnected;
 	    String message = isConnected ? "Server connection successful." : "Failed to connect to the server.";
@@ -197,7 +204,7 @@ public class ChatClient extends AbstractClient
 	    }
 	}
   
-  public void handleMessageFromClientUI(String message) {
+	public void handleMessageFromClientUI(String message) {
         awaitResponse = true;
         try {
             openConnection(); // Open connection for sending messages
@@ -233,7 +240,8 @@ public class ChatClient extends AbstractClient
             quit();
         }
     }
-  private void processSubscriberData(String msg) {
+  
+	private void processSubscriberData(String msg) {
       try {
           String[] parts = msg.split(",");
           String subscriberId = extractValue(parts[0]);
@@ -254,7 +262,7 @@ public class ChatClient extends AbstractClient
       }
   }
 
-  private void processLibrarianData(String msg) {
+	private void processLibrarianData(String msg) {
       try {
           String[] parts = msg.split(",");
           String librarianId = extractValue(parts[0]);
@@ -269,20 +277,20 @@ public class ChatClient extends AbstractClient
       }
   }
 
-  private String extractValue(String part) {
+	private String extractValue(String part) {
       return part.split(":")[1].trim();
   }
-  /**
-   * This method terminates the client.
-   */
-  public void quit()
-  {
-    try
-    {
-      closeConnection();
-    }
-    catch(IOException e) {}
-    System.exit(0);
-  }
+	/**
+	 * This method terminates the client.
+	 */
+	public void quit()
+	{
+		try
+		{
+			closeConnection();
+		}
+		catch(IOException e) {}
+		System.exit(0);
+	}
 }
 //End of ChatClient class
