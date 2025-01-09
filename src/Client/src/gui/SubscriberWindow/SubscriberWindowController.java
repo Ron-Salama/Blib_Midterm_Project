@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import client.ChatClient;
 import gui.SearchWindow.SearchFrameController;
 import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
@@ -17,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.Subscriber;
 
 /**
  * The SubscriberWindowController class manages the Subscriber Window in the GUI.
@@ -46,11 +44,7 @@ public class SubscriberWindowController extends BaseController implements Initia
     /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
-    
-    
-    
-    public static Subscriber currentSubscriber = new Subscriber(ChatClient.s1.getSubscriber_id(),ChatClient.s1.getDetailed_subscription_history(),ChatClient.s1.getSubscriber_name(),ChatClient.s1.getSubscriber_phone_number(),ChatClient.s1.getSubscriber_email());
-        
+
     /**
      * Opens the Search window, allowing the user to search for books in the library.
      * 
@@ -147,11 +141,8 @@ public class SubscriberWindowController extends BaseController implements Initia
      * @param arg0 the location of the FXML file
      * @param arg1 the resources for the FXML file
      */
-
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        // Initialization logic, if needed
+    }
 }
