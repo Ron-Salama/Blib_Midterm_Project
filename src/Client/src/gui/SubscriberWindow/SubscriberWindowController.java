@@ -1,5 +1,6 @@
 package gui.SubscriberWindow;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.Subscriber;
@@ -46,9 +48,17 @@ public class SubscriberWindowController extends BaseController implements Initia
     /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
+    @FXML
+    private Button btnUpdate = null;
     
+    @FXML
+    private ImageView avatarImageView;
     
-    
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+	}
+	
     public static Subscriber currentSubscriber = new Subscriber(ChatClient.s1.getSubscriber_id(),ChatClient.s1.getDetailed_subscription_history(),ChatClient.s1.getSubscriber_name(),ChatClient.s1.getSubscriber_phone_number(),ChatClient.s1.getSubscriber_email());
         
     /**
@@ -93,7 +103,12 @@ public class SubscriberWindowController extends BaseController implements Initia
     
     
     
-    
+	public void update(ActionEvent event) throws Exception {
+        openWindow(event,
+        		"/gui/UpdateInfoWindow/UpdateInfoFrame.fxml",
+        		"/gui/UpdateInfoWindow/UpdateInfoFrame.css",
+        		"Library Management Tool");;
+	}
     
     
     
@@ -145,9 +160,5 @@ public class SubscriberWindowController extends BaseController implements Initia
      */
 
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

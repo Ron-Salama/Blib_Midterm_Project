@@ -1,2 +1,14 @@
 Server listening for connections on port 5555
 Connected to the database.
+Client connected.
+Client IP:127.0.0.1
+Client Hostname: 127.0.0.1
+Connection Status: Connected
+Message received: IP:192.168.250.50 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:22 from 127.0.0.1 (127.0.0.1)
+Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
+Received FetchBorrowRequest from client
+Message received: FetchedRegisterRequests: from 127.0.0.1 (127.0.0.1)
+Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
+Received FetchBorrowRequest from client
+Message received: FetchedRegisterRequests: from 127.0.0.1 (127.0.0.1)

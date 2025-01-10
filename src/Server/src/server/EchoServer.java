@@ -123,6 +123,12 @@ public class EchoServer extends AbstractServer {
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
                 	handleFetchBorrowRequestCase(client, body);
                     break;
+                case "RegisterRequest": // Handle RegisterRequest
+                	handleRegisterRequestCase(client, body);
+                    break;
+                case "FetchRegisterRequest": // Handle FetchBorrowRequest
+                	handleFetchRegisterRequestCase(client, body);
+                    break;
                 case "GetDate": // Handle GetDate
                 	handleGetDate(client, body);
                 default: // Handle unknown commands
@@ -159,12 +165,14 @@ public class EchoServer extends AbstractServer {
     }
     
     private void handleUpdateCase(ConnectionToClient client, String body) throws SQLException, IOException {
+
     	String[] parts = body.split(",");
+
         if (parts.length == 3) {
             String subscriberId = parts[0].trim();
             String phone = parts[1].trim();
             String email = parts[2].trim();
-
+            System.out.println("this:"+subscriberId+":this");
             if (ConnectToDb.checkSubscriberExists(dbConnection, subscriberId)) {
                 ConnectToDb.updateSubscriber(dbConnection, subscriberId, phone, email);
                 client.sendToClient("Subscriber updated successfully.");
@@ -222,6 +230,37 @@ public class EchoServer extends AbstractServer {
         }
     }
     
+    private void handleRegisterRequestCase(ConnectionToClient client, String body) throws IOException {
+   	 outputInOutputStreamAndLog("Received RegisterRequestCase from client");
+        String[] borrowParts = body.split(",");
+
+        String RegisterId = borrowParts[0].trim();
+        String RegisterName = borrowParts[1].trim();
+        String RegisterEmail = borrowParts[2].trim();
+        String RegisterPhone = borrowParts[3].trim();
+
+        try {
+            // Example values for the time-related fields (can be empty strings if not needed)
+            String borrowTime = ""; // You can pass the actual borrow time if you have it
+            String returnTime = ""; // Leave empty if not used
+            String extendTime = ""; // Leave empty if not used
+
+            // Send the data to insertRequest
+            ConnectToDb.insertRequest(dbConnection, 
+                                       "Request For Register", // requestType
+                                       RegisterId,             // requestedByID
+                                       RegisterName,           // requestedByName
+                                       RegisterEmail,                 // bookName
+                                       RegisterPhone,             // bookId
+                                       borrowTime,               // borrowTime (empty string if not available)
+                                       returnTime,               // returnTime (empty string if not available)
+                                       extendTime);              // extendTime (empty string if not available)
+        } catch (Exception e) {
+            client.sendToClient("An error occurred while processing the Register request: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+   }
     private void handleBorrowRequestCase(ConnectionToClient client, String body) throws IOException {
     	 outputInOutputStreamAndLog("Received BorrowRequest from client");
          String[] borrowParts = body.split(",");
@@ -268,7 +307,17 @@ public class EchoServer extends AbstractServer {
              e.printStackTrace();
          }
     }
-    
+    private void handleFetchRegisterRequestCase(ConnectionToClient client, String body) throws IOException{
+    	outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
+
+         try {
+             String RegisterRequests = ConnectToDb.fetchRegisterRequest(dbConnection);
+             client.sendToClient("FetchedRegisterRequests:"+RegisterRequests);
+         } catch (Exception e) {
+             client.sendToClient("An error occurred while fetching the Register Requests data: " + e.getMessage());
+             e.printStackTrace();
+         }
+    }
     private void log(String message) {
     	// Append the message to the log file
         try (FileWriter writer = new FileWriter("src/logic/serverLog.txt", true)) { // 'true' enables append mode
