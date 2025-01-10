@@ -34,3 +34,7 @@ FullName_Emails_IDs.xlsx
 *.vpp.bak*
 *.vpp.lck*
 /.metadata/
+
+# Ignore ServerLog file.
+src\Server\src\logic\serverLog.txt
+src\Server\bin\logic\serverLog.txt
