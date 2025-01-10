@@ -30,9 +30,7 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
     private Label lblSubscriber_phoneNumber;
     @FXML
     private Label lblSubscriber_email;
-    @FXML
-    private Label lblSubscriber_detailedSubscriptionHistory;
-    
+
     @FXML
     private TextField txtSubscriber_id;
     @FXML
@@ -41,8 +39,6 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
     private TextField txtSubscriber_phoneNumber;
     @FXML
     private TextField txtSubscriber_email;
-    @FXML
-    private TextField txtSubscriber_detailedSubscriptionHistory;
 
     @FXML
     private Button btnClose = null;
@@ -55,23 +51,7 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
     
     @FXML
     private Button btnRegister = null;
-    ObservableList<String> list;
 
-    public void loadSubscriber(Subscriber s1) {
-        this.s = s1;
-        this.txtSubscriber_id.setText(String.valueOf(s.getSubscriber_id())); // Convert int to String
-        this.txtSubscriber_name.setText(s.getSubscriber_name()); // Assuming this is already a String
-        this.txtSubscriber_phoneNumber.setText(s.getSubscriber_phone_number()); // Assuming this is already a String
-        this.txtSubscriber_email.setText(s.getSubscriber_email()); // Assuming this is already a String
-        this.txtSubscriber_detailedSubscriptionHistory.setText(String.valueOf(s.getDetailed_subscription_history())); // Convert int to String
-    }
-
-    public void getbtnClose(ActionEvent event) throws Exception {
-       openWindow(event,
-    		   "/gui/SubscraberFormWindow/SubscriberForm.fxml",
-    		   "/gui/SubscraberFormWindow/SubscriberForm.css",
-    		   "Library Management Tool");
-    }
 
     public void btnRegister(ActionEvent event) throws Exception {
         // Get the updated values from the text fields
@@ -81,13 +61,11 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
         String name = txtSubscriber_name.getText();
         
         // Prepare the update message
-        String obj = "Update:" + id + "," + name + "," + phoneNumber + "," + email;
+        String obj = id + "," + name + "," + phoneNumber + "," + email;
 
         // Send the update message to the server
-        ClientUI.chat.accept(obj);
+        ClientUI.chat.accept("RegisterRequest:"+obj);
 
-        // Navigate back to the LibraryFrame
-        getbtnClose(event);
     }
     
     public void btnReturnToMainMenu(ActionEvent event) {

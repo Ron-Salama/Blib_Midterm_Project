@@ -39,7 +39,7 @@ public class ChatClient extends AbstractClient
   public static String[] BorrowedBookInfo ;
   
   public static boolean awaitResponse = false;
-
+  public static boolean alertIndicator = true;
   // Constructors ****************************************************
   
   /**
@@ -81,6 +81,10 @@ public class ChatClient extends AbstractClient
 	        handleSubscriberData(response);
 	    } else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
+	    }else if (response.startsWith("Subscriber updated successfully.")) {
+	    	handleUpdateSubInfoSuccess();
+	    }else if (response.startsWith("Subscriber ID does not exist.")) {
+	    	handleUpdateSubInfoFail();
 	    } else if (response.equals("Subscriber ID does not exist.") || response.equals("Librarian ID does not exist.") || response.equals("ID does not exist.")) {
 	        handleNonexistentID();
 	    } else if (response.startsWith("Could not connect to the server.")) {
@@ -93,7 +97,9 @@ public class ChatClient extends AbstractClient
 	    	handleBookInfo(response.substring("BookInfo:".length()));
 	    } else if (response.startsWith("FetchedBorrowedBooks:")){
 	    	handleFetchedBorrowedBooks(response.substring("FetchedBorrowedBooks:".length()));
-	    }else {
+	    }else if (response.startsWith("FetchedRegisterRequests:")){
+	    	FetchedRegisterRequests(response.substring("FetchedRegisterRequests:".length()));
+	    } else {
 	    	handleUnknownResponse(response);
 	    }
 	}
@@ -138,7 +144,31 @@ public class ChatClient extends AbstractClient
 	    l1.setLibrarian_id(-1);
 	    s1.setSubscriber_id(-1);
 	}
-	
+	private void handleUpdateSubInfoSuccess() {
+		alertIndicator = true;
+	}
+	private void handleUpdateSubInfoFail() {
+		alertIndicator = false;
+	}
+	private void FetchedRegisterRequests(String data) {
+	    br.clear(); // Clear the existing list to avoid appending duplicate data
+
+	    // Split the input data by semicolon (;) to separate each request
+	    String[] requests = data.split(";");
+
+	    // Iterate over each request (which is now a string) and split it by comma (,) to get the fields
+	    for (String request : requests) {
+	        // Split each request into fields by comma
+	        String[] RegisterDetails = request.split(",");
+
+	        // Ensure the bookDetails array has the expected length (8 fields)
+	        if (RegisterDetails.length == 8) {
+	            br.add(new String[][]{RegisterDetails}); // Add the book details array to the br list
+	        } else {
+	            System.out.println("Invalid book data received: " + String.join(",", RegisterDetails));
+	        }
+	    }
+	}
 	private void handleFetchedBorrowedBooks(String data) {
 	    br.clear(); // Clear the existing list to avoid appending duplicate data
 

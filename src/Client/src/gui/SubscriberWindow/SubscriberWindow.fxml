@@ -2,28 +2,49 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.CubicCurve?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberWindow.SubscriberWindowController">
    <children>
-      
-      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="106.0" layoutY="343.0" mnemonicParsing="false" onAction="#getbtnBorrow" prefHeight="75.0" prefWidth="160.0" text="Borrow">
-         <font>
-            <Font size="25.0" />
-         </font></Button>
-      <Button id="btnSearch" fx:id="btnSearch" layoutX="106.0" layoutY="182.0" mnemonicParsing="false" onAction="#search" prefHeight="75.0" prefWidth="160.0" text="Search">
-         <font>
-            <Font size="25.0" />
-         </font></Button>
-      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="356.0" layoutY="263.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="75.0" prefWidth="160.0" text="My Books">
+
+      <!-- Other buttons -->
+      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="193.0" layoutY="231.0" mnemonicParsing="false" onAction="#getbtnBorrow" prefHeight="75.0" prefWidth="160.0" text="Borrow">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
+
+      <Button id="btnSearch" fx:id="btnSearch" layoutX="14.0" layoutY="231.0" mnemonicParsing="false" onAction="#search" prefHeight="75.0" prefWidth="160.0" text="Search">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+
+      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="383.0" layoutY="231.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="75.0" prefWidth="160.0" text="My Books">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+
       <Button id="btnBack" fx:id="btnBack" layoutX="-3.0" layoutY="-1.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="29.0" prefWidth="34.0" text="←">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
+      <Button id="btnSearch" fx:id="btnUpdate" layoutX="65.0" layoutY="100.0" mnemonicParsing="false" onAction="#update" prefHeight="29.0" prefWidth="153.0" text="Update Information">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <Circle fill="DODGERBLUE" layoutX="131.0" layoutY="50.0" radius="43.0" stroke="BLACK" strokeType="INSIDE" />
+      <CubicCurve controlX1="-54.43328857421875" controlX2="-39.10003662109375" controlY1="5.2333221435546875" controlY2="19.900009155273438" endX="-39.10003662109375" endY="35.23332214355469" fill="DODGERBLUE" layoutX="198.0" layoutY="46.0" startX="-54.43328857421875" startY="5.2333221435546875" stroke="BLACK" />
+      <CubicCurve controlX1="-91.76667022705078" controlX2="-103.10004425048828" controlY1="-8.099990844726562" controlY2="5.2333221435546875" endX="-103.10004425048828" endY="24.566665649414062" fill="DODGERBLUE" layoutX="208.0" layoutY="56.0" startX="-81.10004425048828" startY="-8.099990844726562" stroke="BLACK" />
+      <Arc fill="DODGERBLUE" layoutX="133.0" layoutY="30.0" length="270.0" radiusX="25.0" radiusY="21.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+      <Circle fill="DODGERBLUE" layoutX="131.0" layoutY="37.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="DODGERBLUE" layoutX="122.0" layoutY="31.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="DODGERBLUE" layoutX="138.0" layoutY="31.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </AnchorPane>

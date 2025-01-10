@@ -19,10 +19,12 @@
 
       <!-- Exit Button -->
       <Button id="btnExit" fx:id="btnBack" layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="Back" />
-      <Button id="btnSearch" fx:id="btnSearch" layoutX="595.0" layoutY="450.0" mnemonicParsing="false" onAction="#Search" text="Search" />
+      <Button id="btnSearch" fx:id="btnSearch" layoutX="34.0" layoutY="102.0" mnemonicParsing="false" onAction="#Search" text="Search" />
       <Label layoutX="283.0" layoutY="31.0" text="Borrow Book" />
       <Button id="btnSubmit" fx:id="btnSubmitToLibrarian" layoutX="28.0" layoutY="450.0" mnemonicParsing="false" onAction="#Submit_Borrow_Request" text="Submit Borrow Request" />
       <Button id="btnMainMenu" fx:id="btnMainMenu" layoutX="475.0" layoutY="14.0" mnemonicParsing="false" onAction="#Main_Menu" text="Return To Main Menu" />
       <Label fx:id="Book_Description" layoutX="34.0" layoutY="134.0" text="Discritption:" />
+      <Button id="btnSubmit" fx:id="btnReserve" layoutX="203.0" layoutY="450.0" mnemonicParsing="false" onAction="#Submit_Reserve_Request" text="Submit Reserve Request" />
+      <Label fx:id="awaitingTextID" layoutX="203.0" layoutY="350.0" text="awaitingText" textFill="#d71e1e" />
    </children>
 </AnchorPane>

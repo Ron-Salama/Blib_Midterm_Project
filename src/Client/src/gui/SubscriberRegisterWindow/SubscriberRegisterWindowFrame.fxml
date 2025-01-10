@@ -8,12 +8,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController">
    <children>
-      <Label id="lblSubscriber_id" layoutX="34.0" layoutY="107.0" text="ID:" />
-      <Label id="lblSubscriber_name" layoutX="34.0" layoutY="130.0" text="Full Name:" />
-      <Label id="lblPhoneNumber" layoutX="34.0" layoutY="152.0" text="Phone Number:" />
-      <Label id="lblSubscriber_email" layoutX="34.0" layoutY="174.0" text="Email:" />
+      <Label id="lblSubscriber_id" layoutX="197.0" layoutY="107.0" text="ID:" />
+      <Label id="lblSubscriber_name" layoutX="193.0" layoutY="149.0" text="Full Name:" />
+      <Label id="lblPhoneNumber" layoutX="197.0" layoutY="190.0" text="Phone Number:" />
+      <Label id="lblSubscriber_email" layoutX="188.0" layoutY="231.0" text="Email:" />
       
       <Button id="btnReturnToMainMenu" fx:id="btnReturnToMainMenu" layoutX="500.0" layoutY="1.0" mnemonicParsing="false" onAction="#btnReturnToMainMenu" text="Return to Main Menu" />
       <Button id="btnRegister" fx:id="btnRegister" layoutX="227.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnRegister" prefHeight="86.0" prefWidth="182.0" text="Register">
@@ -22,13 +22,14 @@
          </font>
       </Button>
       
-      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="300.0" layoutY="125.0" />
-      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="300.0" layoutY="148.0" />
-      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="300.0" layoutY="170.0" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="299.0" layoutY="145.0" />
+      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="300.0" layoutY="184.0" />
+      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="299.0" layoutY="227.0" />
       
       <Line endX="100.0" startX="-100.0" />
       <Line endX="100.0" layoutX="287.0" layoutY="31.0" startX="-100.0" />
       
       <Text layoutX="227.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register to The Library" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="299.0" layoutY="103.0" />
    </children>
 </AnchorPane>

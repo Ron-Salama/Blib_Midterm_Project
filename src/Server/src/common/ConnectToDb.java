@@ -299,8 +299,8 @@ public class ConnectToDb {
         return result.toString();
     }
 
-    public static List<String[]> fetchReturnRequest(Connection conn) throws SQLException {
-        List<String[]> requests = new ArrayList<>();
+    public static String fetchReturnRequest(Connection conn) throws SQLException {
+        StringBuilder result = new StringBuilder();
 
         // SQL query to fetch Return request based on the requestedByID and bookId
         String query = "SELECT * FROM requests WHERE requestType = 'Return For Subscriber'";
@@ -311,29 +311,35 @@ public class ConnectToDb {
             try (ResultSet rs = pstmt.executeQuery()) {
                 // Process each result
                 while (rs.next()) {
-                    // Create a String array for each request
-                    String[] request = new String[8];  // We expect 8 columns in the result
-                    request[0] = rs.getString("requestType");
-                    request[1] = rs.getString("requestedByID");
-                    request[2] = rs.getString("requestedByName");
-                    request[3] = rs.getString("bookName");
-                    request[4] = rs.getString("bookId");
-                    request[5] = rs.getString("borrowTime");
-                    request[6] = rs.getString("returnTime");
-                    request[7] = rs.getString("extendTime");
+                    // Concatenate the fields with commas
+                    result.append(rs.getString("requestType")).append(",")
+                          .append(rs.getString("requestedByID")).append(",")
+                          .append(rs.getString("requestedByName")).append(",")
+                          .append(rs.getString("bookName")).append(",")
+                          .append(rs.getString("bookId")).append(",")
+                          .append(rs.getString("borrowTime")).append(",")
+                          .append(rs.getString("returnTime")).append(",")
+                          .append(rs.getString("extendTime"));
 
-                    // Add the request array to the list
-                    requests.add(request);
+                    // Append a semicolon to separate each request
+                    result.append(";");
                 }
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
         }
-        return requests;
+
+        // Remove the trailing semicolon if there are any results
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+
+        return result.toString();
     }
-    public static List<String[]> fetchExtendRequest(Connection conn) throws SQLException {
-        List<String[]> requests = new ArrayList<>();
+
+    public static String fetchExtendRequest(Connection conn) throws SQLException {
+        StringBuilder result = new StringBuilder();
 
         // SQL query to fetch Extend request based on the requestedByID and bookId
         String query = "SELECT * FROM requests WHERE requestType = 'Extend For Subscriber'";
@@ -344,32 +350,38 @@ public class ConnectToDb {
             try (ResultSet rs = pstmt.executeQuery()) {
                 // Process each result
                 while (rs.next()) {
-                    // Create a String array for each request
-                    String[] request = new String[8];  // We expect 8 columns in the result
-                    request[0] = rs.getString("requestType");
-                    request[1] = rs.getString("requestedByID");
-                    request[2] = rs.getString("requestedByName");
-                    request[3] = rs.getString("bookName");
-                    request[4] = rs.getString("bookId");
-                    request[5] = rs.getString("borrowTime");
-                    request[6] = rs.getString("returnTime");
-                    request[7] = rs.getString("extendTime");
+                    // Concatenate the fields with commas
+                    result.append(rs.getString("requestType")).append(",")
+                          .append(rs.getString("requestedByID")).append(",")
+                          .append(rs.getString("requestedByName")).append(",")
+                          .append(rs.getString("bookName")).append(",")
+                          .append(rs.getString("bookId")).append(",")
+                          .append(rs.getString("borrowTime")).append(",")
+                          .append(rs.getString("returnTime")).append(",")
+                          .append(rs.getString("extendTime"));
 
-                    // Add the request array to the list
-                    requests.add(request);
+                    // Append a semicolon to separate each request
+                    result.append(";");
                 }
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
         }
-        return requests;
+
+        // Remove the trailing semicolon if there are any results
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+
+        return result.toString();
     }
-    public static List<String[]> fetchRegisterRequest(Connection conn) throws SQLException {
-        List<String[]> requests = new ArrayList<>();
+
+    public static String fetchRegisterRequest(Connection conn) throws SQLException {
+        StringBuilder result = new StringBuilder();
 
         // SQL query to fetch Register request based on the requestedByID and bookId
-        String query = "SELECT * FROM requests WHERE requestType = 'Register For Subscriber'";
+        String query = "SELECT * FROM requests WHERE requestType = 'Request For Register'";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -377,26 +389,31 @@ public class ConnectToDb {
             try (ResultSet rs = pstmt.executeQuery()) {
                 // Process each result
                 while (rs.next()) {
-                    // Create a String array for each request
-                    String[] request = new String[8];  // We expect 8 columns in the result
-                    request[0] = rs.getString("requestType");
-                    request[1] = rs.getString("requestedByID");
-                    request[2] = rs.getString("requestedByName");
-                    request[3] = rs.getString("bookName");
-                    request[4] = rs.getString("bookId");
-                    request[5] = rs.getString("borrowTime");
-                    request[6] = rs.getString("returnTime");
-                    request[7] = rs.getString("extendTime");
+                    // Concatenate the fields with commas
+                    result.append(rs.getString("requestType")).append(",")
+                          .append(rs.getString("requestedByID")).append(",")
+                          .append(rs.getString("requestedByName")).append(",")
+                          .append(rs.getString("bookName")).append(",")
+                          .append(rs.getString("bookId")).append(",")
+                          .append(rs.getString("borrowTime")).append(",")
+                          .append(rs.getString("returnTime")).append(",")
+                          .append(rs.getString("extendTime"));
 
-                    // Add the request array to the list
-                    requests.add(request);
+                    // Append a semicolon to separate each request
+                    result.append(";");
                 }
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
         }
-        return requests;
+
+        // Remove the trailing semicolon if there are any results
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+
+        return result.toString();
     }
 
 

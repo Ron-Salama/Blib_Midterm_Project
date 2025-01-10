@@ -4,6 +4,25 @@ Client connected.
 Client IP:127.0.0.1
 Client Hostname: 127.0.0.1
 Connection Status: Connected
-Message received: IP:10.0.0.3 from 127.0.0.1 (127.0.0.1)
-Message received: GetBooks: from 127.0.0.1 (127.0.0.1)
-Received GetBooks request from client
+Message received: IP:192.168.250.50 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,12,12@gmail.com from 127.0.0.1 (127.0.0.1)
+Client connected.
+Client IP:127.0.0.1
+Client Hostname: 127.0.0.1
+Connection Status: Connected
+Message received: IP:192.168.250.50 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,1111,111@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,1111,111@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,1111,111@gmail.com from 127.0.0.1 (127.0.0.1)
+Message received: Update:2,1111,111@gmail.com from 127.0.0.1 (127.0.0.1)
