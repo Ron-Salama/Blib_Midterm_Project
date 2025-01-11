@@ -67,7 +67,8 @@ public class IPInputController extends BaseController {
     public void Send(ActionEvent event) throws Exception {
         String ip = getIP();
         if (ip.trim().isEmpty()) {
-        	showColoredLabelMessageOnGUI(awaitingLoginText, "You must enter an IP address.", "-fx-text-fill: red;");
+            awaitingLoginText.setText("You must enter an IP address.");
+            awaitingLoginText.setStyle("-fx-text-fill: red;");
             System.out.println("You must enter an IP address.");
             return;
         }
@@ -78,12 +79,12 @@ public class IPInputController extends BaseController {
         PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
         pause.setOnFinished(e -> {
             if (!ClientUI.isIPValid) {
-            	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");
+                awaitingLoginText.setText("Invalid IP address.");
+                awaitingLoginText.setStyle("-fx-text-fill: red;");
                 System.out.println("ALERT: Invalid IP detected!");
-               
             } else {
-            	String labelMessage = "Connected successfully to IP: " + ip;
-            	showColoredLabelMessageOnGUI(welcomeLabel, labelMessage, "-fx-text-fill: green;");
+                awaitingLoginText.setText("Connected successfully to IP: " + ip);
+                awaitingLoginText.setStyle("-fx-text-fill: green;");
                 System.out.println("Connected successfully to IP: " + ip);
 
                 PauseTransition pause1 = new PauseTransition(javafx.util.Duration.seconds(1));

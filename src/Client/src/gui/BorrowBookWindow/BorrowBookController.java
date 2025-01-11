@@ -142,7 +142,7 @@ public class BorrowBookController extends BaseController implements Initializabl
         }
     }
 
-    public void Search(ActionEvent event) throws Exception {
+    public void openSearchWindow(ActionEvent event) throws Exception {
         SearchFrameController.FlagForSearch = "SubscriberBorrower";
         openWindow(event,
                 "/gui/SearchWindow/SearchFrame.fxml",
