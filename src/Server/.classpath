@@ -7,6 +7,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Server/data/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="lib" path="data/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="lib" path="C:/Users/almog/OneDrive/Documents/GitHub/BLib_MidTerm_Project_FIXED/src/Server/data/mysql-connector-java-8.0.13.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

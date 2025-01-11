@@ -21,7 +21,7 @@
          </font>
       </Button>
 
-      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="513.0" layoutY="425.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="75.0" prefWidth="160.0" text="My Books">
+      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="513.0" layoutY="425.0" mnemonicParsing="false" onAction="#openMyBooksWindow" prefHeight="75.0" prefWidth="160.0" text="My Books">
          <font>
             <Font size="25.0" />
          </font>
