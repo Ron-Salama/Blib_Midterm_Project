@@ -135,7 +135,7 @@ public class MainMenuController extends BaseController {
 	            Stage primaryStage = new Stage();
 	            Scene scene = new Scene(root);
 	            scene.getStylesheets().add(getClass().getResource("/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.css").toExternalForm());
-	            primaryStage.setTitle("Login");
+	            primaryStage.setTitle("Register");
 	            primaryStage.setScene(scene);
 	            primaryStage.show();
 	        } catch (IOException e) {
@@ -170,7 +170,7 @@ public class MainMenuController extends BaseController {
             Stage primaryStage = new Stage();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/gui/IPInputWindow/IPInputFrame.css").toExternalForm());
-            primaryStage.setTitle("Login");
+            primaryStage.setTitle("IP Input");
             primaryStage.setScene(scene);
             primaryStage.show();
 

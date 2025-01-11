@@ -116,7 +116,7 @@ public class LoginController extends BaseController {
         start(primaryStage, 
               "/gui/LibraryFramehWindow/LibraryFrame.fxml", 
               "/gui/LibraryFramehWindow/LibraryFrame.css", 
-              "Library Management Tool", 
+              "Login", 
               null, 
               "", 
               "-fx-text-fill: green;");
@@ -163,12 +163,12 @@ public class LoginController extends BaseController {
         openWindow(event, 
                    "/gui/SubscriberWindow/SubscriberWindow.fxml", 
                    "/gui/SubscriberWindow/SubscriberWindow.css", 
-                   "Library Management Tool");
+                   "Subsriber View");
     }
     private void navigateToLibrarianWindow(ActionEvent event) throws Exception {
         openWindow(event, 
                    "/gui/LibrarianWindow/LibrarianFrame.fxml", 
                    "/gui/LibrarianWindow/LibrarianFrame.css", 
-                   "Library Management Tool");
-}
+                   "Librarian View");
+    }
 }

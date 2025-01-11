@@ -86,7 +86,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         openWindow(event,
         		"/gui/MainMenu/MainMenuFrame.fxml",
         		"/gui/MainMenu/MainMenuFrame.css",
-        		"Library Management Tool");;
+        		"Main Menu");;
     }
    
    //***DONT DELETE IMPORTANT FOR LATER USE***
@@ -107,7 +107,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         openWindow(event,
         		"/gui/UpdateInfoWindow/UpdateInfoFrame.fxml",
         		"/gui/UpdateInfoWindow/UpdateInfoFrame.css",
-        		"Library Management Tool");;
+        		"Update Inforamtion");;
 	}
     
     
@@ -117,7 +117,7 @@ public class SubscriberWindowController extends BaseController implements Initia
 	   openWindow(event,
        		"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
        		"/gui/BorrowBookWindow/BorrowBookFrame.css",
-       		"Library Management Tool");;
+       		"Borrow a Book");;
 	}
     
      
@@ -148,7 +148,7 @@ public class SubscriberWindowController extends BaseController implements Initia
     	start(primaryStage,
     			"/gui/SubscriberWindow/SubscriberWindow.fxml",
     			"/gui/SubscriberWindow/SubscriberWindow.css", 
-    			"Library Managment Tool");
+    			"Subscriber View");
     }
 
     /**

@@ -82,7 +82,6 @@ public class IPInputController extends BaseController {
                 awaitingLoginText.setText("Invalid IP address.");
                 awaitingLoginText.setStyle("-fx-text-fill: red;");
                 System.out.println("ALERT: Invalid IP detected!");
-                Platform.runLater(() -> showAlert("Error", "Invalid IP address. Please try again."));
             } else {
                 awaitingLoginText.setText("Connected successfully to IP: " + ip);
                 awaitingLoginText.setStyle("-fx-text-fill: green;");
