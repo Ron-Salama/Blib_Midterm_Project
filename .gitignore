@@ -36,5 +36,5 @@ FullName_Emails_IDs.xlsx
 /.metadata/
 
 # Ignore ServerLog file.
-src\Server\src\logic\serverLog.txt
-src\Server\bin\logic\serverLog.txt
+src/Server/bin/logic/serverLog.txt
+src/Server/src/logic/serverLog.txt
