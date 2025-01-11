@@ -134,7 +134,6 @@ public class ChatClient extends AbstractClient
 	        BorrowedBookInfo = null;
 	    }
 	}
-
 	private void handleSubscriberData(String response) {
 	    l1.setLibrarian_id(-1); // Reset librarian data
 	    processSubscriberData(response);

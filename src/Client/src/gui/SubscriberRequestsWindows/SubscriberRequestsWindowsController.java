@@ -27,16 +27,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.Librarian;
+import logic.Subscriber;
+import gui.LibrarianWindow.LibrarianController;
+import gui.MainMenu.MainMenuController;
+import gui.SubscriberWindow.SubscriberWindowController;
+import gui.baseController.BaseController;
 
 public class SubscriberRequestsWindowsController extends BaseController implements Initializable {
     private SubscriberRequestsWindowsController srwc;
-
+    Librarian currentLibrarian = LibrarianController.currentLibrarian;
+    
     @FXML
     private Button btnExit = null;
 
     @FXML
     private Button btnSend = null;
-
+    @FXML
+    private Button btnBack = null;
+    
     @FXML
     private Label LBL1;
     @FXML
@@ -330,7 +339,13 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     			"/gui/MainMenu/MainMenuFrame.css",
     			"MainMenu");
     }
-
+    public void Back(ActionEvent event) throws Exception {
+        openWindow(event,
+                "/gui/LibrarianWindow/LibrarianFrame.fxml",
+                "/gui/LibrarianWindow/LibrarianFrame.css",
+                "Librarian Window");
+    }
+    
     // Method to display messages (for debugging or logging)
     public void display(String message) {
         System.out.println(message);

@@ -25,5 +25,6 @@
       <Label fx:id="LBL5" layoutX="127.0" layoutY="356.0" text="Request Type:" />
       <ComboBox fx:id="RequestCB" layoutX="225.0" layoutY="159.0" prefWidth="150.0" />
       <Label layoutX="127.0" layoutY="163.0" text="Request" />
+      <Button id="btnExit" fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="Back" />
    </children>
 </AnchorPane>
