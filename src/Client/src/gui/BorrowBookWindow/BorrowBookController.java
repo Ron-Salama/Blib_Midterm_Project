@@ -62,6 +62,8 @@ public class BorrowBookController extends BaseController implements Initializabl
     private Button btnReserve = null;
     @FXML
     private Label Book_Description;
+    @FXML
+    private Label RequestStatus;
 
     String bookId = "";
     String bookName = "";
@@ -71,6 +73,11 @@ public class BorrowBookController extends BaseController implements Initializabl
     public void initialize(URL url, ResourceBundle resourceBundle) {
         awaitingTextID.setText("");
         btnReserve.setVisible(false);
+        
+        btnSubmitToLibrarian.setDisable(true); // Disable the borrow request button by default
+        
+     // Add an event handler to clear the details when the text field is clicked
+        IDtxt.setOnMouseClicked(event -> Clear());
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -81,6 +88,7 @@ public class BorrowBookController extends BaseController implements Initializabl
     }
 
     public void Submit(ActionEvent event) throws Exception {
+    	showColoredLabelMessageOnGUI(RequestStatus, "", "-fx-text-fill: black;");
         bookId = IDtxt.getText();
         ChatClient.awaitResponse = true; // Ensure waiting for response
         ClientUI.chat.accept("GetBookInfo:" + bookId);  // Request book info
@@ -90,6 +98,7 @@ public class BorrowBookController extends BaseController implements Initializabl
         pause.setOnFinished(e -> {
             if (ChatClient.BorrowedBookInfo != null) {
                 Book_Description.setText(
+                	"Book Details:\n" +
                     "Book ID: " + bookId + "\n" +
                     "Book Name: " + ChatClient.BorrowedBookInfo[1] + "\n" +
                     "Subject: " + ChatClient.BorrowedBookInfo[2] +"\n" +
@@ -104,14 +113,18 @@ public class BorrowBookController extends BaseController implements Initializabl
                     borrowStatus = "NO_COPIES";
                     btnReserve.setVisible(true);
                     awaitingTextID.setText("There are no more Copies of the book " + bookName + "\nWould you like to Reserve it?");
+                    btnSubmitToLibrarian.setDisable(true); // Disable if no copies
                 } else {
                     borrowStatus = "CAN_BORROW";
                     awaitingTextID.setText("");
                     btnReserve.setVisible(false);
+                    btnSubmitToLibrarian.setDisable(false); // Enable the button if book is available
                 }
             } else {
                 borrowStatus = "BOOK_NOT_FOUND";
                 Book_Description.setText("No Book Found");
+                btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found
+                
             }
         });
         pause.play();
@@ -125,22 +138,36 @@ public class BorrowBookController extends BaseController implements Initializabl
             
             String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + subscriberId + "," + subscriberId;
             ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
-
+            
             // Feedback to the user
-            showAlert("Success", "Borrow request submitted successfully!\nAwaiting Librarian approval");
+            showColoredLabelMessageOnGUI(RequestStatus, "Borrow request submitted successfully!\nAwaiting Librarian approval", "-fx-text-fill: green;");
+            btnSubmitToLibrarian.setDisable(true); // Optionally disable the button after submitting
         } else {
             String errorMessage = getErrorMessage(borrowStatus); // Get appropriate error message
-            showAlert("Error", errorMessage);
+            showColoredLabelMessageOnGUI(RequestStatus, errorMessage, "-fx-text-fill: red;");
         }
     }
 
     public void Submit_Reserve_Request(ActionEvent event) throws Exception {
         if ("NO_COPIES".equals(borrowStatus)) {
             // Proceed with reservation logic
-            showAlert("Success", "You have successfully reserved the book.");
+        	showColoredLabelMessageOnGUI(RequestStatus, "You have successfully reserved the book.", "-fx-text-fill: green;");
         } else {
-            showAlert("Error", "Book is available, no need to reserve.");
+        	showColoredLabelMessageOnGUI(RequestStatus, "Book is available, no need to reserve.", "-fx-text-fill: red;");
         }
+    }
+    
+    
+    public void Clear() {
+    	 // Clear the text field for the book ID
+        IDtxt.clear();
+        
+        // Clear the details displayed on the window
+        Book_Description.setText("");
+        awaitingTextID.setText("");
+        RequestStatus.setText("");
+        btnReserve.setVisible(false); // Hide the Reserve button if visible
+        btnSubmitToLibrarian.setDisable(true); // Disable the borrow request button
     }
 
     public void openSearchWindow(ActionEvent event) throws Exception {
