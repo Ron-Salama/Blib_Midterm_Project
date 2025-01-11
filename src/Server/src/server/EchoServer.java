@@ -250,7 +250,7 @@ public class EchoServer extends AbstractServer {
 
             if (idExists) {
                 // If the ID already exists, send a response to the client
-                client.sendToClient("Request for Register failed: ID " + RegisterId + " already exists.");
+                client.sendToClient("RegistrationFailed: Request for Register failed, ID " + RegisterId + " already exists.");
             } else {
                 // If the ID doesn't exist, proceed with the insertRequest
                 ConnectToDb.insertRequest(dbConnection, 
@@ -263,7 +263,7 @@ public class EchoServer extends AbstractServer {
                                            returnTime,             // returnTime (empty string if not available)
                                            extendTime);            // extendTime (empty string if not available)
 
-                client.sendToClient("Request for Register successful!");
+                client.sendToClient("RegistrationSucceed: Request for Register successful!");
             }
         } catch (Exception e) {
             client.sendToClient("An error occurred while processing the Register request: " + e.getMessage());

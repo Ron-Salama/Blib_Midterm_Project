@@ -40,6 +40,8 @@ public class ChatClient extends AbstractClient
   
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
+  
+  public static boolean isIDInDataBase;
   // Constructors ****************************************************
   
   /**
@@ -103,7 +105,12 @@ public class ChatClient extends AbstractClient
 	    	return;
 	    }else if (response.startsWith("FetchedRegisterRequests:")){
 	    	FetchedRegisterRequests(response.substring("FetchedRegisterRequests:".length()));
-	    } else {
+	    }else if (response.startsWith("RegistrationSucceed:")) {
+	    	handleRegisterRequestSuccess();
+  		}else if (response.startsWith("RegistrationFailed:")) {
+	    	handleRegisterRequestFailed();
+	    }
+	    else {
 	    	handleUnknownResponse(response);
 	    }
 	}
@@ -311,6 +318,15 @@ public class ChatClient extends AbstractClient
 	private String extractValue(String part) {
       return part.split(":")[1].trim();
   }
+	
+	private void handleRegisterRequestFailed() {
+		isIDInDataBase = true;
+	}
+	
+	private void handleRegisterRequestSuccess() {
+		isIDInDataBase = false;
+	}
+	
 	/**
 	 * This method terminates the client.
 	 */

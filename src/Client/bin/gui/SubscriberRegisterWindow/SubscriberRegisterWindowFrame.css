@@ -1,16 +1,88 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-/* #btnStudentInfo {*/
-
-/*TODO: Subscriber window */
-
-.button {	-fx-font-size: 14px ;
-	/*-fx-background-color: rgba(255, 255, 255, .80);*/
-	-fx-background-color: blue;
-	-fx-text-fill: red;
-	-fx-padding: 6 6 6 6;
-	-fx-border-radius: 20;
-	-fx-font-weight : bold;
-}
+/* General root styling */
 .root {
-	-fx-background-color: #deb887;
+    -fx-background-color: #f4f4f9; /* Light background color */
+}
+
+/* Styling for Buttons */
+.button {
+    -fx-font-size: 14px;
+    -fx-background-color: #007bff; /* Blue background for buttons */
+    -fx-text-fill: #ffffff; /* White text color */
+    -fx-padding: 8 16 8 16; /* Padding for a better button size */
+    -fx-border-radius: 20; /* Rounded corners for buttons */
+    -fx-font-weight: bold; /* Bold font for buttons */
+    -fx-cursor: hand; /* Change cursor to hand pointer */
+}
+
+/* Hover effect for Buttons */
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker blue when hovered */
+}
+
+/* Label styling */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: normal; /* Regular weight for labels */
+    -fx-text-fill: #333333; /* Dark text color for contrast */
+    -fx-padding: 5 0; /* Padding for spacing */
+}
+
+/* Text Field styling */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff; /* White background for text fields */
+    -fx-border-radius: 5; /* Slightly rounded corners */
+    -fx-border-color: #cccccc; /* Light grey border */
+    -fx-padding: 5 10; /* Padding inside text fields */
+}
+
+/* Focused Text Field styling (when user clicks on it) */
+.text-field:focused {
+    -fx-border-color: #007bff; /* Blue border when focused */
+}
+
+/* Text Styling */
+.text {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold; /* Bold font for titles */
+    -fx-fill: #333333; /* Dark color for text */
+}
+
+/* Specific adjustments for Labels and Fields in Update Info Form */
+#lblSubscriber_id, #lblSubscriber_name, #lblPhoneNumber, #lblSubscriber_email {
+    -fx-font-size: 14px; /* Consistent font size for labels */
+    -fx-font-weight: bold; /* Bold labels for better readability */
+    -fx-text-fill: #000000; /* Black text for better contrast */
+}
+
+#txtSubscriber_name, #txtSubscriber_phoneNumber, #txtSubscriber_email {
+    -fx-background-color: #f9f9f9; /* Light background for text fields */
+    -fx-border-color: #dddddd; /* Subtle border for text fields */
+}
+
+#btnReturnToMainMenu, #btnUpdate {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-color: #28a745; /* Green background for back and update buttons */
+    -fx-text-fill: #ffffff; /* White text for contrast */
+    -fx-border-radius: 8; /* Rounded corners */
+    -fx-padding: 10 20; /* Spacing inside buttons */
+}
+
+/* Hover effect for Update button */
+#btnUpdate:hover {
+    -fx-background-color: #218838; /* Darker green on hover */
+}
+
+/* Styling for separator lines */
+.line {
+    -fx-stroke: #cccccc; /* Light grey color for lines */
+    -fx-stroke-width: 1; /* Thickness of the lines */
+}
+
+/* Title Text styling */
+#text {
+    -fx-font-size: 20px; /* Larger font for the title */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-fill: #000000; /* Dark color for text */
 }

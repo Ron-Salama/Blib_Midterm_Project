@@ -8,15 +8,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController">
    <children>
-      <Label id="lblSubscriber_id" layoutX="197.0" layoutY="107.0" text="ID:" />
-      <Label id="lblSubscriber_name" layoutX="193.0" layoutY="149.0" text="Full Name:" />
-      <Label id="lblPhoneNumber" layoutX="197.0" layoutY="190.0" text="Phone Number:" />
-      <Label id="lblSubscriber_email" layoutX="188.0" layoutY="231.0" text="Email:" />
+      <Label id="lblSubscriber_id" layoutX="125.0" layoutY="105.0" text="ID:" />
+      <Label id="lblSubscriber_name" layoutX="124.0" layoutY="149.0" text="Full Name:" />
+      <Label id="lblPhoneNumber" layoutX="124.0" layoutY="190.0" text="Phone Number:" />
+      <Label id="lblSubscriber_email" layoutX="124.0" layoutY="231.0" text="Email:" />
       
       <Button id="btnReturnToMainMenu" fx:id="btnReturnToMainMenu" layoutX="500.0" layoutY="1.0" mnemonicParsing="false" onAction="#btnReturnToMainMenu" text="Return to Main Menu" />
-      <Button id="btnRegister" fx:id="btnRegister" layoutX="227.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnRegister" prefHeight="86.0" prefWidth="182.0" text="Register">
+      <Button id="btnRegister" fx:id="btnRegister" layoutX="227.0" layoutY="461.0" mnemonicParsing="false" onAction="#btnRegister" prefHeight="86.0" prefWidth="182.0" text="Register">
          <font>
             <Font size="32.0" />
          </font>
@@ -31,5 +31,6 @@
       
       <Text layoutX="227.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register to The Library" />
       <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="299.0" layoutY="103.0" />
+      <Label id="registerDynamicLabel" fx:id="registerDynamicLabel" layoutX="123.0" layoutY="271.0" />
    </children>
 </AnchorPane>
