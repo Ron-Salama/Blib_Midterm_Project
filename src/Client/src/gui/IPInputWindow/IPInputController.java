@@ -83,7 +83,7 @@ public class IPInputController extends BaseController {
                
             } else {
             	String labelMessage = "Connected successfully to IP: " + ip;
-            	showColoredLabelMessageOnGUI(welcomeLabel, labelMessage, "-fx-text-fill: green;");
+            	showColoredLabelMessageOnGUI(awaitingLoginText, labelMessage, "-fx-text-fill: green;");
                 System.out.println("Connected successfully to IP: " + ip);
 
                 PauseTransition pause1 = new PauseTransition(javafx.util.Duration.seconds(1));

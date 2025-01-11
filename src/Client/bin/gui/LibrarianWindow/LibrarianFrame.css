@@ -1,16 +1,104 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-/* #btnStudentInfo {*/
-
-/*TODO: Subscriber window */
-
-.button {	-fx-font-size: 14px ;
-	/*-fx-background-color: rgba(255, 255, 255, .80);*/
-	-fx-background-color: blue;
-	-fx-text-fill: red;
-	-fx-padding: 6 6 6 6;
-	-fx-border-radius: 20;
-	-fx-font-weight : bold;
-}
+/* General styling for the root layout */
 .root {
-	-fx-background-color: #deb887;
+    -fx-background-color: linear-gradient(to bottom, #e8f1f2, #cde7f0); /* Light blue gradient */
+    -fx-padding: 30px; /* Spacious padding for comfortable layout */
+}
+
+/* Title styling for greeting label */
+#greetingLabel {
+    -fx-font-size: 45px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to right, #f39c12, #d35400); /* Vibrant orange gradient */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 2, 2); /* Subtle shadow for depth */
+    -fx-text-alignment: center;
+}
+
+/* General button styling */
+.button {
+    -fx-text-fill: white; /* White text for all buttons */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 10px; /* Rounded corners */
+    -fx-padding: 8px 15px; /* Comfortable padding */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 2); /* Shadow for depth */
+}
+
+/* View Reports button */
+#btnViewReports {
+    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); /* Green gradient */
+    -fx-border-color: #388e3c; /* Border matches bottom color */
+    -fx-border-width: 2px;
+}
+
+#btnViewReports:hover {
+    -fx-background-color: linear-gradient(to bottom, #388e3c, #4caf50); /* Reverse gradient on hover */
+    -fx-border-color: #4caf50;
+    -fx-cursor: hand;
+}
+
+/* Subscriber Requests button */
+#btnSubscriberRequests {
+    -fx-background-color: linear-gradient(to bottom, #ff9800, #f57c00); /* Orange gradient */
+    -fx-border-color: #f57c00;
+    -fx-border-width: 2px;
+}
+
+#btnSubscriberRequests:hover {
+    -fx-background-color: linear-gradient(to bottom, #f57c00, #ff9800); /* Reverse gradient on hover */
+    -fx-border-color: #ff9800;
+    -fx-cursor: hand;
+}
+
+/* Search Book button */
+#btnSearchBook {
+    -fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2); /* Blue gradient */
+    -fx-border-color: #1976d2;
+    -fx-border-width: 2px;
+}
+
+#btnSearchBook:hover {
+    -fx-background-color: linear-gradient(to bottom, #1976d2, #2196f3); /* Reverse gradient on hover */
+    -fx-border-color: #2196f3;
+    -fx-cursor: hand;
+}
+
+/* Search Subscriber button */
+#btnSearchSubscriber {
+    -fx-background-color: linear-gradient(to bottom, #9c27b0, #7b1fa2); /* Purple gradient */
+    -fx-border-color: #7b1fa2;
+    -fx-border-width: 2px;
+}
+
+#btnSearchSubscriber:hover {
+    -fx-background-color: linear-gradient(to bottom, #7b1fa2, #9c27b0); /* Reverse gradient on hover */
+    -fx-border-color: #9c27b0;
+    -fx-cursor: hand;
+}
+
+/* Return to Main Menu button */
+#btnReturnToMainMenu {
+    -fx-background-color: linear-gradient(to bottom, #607d8b, #455a64); /* Gray-blue gradient */
+    -fx-border-color: #455a64;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+}
+
+#btnReturnToMainMenu:hover {
+    -fx-background-color: linear-gradient(to bottom, #455a64, #607d8b); /* Reverse gradient on hover */
+    -fx-border-color: #607d8b;
+    -fx-cursor: hand;
+}
+
+/* Exit button */
+#btnExit {
+    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); /* Red gradient */
+    -fx-border-color: #c0392b;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+}
+
+#btnExit:hover {
+    -fx-background-color: linear-gradient(to bottom, #c0392b, #e74c3c); /* Reverse gradient on hover */
+    -fx-border-color: #e74c3c;
+    -fx-cursor: hand;
 }

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="207.0" prefWidth="246.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
+<AnchorPane prefHeight="286.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
    <children>
       <!-- Welcome Label -->
       <Label fx:id="welcomeLabel" layoutX="40.0" layoutY="10.0" prefWidth="280.0" text="Welcome to Blib system">
@@ -38,6 +38,6 @@
       <Button id="btnSubscriberInfo" fx:id="btnSend" layoutX="300.0" layoutY="84.0" mnemonicParsing="false" onAction="#Send" text="Send" />
 
       <!-- Exit Button -->
-      <Button id="btnExit" fx:id="btnExit" layoutX="308.0" layoutY="260.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit" />
+      <Button id="btnExit" fx:id="btnExit" layoutX="358.0" layoutY="272.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit" />
    </children>
 </AnchorPane>

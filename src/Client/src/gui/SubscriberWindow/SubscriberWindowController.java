@@ -1,8 +1,7 @@
 package gui.SubscriberWindow;
 
-import java.awt.Image;
-import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
@@ -10,16 +9,12 @@ import gui.SearchWindow.SearchFrameController;
 import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import logic.Subscriber;
+
 
 /**
  * The SubscriberWindowController class manages the Subscriber Window in the GUI.
@@ -45,18 +40,26 @@ public class SubscriberWindowController extends BaseController implements Initia
     @FXML
     private Button btnBorrow = null;
     
+    @FXML
+    private Label greetingLabel = null;
+    
     /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
     @FXML
     private Button btnUpdate = null;
     
-    @FXML
-    private ImageView avatarImageView;
     
+    /**
+     * Initializes the SubscriberWindowController.
+     * This method is called automatically when the FXML file is loaded.
+     * 
+     * @param arg0 the location of the FXML file
+     * @param arg1 the resources for the FXML file
+     */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		ChangeWelcomeLabelByTheTimeOfDay();
 	}
 	
     public static Subscriber currentSubscriber = new Subscriber(ChatClient.s1.getSubscriber_id(),ChatClient.s1.getDetailed_subscription_history(),ChatClient.s1.getSubscriber_name(),ChatClient.s1.getSubscriber_phone_number(),ChatClient.s1.getSubscriber_email());
@@ -137,14 +140,25 @@ public class SubscriberWindowController extends BaseController implements Initia
     			"Subscriber View");
     }
 
-    /**
-     * Initializes the SubscriberWindowController.
-     * This method is called automatically when the FXML file is loaded.
-     * 
-     * @param arg0 the location of the FXML file
-     * @param arg1 the resources for the FXML file
-     */
-
-
-
+    private void ChangeWelcomeLabelByTheTimeOfDay() {
+    	LocalDateTime time = LocalDateTime.now();
+    	String[] timeSplit = time.toString().split("T");
+    	String hour = timeSplit[1].substring(0, 2);
+    	
+    	String message;
+    	
+    	 int hourOfDay = Integer.parseInt(hour);
+    	 
+    	 if (hourOfDay < 12) {
+    		 message = "Good Morning, " + currentSubscriber.getSubscriber_name();
+    	 }
+    	 else if (hourOfDay >= 12 && 18 > hourOfDay) {
+    		 message = "Good Afternoon, " + currentSubscriber.getSubscriber_name();
+    	 }
+    	 else {
+    		 message = "Good Night, " + currentSubscriber.getSubscriber_name();
+    	 }
+    	 
+    	 showColoredLabelMessageOnGUI(greetingLabel, message, "-fx-text-fill: black;");
+    }
 }

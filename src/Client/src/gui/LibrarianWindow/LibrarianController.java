@@ -1,22 +1,18 @@
 package gui.LibrarianWindow;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
 import gui.SearchWindow.SearchFrameController;
+import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
+import javafx.scene.control.Label;
 import logic.Librarian;
-import logic.Subscriber;
-import gui.baseController.BaseController;
 
 public class LibrarianController extends BaseController implements Initializable  {
     private LibrarianController lc;
@@ -41,6 +37,14 @@ public class LibrarianController extends BaseController implements Initializable
     @FXML
     private Button btnViewReports = null;
 
+    @FXML
+    private Label greetingLabel = null;
+        
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+    	ChangeWelcomeLabelByTheTimeOfDay();
+    }
+    
     public void getExitBtn(ActionEvent event) throws Exception {
 		System.out.println("exit Library Tool");	
 		System.exit(1);
@@ -101,9 +105,26 @@ public class LibrarianController extends BaseController implements Initializable
     			"/gui/MainMenu/MainMenuFrame.css",
     			"Main Menu");
     }
-
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // Initialization logic, if needed
+    
+    private void ChangeWelcomeLabelByTheTimeOfDay() {
+    	LocalDateTime time = LocalDateTime.now();
+    	String[] timeSplit = time.toString().split("T");
+    	String hour = timeSplit[1].substring(0, 2);
+    	
+    	String message;
+    	
+    	 int hourOfDay = Integer.parseInt(hour);
+    	 
+    	 if (hourOfDay < 12) {
+    		 message = "Good Morning, " + currentLibrarian.getLibrarian_name();
+    	 }
+    	 else if (hourOfDay >= 12 && 18 > hourOfDay) {
+    		 message = "Good Afternoon, " + currentLibrarian.getLibrarian_name();
+    	 }
+    	 else {
+    		 message = "Good Night, " + currentLibrarian.getLibrarian_name();
+    	 }
+    	 
+    	 showColoredLabelMessageOnGUI(greetingLabel, message, "-fx-text-fill: black;");
     }
 }
