@@ -245,22 +245,34 @@ public class EchoServer extends AbstractServer {
             String returnTime = ""; // Leave empty if not used
             String extendTime = ""; // Leave empty if not used
 
-            // Send the data to insertRequest
-            ConnectToDb.insertRequest(dbConnection, 
-                                       "Request For Register", // requestType
-                                       RegisterId,             // requestedByID
-                                       RegisterName,           // requestedByName
-                                       RegisterEmail,                 // bookName
-                                       RegisterPhone,             // bookId
-                                       borrowTime,               // borrowTime (empty string if not available)
-                                       returnTime,               // returnTime (empty string if not available)
-                                       extendTime);              // extendTime (empty string if not available)
+            // Check if the RegisterId already exists in the database
+            boolean idExists = ConnectToDb.checkIfIdExists(dbConnection, RegisterId);
+
+            if (idExists) {
+                // If the ID already exists, send a response to the client
+                client.sendToClient("Request for Register failed: ID " + RegisterId + " already exists.");
+            } else {
+                // If the ID doesn't exist, proceed with the insertRequest
+                ConnectToDb.insertRequest(dbConnection, 
+                                           "Request For Register", // requestType
+                                           RegisterId,             // requestedByID
+                                           RegisterName,           // requestedByName
+                                           RegisterEmail,          // bookName
+                                           RegisterPhone,          // bookId
+                                           borrowTime,             // borrowTime (empty string if not available)
+                                           returnTime,             // returnTime (empty string if not available)
+                                           extendTime);            // extendTime (empty string if not available)
+
+                client.sendToClient("Request for Register successful!");
+            }
         } catch (Exception e) {
             client.sendToClient("An error occurred while processing the Register request: " + e.getMessage());
             e.printStackTrace();
         }
+
         
    }
+    
     private void handleBorrowRequestCase(ConnectionToClient client, String body) throws IOException {
     	 outputInOutputStreamAndLog("Received BorrowRequest from client");
          String[] borrowParts = body.split(",");

@@ -65,7 +65,8 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
 
         // Send the update message to the server
         ClientUI.chat.accept("RegisterRequest:"+obj);
-
+        //add feedback to updateded successfuly (YUVAL) !!!!!
+        
     }
     
     public void btnReturnToMainMenu(ActionEvent event) {

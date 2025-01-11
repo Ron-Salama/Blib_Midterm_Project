@@ -38,7 +38,8 @@ import gui.baseController.*;
  * validating it, and navigating to the main menu if the connection is successful.</p>
  */
 public class BorrowBookController extends BaseController implements Initializable {
-
+    Subscriber currentSub = SubscriberWindowController.currentSubscriber;
+    
     @FXML
     private Button btnExit = null;
 

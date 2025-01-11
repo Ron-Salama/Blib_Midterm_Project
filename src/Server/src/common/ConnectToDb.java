@@ -108,7 +108,19 @@ public class ConnectToDb {
         }
     }
     
-    
+    public static boolean checkIfIdExists(Connection dbConnection, String RegisterId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
+        try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
+            stmt.setString(1, RegisterId);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // If count > 0, the ID exists
+            }
+        }
+        return false; // Default to false if no records are found
+    }
+
     public static List<String> fetchBooksData(Connection conn) {
         String query = "SELECT * FROM blib.books"; // Adjust the query as needed
 

@@ -3,6 +3,7 @@ package gui.LibrarianWindow;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import client.ChatClient;
 import gui.SearchWindow.SearchFrameController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,11 +14,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import logic.Librarian;
+import logic.Subscriber;
 import gui.baseController.BaseController;
 
 public class LibrarianController extends BaseController implements Initializable  {
     private LibrarianController lc;
-
+    
+    public static Librarian currentLibrarian = new Librarian(ChatClient.l1.getLibrarian_id(),ChatClient.l1.getLibrarian_name());
+    
     @FXML
     private Button btnExit = null;
 
@@ -82,17 +87,11 @@ public class LibrarianController extends BaseController implements Initializable
     
     
     public void navigateToSearchWindow(ActionEvent event) throws Exception {
-    	SearchFrameController.FlagForSearch = "Librarian";
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/SearchWindow/SearchFrame.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("Library Management Tool");
-        stage.show();
+        SearchFrameController.FlagForSearch = "Librarian";
+        openWindow(event,
+                "/gui/SearchWindow/SearchFrame.fxml",
+                "/gui/SearchWindow/SearchFrame.css",
+                "Search a Book");
     }
 
     public void navigateToMainMenu(ActionEvent event) throws Exception {
