@@ -76,37 +76,25 @@ public class LibrarianController extends BaseController implements Initializable
         openWindow(event, 
                 "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml", 
                 "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.css", 
-                "Library Management Tool");
+                "Subscriber Requests Window");
     	
     }
     
     
     public void navigateToSearchWindow(ActionEvent event) throws Exception {
     	SearchFrameController.FlagForSearch = "Librarian";
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/SearchWindow/SearchFrame.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("Library Management Tool");
-        stage.show();
+    	openWindow(event,
+    			"/gui/SearchWindow/SearchFrame.fxml",
+    			"/gui/SearchWindow/SearchFrame.css",
+    			"Search a Book");
     }
 
     public void navigateToMainMenu(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("Library Management Tool");
-        stage.show();
-        SearchFrameController.FlagForSearch = "";
+    	SearchFrameController.FlagForSearch = "";
+    	openWindow(event,
+    			"/gui/MainMenu/MainMenuFrame.fxml",
+    			"/gui/MainMenu/MainMenuFrame.css",
+    			"Main Menu");
     }
 
     @Override
