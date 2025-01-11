@@ -23,7 +23,11 @@ public class ServerPortFrameController extends BaseController{
 	private Label lbllist;
 	
 	@FXML
+	private Label dynamicLabel;
+	
+	@FXML
 	private TextField portxt;
+	
 	ObservableList<String> list;
 	
 	private String getport() {
@@ -35,8 +39,8 @@ public class ServerPortFrameController extends BaseController{
 		
 		p=getport();
 		if(p.trim().isEmpty()) {
+			showColoredLabelMessageOnGUI(dynamicLabel, "You must enter a port number.", "-fx-text-fill: red;");
 			System.out.println("You must enter a port number");
-					
 		}
 		else
 		{
@@ -58,7 +62,7 @@ public class ServerPortFrameController extends BaseController{
 	}
 	
 	public void getExitBtn(ActionEvent event) throws Exception {
-		System.out.println("exit Academic Tool");
+		System.out.println("BLib Server Exit");
 		System.exit(0);			
 	}
 }

@@ -119,4 +119,16 @@ public abstract class BaseController {
         alert.showAndWait();
     }
     
+    /**
+     * Displays a message in a specified Label with a given style.
+     * Note: The label is supposed to be empty beforehand.
+     *
+     * @param label   The Label where the message will be displayed.
+     * @param message The message to display in the Label.
+     * @param color   The CSS style string specifying the color or other visual properties.
+     */
+    protected void showColoredLabelMessageOnGUI(Label label, String message, String color) {
+    	label.setText(message);
+        label.setStyle(color);
+    }
 }
