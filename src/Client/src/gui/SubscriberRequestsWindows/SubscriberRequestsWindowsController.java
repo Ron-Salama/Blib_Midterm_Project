@@ -10,6 +10,8 @@ import java.util.Set;
 
 import client.ChatClient;
 import client.ClientUI;
+import gui.MainMenu.MainMenuController;
+import gui.baseController.BaseController;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,13 +21,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.Subscriber;
-import gui.MainMenu.MainMenuController;
 
-public class SubscriberRequestsWindowsController implements Initializable {
+public class SubscriberRequestsWindowsController extends BaseController implements Initializable {
     private SubscriberRequestsWindowsController srwc;
 
     @FXML
@@ -322,23 +325,10 @@ public class SubscriberRequestsWindowsController implements Initializable {
     }
     // Method to handle Exit button click
     public void getExitBtn(ActionEvent event) throws Exception {
-        try {
-            ((Node) event.getSource()).getScene().getWindow().hide();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu/MainMenuFrame.fxml"));
-            Pane root = loader.load();
-
-            MainMenuController mainMenuController = loader.getController();
-
-            Stage primaryStage = new Stage();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/gui/MainMenu/MainMenuFrame.css").toExternalForm());
-            primaryStage.setTitle("MainMenu");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	openWindow(event,
+    			"/gui/MainMenu/MainMenuFrame.fxml",
+    			"/gui/MainMenu/MainMenuFrame.css",
+    			"MainMenu");
     }
 
     // Method to display messages (for debugging or logging)

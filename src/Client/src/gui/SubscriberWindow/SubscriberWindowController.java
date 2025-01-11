@@ -86,7 +86,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         openWindow(event,
         		"/gui/MainMenu/MainMenuFrame.fxml",
         		"/gui/MainMenu/MainMenuFrame.css",
-        		"Main Menu");;
+        		"Library Management Tool");;
     }
    
    //***DONT DELETE IMPORTANT FOR LATER USE***

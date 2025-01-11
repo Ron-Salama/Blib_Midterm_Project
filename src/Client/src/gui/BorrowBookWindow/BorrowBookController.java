@@ -76,7 +76,7 @@ public class BorrowBookController extends BaseController implements Initializabl
         start(primaryStage, 
               "/gui/BorrowBookWindow/BorrowBookFrame.fxml", 
               "/gui/BorrowBookWindow/BorrowBookFrame.css", 
-              "Library Management Tool");
+              "Borrow a Book");
     }
 
     public void Submit(ActionEvent event) throws Exception {
@@ -154,7 +154,7 @@ public class BorrowBookController extends BaseController implements Initializabl
         openWindow(event,
                 "/gui/SubscriberWindow/SubscriberWindow.fxml",
                 "/gui/SubscriberWindow/SubscriberWindow.css",
-                "MainMenu");
+                "Subscriber View");
     }
 
     public void Main_Menu(ActionEvent event) throws Exception {

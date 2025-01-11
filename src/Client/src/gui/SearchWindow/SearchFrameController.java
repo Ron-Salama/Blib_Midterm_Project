@@ -2,6 +2,7 @@ package gui.SearchWindow;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -88,19 +89,7 @@ public class SearchFrameController extends BaseController implements Initializab
         tableLocation.setCellValueFactory(new PropertyValueFactory<Book, String>("location"));
         
         // Add subjects to the ComboBox
-        subjectInput.getItems().add("");  // Empty string for clear selection
-        subjectInput.getItems().add("Fantasy");
-        subjectInput.getItems().add("Fiction");
-        subjectInput.getItems().add("History");
-        subjectInput.getItems().add("Romance");
-        subjectInput.getItems().add("Epic");
-        subjectInput.getItems().add("Drama");
-        subjectInput.getItems().add("Historical");
-        subjectInput.getItems().add("Mystery");
-        subjectInput.getItems().add("Thriller");
-        subjectInput.getItems().add("Dystopian");
-
-        subjectInput.setValue(""); 
+        addSubjectsToComboBox();
 
         if(FlagForSearch=="") {
         	btnBackF.setVisible(false);
@@ -213,21 +202,40 @@ public class SearchFrameController extends BaseController implements Initializab
 	    	openWindow(event,
 	    			"/gui/SubscriberWindow/SubscriberWindow.fxml",
 	    			"/gui/SubscriberWindow/SubscriberWindow.css",
-	    			"MainMenu");
+	    			"Subscriber View");
 	    	FlagForSearch = "";
     	}else if(FlagForSearch=="Librarian") {
 	    	openWindow(event,
 	    			"/gui/LibrarianWindow/LibrarianFrame.fxml",
 	    			"/gui/LibrarianWindow/LibrarianFrame.css",
-	    			"MainMenu");
+	    			"Librarian View");
 	    	FlagForSearch = "";
     	}else if(FlagForSearch=="SubscriberBorrower") {
     		openWindow(event,
 	    			"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
 	    			"/gui/BorrowBookWindow/BorrowBookFrame.css",
-	    			"MainMenu");
+	    			"Borrow a Book");
     		FlagForSearch = "";
     	}
-
+    }
+    
+    public void addSubjectsToComboBox(){
+    	ArrayList<String> subjects = new ArrayList<>(Arrays.asList(
+    	    "",          // Empty string for clear selection
+    	    "Fantasy",
+    	    "Fiction",
+    	    "History",
+    	    "Romance",
+    	    "Epic",
+    	    "Drama",
+    	    "Historical",
+    	    "Mystery",
+    	    "Thriller",
+    	    "Dystopian"
+    	));
+    	
+    	// Adding items to subjectInput (assuming subjectInput is already defined)
+    	subjectInput.getItems().addAll(subjects);
+        subjectInput.setValue(""); 
     }
 }
