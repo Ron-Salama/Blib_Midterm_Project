@@ -130,7 +130,7 @@ public class ChatClient extends AbstractClient
 	          */
 	        }
 	    } catch (Exception e) {
-	        System.out.println("Error handling book info: " + e.getMessage());
+	        System.err.println("Error handling book info: " + e.getMessage());
 	        BorrowedBookInfo = null;
 	    }
 	}
@@ -152,9 +152,11 @@ public class ChatClient extends AbstractClient
 	private void handleUpdateSubInfoSuccess() {
 		alertIndicator = true;
 	}
+	
 	private void handleUpdateSubInfoFail() {
 		alertIndicator = false;
 	}
+	
 	private void FetchedRegisterRequests(String data) {
 	    br.clear(); // Clear the existing list to avoid appending duplicate data
 
@@ -174,6 +176,7 @@ public class ChatClient extends AbstractClient
 	        }
 	    }
 	}
+	
 	private void handleFetchedBorrowedBooks(String data) {
 	    br.clear(); // Clear the existing list to avoid appending duplicate data
 

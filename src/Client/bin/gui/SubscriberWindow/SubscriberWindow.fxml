@@ -11,7 +11,7 @@
    <children>
 
       <!-- Other buttons -->
-      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="193.0" layoutY="231.0" mnemonicParsing="false" onAction="#getbtnBorrow" prefHeight="75.0" prefWidth="160.0" text="Borrow">
+      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="193.0" layoutY="231.0" mnemonicParsing="false" onAction="#openBorrowWindow" prefHeight="75.0" prefWidth="160.0" text="Borrow">
          <font>
             <Font size="25.0" />
          </font>

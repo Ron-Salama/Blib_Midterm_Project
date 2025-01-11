@@ -76,7 +76,7 @@ public class UpdateInfoController extends BaseController implements Initializabl
 
         String obj = ""+id + "," + phoneNumber + "," + email;
 
-        ClientUI.chat.accept("Update:"+obj);
+        ClientUI.chat.accept("Update:" + obj);
         if(ChatClient.alertIndicator) {
             showAlert("Success", "You have successfully updated your personal information.");
         }else {
@@ -90,9 +90,4 @@ public class UpdateInfoController extends BaseController implements Initializabl
     			"/gui/SubscriberWindow/SubscriberWindow.css",
     			"MainMenu");
     }
-
-
-    
-    
-    
 }

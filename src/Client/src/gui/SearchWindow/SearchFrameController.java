@@ -197,6 +197,7 @@ public class SearchFrameController extends BaseController implements Initializab
     			"/gui/MainMenu/MainMenuFrame.css",
     			"MainMenu");
     }
+   
     public void backFromUser(ActionEvent event) {
     	if(FlagForSearch=="Subscriber") {
 	    	openWindow(event,

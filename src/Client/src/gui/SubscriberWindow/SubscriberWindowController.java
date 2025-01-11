@@ -86,7 +86,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         openWindow(event,
         		"/gui/MainMenu/MainMenuFrame.fxml",
         		"/gui/MainMenu/MainMenuFrame.css",
-        		"Library Management Tool");;
+        		"Main Menu");;
     }
    
    //***DONT DELETE IMPORTANT FOR LATER USE***
@@ -95,13 +95,12 @@ public class SubscriberWindowController extends BaseController implements Initia
 	}
     */
     
-   
-   
-	public void getbtnBorrow(ActionEvent event) throws Exception {
-	    openBorrowWindow(event);
+	public void openBorrowWindow(ActionEvent event) throws Exception {
+		openWindow(event,
+	       		"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
+	       		"/gui/BorrowBookWindow/BorrowBookFrame.css",
+	       		"Borrow a Book");;
 	}
-    
-    
     
 	public void update(ActionEvent event) throws Exception {
         openWindow(event,
@@ -109,19 +108,6 @@ public class SubscriberWindowController extends BaseController implements Initia
         		"/gui/UpdateInfoWindow/UpdateInfoFrame.css",
         		"Update Inforamtion");;
 	}
-    
-    
-    
-  
-   private void openBorrowWindow(ActionEvent event) {
-	   openWindow(event,
-       		"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
-       		"/gui/BorrowBookWindow/BorrowBookFrame.css",
-       		"Borrow a Book");;
-	}
-    
-     
-    
     
     //******DONT DELETE, THIS IS IMPORTANT FOR LATER FOR THE USE OF GOING TO THE MyBooks WINDOW AFTER PUSHING THE MyBooks BUTTON********
     /*private void openMyBooksWindow(ActionEvent event) {
