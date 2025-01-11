@@ -29,7 +29,7 @@ public class ClockController {
     /**
      * Returns the current date as a formatted string.
      *
-     * @return the current date in the format "yyyy-MM-dd"
+     * @return the current date in the format "dd-MM-yyyy"
      */
     public String getCurrentDate() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

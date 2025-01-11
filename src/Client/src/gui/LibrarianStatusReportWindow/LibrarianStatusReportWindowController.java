@@ -1,4 +1,4 @@
-package gui.LibrarianWindow;
+package gui.LibrarianStatusReportWindow;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -14,8 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import logic.Librarian;
 
-public class LibrarianController extends BaseController implements Initializable  {
-    private LibrarianController lc;
+// TODO: implement this page, add the reports in time as a third window.
+
+public class LibrarianStatusReportWindowController extends BaseController implements Initializable  {
     
     public static Librarian currentLibrarian = new Librarian(ChatClient.l1.getLibrarian_id(),ChatClient.l1.getLibrarian_name());
     

@@ -1,88 +1,48 @@
-/* General root styling */
-.root {
-    -fx-background-color: #deb887; /* Light brown background */
-}
-
-/* Styling for Buttons */
+/* General Button Styling */
 .button {
-    -fx-font-size: 14px;
-    -fx-background-color: #007bff; /* Blue background for buttons */
-    -fx-text-fill: #ffffff; /* White text color */
-    -fx-padding: 8 16 8 16; /* Padding for a better button size */
-    -fx-border-radius: 20; /* Rounded corners for buttons */
-    -fx-font-weight: bold; /* Bold font for buttons */
-    -fx-cursor: hand; /* Change cursor to hand pointer */
-}
-
-/* Hover effect for Buttons */
-.button:hover {
-    -fx-background-color: #0056b3; /* Darker blue when hovered */
-}
-
-/* Label styling */
-.label {
-    -fx-font-size: 14px;
-    -fx-font-weight: normal; /* Regular weight for labels */
-    -fx-text-fill: #333333; /* Dark text color for contrast */
-    -fx-padding: 5 0; /* Padding for spacing */
-}
-
-/* Text Field styling */
-.text-field {
-    -fx-font-size: 14px;
-    -fx-background-color: #ffffff; /* White background for text fields */
-    -fx-border-radius: 5; /* Slightly rounded corners */
-    -fx-border-color: #cccccc; /* Light grey border */
-    -fx-padding: 5 10; /* Padding inside text fields */
-}
-
-/* Focused Text Field styling (when user clicks on it) */
-.text-field:focused {
-    -fx-border-color: #007bff; /* Blue border when focused */
-}
-
-/* Text Styling */
-.text {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold; /* Bold font for titles */
-    -fx-fill: #333333; /* Dark color for text */
-}
-
-/* Specific adjustments for Labels and Fields in Update Info Form */
-#lblSubscriber_id, #lblSubscriber_name, #lblPhoneNumber, #lblSubscriber_email {
-    -fx-font-size: 14px; /* Consistent font size for labels */
-    -fx-font-weight: bold; /* Bold labels for better readability */
-    -fx-text-fill: #000000; /* Black text for better contrast */
-}
-
-#txtSubscriber_name, #txtSubscriber_phoneNumber, #txtSubscriber_email {
-    -fx-background-color: #f9f9f9; /* Light background for text fields */
-    -fx-border-color: #dddddd; /* Subtle border for text fields */
-}
-
-#btnReturnToMainMenu, #btnUpdate {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-background-color: #28a745; /* Green background for back and update buttons */
+    -fx-font-size: 16px; /* Increased font size for better readability */
+    -fx-font-weight: bold; /* Bold font for emphasis */
+    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); /* Green gradient for buttons */
     -fx-text-fill: #ffffff; /* White text for contrast */
-    -fx-border-radius: 8; /* Rounded corners */
-    -fx-padding: 10 20; /* Spacing inside buttons */
+    -fx-border-radius: 12px; /* Smooth rounded corners */
+    -fx-padding: 10 20; /* Ample padding for a comfortable button size */
+    -fx-cursor: hand; /* Pointer cursor on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0.5, 0, 2); /* Subtle shadow for depth */
 }
 
-/* Hover effect for Update button */
+/* Hover Effect */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #66bb6a, #43a047); /* Brighter green on hover */
+    -fx-scale-x: 1.05; /* Slight zoom on hover */
+    -fx-scale-y: 1.05;
+}
+
+/* Specific Styling for the Back Button */
+#btnReturnToMainMenu {
+    -fx-background-color: linear-gradient(to bottom, #6c757d, #5a6268); /* Neutral gray gradient */
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-border-radius: 10px; /* Rounded corners */
+    -fx-padding: 8 16; /* Slightly smaller padding for secondary button */
+}
+
+/* Hover Effect for Back Button */
+#btnReturnToMainMenu:hover {
+    -fx-background-color: linear-gradient(to bottom, #868e96, #6c757d); /* Brighter gray on hover */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Specific Styling for the Update Button */
+#btnUpdate {
+    -fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); /* Vibrant blue gradient */
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-font-size: 18px; /* Larger font for primary action */
+    -fx-border-radius: 15px; /* Rounder corners */
+    -fx-padding: 12 24; /* Spacious padding */
+}
+
+/* Hover Effect for Update Button */
 #btnUpdate:hover {
-    -fx-background-color: #218838; /* Darker green on hover */
-}
-
-/* Styling for separator lines */
-.line {
-    -fx-stroke: #cccccc; /* Light grey color for lines */
-    -fx-stroke-width: 1; /* Thickness of the lines */
-}
-
-/* Title Text styling */
-#text {
-    -fx-font-size: 20px; /* Larger font for the title */
-    -fx-font-weight: bold; /* Bold font */
-    -fx-fill: #000000; /* Dark color for text */
+    -fx-background-color: linear-gradient(to bottom, #3399ff, #007bff); /* Brighter blue on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 6, 0.6, 0, 3); /* Stronger shadow for emphasis */
 }
