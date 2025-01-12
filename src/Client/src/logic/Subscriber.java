@@ -20,6 +20,8 @@ public class Subscriber {
 
     /** The email address of the subscriber. */
     private String subscriber_email;
+    
+    private String status;
 
     /**
      * Constructs a new Subscriber with the specified details.
@@ -30,12 +32,13 @@ public class Subscriber {
      * @param subscriber_phone_number the phone number of the subscriber
      * @param subscriber_email the email address of the subscriber
      */
-    public Subscriber(int subscriber_id, int detailed_subscription_history, String subscriber_name, String subscriber_phone_number, String subscriber_email) {
+    public Subscriber(int subscriber_id, int detailed_subscription_history, String subscriber_name, String subscriber_phone_number, String subscriber_email, String status) {
         Subscriber_id = subscriber_id;
         this.detailed_subscription_history = detailed_subscription_history;
         this.subscriber_name = subscriber_name;
         this.subscriber_phone_number = subscriber_phone_number;
         this.subscriber_email = subscriber_email;
+        this.status = status;
     }
 
     /**
@@ -138,5 +141,13 @@ public class Subscriber {
         return "Subscriber [Subscriber_id=" + Subscriber_id + ", detailed_subscription_history=" + detailed_subscription_history + 
                ", subscriber_name=" + subscriber_name + ", subscriber_phone_number=" + subscriber_phone_number + 
                ", subscriber_email=" + subscriber_email + "]";
+    }
+    
+    public String getStatus() {
+    	return status;
+    }
+    
+    public void setStatus(String status) {
+    	this.status = status;
     }
 }

@@ -32,7 +32,7 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-  public static Subscriber s1 = new Subscriber(0, 0, null, null, null);
+  public static Subscriber s1 = new Subscriber(0, 0, null, null, null, null);
   public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
   public static List<String[][]> br = new ArrayList<>(); 
@@ -287,13 +287,15 @@ public class ChatClient extends AbstractClient
           String subscriptionHistory = extractValue(parts[2]);
           String phone = extractValue(parts[3]);
           String email = extractValue(parts[4]);
-
+          String status = extractValue(parts[5]);
+          
           // Set values to the Subscriber object
           s1.setSubscriber_id(Integer.parseInt(subscriberId));
           s1.setSubscriber_name(subscriberName);
           s1.setDetailed_subscription_history(Integer.parseInt(subscriptionHistory));
           s1.setSubscriber_phone_number(phone);
           s1.setSubscriber_email(email);
+          s1.setStatus(status);
       } catch (Exception e) {
           System.out.println("Error parsing subscriber data: " + e.getMessage());
           s1.setSubscriber_id(-1); // Mark as not found

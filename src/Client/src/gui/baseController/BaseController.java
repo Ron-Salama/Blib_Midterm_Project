@@ -1,5 +1,7 @@
 package gui.baseController;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,8 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import logic.Subscriber;
 
 /**
  * BaseController is an abstract class that provides utility methods for window and UI management 
@@ -130,5 +131,12 @@ public abstract class BaseController {
     protected void showColoredLabelMessageOnGUI(Label label, String message, String color) {
     	label.setText(message);
         label.setStyle(color);
+    }
+    
+    protected Boolean isSubsriberFrozen(Subscriber subscriber) {
+    	if (subscriber.getStatus().equals("Not Frozen")) {
+    		return false;
+    	}
+    	return true;
     }
 }
