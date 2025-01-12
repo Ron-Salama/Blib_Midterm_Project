@@ -131,6 +131,9 @@ public class EchoServer extends AbstractServer {
                     break;
                 case "GetDate": // Handle GetDate
                 	handleGetDate(client, body);
+                case "SubmitBorrowRequest": 
+                	SubmitBorrowRequest(client, body);
+                	
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -162,6 +165,12 @@ public class EchoServer extends AbstractServer {
         } else {
             client.sendToClient("ID does not exist.");
         }
+    }
+    private void SubmitBorrowRequest(ConnectionToClient client, String body) throws SQLException, IOException {
+
+       ConnectToDb.insertBorrowBook(dbConnection, body);
+       client.sendToClient("Borrowed Book Request Accepted & inserted into borrowed_book db");
+        
     }
     
     private void handleUpdateCase(ConnectionToClient client, String body) throws SQLException, IOException {
@@ -301,6 +310,8 @@ public class EchoServer extends AbstractServer {
                                             borrowTime,               // borrowTime (empty string if not available)
                                             returnTime,               // returnTime (empty string if not available)
                                             extendTime);              // extendTime (empty string if not available)
+                 
+                 ConnectToDb.decreaseNumCopies(dbConnection,bookBorrowId);
              } catch (Exception e) {
                  client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
                  e.printStackTrace();
@@ -312,7 +323,8 @@ public class EchoServer extends AbstractServer {
     	outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
 
          try {
-             String borrowRequests = ConnectToDb.fetchBorrowRequest(dbConnection);
+        	 String borrowRequests = ConnectToDb.fetchBorrowRequest(dbConnection);
+
              client.sendToClient("FetchedBorrowedBooks:"+borrowRequests);
          } catch (Exception e) {
              client.sendToClient("An error occurred while fetching the borrow request data: " + e.getMessage());

@@ -45,7 +45,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private Button btnSend = null;
     @FXML
     private Button btnBack = null;
-    
+    @FXML
+    private Button btnAccept = null;
+
     @FXML
     private Label LBL1;
     @FXML
@@ -56,7 +58,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private Label LBL4;
     @FXML
     private Label LBL5;
-
     @FXML
     private TextField TXTF1;
     @FXML
@@ -78,7 +79,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     
     private List<String[]> borrowRequests = new ArrayList<>();
     private List<String[]> RegisterRequests = new ArrayList<>();
-    
+    private String requestType = "";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize request types
@@ -122,6 +123,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
                 ClientUI.chat.accept("FetchBorrowRequest:");
+                requestType = "Borrow For Subscriber";
                 addDelay();
                 handleFetchedBorrowedBooks();
                 break;
@@ -371,4 +373,17 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    TXTF4.setText("");
 	    TXTF5.setText("");
 	}
+
+	public void acceptRequest(ActionEvent event) throws Exception {
+		if(requestType=="Borrow For Subscriber") {
+            String SName = TXTF1.getText();
+            String SID = TXTF2.getText();
+            String BName = TXTF3.getText();
+            String BID = TXTF4.getText();
+            String Btime = TXTF5.getText();
+            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime;
+			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
+		}
+	}
+
 }

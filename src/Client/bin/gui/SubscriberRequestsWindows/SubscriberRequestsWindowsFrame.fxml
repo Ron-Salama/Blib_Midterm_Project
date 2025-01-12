@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="477.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
+<AnchorPane prefHeight="545.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="408.0" layoutY="14.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit To Main Menu" />
       <Label layoutX="127.0" layoutY="82.0" text="Request Type:" />
@@ -19,12 +19,13 @@
       <Label fx:id="LBL1" layoutX="127.0" layoutY="201.0" text="Request Type:" />
       <Label fx:id="LBL2" layoutX="127.0" layoutY="240.0" text="Request Type:" />
       <Label fx:id="LBL3" layoutX="127.0" layoutY="281.0" text="Request Type:" />
-      <TextField fx:id="TXTF4" layoutX="225.0" layoutY="311.0" />
-      <Label fx:id="LBL4" layoutX="127.0" layoutY="315.0" text="Request Type:" />
+      <TextField fx:id="TXTF4" layoutX="225.0" layoutY="314.0" />
+      <Label fx:id="LBL4" layoutX="127.0" layoutY="317.0" text="Request Type:" />
       <TextField fx:id="TXTF5" layoutX="225.0" layoutY="352.0" />
       <Label fx:id="LBL5" layoutX="127.0" layoutY="356.0" text="Request Type:" />
       <ComboBox fx:id="RequestCB" layoutX="225.0" layoutY="159.0" prefWidth="150.0" />
       <Label layoutX="127.0" layoutY="163.0" text="Request" />
       <Button id="btnExit" fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="Back" />
+      <Button id="btnExit" fx:id="btnAccept" layoutX="229.0" layoutY="415.0" mnemonicParsing="false" onAction="#acceptRequest" prefHeight="87.0" prefWidth="141.0" text="Submit Request" />
    </children>
 </AnchorPane>
