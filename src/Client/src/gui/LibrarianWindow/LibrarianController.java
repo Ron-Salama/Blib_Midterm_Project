@@ -17,7 +17,7 @@ import logic.Librarian;
 public class LibrarianController extends BaseController implements Initializable  {
     private LibrarianController lc;
     
-    public static Librarian currentLibrarian = new Librarian(ChatClient.l1.getLibrarian_id(),ChatClient.l1.getLibrarian_name());
+    public static Librarian currentLibrarian;
     
     @FXML
     private Button btnExit = null;
@@ -46,6 +46,7 @@ public class LibrarianController extends BaseController implements Initializable
         
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+    	currentLibrarian = new Librarian(ChatClient.l1.getLibrarian_id(),ChatClient.l1.getLibrarian_name());
     	ChangeWelcomeLabelByTheTimeOfDay();
     }
     
