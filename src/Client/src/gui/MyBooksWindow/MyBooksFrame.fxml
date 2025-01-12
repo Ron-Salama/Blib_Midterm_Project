@@ -20,11 +20,10 @@
       <TableView fx:id="tableView" layoutY="219.0" prefHeight="314.0" prefWidth="1245.0">
         <columns>
           <TableColumn fx:id="tableID" prefWidth="98.39999198913574" text="ID" />
-          <TableColumn fx:id="tableName" prefWidth="278.0" text="Name" />
-            <TableColumn fx:id="tableSubject" minWidth="4.0" prefWidth="149.0" text="Subject" />
-            <TableColumn fx:id="tableDescription" prefWidth="375.0" text="Description" />
-            <TableColumn fx:id="tableTimeLeft" prefWidth="195.0" text="Time Left to Return (In Days)" />
-            <TableColumn fx:id="tableActions" prefWidth="148.0" text="Actions" />
+          <TableColumn fx:id="tableName" prefWidth="293.0" text="Name" />
+            <TableColumn fx:id="tableSubject" minWidth="4.0" prefWidth="299.0" text="Subject" />
+            <TableColumn fx:id="tableTimeLeft" prefWidth="175.0" text="Time Left to Return (In Days)" />
+            <TableColumn fx:id="tableActions" prefWidth="378.0" text="Actions" />
         </columns>
       </TableView>
       <Button id="btnExit" fx:id="btnBackF" layoutX="1128.0" layoutY="15.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />

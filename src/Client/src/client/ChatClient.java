@@ -4,6 +4,7 @@ import ocsf.client.*;
 import client.*;
 import common.ChatIF;
 import logic.Book;
+import logic.BorrowedBook;
 import logic.Subscriber;
 import logic.Librarian;
 import javafx.animation.PauseTransition;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class ChatClient extends AbstractClient
 {
-	
+	//server sends info from db to client 
   // Instance variables **********************************************
   
   /**
@@ -32,6 +33,7 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
+  public static List<BorrowedBook> borrowedBookList = new ArrayList<>(); // List to hold borrowed books
   public static Subscriber s1 = new Subscriber(0, 0, null, null, null);
   public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
@@ -79,9 +81,14 @@ public class ChatClient extends AbstractClient
 	    System.out.println(response);
 
 	    // Dispatch handling based on message prefix
-	    if (response.startsWith("subscriber_id:")) {
+	    if (response.startsWith("BorrowedBooks:")) {
+	        handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
+	    }
+	    else if (response.startsWith("subscriber_id:")) {
 	        handleSubscriberData(response);
-	    } else if (response.startsWith("librarian_id:")) {
+	    }else if (response.startsWith("BorrowedBooks:")) {
+            handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
+        }else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
 	    }else if (response.startsWith("Subscriber updated successfully.")) {
 	    	handleUpdateSubInfoSuccess();
@@ -114,6 +121,34 @@ public class ChatClient extends AbstractClient
 	    	handleUnknownResponse(response);
 	    }
 	}
+  
+  
+  private void handleBorrowedBooksResponse(String data) {
+	    if (data.equals("NoBooksFound")) {
+	        System.out.println("No borrowed books found.");
+	        ChatClient.borrowedBookList.clear();
+	    } else if (data.startsWith("Error")) {
+	        System.out.println("Error fetching borrowed books: " + data);
+	    } else {
+	        String[] bookStrings = data.split(";"); // Split rows
+	        ChatClient.borrowedBookList.clear();
+	        for (String bookData : bookStrings) {
+	            String[] fields = bookData.split(","); // Split fields
+	            int borrowId = Integer.parseInt(fields[0]);
+	            String name = fields[1];
+	            String subject = fields[2];
+	            int borrowedTime = Integer.parseInt(fields[3]); // Assuming numeric
+	            int returnTime = Integer.parseInt(fields[4]);   // Assuming numeric
+
+	            int timeLeftToReturn = returnTime - borrowedTime; // Calculate time left to return
+
+	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, name, subject, timeLeftToReturn));
+	        }
+	    }
+	}
+
+
+
   
   private void handleBookInfo(String data) {
 	    try {
