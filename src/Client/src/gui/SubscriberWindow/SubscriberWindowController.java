@@ -98,6 +98,13 @@ public class SubscriberWindowController extends BaseController implements Initia
 	}
     */
     
+    public void openMyBooksWindow(ActionEvent event) throws Exception {
+		openWindow(event,
+	       		"/gui/MyBooksWindow/MyBooksFrame.fxml",
+	       		"/gui/MyBooksWindow/MyBooksFrame.css",
+	       		"My Books");;
+	}
+    
 	public void openBorrowWindow(ActionEvent event) throws Exception {
 		openWindow(event,
 	       		"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
