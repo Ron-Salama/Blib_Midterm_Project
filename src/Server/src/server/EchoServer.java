@@ -5,10 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Clock;
 import java.util.List;
 
 import common.ConnectToDb;
@@ -285,19 +283,19 @@ public class EchoServer extends AbstractServer {
     private void handleBorrowRequestCase(ConnectionToClient client, String body) throws IOException {
     	 outputInOutputStreamAndLog("Received BorrowRequest from client");
          String[] borrowParts = body.split(",");
+         
          if (borrowParts.length == 6) {
              String subscriberId = borrowParts[0].trim();
              String subscriberName = borrowParts[1].trim();
              String bookBorrowId = borrowParts[2].trim();
              String bookName = borrowParts[3].trim();
-             String placeHolder1 = borrowParts[4].trim(); // Not used
-             String placeHolder2 = borrowParts[5].trim(); // Not used
-
+             String borrowDate = borrowParts[4].trim();
+             String returnDate = borrowParts[5].trim(); 
+             
 
              try {
                  // Example values for the time-related fields (can be empty strings if not needed)
-                 String borrowTime = ""; // You can pass the actual borrow time if you have it
-                 String returnTime = ""; // Leave empty if not used
+            	 
                  String extendTime = ""; // Leave empty if not used
 
                  // Send the data to insertRequest
@@ -307,8 +305,8 @@ public class EchoServer extends AbstractServer {
                                             subscriberName,           // requestedByName
                                             bookName,                 // bookName
                                             bookBorrowId,             // bookId
-                                            borrowTime,               // borrowTime (empty string if not available)
-                                            returnTime,               // returnTime (empty string if not available)
+                                            borrowDate,               // borrowDate (empty string if not available)
+                                            returnDate,               // returnDate (empty string if not available)
                                             extendTime);              // extendTime (empty string if not available)
                  
                  ConnectToDb.decreaseNumCopies(dbConnection,bookBorrowId);
@@ -325,7 +323,7 @@ public class EchoServer extends AbstractServer {
          try {
         	 String borrowRequests = ConnectToDb.fetchBorrowRequest(dbConnection);
 
-             client.sendToClient("FetchedBorrowedBooks:"+borrowRequests);
+             client.sendToClient("FetchedBorrowedBooks:" + borrowRequests);
          } catch (Exception e) {
              client.sendToClient("An error occurred while fetching the borrow request data: " + e.getMessage());
              e.printStackTrace();

@@ -1,35 +1,26 @@
 package gui.BorrowBookWindow;
 
-import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import client.ChatClient;
-import client.ClientController;
 import client.ClientUI;
-import common.ChatIF;
-import gui.MainMenu.MainMenuController;
 import gui.SearchWindow.SearchFrameController;
-import gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController;
 import gui.SubscriberWindow.SubscriberWindowController;
+import gui.baseController.BaseController;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.Subscriber;
-import gui.baseController.*;
+import logic.ClientTimeDiffController;
 
 /**
  * Controller class for the IP Input window of the Library Management Tool.
@@ -39,6 +30,7 @@ import gui.baseController.*;
  */
 public class BorrowBookController extends BaseController implements Initializable {
     Subscriber currentSub = SubscriberWindowController.currentSubscriber;
+    ClientTimeDiffController clockController = new ClientTimeDiffController();
     
     @FXML
     private Button btnExit = null;
@@ -136,7 +128,11 @@ public class BorrowBookController extends BaseController implements Initializabl
             String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
             String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
             
-            String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + subscriberId + "," + subscriberId;
+            LocalDateTime now = LocalDateTime.now();
+            String returnDate = clockController.calculateReturnDate(now, 14).toString();
+            String borrowDate = clockController.timeNow();
+            
+            String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
             ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
             
             // Feedback to the user
