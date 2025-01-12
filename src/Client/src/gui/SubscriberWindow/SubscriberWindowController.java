@@ -71,6 +71,10 @@ public class SubscriberWindowController extends BaseController implements Initia
 	        ChatClient.s1.getStatus()
 	    );
 	    
+	    if(isSubsriberFrozen(currentSubscriber)) { // Disable the borrow button in case the subscriber status is frozen.
+            btnBorrow.setDisable(true);
+        }
+	   
 	    ChangeWelcomeLabelByTheTimeOfDay();
 	    changeMyStatusLabelAccordingToSubscriberStatus();
 	}
