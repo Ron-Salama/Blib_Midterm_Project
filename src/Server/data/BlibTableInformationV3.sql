@@ -44,6 +44,36 @@ INSERT INTO `books` VALUES ('0011','The Hobbit','Fantasy','A thrilling adventure
 UNLOCK TABLES;
 
 --
+-- Table structure for table `borrowed_books`
+--
+
+DROP TABLE IF EXISTS `borrowed_books`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `borrowed_books` (
+  `borrow_id` int NOT NULL,
+  `subscriber_id` int DEFAULT NULL,
+  `Name` varchar(45) DEFAULT NULL,
+  `Subject` varchar(45) DEFAULT NULL,
+  `Borrowed_Time` varchar(45) DEFAULT NULL,
+  `Return_Time` varchar(45) DEFAULT NULL,
+  `ISBN` varchar(35) DEFAULT NULL,
+  PRIMARY KEY (`borrow_id`),
+  KEY `subscriber_id_idx` (`subscriber_id`),
+  CONSTRAINT `subscriber_id` FOREIGN KEY (`subscriber_id`) REFERENCES `subscriber` (`subscriber_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `borrowed_books`
+--
+
+LOCK TABLES `borrowed_books` WRITE;
+/*!40000 ALTER TABLE `borrowed_books` DISABLE KEYS */;
+/*!40000 ALTER TABLE `borrowed_books` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `librarian`
 --
 
@@ -109,7 +139,6 @@ CREATE TABLE `subscriber` (
   `detailed_subscription_history` varchar(1000) DEFAULT NULL,
   `subscriber_phone_number` varchar(20) NOT NULL,
   `subscriber_email` varchar(255) NOT NULL,
-  `subscriber_books` varchar(255) DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`subscriber_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='This table stores the information on each and every subscriber in the library.';
@@ -121,7 +150,7 @@ CREATE TABLE `subscriber` (
 
 LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
-INSERT INTO `subscriber` VALUES (1,'Yuval','01-01-2025 10:30,0011,The Hobbit,Fantasy,Borrowed successfully;10-01-2025 15:00,0011,The Hobbit,Fantasy,Returned successfully;05-01-2025 14:20,0054,1984,Dystopian,Borrowed successfully;20-01-2025 17:45,0054,1984,Dystopian,Returned late, Late by: 5 days;10-01-2025,0032,The Great Gatsby,Classics,Lost;12-01-2025 11:00,0048,To Kill a Mockingbird,Fiction,Borrowed successfully;18-01-2025 13:15,0048,To Kill a Mockingbird,Fiction,Returned successfully;15-01-2025 09:30,0066,Moby Dick,Adventure,Reserved successfully;20-01-2025 16:00,0077,Pride and Prejudice,Romance,Borrowed successfully;22-01-2025 10:00,0083,War and Peace,Historical Fiction,Reserved successfully;','050822','b@gmail.com',NULL,'Not Frozen'),(2,'Yaniv','1','11','111@gmail.com','0011,The Hobbit;0011,The Hobbit;0054,1984;0054,1984;0032,The Great Gatsby;0048,To Kill a Mockingbird;0048,To Kill a Mockingbird;0066,Moby Dick;0077,Pride and Prejudice;0083,War and Peace;','Frozen at:05-01-2025'),(3,'Ron','01-01-2025 10:30,0011,The Hobbit,Fantasy,Borrowed successfully;10-01-2025 15:00,0011,The Hobbit,Fantasy,Returned successfully;05-01-2025 14:20,0054,1984,Dystopian,Borrowed successfully;20-01-2025 17:45,0054,1984,Dystopian,Returned late, Late by: 5 days;10-01-2025,0032,The Great Gatsby,Classics,Lost;12-01-2025 11:00,0048,To Kill a Mockingbird,Fiction,Borrowed successfully;18-01-2025 13:15,0048,To Kill a Mockingbird,Fiction,Returned successfully;15-01-2025 09:30,0066,Moby Dick,Adventure,Reserved successfully;20-01-2025 16:00,0077,Pride and Prejudice,Romance,Borrowed successfully;22-01-2025 10:00,0083,War and Peace,Historical Fiction,Reserved successfully;','0503425t29','c@gmail.com','0011,The Hobbit;0011,The Hobbit;0054,1984;0054,1984;0032,The Great Gatsby;0048,To Kill a Mockingbird;0048,To Kill a Mockingbird;0066,Moby Dick;0077,Pride and Prejudice;0083,War and Peace;','Frozen at:05-01-2025');
+INSERT INTO `subscriber` VALUES (1,'Yuval','01-01-2025 10:30,0011,The Hobbit,Fantasy,Borrowed successfully;10-01-2025 15:00,0011,The Hobbit,Fantasy,Returned successfully;05-01-2025 14:20,0054,1984,Dystopian,Borrowed successfully;20-01-2025 17:45,0054,1984,Dystopian,Returned late, Late by: 5 days;10-01-2025,0032,The Great Gatsby,Classics,Lost;12-01-2025 11:00,0048,To Kill a Mockingbird,Fiction,Borrowed successfully;18-01-2025 13:15,0048,To Kill a Mockingbird,Fiction,Returned successfully;15-01-2025 09:30,0066,Moby Dick,Adventure,Reserved successfully;20-01-2025 16:00,0077,Pride and Prejudice,Romance,Borrowed successfully;22-01-2025 10:00,0083,War and Peace,Historical Fiction,Reserved successfully;','050822','b@gmail.com','Not Frozen'),(2,'Yaniv','1','11','111@gmail.com','Frozen at:05-01-2025'),(3,'Ron','01-01-2025 10:30,0011,The Hobbit,Fantasy,Borrowed successfully;10-01-2025 15:00,0011,The Hobbit,Fantasy,Returned successfully;05-01-2025 14:20,0054,1984,Dystopian,Borrowed successfully;20-01-2025 17:45,0054,1984,Dystopian,Returned late, Late by: 5 days;10-01-2025,0032,The Great Gatsby,Classics,Lost;12-01-2025 11:00,0048,To Kill a Mockingbird,Fiction,Borrowed successfully;18-01-2025 13:15,0048,To Kill a Mockingbird,Fiction,Returned successfully;15-01-2025 09:30,0066,Moby Dick,Adventure,Reserved successfully;20-01-2025 16:00,0077,Pride and Prejudice,Romance,Borrowed successfully;22-01-2025 10:00,0083,War and Peace,Historical Fiction,Reserved successfully;','0503425t29','c@gmail.com','Frozen at:05-01-2025');
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -134,4 +163,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-12  1:40:40
+-- Dump completed on 2025-01-12 14:11:18
