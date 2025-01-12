@@ -5,74 +5,14 @@ Client IP:127.0.0.1
 Client Hostname: 127.0.0.1
 Connection Status: Connected
 Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
 Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
 Client connected.
 Client IP:127.0.0.1
 Client Hostname: 127.0.0.1
 Connection Status: Connected
 Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
 Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
 Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:3 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
 Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
 Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:3 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: Fetch:4 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:0 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
-Client connected.
-Client IP:127.0.0.1
-Client Hostname: 127.0.0.1
-Connection Status: Connected
-Message received: IP:1 from 127.0.0.1 (127.0.0.1)
-Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
