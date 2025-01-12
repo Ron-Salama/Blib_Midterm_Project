@@ -43,6 +43,9 @@ public class SubscriberWindowController extends BaseController implements Initia
     @FXML
     private Label greetingLabel = null;
     
+    @FXML
+    private Label myStatusLabel = null;
+    
     /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
@@ -59,10 +62,24 @@ public class SubscriberWindowController extends BaseController implements Initia
      */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ChangeWelcomeLabelByTheTimeOfDay();
+	    currentSubscriber = new Subscriber(
+	        ChatClient.s1.getSubscriber_id(),
+	        ChatClient.s1.getDetailed_subscription_history(),
+	        ChatClient.s1.getSubscriber_name(),
+	        ChatClient.s1.getSubscriber_phone_number(),
+	        ChatClient.s1.getSubscriber_email(),
+	        ChatClient.s1.getStatus()
+	    );
+	    
+	    if(isSubsriberFrozen(currentSubscriber)) { // Disable the borrow button in case the subscriber status is frozen.
+            btnBorrow.setDisable(true);
+        }
+	   
+	    ChangeWelcomeLabelByTheTimeOfDay();
+	    changeMyStatusLabelAccordingToSubscriberStatus();
 	}
 	
-    public static Subscriber currentSubscriber = new Subscriber(ChatClient.s1.getSubscriber_id(),ChatClient.s1.getDetailed_subscription_history(),ChatClient.s1.getSubscriber_name(),ChatClient.s1.getSubscriber_phone_number(),ChatClient.s1.getSubscriber_email());
+    public static Subscriber currentSubscriber;
         
     /**
      * Opens the Search window, allowing the user to search for books in the library.
@@ -167,5 +184,22 @@ public class SubscriberWindowController extends BaseController implements Initia
     	 }
     	 
     	 showColoredLabelMessageOnGUI(greetingLabel, message, "-fx-text-fill: black;");
+    }
+    
+    private void changeMyStatusLabelAccordingToSubscriberStatus() {
+    	String frozenStyle = "-fx-text-fill: linear-gradient(to right, #1e90ff, #4682b4); " +
+                "-fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.7), 5, 0.3, 0, 0); " +
+                "-fx-font-weight: bold;";
+
+
+    	String notFrozenStyle = "-fx-text-fill: black; " +
+                   "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0.2, 0, 0);";
+    	
+    	if (isSubsriberFrozen(currentSubscriber)) {
+    		showColoredLabelMessageOnGUI(myStatusLabel, "My Status is: Frozen", frozenStyle);    		
+    	}
+    	else {
+    		showColoredLabelMessageOnGUI(myStatusLabel, "My Status is: Not Frozen", notFrozenStyle);
+    	}
     }
 }

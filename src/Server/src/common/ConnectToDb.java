@@ -70,11 +70,14 @@ public class ConnectToDb {
                     int detailed = rs.getInt("detailed_subscription_history");
                     String phone = rs.getString("subscriber_phone_number");
                     String email = rs.getString("subscriber_email");
-
+                    String status = rs.getString("status");
+                    
                     return "subscriber_id:" + id + ", subscriber_name:" + name +
                             ", detailed_subscription_history:" + detailed +
                             ", subscriber_phone_number:" + phone +
-                            ", subscriber_email:" + email;
+                            ", subscriber_email:" + email +
+                            ", status:" + status;
+                    
                 } else {
                     return "No subscriber found";
                 }
