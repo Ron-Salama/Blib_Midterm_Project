@@ -109,7 +109,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         		"Main Menu");;
     }
    
-   //***DONT DELETE IMPORTANT FOR LATER USE***
+   //***DONT DELETE IMPORTANT FOR LATER USE*** TODO
    /* public void getbtnMyBooks(ActionEvent event) throws Exception {
 	    openMyBooksWindow(event);
 	}
@@ -133,7 +133,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         openWindow(event,
         		"/gui/UpdateInfoWindow/UpdateInfoFrame.fxml",
         		"/gui/UpdateInfoWindow/UpdateInfoFrame.css",
-        		"Update Inforamtion");;
+        		"Update Information");;
 	}
     
     //******DONT DELETE, THIS IS IMPORTANT FOR LATER FOR THE USE OF GOING TO THE MyBooks WINDOW AFTER PUSHING THE MyBooks BUTTON********

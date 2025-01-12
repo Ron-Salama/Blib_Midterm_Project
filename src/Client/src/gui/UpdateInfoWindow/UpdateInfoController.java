@@ -93,6 +93,6 @@ public class UpdateInfoController extends BaseController implements Initializabl
     	openWindow(event,
     			"/gui/SubscriberWindow/SubscriberWindow.fxml",
     			"/gui/SubscriberWindow/SubscriberWindow.css",
-    			"MainMenu");
+    			"Subscriber View");
     }
 }

@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import logic.Librarian;
 
 public class LibrarianController extends BaseController implements Initializable  {
-    private LibrarianController lc;
+    
     
     public static Librarian currentLibrarian;
     
