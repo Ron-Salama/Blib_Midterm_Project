@@ -111,6 +111,31 @@ public class ConnectToDb {
         }
     }
     
+    
+    public static String fetchHistoryData(Connection conn, String subscriberId) {
+    	String historyData = "";
+        String query = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, subscriberId);  // Bind the subscriberId parameter
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                historyData = rs.getString("history");  // Corrected column name to "history"
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error fetching history data: " + e.getMessage());
+        }
+
+        return historyData;
+    }
+
+
+    
+    
+    
+    
     public static boolean checkIfIdExists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {

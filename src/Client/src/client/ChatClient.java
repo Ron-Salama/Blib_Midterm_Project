@@ -37,7 +37,7 @@ public class ChatClient extends AbstractClient
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
   public static List<String[][]> br = new ArrayList<>(); 
   public static String[] BorrowedBookInfo;
-  
+  public static ArrayList<String> myHistoryInfo = new ArrayList<String>(); 
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
   
@@ -100,6 +100,8 @@ public class ChatClient extends AbstractClient
 	    	handleBookInfo(response.substring("BookInfo:".length()));
 	    } else if (response.startsWith("FetchedBorrowedBooks:")){
 	    	handleFetchedBorrowedBooks(response.substring("FetchedBorrowedBooks:".length()));
+	    }else if (response.startsWith("FetchedHistory:")){
+	    	processMyHistoryData(response.substring("FetchedHistory:".length()));
 	    }else if (response.startsWith("GetDate:")) {
 	    	// NOT IMPLEMENTED YET. TODO implement for borrowing books.
 	    	return;
@@ -141,6 +143,11 @@ public class ChatClient extends AbstractClient
 	        BorrowedBookInfo = null;
 	    }
 	}
+  
+  
+  
+  
+  
 	private void handleSubscriberData(String response) {
 	    l1.setLibrarian_id(-1); // Reset librarian data
 	    processSubscriberData(response);
@@ -203,6 +210,26 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 	
+	private void processMyHistoryData(String msg) {
+	    try {
+	        // Split the message by ';' and store it in a String array
+	        String[] historyData = msg.split(";");
+	        
+	        for (String activity : historyData) {
+	        	myHistoryInfo.add(activity);
+	        }
+
+	        for (String fck : myHistoryInfo) {
+	        	System.out.println(fck);
+	        }
+	        
+	        
+	    } catch (Exception e) {
+	        System.out.println("Error parsing My History data: " + e.getMessage());
+	    }
+	}
+
+
 	private void handleServerConnectionIssue(boolean isConnected) {
 	    ClientUI.isIPValid = isConnected;
 	    String message = isConnected ? "Server connection successful." : "Failed to connect to the server.";
@@ -316,6 +343,9 @@ public class ChatClient extends AbstractClient
           l1.setLibrarian_id(-1); // Mark as not found
       }
   }
+	
+	
+	
 
 	private String extractValue(String part) {
       return part.split(":")[1].trim();

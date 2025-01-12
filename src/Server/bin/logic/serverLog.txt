@@ -5,6 +5,7 @@ Client IP:127.0.0.1
 Client Hostname: 127.0.0.1
 Connection Status: Connected
 Message received: IP:10.0.0.4 from 127.0.0.1 (127.0.0.1)
+Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
 Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
 Message received: GetBookInfo:0011 from 127.0.0.1 (127.0.0.1)
 Message received: BorrowRequest:1,Yuval,0011,The Hobbit,12-01-2025,26-01-2025 from 127.0.0.1 (127.0.0.1)
@@ -12,6 +13,17 @@ Received BorrowRequest from client
 Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
 Message received: GetBooks: from 127.0.0.1 (127.0.0.1)
 Received GetBooks request from client
+Client connected.
+Client IP:127.0.0.1
+Client Hostname: 127.0.0.1
+Connection Status: Connected
+Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetBookInfo:0022 from 127.0.0.1 (127.0.0.1)
+Message received: BorrowRequest:1,Yuval,0022,The Catcher in the Rye,12-01-2025,26-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: BorrowRequest:1,Yuval,0011,The Hobbit,12-01-2025,26-01-2025 from 127.0.0.1 (127.0.0.1)
+Received BorrowRequest from client
+Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
 Client connected.
 Client IP:127.0.0.1
 Client Hostname: 127.0.0.1
@@ -41,3 +53,4 @@ Received FetchBorrowRequest from client
 Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
 Message received: IP:10.0.0.4 from 127.0.0.1 (127.0.0.1)
 Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
