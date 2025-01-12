@@ -31,5 +31,6 @@
       
       <Text layoutX="123.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Personal Information" />
       <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="240.0" layoutY="53.0" />
+      <Label fx:id="UpdateStatus" layoutX="68.0" layoutY="374.0" />
    </children>
 </AnchorPane>

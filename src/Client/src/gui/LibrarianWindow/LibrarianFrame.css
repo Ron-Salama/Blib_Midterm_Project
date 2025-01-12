@@ -101,4 +101,19 @@
     -fx-background-color: linear-gradient(to bottom, #c0392b, #e74c3c); /* Reverse gradient on hover */
     -fx-border-color: #e74c3c;
     -fx-cursor: hand;
+    }
+    
+   /* Scan Barcode button */
+#btnScanBarcode {
+    -fx-background-color: linear-gradient(to bottom, #009688, #00796b); /* Teal gradient */
+    -fx-border-color: #00796b; /* Border matches bottom color */
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+}
+
+#btnScanBarcode:hover {
+    -fx-background-color: linear-gradient(to bottom, #00796b, #009688); /* Reverse gradient on hover */
+    -fx-border-color: #009688;
+    -fx-cursor: hand;
+
 }
