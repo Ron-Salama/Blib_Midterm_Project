@@ -329,6 +329,7 @@ public class EchoServer extends AbstractServer {
              e.printStackTrace();
          }
     }
+    
     private void handleFetchRegisterRequestCase(ConnectionToClient client, String body) throws IOException{
     	outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
 
@@ -340,6 +341,7 @@ public class EchoServer extends AbstractServer {
              e.printStackTrace();
          }
     }
+    
     private void log(String message) {
     	// Append the message to the log file
         try (FileWriter writer = new FileWriter("src/logic/serverLog.txt", true)) { // 'true' enables append mode
