@@ -136,6 +136,35 @@ public class ConnectToDb {
     
     
     
+    public static List<String> fetchBorrowedBooksBySubscriberId(Connection conn, String subscriberId) {
+        String query = "SELECT * FROM blib.borrowed_books WHERE subscriber_id = ?";
+
+        List<String> borrowedBooks = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, subscriberId); // Set the subscriber_id parameter
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    // Combine fields into a single delimited string for sending to the client
+                    String bookData = rs.getInt("borrow_id") + "," +
+                                      rs.getString("Name") + "," +
+                                      rs.getString("Subject") + "," +
+                                      rs.getString("Borrowed_Time") + "," +
+                                      rs.getString("Return_Time") + "," +
+                                      rs.getString("ISBN");
+                    borrowedBooks.add(bookData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching borrowed books: " + e.getMessage());
+        }
+
+        return borrowedBooks; // Return the list of borrowed books
+    }
+
+
+
+    
     public static boolean checkIfIdExists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {

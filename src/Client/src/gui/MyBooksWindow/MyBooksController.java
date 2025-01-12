@@ -23,6 +23,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
 
 import logic.Book;
+import logic.BorrowedBook;
 
 /**
  * Controller for the Search Window in the Library Management Tool.
@@ -44,25 +45,22 @@ public class MyBooksController extends BaseController implements Initializable {
     private Button btnHistory;
     
     @FXML
-    private TableView<Book> tableView;
+    private TableView<BorrowedBook> tableView;
 
     @FXML
-    private TableColumn<Book, Integer> tableID;
+    private TableColumn<BorrowedBook, Integer> tableID;
     
     @FXML
-    private TableColumn<Book, String> tableName;
+    private TableColumn<BorrowedBook, String> tableName;
     
     @FXML
-    private TableColumn<Book, String> tableDescription;
+    private TableColumn<BorrowedBook, String> tableSubject;
     
     @FXML
-    private TableColumn<Book, String> tableSubject;
+    private TableColumn<BorrowedBook, Integer> tableTimeLeft;
     
     @FXML
-    private TableColumn<Book, Integer> tableTimeLeft;
-    
-    @FXML
-    private TableColumn<Book, Void> tableActions;
+    private TableColumn<BorrowedBook, Void> tableActions;
 
 
     @FXML
@@ -81,16 +79,33 @@ public class MyBooksController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize TableView columns
-        tableID.setCellValueFactory(new PropertyValueFactory<Book, Integer>("id"));
-        tableName.setCellValueFactory(new PropertyValueFactory<Book, String>("name"));
-        tableDescription.setCellValueFactory(new PropertyValueFactory<Book, String>("description"));
-        tableSubject.setCellValueFactory(new PropertyValueFactory<Book, String>("subject"));
-        tableTimeLeft.setCellValueFactory(new PropertyValueFactory<Book, Integer>("timeLeft"));
+        tableID.setCellValueFactory(new PropertyValueFactory<>("borrowId")); // ID column
+        tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
+        tableSubject.setCellValueFactory(new PropertyValueFactory<>("subject")); // Subject column
+        tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
         
         setupActionsColumn();
-
+        loadBooks();
 
     }
+    
+    private void loadBooks() {
+        new Thread(() -> {
+            ClientUI.chat.accept("GetBorrowedBooks:" + ChatClient.s1.getSubscriber_id());
+            Platform.runLater(() -> {
+                if (ChatClient.borrowedBookList != null && !ChatClient.borrowedBookList.isEmpty()) {
+                    tableView.getItems().clear();
+                    tableView.getItems().addAll(ChatClient.borrowedBookList);
+                } else {
+                    System.out.println("No borrowed books to display.");
+                }
+            });
+        }).start();
+    }
+
+
+
+
         // after TODO is done and subscriber's book are in DB we fetch them here into the table.
 //        // Fetch and populate books
 //        new Thread(() -> {
@@ -119,7 +134,7 @@ public class MyBooksController extends BaseController implements Initializable {
 //        }
 //    }
         private void setupActionsColumn() {
-            tableActions.setCellFactory(param -> new TableCell<Book, Void>() { // Explicitly specify the generic types
+            tableActions.setCellFactory(param -> new TableCell<BorrowedBook, Void>() { // Explicitly specify the generic types
                 private final Button extendButton = new Button("Extend borrowing length");
                 private final Button returnButton = new Button("Return");
                 private final HBox buttonBox = new HBox(10, extendButton, returnButton);
@@ -128,13 +143,13 @@ public class MyBooksController extends BaseController implements Initializable {
                     buttonBox.setStyle("-fx-alignment: CENTER;");
 
                     extendButton.setOnAction(event -> {
-                        Book book = getTableView().getItems().get(getIndex());
-                        System.out.println("Extend borrowing length for book: " + book.getName());
+                        BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
+                        System.out.println("Extend borrowing length for book: " + borrowedBook.getName());
                     });
 
                     returnButton.setOnAction(event -> {
-                        Book book = getTableView().getItems().get(getIndex());
-                        System.out.println("Return book: " + book.getName());
+                        BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
+                        System.out.println("Return book: " + borrowedBook.getName());
                     });
                 }
 

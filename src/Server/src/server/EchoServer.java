@@ -121,6 +121,9 @@ public class EchoServer extends AbstractServer {
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
                 	handleFetchBorrowRequestCase(client, body);
                     break;
+                case "GetBorrowedBooks":
+                    handleGetBorrowedBooksCase(client, body); // body contains the subscriber_id
+                    break;
                 case "RegisterRequest": // Handle RegisterRequest
                 	handleRegisterRequestCase(client, body);
                     break;
@@ -341,6 +344,22 @@ public class EchoServer extends AbstractServer {
              }
          }
     }
+    private void handleGetBorrowedBooksCase(ConnectionToClient client, String subscriberId) throws IOException {
+        try {
+            List<String> borrowedBooks = ConnectToDb.fetchBorrowedBooksBySubscriberId(dbConnection, subscriberId);
+
+            if (borrowedBooks.isEmpty()) {
+                client.sendToClient("BorrowedBooks:NoBooksFound");
+            } else {
+                String response = String.join(";", borrowedBooks); // Format list into a single string
+                client.sendToClient("BorrowedBooks:" + response);
+            }
+        } catch (Exception e) {
+            client.sendToClient("BorrowedBooks:Error:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     
     private void handleFetchBorrowRequestCase(ConnectionToClient client, String body) throws IOException{
     	outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
