@@ -7,12 +7,12 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianWindow.LibrarianController">
    <children>
-      <Button id="btnUpdate" fx:id="btnViewReports" alignment="CENTER" layoutX="417.0" layoutY="391.0" mnemonicParsing="false" onAction="#navigateToViewReports" prefHeight="112.0" prefWidth="255.0" text="View Reports" />
-      <Button id="btnUpdate" fx:id="btnSubscriberRequests" alignment="CENTER" layoutX="136.0" layoutY="391.0" mnemonicParsing="false" onAction="#navigateToSubscriberRequests" prefHeight="112.0" prefWidth="255.0" text="Subscriber Requests" />
-      <Button id="btnUpdate" fx:id="btnSearchBook" alignment="CENTER" layoutX="135.0" layoutY="264.0" mnemonicParsing="false" onAction="#navigateToSearchWindow" prefHeight="112.0" prefWidth="255.0" text="Search Book" />
-      <Button id="btnUpdate" fx:id="btnSearchSubscriber" alignment="CENTER" layoutX="417.0" layoutY="264.0" mnemonicParsing="false" onAction="#navigateToSearchSubscriber" prefHeight="112.0" prefWidth="255.0" text="Search Subscriber" />
-      <Button id="btnUpdate" fx:id="btnReturnToMainMenu" layoutX="665.0" layoutY="1.0" mnemonicParsing="false" onAction="#navigateToMainMenu" prefHeight="21.0" prefWidth="134.0" text="Return to Main Menu" />
-      <Button id="btnUpdate" fx:id="btnExit" layoutY="1.0" mnemonicParsing="false" onAction="#getExitBtn" prefHeight="16.0" prefWidth="41.0" text="Exit" />
+      <Button id="btnViewReports" fx:id="btnViewReports" alignment="CENTER" layoutX="417.0" layoutY="391.0" mnemonicParsing="false" onAction="#navigateToViewReports" prefHeight="112.0" prefWidth="255.0" text="View Reports" />
+      <Button id="btnSubscriberRequests" fx:id="btnSubscriberRequests" alignment="CENTER" layoutX="136.0" layoutY="391.0" mnemonicParsing="false" onAction="#navigateToSubscriberRequests" prefHeight="112.0" prefWidth="255.0" text="Subscriber Requests" />
+      <Button id="btnSearchBook" fx:id="btnSearchBook" alignment="CENTER" layoutX="135.0" layoutY="264.0" mnemonicParsing="false" onAction="#navigateToSearchWindow" prefHeight="112.0" prefWidth="255.0" text="Search Book" />
+      <Button id="btnSearchSubscriber" fx:id="btnSearchSubscriber" alignment="CENTER" layoutX="417.0" layoutY="264.0" mnemonicParsing="false" onAction="#navigateToSearchSubscriber" prefHeight="112.0" prefWidth="255.0" text="Search Subscriber" />
+      <Button id="btnReturnToMainMenu" fx:id="btnReturnToMainMenu" ellipsisString="Return to Main Menu" layoutX="615.0" layoutY="1.0" mnemonicParsing="false" onAction="#navigateToMainMenu" prefHeight="25.0" prefWidth="184.0" text="Return to Main Menu" />
+      <Button id="btnExit" fx:id="btnExit" ellipsisString="Exit" layoutY="1.0" mnemonicParsing="false" onAction="#getExitBtn" prefHeight="16.0" prefWidth="41.0" text="Exit" />
       <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="35.0" layoutY="65.0" prefHeight="140.0" prefWidth="734.0" wrapText="true">
          <font>
             <Font size="45" />

@@ -30,6 +30,9 @@ public class UpdateInfoController extends BaseController implements Initializabl
     private Label lblSubscriber_phoneNumber;
     @FXML
     private Label lblSubscriber_email;
+    
+    @FXML
+    private Label UpdateStatus;
 
     @FXML
     private TextField txtSubscriber_id;
@@ -78,9 +81,11 @@ public class UpdateInfoController extends BaseController implements Initializabl
 
         ClientUI.chat.accept("Update:" + obj);
         if(ChatClient.alertIndicator) {
-            showAlert("Success", "You have successfully updated your personal information.");
+
+            // Feedback to the user
+            showColoredLabelMessageOnGUI(UpdateStatus, "You have successfully updated your personal information.", "-fx-text-fill: green;");
         }else {
-        	showAlert("Error", "Didn't updated your personal information.");
+        	showColoredLabelMessageOnGUI(UpdateStatus, "Updating your personal information has failed.", "-fx-text-fill: red;");
         }
     }
     
