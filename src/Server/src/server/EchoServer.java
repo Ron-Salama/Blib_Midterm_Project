@@ -131,6 +131,8 @@ public class EchoServer extends AbstractServer {
                     break;
                 case "GetDate": // Handle GetDate
                 	handleGetDate(client, body);
+                case "GetHistory": //handle GetHistory
+                	handleMyHistoryData(client, body);
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -212,6 +214,29 @@ public class EchoServer extends AbstractServer {
             client.sendToClient("returnedBookData:Error:CouldNotFetchBooks");
         }
     }
+    
+    
+    
+    
+    
+    private void handleMyHistoryData(ConnectionToClient client, String body) throws IOException {
+    	outputInOutputStreamAndLog("Received GetHistory request from client");
+        try {
+            String historyData = ConnectToDb.fetchHistoryData(dbConnection, body);
+
+            if (historyData == null || historyData.isEmpty()) {
+                client.sendToClient("returnedBookData:NoBooksFound");
+            } else {
+                client.sendToClient("FetchedHistory:" + historyData);
+            }
+        } catch (Exception e) {
+            System.err.println("Error while processing GetBooks request: " + e.getMessage());
+            client.sendToClient("returnedBookData:Error:CouldNotFetchBooks");
+        }
+    }
+    
+    
+    
     
     private void handleGetBookInfoCase(ConnectionToClient client, String body) throws IOException {
     	String bookId = body; // The body contains the BookId
