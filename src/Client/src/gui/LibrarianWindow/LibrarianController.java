@@ -38,9 +38,6 @@ public class LibrarianController extends BaseController implements Initializable
     private Button btnViewReports = null;
 
     @FXML
-    private Button btnScanBarcode = null;
-    
-    @FXML
     private Label greetingLabel = null;
     
         
@@ -55,19 +52,11 @@ public class LibrarianController extends BaseController implements Initializable
 		System.exit(1);
 	}
     
-    public void navigateToViewReports(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING VIEW REPORTS WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
-		/*
-		 * FXMLLoader loader = new
-		 * FXMLLoader(getClass().getResource("/gui/SearchWindow/SearchFrame.fxml"));
-		 * Parent root = loader.load();
-		 * 
-		 * // Set up the scene and stage Stage stage = (Stage) ((Node)
-		 * event.getSource()).getScene().getWindow(); Scene scene = new Scene(root);
-		 * scene.getStylesheets().add(getClass().getResource(
-		 * "/gui/SearchWindow/SearchFrame.css").toExternalForm());
-		 * stage.setScene(scene); stage.setTitle("Library Management Tool");
-		 * stage.show();
-		 */
+    public void navigateToViewReports(ActionEvent event) throws Exception { 
+    	openWindow(event, 
+                "/gui/ReportsWindow/ReportsWindow.fxml", 
+                "/gui/ReportsWindow/ReportsWindow.css", 
+                "Reports Window");
     }
     
     

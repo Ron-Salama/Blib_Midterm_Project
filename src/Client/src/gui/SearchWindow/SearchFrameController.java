@@ -18,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import logic.Book;
 
@@ -82,6 +83,22 @@ public class SearchFrameController extends BaseController implements Initializab
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize TableView columns
         tableID.setCellValueFactory(new PropertyValueFactory<Book, Integer>("id"));
+        
+        // Format the ISBN (ID) with leading zeros when displaying it in the table
+        tableID.setCellFactory(column -> new TableCell<Book, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    // Format the ISBN (ID) with leading zeros (example: 10 digits)
+                    setText(String.format("%04d", item));  // Adjust 10 digits as necessary
+                }
+            }
+        });
+
+        // Initialize other columns normally
         tableName.setCellValueFactory(new PropertyValueFactory<Book, String>("name"));
         tableDescription.setCellValueFactory(new PropertyValueFactory<Book, String>("description"));
         tableSubject.setCellValueFactory(new PropertyValueFactory<Book, String>("subject"));

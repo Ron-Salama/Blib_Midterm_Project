@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="545.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
+<AnchorPane prefHeight="477.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="408.0" layoutY="14.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit To Main Menu" />
       <Label layoutX="127.0" layoutY="82.0" text="Request Type:" />
@@ -26,6 +26,7 @@
       <ComboBox fx:id="RequestCB" layoutX="225.0" layoutY="159.0" prefWidth="150.0" />
       <Label layoutX="127.0" layoutY="163.0" text="Request" />
       <Button id="btnExit" fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="Back" />
+      <Button fx:id="ScanBarcode" ellipsisString="Scan Barcode" layoutX="432.0" layoutY="427.0" mnemonicParsing="false" text="Scan Barcode" />
       <Button id="btnExit" fx:id="btnAccept" layoutX="229.0" layoutY="415.0" mnemonicParsing="false" onAction="#acceptRequest" prefHeight="87.0" prefWidth="141.0" text="Submit Request" />
    </children>
 </AnchorPane>
