@@ -310,7 +310,26 @@ public class ConnectToDb {
 
         return result.toString();
     }
+    @SuppressWarnings("unused")
+	public static void decreaseNumCopies(Connection conn, String bookId) throws SQLException {
+        // SQL query to decrease NumCopies by 1 for the given bookId
+        String query = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ? AND NumCopies > 0";
 
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            // Set the bookId parameter
+            pstmt.setString(1, bookId);
+
+            // Execute the update statement
+            int affectedRows = pstmt.executeUpdate();
+
+            // If no rows were updated, it means there are no copies left or the bookId does not exist
+            if (affectedRows == 0) {
+                System.out.println("No copies available or invalid bookId: " + bookId);
+            } else {
+                System.out.println("Successfully decreased NumCopies for bookId: " + bookId);
+            }
+        }
+    }
     public static String fetchReturnRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
 
@@ -387,6 +406,44 @@ public class ConnectToDb {
         }
 
         return result.toString();
+    }
+    
+    
+    public static void insertBorrowBook(Connection conn, String body) throws SQLException {
+        // Split the body string by commas
+        String[] parts = body.split(",");
+
+        // Assuming the body contains the following values:
+        // SName, SID, BName, ISBN, Btime in the respective order
+        String SName = parts.length > 0 ? parts[0] : "temp"; // Subscriber Name
+        int SID = parts.length > 1 ?   Integer.parseInt(parts[1]) : -1; // Subscriber ID
+        String BName = parts.length > 2 ? parts[2] : "temp"; // Book Name (not used in the query, but included for reference)
+        String ISBN = parts.length > 3 ? parts[3] : "temp"; // Book ISBN
+        String Btime = parts.length > 4 ? parts[4] : "temp"; // Borrow Time
+
+        // SQL query to insert a new record into the borrowed_books table
+        String query = "INSERT INTO borrowed_books (ISBN, subscriber_id, Name, Subject, Borrowed_Time, Return_Time) "
+                     + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            // Set the values for each field in the query
+            pstmt.setString(1, ISBN); // ISBN
+            pstmt.setInt(2, SID); // subscriber_id
+            pstmt.setString(3, SName); // Name
+            pstmt.setString(4, "temp"); // Subject (since it's not provided, use "temp")
+            pstmt.setString(5, Btime); // Borrow Time
+            pstmt.setString(6, "temp"); // Return Time (since it's not provided, use "temp")
+
+            // Execute the insert and get the number of affected rows
+            int affectedRows = pstmt.executeUpdate();
+
+            // Debugging: Check if rows were inserted
+            if (affectedRows > 0) {
+                System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
+            } else {
+                System.out.println("Insert failed: No rows inserted.");
+            }
+        }
     }
 
     public static String fetchRegisterRequest(Connection conn) throws SQLException {

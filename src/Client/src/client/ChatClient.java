@@ -111,7 +111,7 @@ public class ChatClient extends AbstractClient
 	    	handleRegisterRequestFailed();
 	    }
 	    else {
-	    	handleUnknownResponse(response);
+	    	//handleUnknownResponse(response);
 	    }
 	}
   
@@ -218,11 +218,11 @@ public class ChatClient extends AbstractClient
 	        parseBookData(data);
 	    }
 	}
-
+/* unneccesery
 	private void handleUnknownResponse(String response) {
-	    System.out.println("Unknown response from server: " + response);
+	    System.out.println("" + response);
 	}
-
+*/
 	private void parseBookData(String data) {
 	    try {
 	        String[] bookStrings = data.split(";");
