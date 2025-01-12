@@ -1,12 +1,60 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-#btnStudentInfo {
-	/*-fx-background-color: rgba(255, 255, 255, .80);*/
-	-fx-background-color: skyblue;
-	-fx-text-fill: red;
-	-fx-padding: 6 6 6 6;
-	-fx-border-radius: 8;
-	-fx-font-weight : bold;
-}
+/* Root layout styling */
 .root {
-	-fx-background-color: #deb887;
+    -fx-background-color: linear-gradient(to bottom, #e8f1f2, #cde7f0); /* Light blue gradient */
+    -fx-padding: 30px; /* Spacious padding for comfortable layout */
+}
+
+/* Dynamic label styling */
+#dynamicLabel {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #d35400; /* Vibrant orange color for text */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 1, 1); /* Subtle shadow for depth */
+}
+
+/* General button styling */
+.button {
+    -fx-text-fill: white; /* White text for all buttons */
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 10px; /* Rounded corners */
+    -fx-padding: 4px 8px; /* Comfortable padding */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 2); /* Shadow for depth */
+}
+
+/* Done button styling */
+#btnDone {
+    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); /* Green gradient */
+    -fx-border-color: #388e3c; /* Border matches bottom color */
+    -fx-border-width: 2px;
+}
+
+#btnDone:hover {
+    -fx-background-color: linear-gradient(to bottom, #388e3c, #4caf50); /* Reverse gradient on hover */
+    -fx-border-color: #4caf50;
+    -fx-cursor: hand;
+}
+
+/* Exit button styling */
+#btnExit {
+    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); /* Red gradient */
+    -fx-border-color: #c0392b;
+    -fx-border-width: 2px;
+    -fx-font-size: 12px;
+}
+
+#btnExit:hover {
+    -fx-background-color: linear-gradient(to bottom, #c0392b, #e74c3c); /* Reverse gradient on hover */
+    -fx-border-color: #e74c3c;
+    -fx-cursor: hand;
+}
+
+/* TextField styling */
+#portxt {
+    -fx-border-color: #1976d2; /* Blue border */
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff; /* White background */
 }

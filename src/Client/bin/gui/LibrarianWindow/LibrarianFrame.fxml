@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianWindow.LibrarianController">
+<AnchorPane prefHeight="636.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianWindow.LibrarianController">
    <children>
       <Button id="btnViewReports" fx:id="btnViewReports" alignment="CENTER" layoutX="417.0" layoutY="391.0" mnemonicParsing="false" onAction="#navigateToViewReports" prefHeight="112.0" prefWidth="255.0" text="View Reports" />
       <Button id="btnSubscriberRequests" fx:id="btnSubscriberRequests" alignment="CENTER" layoutX="136.0" layoutY="391.0" mnemonicParsing="false" onAction="#navigateToSubscriberRequests" prefHeight="112.0" prefWidth="255.0" text="Subscriber Requests" />
@@ -17,6 +17,5 @@
          <font>
             <Font size="45" />
          </font></Label>
-      <Button id="btnScanBarcode" fx:id="btnScanBarcode" alignment="CENTER" layoutX="274.0" layoutY="514.0" mnemonicParsing="false" onAction="#navigateToViewReports" prefHeight="112.0" prefWidth="255.0" text="Scan Barcode" />
    </children>
 </AnchorPane>

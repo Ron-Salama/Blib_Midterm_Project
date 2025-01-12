@@ -45,7 +45,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private Button btnSend = null;
     @FXML
     private Button btnBack = null;
-    
+    @FXML
+    private Button btnScanBarcode = null;
+  
     @FXML
     private Label LBL1;
     @FXML
@@ -344,6 +346,10 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 "/gui/LibrarianWindow/LibrarianFrame.fxml",
                 "/gui/LibrarianWindow/LibrarianFrame.css",
                 "Librarian Window");
+    }
+    
+    public void getScanBarcodeBtn(ActionEvent event) throws Exception {
+  
     }
     
     // Method to display messages (for debugging or logging)
