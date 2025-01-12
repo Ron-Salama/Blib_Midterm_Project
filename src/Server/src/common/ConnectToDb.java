@@ -110,8 +110,8 @@ public class ConnectToDb {
     
     
     public static String fetchHistoryData(Connection conn, String subscriberId) {
-        String historyData = "";
-        String query = "SELECT history FROM detailed_subscription_history WHERE subscriber_id = ?";
+    	String historyData = "";
+        String query = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, subscriberId);  // Bind the subscriberId parameter

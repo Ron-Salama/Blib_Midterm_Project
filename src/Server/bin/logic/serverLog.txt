@@ -4,49 +4,36 @@ Client connected.
 Client IP:127.0.0.1
 Client Hostname: 127.0.0.1
 Connection Status: Connected
-Message received: IP:10.100.102.6 from 127.0.0.1 (127.0.0.1)
-Message received: RegisterRequest:2064589111,Almog Raz,0525381648,almograz1@gmail.com from 127.0.0.1 (127.0.0.1)
-Received RegisterRequestCase from client
-Message received: Fetch:206458911 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:2064589111 from 127.0.0.1 (127.0.0.1)
+Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
 Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
-Message received: Update:1,0508,b@gmail.com from 127.0.0.1 (127.0.0.1)
 Message received: GetBookInfo:0011 from 127.0.0.1 (127.0.0.1)
-Message received: BorrowRequest:1,Yuval,0011,The Hobbit,1,1 from 127.0.0.1 (127.0.0.1)
+Message received: BorrowRequest:1,Yuval,0011,The Hobbit,12-01-2025,26-01-2025 from 127.0.0.1 (127.0.0.1)
 Received BorrowRequest from client
+Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
+Client connected.
+Client IP:127.0.0.1
+Client Hostname: 127.0.0.1
+Connection Status: Connected
+Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetBookInfo:0022 from 127.0.0.1 (127.0.0.1)
+Message received: BorrowRequest:1,Yuval,0022,The Catcher in the Rye,12-01-2025,26-01-2025 from 127.0.0.1 (127.0.0.1)
+Received BorrowRequest from client
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
 Message received: GetBooks: from 127.0.0.1 (127.0.0.1)
 Received GetBooks request from client
-Message received: GetBookInfo:0399 from 127.0.0.1 (127.0.0.1)
-Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
-Message received: FetchRegisterRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchRegisterRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchRegisterRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchRegisterRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchRegisterRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
-Received FetchBorrowRequest from client
-Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
 Message received: GetBooks: from 127.0.0.1 (127.0.0.1)
 Received GetBooks request from client
+Message received: IP:172.20.10.3 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetBooks: from 127.0.0.1 (127.0.0.1)
+Received GetBooks request from client
+Message received: GetBooks: from 127.0.0.1 (127.0.0.1)
+Received GetBooks request from client
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
+Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
+Received FetchBorrowRequest from client
+Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
+Received FetchBorrowRequest from client
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)

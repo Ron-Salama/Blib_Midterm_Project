@@ -37,7 +37,7 @@ public class ChatClient extends AbstractClient
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
   public static List<String[][]> br = new ArrayList<>(); 
   public static String[] BorrowedBookInfo;
-  public static String[] myHistoryInfo; 
+  public static ArrayList<String> myHistoryInfo = new ArrayList<String>(); 
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
   // Constructors ****************************************************
@@ -207,16 +207,16 @@ public class ChatClient extends AbstractClient
 	    try {
 	        // Split the message by ';' and store it in a String array
 	        String[] historyData = msg.split(";");
-
-	        // Log and store the parsed history
-	        myHistoryInfo = historyData;  // Save the history data to the static field
-
-	        // Optionally log the entries for debugging
-	        for (String history : historyData) {
-	            if (!history.trim().isEmpty()) {
-	                System.out.println("Parsed Entry: " + history.trim());
-	            }
+	        
+	        for (String activity : historyData) {
+	        	myHistoryInfo.add(activity);
 	        }
+
+	        for (String fck : myHistoryInfo) {
+	        	System.out.println(fck);
+	        }
+	        
+	        
 	    } catch (Exception e) {
 	        System.out.println("Error parsing My History data: " + e.getMessage());
 	    }
