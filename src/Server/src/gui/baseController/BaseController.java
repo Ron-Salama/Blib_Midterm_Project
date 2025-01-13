@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -43,6 +44,7 @@ public abstract class BaseController {
                 scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
             }
 
+            loadIcon(primaryStage);
             primaryStage.setTitle(windowTitle);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -131,4 +133,15 @@ public abstract class BaseController {
     	label.setText(message);
         label.setStyle(color);
     }
+    
+    private void loadIcon(Stage primaryStage) {
+        String iconRelativePath = "/assets/BLib_Server_Icon.png"; 
+
+        // Load the icon image
+        Image icon = new Image(getClass().getResourceAsStream(iconRelativePath));
+        
+        // Set the icon for the primary stage.
+        primaryStage.getIcons().add(icon);
+   }
+
 }

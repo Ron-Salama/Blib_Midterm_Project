@@ -1,6 +1,7 @@
 package gui.baseController;
 
 import java.io.IOException;
+import java.net.URL;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.Subscriber;
@@ -43,7 +45,8 @@ public abstract class BaseController {
             if (cssPath != null) {
                 scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
             }
-
+            
+            loadIcon(primaryStage);
             primaryStage.setTitle(windowTitle);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -68,7 +71,7 @@ public abstract class BaseController {
         if (cssPath != null && !cssPath.isEmpty()) {
             scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
         }
-
+        
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -87,6 +90,7 @@ public abstract class BaseController {
      * @throws Exception If there is an issue loading the FXML file.
      */
     protected void start(Stage primaryStage, String fxmlPath, String cssPath, String title, Label optionalLabel, String initialText, String style) throws Exception {
+    	
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
         Scene scene = new Scene(root);
 
@@ -139,4 +143,17 @@ public abstract class BaseController {
     	}
     	return true;
     }
+
+   private void loadIcon(Stage primaryStage) {
+        String iconRelativePath = "/assets/BLib_Icon.png"; 
+
+        // Load the icon image
+        Image icon = new Image(getClass().getResourceAsStream(iconRelativePath));
+        
+        // Set the icon for the primary stage.
+        primaryStage.getIcons().add(icon);
+   }
+
+
+
 }

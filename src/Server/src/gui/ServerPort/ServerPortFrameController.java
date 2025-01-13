@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.ServerUI;
 
@@ -59,10 +60,21 @@ public class ServerPortFrameController extends BaseController{
 			  "/gui/ServerPort/ServerPort.fxml",
 			  "/gui/ServerPort/ServerPort.css",
 			  "Server - Enter Port");
+		loadIcon(primaryStage);
 	}
 	
 	public void getExitBtn(ActionEvent event) throws Exception {
 		System.out.println("BLib Server Exit");
 		System.exit(0);			
 	}
+	
+	private void loadIcon(Stage primaryStage) {
+        String iconRelativePath = "/assets/BLib_Server_Icon.png"; 
+
+        // Load the icon image
+        Image icon = new Image(getClass().getResourceAsStream(iconRelativePath));
+        
+        // Set the icon for the primary stage.
+        primaryStage.getIcons().add(icon);
+   }
 }

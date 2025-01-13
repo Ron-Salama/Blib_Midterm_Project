@@ -99,7 +99,7 @@ public class MainMenuController extends BaseController {
 			start(primaryStage,
 					"/gui/MainMenuController/MainMenuFrame.fxml",
 					"/gui/MainMenuController/MainMenuFrame.css",
-					"Main Menu");	 	   
+					"Main Menu");	 
 		}
 		
 		public void getExitBtn(ActionEvent event) throws Exception {
