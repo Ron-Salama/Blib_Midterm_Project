@@ -1,3 +1,5 @@
+@import url("../../styles/mainStyleSheet.css");
+
 /* General styles for the AnchorPane */
 .root {
     -fx-background-color: #f4f4f9;  /* Light background color */
