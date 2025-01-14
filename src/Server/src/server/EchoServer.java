@@ -154,7 +154,7 @@ public class EchoServer extends AbstractServer {
     }
     
     private void handlereturnrequest(ConnectionToClient client, String body) {
-    	   String returnstatus = ConnectToDb.returnbook(dbConnection, body);
+    	   //String returnstatus = ConnectToDb.returnbook(dbConnection, body);
 		
 	}
 
