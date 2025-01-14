@@ -4,6 +4,7 @@ Client connected.
 Client IP:127.0.0.1
 Client Hostname: 127.0.0.1
 Connection Status: Connected
+<<<<<<< Updated upstream
 Message received: IP:192.168.250.50 from 127.0.0.1 (127.0.0.1)
 Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
 Message received: Update:1,050822,b@gmail.com from 127.0.0.1 (127.0.0.1)
@@ -25,7 +26,62 @@ Message received: FetchRegisterRequest: from 127.0.0.1 (127.0.0.1)
 Received FetchBorrowRequest from client
 Message received: FetchRegisterRequest: from 127.0.0.1 (127.0.0.1)
 Received FetchBorrowRequest from client
+=======
+<<<<<<< Updated upstream
+Message received: IP:10.0.0.8 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetBorrowedBooks:1 from 127.0.0.1 (127.0.0.1)
+Message received: Return Book: Subscriber ID is 1 Borrow info: 1 1984 Fiction 0 from 127.0.0.1 (127.0.0.1)
+Message received: GetBorrowedBooks:1 from 127.0.0.1 (127.0.0.1)
+=======
+Message received: IP:10.100.102.6 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetBookInfo: from 127.0.0.1 (127.0.0.1)
+Message received: GetBookInfo:0033 from 127.0.0.1 (127.0.0.1)
+Message received: GetBookInfo:0033 from 127.0.0.1 (127.0.0.1)
+Message received: BorrowRequest:1,Yuval,0033,To Kill a Mockingbird,14-01-2025,28-01-2025 from 127.0.0.1 (127.0.0.1)
+Received BorrowRequest from client
+Message received: IP:10.100.102.6 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
+>>>>>>> Stashed changes
 Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
 Received FetchBorrowRequest from client
 Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
 Received FetchBorrowRequest from client
+<<<<<<< Updated upstream
+=======
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: SubmitBorrowRequest:Yuval,1,To Kill a Mockingbird,0033,14-01-2025 from 127.0.0.1 (127.0.0.1)
+>>>>>>> Stashed changes
+Client connected.
+Client IP:127.0.0.1
+Client Hostname: 127.0.0.1
+Connection Status: Connected
+<<<<<<< Updated upstream
+Message received: IP:10.0.0.8 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:2 from 127.0.0.1 (127.0.0.1)
+Message received: GetBorrowedBooks:2 from 127.0.0.1 (127.0.0.1)
+Message received: Return Book: Subscriber ID is 2 Borrow info: 2 1984 null 0 from 127.0.0.1 (127.0.0.1)
+Message received: GetBorrowedBooks:2 from 127.0.0.1 (127.0.0.1)
+=======
+Message received: IP:10.100.102.6 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:11 from 127.0.0.1 (127.0.0.1)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
