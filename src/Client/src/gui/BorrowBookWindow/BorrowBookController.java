@@ -59,6 +59,8 @@ public class BorrowBookController extends BaseController implements Initializabl
 
     String bookId = "";
     String bookName = "";
+    int copiesNum;
+    int reservedCopiesNum;
     String borrowStatus = "CAN_BORROW";  // String to hold the borrow status
 
     @Override
@@ -95,13 +97,18 @@ public class BorrowBookController extends BaseController implements Initializabl
                     "Book Name: " + ChatClient.BorrowedBookInfo[1] + "\n" +
                     "Subject: " + ChatClient.BorrowedBookInfo[2] +"\n" +
                     "Description: " + ChatClient.BorrowedBookInfo[3] + "\n" +
-                    "Available Copies: " + ChatClient.BorrowedBookInfo[4] +"\n" +
-                    "Location on Shelf: " + ChatClient.BorrowedBookInfo[5]
+                    "Number of Copies: " + ChatClient.BorrowedBookInfo[4] +"\n" +
+                    "Location on Shelf: " + ChatClient.BorrowedBookInfo[5] + "\n" +
+                    "Available Copies Number: " + ChatClient.BorrowedBookInfo[6] + "\n" +
+                    "Reserved Copies Number: " + ChatClient.BorrowedBookInfo[7] + "\n"
+                	
                 );
                 bookName = ChatClient.BorrowedBookInfo[1];
+                copiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[4]);
+                reservedCopiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[7]);
 
                 // Update borrow status based on available copies
-                if (Integer.parseInt(ChatClient.BorrowedBookInfo[4]) <= 0) {
+                if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
                     borrowStatus = "NO_COPIES";
                     btnReserve.setVisible(true);
                     awaitingTextID.setText("There are no more Copies of the book " + bookName + "\nWould you like to Reserve it?");
@@ -145,25 +152,53 @@ public class BorrowBookController extends BaseController implements Initializabl
     }
 
     public void Submit_Reserve_Request(ActionEvent event) throws Exception {
-        if ("NO_COPIES".equals(borrowStatus)) {
+        if (reservedCopiesNum == copiesNum) {
+            // All copies are reserved
+            showColoredLabelMessageOnGUI(RequestStatus, 
+                "All the current copies of the book are reserved.\nPlease try to reserve at a later time when a copy is\navailable to be reserved.", 
+                "-fx-text-fill: orange;");
+        } else if ("NO_COPIES".equals(borrowStatus)) {
             // Proceed with reservation logic
-        	showColoredLabelMessageOnGUI(RequestStatus, "You have successfully reserved the book.", "-fx-text-fill: green;");
+            
+            // Collect subscriber and book details
+            String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
+            String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
+            
+            String reservation = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName;
+            ClientUI.chat.accept("Reserve:" + reservation);
+            
+            // Feedback to the user
+            showColoredLabelMessageOnGUI(RequestStatus, 
+                "You have successfully reserved the book.", 
+                "-fx-text-fill: green;");
+            
+            // Disable the Reserve button
+            btnReserve.setDisable(true);
+
         } else {
-        	showColoredLabelMessageOnGUI(RequestStatus, "Book is available, no need to reserve.", "-fx-text-fill: red;");
+            showColoredLabelMessageOnGUI(RequestStatus, 
+                "Book is available, no need to reserve.", 
+                "-fx-text-fill: red;");
         }
     }
+
     
     
     public void Clear() {
-    	 // Clear the text field for the book ID
+        // Clear the text field for the book ID
         IDtxt.clear();
         
         // Clear the details displayed on the window
         Book_Description.setText("");
         awaitingTextID.setText("");
         RequestStatus.setText("");
+        
+        // Reset the Reserve button
         btnReserve.setVisible(false); // Hide the Reserve button if visible
-        btnSubmitToLibrarian.setDisable(true); // Disable the borrow request button
+        btnReserve.setDisable(false); // Re-enable the Reserve button
+        
+        // Disable the borrow request button
+        btnSubmitToLibrarian.setDisable(true);
     }
 
     public void openSearchWindow(ActionEvent event) throws Exception {

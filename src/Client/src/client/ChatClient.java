@@ -182,7 +182,7 @@ private void handleBorrowedBooksResponse(String data) {
 
 
 
-  
+ 
   private void handleBookInfo(String data) {
 	    try {
 	        if (data.equals("NoBooksFound")) {
@@ -193,16 +193,19 @@ private void handleBorrowedBooksResponse(String data) {
 	            BorrowedBookInfo = null;
 	        } else {
 	            BorrowedBookInfo = data.split(",");
-	            if (BorrowedBookInfo.length < 6) {
+
+	            if (BorrowedBookInfo.length < 8) {
 	                throw new IllegalArgumentException("Incomplete book data received.");
 	            }
-	          /*  System.out.println("Book ID: " + BorrowedBookInfo[0] + "\n" +
+	          /*System.out.println("Book ID: " + BorrowedBookInfo[0] + "\n" +
 	                    "Book Name: " + BorrowedBookInfo[1] + "\n" +
 	                    "Subject: " + BorrowedBookInfo[2] + "\n" +
 	                    "Description: " + BorrowedBookInfo[3] + "\n" +
-	                    "Available Copies: " + BorrowedBookInfo[4] + "\n" +
-	                    "Location on Shelf: "+ BorrowedBookInfo[5]);
-	          */
+	                    "Copies: " + BorrowedBookInfo[4] + "\n" +
+	                    "Location on Shelf: "+ BorrowedBookInfo[5] + "\n"+
+	                    "Available copies number: "+ BorrowedBookInfo[6]+ "\n"+
+	                    "Reserved copies number: "+ BorrowedBookInfo[7]);*/
+	          
 	        }
 	    } catch (Exception e) {
 	        System.err.println("Error handling book info: " + e.getMessage());
@@ -326,9 +329,11 @@ private void handleBorrowedBooksResponse(String data) {
 	            String name = fields[1];
 	            String subject = fields[2];
 	            String description = fields[3];
-	            int availableCopies = Integer.parseInt(fields[4]);
+	            int copies = Integer.parseInt(fields[4]);
 	            String location = fields[5];
-	            bookList.add(new Book(id, name, description, subject, availableCopies, location));
+	            int availableCopies = Integer.parseInt(fields[6]);
+	            int reservedCopies = Integer.parseInt(fields[7]); 
+	            bookList.add(new Book(id, name, description, subject, copies, location, availableCopies, reservedCopies));
 	        }
 	    } catch (Exception e) {
 	        System.out.println("Error parsing book data: " + e.getMessage());

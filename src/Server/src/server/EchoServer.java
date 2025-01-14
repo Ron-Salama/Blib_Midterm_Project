@@ -117,6 +117,8 @@ public class EchoServer extends AbstractServer {
                 case "BorrowRequest": // Handle BorrowRequest
                 	handleBorrowRequestCase(client, body);
                 	break;
+                case "Reserve": //Handle Reservations
+                	handleReserveRequestCase(client, body);
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
                 	handleFetchBorrowRequestCase(client, body);
                     break;
@@ -347,6 +349,62 @@ public class EchoServer extends AbstractServer {
             client.sendToClient("BookInfo:Error:CouldNotFetchBookInfo");
         }
     }
+    
+    
+    //********************************************************************************************
+    //********************************************************************************************
+    //********************************************************************************************
+    //********************************************************************************************
+    //********************************************************************************************
+    private void handleReserveRequestCase(ConnectionToClient client, String body) throws IOException {
+        outputInOutputStreamAndLog("Received Reserve Request from client");
+        String[] reserveParts = body.split(",");
+
+        if (reserveParts.length == 4) { 
+            String subscriberId = reserveParts[0].trim();
+            String subscriberName = reserveParts[1].trim();
+            String reservedBookId = reserveParts[2].trim();
+            String bookName = reserveParts[3].trim();
+
+            try {
+                // All time-related fields are set to empty strings for reservation except for reserved time
+                String borrowDate = ""; // Leave empty if not used
+                String returnDate = ""; // Leave empty if not used
+                String extendTime = ""; // Leave empty if not used
+
+                // Send the data to insertRequest for reservation
+                ConnectToDb.insertRequest(dbConnection, 
+                                           "Reserve For Subscriber", // requestType
+                                           subscriberId,             // requestedByID
+                                           subscriberName,           // requestedByName
+                                           bookName,                 // bookName
+                                           reservedBookId,            // bookId
+                                           borrowDate,               // borrowDate (null for reservation)
+                                           returnDate,               // returnDate (null for reservation)
+                                           extendTime);              // extendTime (null for reservation)
+
+                // Decrease available copies (if needed)
+                ConnectToDb.incrementReservedCopiesNum(dbConnection, reservedBookId);
+                
+                client.sendToClient("Reservation successfully processed for book: " + bookName);
+            } catch (Exception e) {
+                client.sendToClient("An error occurred while processing the reservation: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            client.sendToClient("Invalid reservation request format. Please provide the correct details.");
+        }
+    }
+    
+    
+    
+    //********************************************************************************************
+    //********************************************************************************************
+    //********************************************************************************************
+    //********************************************************************************************
+    //********************************************************************************************
+    
+    
     
     private void handleRegisterRequestCase(ConnectionToClient client, String body) throws IOException {
    	 outputInOutputStreamAndLog("Received RegisterRequestCase from client");
