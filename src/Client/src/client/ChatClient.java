@@ -119,13 +119,44 @@ public class ChatClient extends AbstractClient
   		}else if (response.startsWith("RegistrationFailed:")) {
 	    	handleRegisterRequestFailed();
 	    }
+	    else if (response.startsWith("FetchedReturnRequest:")) {
+	    	handleReturnRequestSucess(response.substring("FetchedReturnRequest:".length()));
+	    }
+	    else if (response.startsWith("An error occurred while fetching the return request data:")) {
+	    	handleReturnRequestfailure();
+	    }
 	    else {
-	    	//handleUnknownResponse(response);
+	    	
 	    }
 	}
   
   
-  private void handleBorrowedBooksResponse(String data) {
+  private void handleReturnRequestfailure() {
+	System.out.print("Fetch return request failed");
+	
+}
+
+private void handleReturnRequestSucess(String data) {
+	 br.clear(); // Clear the existing list to avoid appending duplicate data
+
+	    // Split the input data by semicolon (;) to separate each request
+	    String[] requests = data.split(";");
+
+	    // Iterate over each request (which is now a string) and split it by comma (,) to get the fields
+	    for (String request : requests) {
+	        // Split each request into fields by comma
+	        String[] RegisterDetails = request.split(",");
+	        // Ensure the bookDetails array has the expected length (8 fields)
+	        if (RegisterDetails.length == 8) {
+	            br.add(new String[][]{RegisterDetails}); // Add the book details array to the br list
+	        } else {
+	            System.out.println("Invalid book data received: " + String.join(",", RegisterDetails));
+	        }
+	    }
+	}
+	
+
+private void handleBorrowedBooksResponse(String data) {
 	    if (data.equals("NoBooksFound")) {
 	        System.out.println("No borrowed books found.");
 	        ChatClient.borrowedBookList.clear();

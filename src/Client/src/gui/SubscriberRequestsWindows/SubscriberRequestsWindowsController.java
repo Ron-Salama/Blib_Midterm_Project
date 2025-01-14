@@ -79,6 +79,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     
     private List<String[]> borrowRequests = new ArrayList<>();
     private List<String[]> RegisterRequests = new ArrayList<>();
+    private List<String[]> ReturnRequests = new ArrayList<>();
     private String requestType = "";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -135,6 +136,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 LBL5.setText("Return Time:");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
+                ClientUI.chat.accept("Fetch return request:");
+                addDelay();
+                handleReturnofBorrowedBook();
                 break;
             case "Extend Book Borrow":
                 LBL1.setText("Subscriber Name:");
@@ -157,7 +161,52 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         }
 
     }
-    // Method to introduce a delay of 0.5 seconds before fetching data
+    private void handleReturnofBorrowedBook() {
+    	
+    	
+    	
+    	 ReturnRequests.clear();  // Clear the existing list to avoid duplicate data
+         clearFieldsAndComboBoxes();
+
+         // Ensure ChatClient.br is not null or empty
+         if (ChatClient.br != null && ChatClient.br.size() > 0) {
+             // Iterate over each row in ChatClient.br (each row is a borrow request)
+             for (int i = 0; i < ChatClient.br.size(); i++) {
+                 String[][] ReturnRequestsArray = ChatClient.br.get(i); // Get the i-th 2D array
+
+                 // Iterate over each borrow request in the i-th 2D array (assuming each request has 8 fields)
+                 for (String[] request : ReturnRequestsArray) {
+                     if (request.length == 8) {
+                    	 ReturnRequests.add(request);  // Add the borrow request (which is a String array) to the list
+                     } else {
+                         System.out.println("Invalid Return request data at index " + i + ": " + String.join(",", request));
+                     }
+                 }
+             }
+
+             // Create a set to store unique subscriber names to avoid duplicates
+             ObservableList<String> requestedByList = FXCollections.observableArrayList();
+             Set<String> uniqueNames = new HashSet<>();
+
+             for (String[] returnRequest : ReturnRequests) {
+                 String subscriberName = returnRequest[2];  // Assuming the name is at index 2
+
+                 // Add the name only if it's not already in the set
+                 if (!uniqueNames.contains(subscriberName)) {
+                     uniqueNames.add(subscriberName);
+                     requestedByList.add(subscriberName);  // Add the unique name to the list
+                 }
+             }
+
+             RequestedByCB.setItems(requestedByList);  // Set the unique subscriber names in the ComboBox
+         } else {
+             System.out.println("No borrow requests available.");
+         }
+    }
+
+
+
+	// Method to introduce a delay of 0.5 seconds before fetching data
     private void addDelay() {
         // Create a PauseTransition with a 0.5 second delay
         PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.5));
@@ -189,14 +238,20 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                         selectedRequests.add(request);
                     }
                 }
-            } else if ("Borrow For Subscriber".equals(selectedRequestType) || 
-                       "Return For Subscriber".equals(selectedRequestType) || 
-                       "Extend Book Borrow".equals(selectedRequestType)) {
+            } else if ("Borrow For Subscriber".equals(selectedRequestType)) {
                 // Add borrow requests for the selected subscriber
                 for (String[] request : borrowRequests) {
                     if (request[2].equals(selectedName)) {
                         selectedRequests.add(request);
                     }
+                }
+                
+            }
+            else if ( "Return For Subscriber".equals(selectedRequestType)) {
+              for (String[] request : ReturnRequests) {
+                       if (request[2].equals(selectedName)) {
+                            selectedRequests.add(request);
+                          }
                 }
             }
 
@@ -211,55 +266,51 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         }
     }
 
- // Method to autofill text fields based on the selected borrow or register request in RequestCB
     private void autofillRequestData() {
         String selectedRequest = RequestCB.getValue();
-        TXTF1.setText(""); 
-        TXTF2.setText(""); 
-        TXTF3.setText("");
-        TXTF4.setText("");
-        TXTF5.setText("");   
+        clearTextFields();
 
         if (selectedRequest != null && !selectedRequest.isEmpty()) {
             List<String[]> selectedRequests = new ArrayList<>();
             String selectedRequestType = RequestTypeCB.getValue();
-            
-            // Determine the request type and populate selectedRequests
+
             if ("Registers".equals(selectedRequestType)) {
-                for (String[] request : RegisterRequests) {
-                    selectedRequests.add(request);
-                }
-            } else {
-                for (String[] request : borrowRequests) {
-                    selectedRequests.add(request);
-                }
+                selectedRequests = RegisterRequests;
+            } else if ("Borrow For Subscriber".equals(selectedRequestType)) {
+                selectedRequests = borrowRequests;
+            } else if ("Return For Subscriber".equals(selectedRequestType)) {
+                selectedRequests = ReturnRequests;
             }
 
-            // Autofill the text fields based on the selected request
             for (String[] request : selectedRequests) {
-                String formattedBorrowRequest = (request[3] + " (Book ID: " + request[4] + ")");
-                String formattedRegisterRequest = ("(ID: " + request[1] + " ,Name: "+ request[2] +  ")");
-                
-                if ("Registers".equals(selectedRequestType)) {
-                    if (formattedRegisterRequest.equals(selectedRequest)) {
-                        TXTF1.setText(request[2]); // Subscriber Name
-                        TXTF2.setText(request[1]); // Subscriber ID
-                        TXTF3.setText(request[4]); // Email
-                        TXTF4.setText(request[3]); // Phone number
-                        break;
-                    }
-                } else {
-                    if (formattedBorrowRequest.equals(selectedRequest)) {
-                        TXTF1.setText(request[2]); // Subscriber Name
-                        TXTF2.setText(request[1]); // Subscriber ID
-                        TXTF3.setText(request[3]); // Book Name
-                        TXTF4.setText(request[4]); // Book ID
-                        TXTF5.setText(request[5]); // Borrow Time or other relevant field
-                        break;
-                    }
+                String formattedRequest = formatRequest(selectedRequestType, request);
+
+                if (formattedRequest.equals(selectedRequest)) {
+                    TXTF1.setText(request[2]); // Subscriber Name
+                    TXTF2.setText(request[1]); // Subscriber ID
+                    TXTF3.setText(request[3]); // Book Name or Email
+                    TXTF4.setText(request[4]); // Book ID or Phone Number
+                    TXTF5.setText(request[5]); // Borrow/Return Time if applicable
+                    break;
                 }
             }
         }
+    }
+
+    private String formatRequest(String requestType, String[] request) {
+        if ("Registers".equals(requestType)) {
+            return "(ID: " + request[1] + " ,Name: " + request[2] + ")";
+        } else {
+            return request[3] + " (Book ID: " + request[4] + ")";
+        }
+    }
+
+    private void clearTextFields() {
+        TXTF1.clear();
+        TXTF2.clear();
+        TXTF3.clear();
+        TXTF4.clear();
+        TXTF5.clear();
     }
 
 
@@ -379,7 +430,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	}
 
 	public void acceptRequest(ActionEvent event) throws Exception {
-		if(requestType=="Borrow For Subscriber") {
+		 String selectedRequestType = RequestTypeCB.getValue();
+		if(selectedRequestType=="Borrow For Subscriber") {
             String SName = TXTF1.getText();
             String SID = TXTF2.getText();
             String BName = TXTF3.getText();
@@ -388,6 +440,15 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime;
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
 		}
+		else if (selectedRequestType=="Return For Subscriber"){
+			System.out.println("im here nigga");
+			String SName = TXTF1.getText();
+            String SID = TXTF2.getText();
+            String BName = TXTF3.getText();
+            String BID = TXTF4.getText();
+            String Btime = TXTF5.getText();
+            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime;
+			ClientUI.chat.accept("Handle return:"+body); 
+		}
+		}
 	}
-
-}

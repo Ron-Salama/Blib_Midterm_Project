@@ -135,11 +135,19 @@ public class EchoServer extends AbstractServer {
                 	*/
                 case "GetHistory": //handle GetHistory
                 	handleMyHistoryData(client, body);
+                	 break;
                 case "SubmitBorrowRequest": 
                 	SubmitBorrowRequest(client, body);
-                case "Return Book":
+                	break;
+                case "Return request":
                 	handlereturnrequest(client,body);
-                	
+                	break;
+                case "Handle return":
+                	HandleBookReturn(client,body);
+                	break;
+                case "Fetch return request":
+                	HandleFetchreturnrequest(client,body);
+                	break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -154,35 +162,66 @@ public class EchoServer extends AbstractServer {
         }
     }
     
-    private void handlereturnrequest(ConnectionToClient client, String body) {
-        System.out.println("Entering handlereturnrequest");
-
-        // Split the message by spaces to get individual parts
-        String[] messageParts = body.split(" ");
-
-        // Extract subscriber ID from the appropriate part (this should be the fifth part in the message)
-        String subscriberId = messageParts[3];  // "1" in your example
-
-        // The book info is in the 7th part, which we need to process
-        String bookDetails = messageParts[6]; // Should be "1,The Hobbit,Fantasy,0"
-
-        // Now split the book details by commas to extract the borrow ID and other information
-        String[] bookInfo = bookDetails.split(",");
-        String borrowId = bookInfo[0];  // Extract "1" (borrow ID)
-
-        // Log the extracted data for debugging
-        System.out.println("Subscriber ID: " + subscriberId + ", Borrow ID: " + borrowId);
-
-        // Call the returnbook method to remove the book from the borrowed_books table
-        String returnStatus = ConnectToDb.returnbook(dbConnection, subscriberId, borrowId);
-
-        // Send the return status back to the client
+    private void HandleFetchreturnrequest(ConnectionToClient client, String body) throws IOException {
         try {
-            client.sendToClient(returnStatus);
-        } catch (IOException e) {
+       	 String ReturnRequests = ConnectToDb.fetchReturnRequest(dbConnection);
+
+            client.sendToClient("FetchedReturnRequest:" + ReturnRequests);
+        } catch (Exception e) {
+            client.sendToClient("An error occurred while fetching the return request data: " + e.getMessage());
             e.printStackTrace();
         }
+   }
+		
+
+	private void handlereturnrequest(ConnectionToClient client, String body) throws IOException {
+        System.out.println("Processing return request");
+
+        // Expected message format: "Return request: Subscriber ID is 1 Yuval Borrow info: 1 1984 Fiction 0"
+
+        try {
+            // Extract the Subscriber ID and Name
+            int idStartIndex = body.indexOf("Subscriber ID is") + 17; // 17 = length of "Subscriber ID is "
+            int idEndIndex = body.indexOf(" ", idStartIndex); // Find the space after the ID
+            String subscriberId = body.substring(idStartIndex, idEndIndex).trim();
+
+            int nameStartIndex = idEndIndex + 1; // Start after the space following the ID
+            int nameEndIndex = body.indexOf("Borrow info:"); // End before "Borrow info:"
+            String subscribername = body.substring(nameStartIndex, nameEndIndex).trim();
+
+            // Extract the Borrow info
+            int borrowInfoStartIndex = body.indexOf("Borrow info:") + 13; // 13 = length of "Borrow info: "
+            String borrowInfo = body.substring(borrowInfoStartIndex).trim(); // Remaining part is borrow info
+
+            // Split borrow info to extract individual fields
+            String[] bookInfo = borrowInfo.split(" ");
+            String borrowId = bookInfo[0]; // First part (e.g., "1")
+            String bookName = bookInfo[1]; // Second part (e.g., "1984")
+            String subject = bookInfo[2];  // Third part (e.g., "Fiction")
+            String timeLeft = bookInfo[3]; // Fourth part (e.g., "0")
+
+            // Create the return request in the database
+            String requestType = "Return For Subscriber";  // Specify the type of request
+            String borrowTime = "temp";  // Placeholder value
+            String extendTime = "temp";  // Placeholder value
+
+            // Insert the request into the database
+            ConnectToDb.insertRequest(
+                dbConnection, requestType, subscriberId, subscribername, bookName, borrowId, borrowTime, timeLeft, extendTime
+            );
+
+            // Notify the client that the request was submitted
+            client.sendToClient("Return request submitted, awaiting librarian approval.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            client.sendToClient("Error inserting return request.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            client.sendToClient("Error processing the return request message.");
+        }
     }
+
+
 /*
 	private void handleGetDate(ConnectionToClient client, String body) throws IOException {
     	String currentDate = clock.getCurrentDate();
@@ -457,6 +496,46 @@ public class EchoServer extends AbstractServer {
         }
     }
     
+    private void HandleBookReturn(ConnectionToClient client, String body) {
+        try {
+            // Log the raw body for debugging
+            System.out.println("Raw body received: " + body);
+
+            // Split the body by commas to extract individual parts (subscriber name, ID, book name, ID, and time)
+            String[] messageParts = body.split(",");
+
+            // Validate that we have the expected number of parts (5 fields in total)
+            if (messageParts.length != 5) {
+                client.sendToClient("Error: Invalid input format. Expected format: SName,SID,BName,BID,BTime");
+                return;
+            }
+
+            // Extract the relevant data from the split parts
+            String subscriberName = messageParts[0].trim();  // Subscriber's name
+            String subscriberId = messageParts[1].trim();    // Subscriber's ID
+            String bookName = messageParts[2].trim();        // Book's name
+            String borrowId = messageParts[3].trim();          // borrowID
+            String bookTime = messageParts[4].trim();        // Book's time (or time remaining)
+
+            // Log the extracted values for debugging
+            System.out.println("Parsed Subscriber Name: " + subscriberName + ", Subscriber ID: " + subscriberId + 
+                               ", Book Name: " + bookName + ", Borrow ID: " + borrowId + ", Book Time: " + bookTime);
+
+            // Process the return request via the database connection
+            String returnRequestStatus = ConnectToDb.returnbook(dbConnection, subscriberId, borrowId);
+
+            // Send the return request status back to the client
+            client.sendToClient("Return request status: " + returnRequestStatus);
+        } catch (Exception e) {
+            try {
+                // Handle unexpected exceptions and send error details to the client
+                client.sendToClient("An error occurred while processing the book return: " + e.getMessage());
+            } catch (IOException ioException) {
+                System.err.println("Failed to send error message to client: " + ioException.getMessage());
+            }
+            e.printStackTrace(); // Log the exception for server-side debugging
+        }
+    }
 
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
