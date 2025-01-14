@@ -157,6 +157,9 @@ public class MyBooksController extends BaseController implements Initializable {
 =======
                         ClientUI.chat.accept("Return request: Subscriber ID is "+ChatClient.s1.getSubscriber_id()+" "+ChatClient.s1.getSubscriber_name()+" Borrow info: "+borrowedBook);
                         ClientUI.chat.accept("Return Book: Subscriber ID is"+ChatClient.s1.getSubscriber_id()+" Book info is:"+borrowedBook);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     });
                 }

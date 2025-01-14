@@ -16,7 +16,10 @@ public class ClientTimeDiffController {
 		return true; // Meaning there's enough time to act before the deadline.
 		}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 		return true; // Meaning there's enough time to act before the deadline. // perform extend (Almog)
 	}
