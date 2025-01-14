@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import common.ConnectToDb;
+//import gui.SubscriberRequestsWindows.PreparedStatement;
 import logic.ClockController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -136,6 +137,8 @@ public class EchoServer extends AbstractServer {
                 	handleMyHistoryData(client, body);
                 case "SubmitBorrowRequest": 
                 	SubmitBorrowRequest(client, body);
+                case "UpdateCopiesOfBook":
+                	updateCopiesOfBook(client, body);
                 case "Return Book:":
                 	handlereturnrequest(client,body);
                 	
@@ -177,11 +180,17 @@ public class EchoServer extends AbstractServer {
         }
     }
     private void SubmitBorrowRequest(ConnectionToClient client, String body) throws SQLException, IOException {
-
        ConnectToDb.insertBorrowBook(dbConnection, body);
        client.sendToClient("Borrowed Book Request Accepted & inserted into borrowed_book db");
-        
     }
+    
+    
+    private void updateCopiesOfBook(ConnectionToClient client, String body) throws SQLException, IOException {
+    	ConnectToDb.updateCopiesOfBook(dbConnection, body);
+        client.sendToClient("Number of books updated");
+    }
+    
+    
     
     private void handleUpdateCase(ConnectionToClient client, String body) throws SQLException, IOException {
 

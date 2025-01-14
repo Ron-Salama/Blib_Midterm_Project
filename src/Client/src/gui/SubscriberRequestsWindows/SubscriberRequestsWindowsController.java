@@ -367,7 +367,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    TXTF4.setText("");
 	    TXTF5.setText("");
 	}
-
+	
 	// Method to clear only the RequestCB and text fields
 	private void clearRequestCBAndTextFields() {
 	    RequestCB.getItems().clear();
@@ -377,9 +377,11 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    TXTF4.setText("");
 	    TXTF5.setText("");
 	}
-
-	public void acceptRequest(ActionEvent event) throws Exception {
-		if(requestType=="Borrow For Subscriber") {
+		
+	public void acceptRequest(ActionEvent event) throws Exception 
+	{
+		if(requestType=="Borrow For Subscriber") 
+		{
             String SName = TXTF1.getText();
             String SID = TXTF2.getText();
             String BName = TXTF3.getText();
@@ -387,6 +389,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String Btime = TXTF5.getText();
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime;
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
+			ClientUI.chat.accept("UpdateCopiesOfBook"+body);
 		}
 	}
 
