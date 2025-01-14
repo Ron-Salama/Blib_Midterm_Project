@@ -491,7 +491,7 @@ public class ConnectToDb {
     public static void insertBorrowBook(Connection conn, String body) throws SQLException {
         // Split the body string by commas
         String[] parts = body.split(",");
-
+        
         // Assuming the body contains the following values:
         // SName, SID, BName, ISBN, Btime in the respective order
         String SName = parts.length > 0 ? parts[0] : "temp"; // Subscriber Name
@@ -499,7 +499,7 @@ public class ConnectToDb {
         String BName = parts.length > 2 ? parts[2] : "temp"; // Book Name (not used in the query, but included for reference)
         String ISBN = parts.length > 3 ? parts[3] : "temp"; // Book ISBN
         String Btime = parts.length > 4 ? parts[4] : "temp"; // Borrow Time
-
+       
         // SQL query to insert a new record into the borrowed_books table
         String query = "INSERT INTO borrowed_books (ISBN, subscriber_id, Name, Subject, Borrowed_Time, Return_Time) "
                      + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -525,6 +525,95 @@ public class ConnectToDb {
         }
     }
 
+    
+    public static void updateCopiesOfBook(Connection conn, String body) throws SQLException {
+        // Split the 'body' string to extract necessary information
+        String[] details = body.split(","); // assuming ',' is the delimiter
+
+        // Extract the bookId (ISBN) from the array
+        String bookId = details[3].trim(); // The bookId is at index 3 in this case
+        String checkSql = "SELECT NumCopies FROM books WHERE ISBN = ?";
+        String updateSql = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ?";
+
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            // Check if the book exists and has more than 0 copies
+            checkStmt.setString(1, bookId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    int numCopies = rs.getInt("NumCopies");
+                    if (numCopies > 0) {
+                        // Proceed to update NumCopies
+                        try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                            updateStmt.setString(1, bookId);
+                            int rowsAffected = updateStmt.executeUpdate();
+                            if (rowsAffected > 0) {
+                                System.out.println("Number of copies for the book with ISBN " + bookId + " updated successfully.");
+                            } else {
+                                System.out.println("Failed to update the number of copies for the book.");
+                            }
+                        }
+                    } else {
+                        throw new SQLException("The number of copies for the book with ISBN " + bookId + " is already 0.");
+                    }
+                } else {
+                    throw new SQLException("Book with ISBN " + bookId + " not found.");
+                }
+            }
+        } catch (SQLException e) {
+            // Handle exception
+            System.err.println("Error updating number of copies: " + e.getMessage());
+            throw e;
+        }
+
+        // Prepare the history message to be appended
+        String checkSql1 = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
+        String updateHistorySql = "UPDATE detailed_subscription_history SET history = ? WHERE detailed_subscription_history = ?";
+
+        try (PreparedStatement checkStmt1 = conn.prepareStatement(checkSql1)) {
+            checkStmt1.setString(1, details[1].trim()); // details[1] is subscriberId
+            try (ResultSet rs1 = checkStmt1.executeQuery()) {
+                if (rs1.next()) {
+                    // The subscriber exists, proceed to append to their history
+                    String existingHistory = rs1.getString("history");
+                    if (existingHistory == null) {
+                        existingHistory = ""; // Ensure we have an empty string if no history exists
+                    }
+
+                    String myHistoryMessage = details[4] + "," + details[3] + "," + details[2] + "," + "Borrowed successfully";
+                    String newHistory = existingHistory + myHistoryMessage + ";"; // Always append a semicolon to the new message
+
+
+                    // Update history by appending the new message
+                    try (PreparedStatement updateHistoryStmt = conn.prepareStatement(updateHistorySql)) {
+                        updateHistoryStmt.setString(1, newHistory); // Set the new history with appended message
+                        updateHistoryStmt.setString(2, details[1].trim()); // subscriber_id
+
+                        // Execute update
+                        int rowsAffectedHistory = updateHistoryStmt.executeUpdate();
+                        if (rowsAffectedHistory > 0) {
+                            System.out.println("History updated successfully for subscriber with ID " + details[1].trim());
+                        } else {
+                            System.out.println("Failed to update history for subscriber with ID " + details[1].trim());
+                        }
+                    }
+                } else {
+                    throw new SQLException("Subscriber with ID " + details[1].trim() + " not found in history.");
+                }
+            }
+        } catch (SQLException e) {
+            // Handle exception for history update
+            System.err.println("Error updating history: " + e.getMessage());
+            throw e;
+        }
+    }
+
+
+
+
+
+    
+    
+    
     public static String fetchRegisterRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
 

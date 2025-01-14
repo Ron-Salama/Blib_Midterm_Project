@@ -40,7 +40,7 @@ public class HistoryController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentSubscriber = SubscriberWindowController.currentSubscriber;
-
+       
         // Configure TableColumn to display String values directly
         tableDescription.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
 
@@ -75,6 +75,8 @@ public class HistoryController extends BaseController implements Initializable {
                 
                 // Add all items from the list to the TableView
                 tableView.getItems().addAll(ChatClient.myHistoryInfo);
+                ChatClient.myHistoryInfo.clear(); // Clears all elements from the ArrayList
+                
             });
         } else {
             System.out.println("No history data to display.");
