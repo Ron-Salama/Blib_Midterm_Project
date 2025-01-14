@@ -441,7 +441,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String Btime = TXTF5.getText();
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime;
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
-            ClientUI.chat.accept("UpdateCopiesOfBook"+body);
+            ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
 
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
