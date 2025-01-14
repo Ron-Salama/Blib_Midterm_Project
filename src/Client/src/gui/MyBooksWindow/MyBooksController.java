@@ -52,10 +52,13 @@ public class MyBooksController extends BaseController implements Initializable {
     private TableColumn<BorrowedBook, Integer> tableID;
     
     @FXML
-    private TableColumn<BorrowedBook, String> tableName;
+    private TableColumn<BorrowedBook, String> tableBorrowDate;
     
     @FXML
-    private TableColumn<BorrowedBook, String> tableSubject;
+    private TableColumn<BorrowedBook, String> tableReturnDate;
+    
+    @FXML
+    private TableColumn<BorrowedBook, String> tableName;
     
     @FXML
     private TableColumn<BorrowedBook, Integer> tableTimeLeft;
@@ -82,13 +85,14 @@ public class MyBooksController extends BaseController implements Initializable {
         // Initialize TableView columns
         tableID.setCellValueFactory(new PropertyValueFactory<>("borrowId")); // ID column
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
-        tableSubject.setCellValueFactory(new PropertyValueFactory<>("subject")); // Subject column
+        tableBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowedTime")); // Borrow Date column
+        tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnTime")); // Return Date column
         tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
-        
+
         setupActionsColumn();
         loadBooks();
-
     }
+
     
     private void loadBooks() {
         new Thread(() -> {
@@ -148,6 +152,7 @@ public class MyBooksController extends BaseController implements Initializable {
                     extendButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                         System.out.println("Extend borrowing length for book: " + borrowedBook.getName());
+                        
                     });
 
                     returnButton.setOnAction(event -> {
@@ -155,7 +160,7 @@ public class MyBooksController extends BaseController implements Initializable {
                         System.out.println("Return book: " + borrowedBook.getName());
                         ClientUI.chat.accept("Return request: Subscriber ID is "+ChatClient.s1.getSubscriber_id()+" "+ChatClient.s1.getSubscriber_name()+" Borrow info: "+borrowedBook);
                         ClientUI.chat.accept("Return Book: Subscriber ID is"+ChatClient.s1.getSubscriber_id()+" Book info is:"+borrowedBook);
-
+                        
                     });
                 }
 
@@ -179,18 +184,18 @@ public class MyBooksController extends BaseController implements Initializable {
         	
         }
 //
-//        public void extendButton(ActionEvent event) {
-//        	ClientTimeDiffController timeDiffController = new ClientTimeDiffController();
-//        	LocalDateTime today = LocalDateTime.now();
-//        	String newReturnDate;
-//    		newReturnDate = timeDiffController.extendReturnDate(selectedBook.getReturnDate, 14);
-//        	BorrowedBook selectedBook = tableView.getSelectionModel().getSelectedItem();
-//        	if(timeDiffController.hasEnoughTimeBeforeDeadline(today, selectedBook.getReturnDate, 7)){
-//        		// TODO update the new return date in the DB
-//        	}
-//        	else 
-//        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied", "-fx-text-fill: red;");
-//        }
+        public void extendButton(ActionEvent event, BorrowedBook selectedBook) {
+        	ClientTimeDiffController timeDiffController = new ClientTimeDiffController();
+        	LocalDateTime today = LocalDateTime.now();
+        	String newReturnDate;
+    		newReturnDate = timeDiffController.extendReturnDate(selectedBook.getReturnDate(), 14);
+        	if(timeDiffController.hasEnoughTimeBeforeDeadline(today, selectedBook.getReturnDate(), 7)){
+        		ClientUI.chat.accept("UpdateReturnDate:"+selectedBook.getBorrowId());
+        		// TODO update the new return date in the DB
+        	}
+        	else 
+        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied", "-fx-text-fill: red;");
+        }
 
     /**
      * Searches for books based on filters entered in the name, description, and subject fields.

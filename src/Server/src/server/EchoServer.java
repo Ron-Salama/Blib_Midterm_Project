@@ -124,6 +124,9 @@ public class EchoServer extends AbstractServer {
                 case "GetBorrowedBooks":
                     handleGetBorrowedBooksCase(client, body); // body contains the subscriber_id
                     break;
+                case "UpdateReturnDate":
+                	handleUpdateReturnDate(client, body); // body contians the borrowId
+                	break;
                 case "RegisterRequest": // Handle RegisterRequest
                 	handleRegisterRequestCase(client, body);
                     break;
@@ -160,6 +163,10 @@ public class EchoServer extends AbstractServer {
                 System.err.println("Error sending message to client: " + ioException.getMessage());
             }
         }
+    }
+    
+    private void handleUpdateReturnDate(ConnectionToClient client, String body) {
+    	
     }
     
     private void HandleFetchreturnrequest(ConnectionToClient client, String body) throws IOException {

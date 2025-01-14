@@ -168,14 +168,15 @@ private void handleBorrowedBooksResponse(String data) {
 	        for (String bookData : bookStrings) {
 	            String[] fields = bookData.split(","); // Split fields
 	            int borrowId = Integer.parseInt(fields[0]);
-	            String name = fields[1];
-	            String subject = fields[2];
-	            String borrowedTime = fields[3]; // Assuming numeric
-	            String returnTime = fields[4];   // Assuming numeric
-
+	            int subscriberId = Integer.parseInt(fields[1]);
+	            String name = fields[2];
+	            String subject = fields[3];
+	            String borrowedTime = fields[4]; // Assuming numeric
+	            String returnTime = fields[5];   // Assuming numeric
+	            String ISBN = fields[6];
 	            //int timeLeftToReturn = returnTime - borrowedTime; // Calculate time left to return
 	            
-	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, name, subject, 0));
+	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, subscriberId, name, subject, borrowedTime, returnTime, ISBN));
 	        }
 	    }
 	}
