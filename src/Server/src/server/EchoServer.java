@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import common.ConnectToDb;
-import logic.ClockController;
+import logic.ServerTimeDiffController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -23,7 +23,7 @@ public class EchoServer extends AbstractServer {
     // Class variables *************************************************
     final public static int DEFAULT_PORT = 5555;
     
-    private ClockController clock = new ClockController();
+    private ServerTimeDiffController clock = new ServerTimeDiffController();
     
     // Instance variables ***********************************************
     private Connection dbConnection; // Single DB connection
