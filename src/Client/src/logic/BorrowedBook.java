@@ -68,11 +68,6 @@ public class BorrowedBook {
 
     @Override
     public String toString() {
-        return "BorrowedBook{" +
-                "borrowId=" + borrowId +
-                ", name='" + name + '\'' +
-                ", subject='" + subject + '\'' +
-                ", timeLeftToReturn=" + timeLeftToReturn +
-                '}';
+        return  borrowId+","+name+","+subject+","+timeLeftToReturn;
     }
 }

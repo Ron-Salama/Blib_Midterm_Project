@@ -139,12 +139,12 @@ public class ChatClient extends AbstractClient
 	            int borrowId = Integer.parseInt(fields[0]);
 	            String name = fields[1];
 	            String subject = fields[2];
-	            int borrowedTime = Integer.parseInt(fields[3]); // Assuming numeric
-	            int returnTime = Integer.parseInt(fields[4]);   // Assuming numeric
+	            String borrowedTime = fields[3]; // Assuming numeric
+	            String returnTime = fields[4];   // Assuming numeric
 
-	            int timeLeftToReturn = returnTime - borrowedTime; // Calculate time left to return
-
-	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, name, subject, timeLeftToReturn));
+	            //int timeLeftToReturn = returnTime - borrowedTime; // Calculate time left to return
+	            
+	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, name, subject, 0));
 	        }
 	    }
 	}
