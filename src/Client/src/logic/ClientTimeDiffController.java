@@ -10,9 +10,10 @@ public class ClientTimeDiffController {
 	public Boolean hasEnoughTimeBeforeDeadline(LocalDateTime today, LocalDateTime deadLine, int timeNeededBeforeDeadline) {
 		LocalDateTime sevenDaysFromDeadline = deadLine.minusDays(timeNeededBeforeDeadline);
 		if (sevenDaysFromDeadline.isAfter(today)) { // Meaning there isn't enough time to act before the deadline.
-			return false;
+			return false; // display message to client screen
 		}
 		
+
 		return true; // Meaning there's enough time to act before the deadline.
 		}
 	

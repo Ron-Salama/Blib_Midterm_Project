@@ -14,7 +14,13 @@ public class BorrowedBook {
 
     /** The subject or category of the borrowed book. */
     private String subject;
-
+    
+    /** The current returnDate of the borrowed book. */
+    private String returnDate;
+    
+    /** The current borrowDate of the borrowed book. */
+    private String borrowedDate;
+    
     /** The time left to return the book. */
     private int timeLeftToReturn;
 
