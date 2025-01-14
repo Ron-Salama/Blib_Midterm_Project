@@ -136,6 +136,8 @@ public class EchoServer extends AbstractServer {
                 	handleMyHistoryData(client, body);
                 case "SubmitBorrowRequest": 
                 	SubmitBorrowRequest(client, body);
+                case "Return Book:":
+                	handlereturnrequest(client,body);
                 	
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
@@ -151,7 +153,12 @@ public class EchoServer extends AbstractServer {
         }
     }
     
-    private void handleGetDate(ConnectionToClient client, String body) throws IOException {
+    private void handlereturnrequest(ConnectionToClient client, String body) {
+    	   String returnstatus = ConnectToDb.returnbook(dbConnection, body);
+		
+	}
+
+	private void handleGetDate(ConnectionToClient client, String body) throws IOException {
     	String currentDate = clock.getCurrentDate();
     	client.sendToClient(currentDate);
     }
