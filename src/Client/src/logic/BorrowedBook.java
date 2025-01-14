@@ -1,7 +1,7 @@
 package logic;
 
 
-/*
+/*]
  * Represents a borrowed book in the library system.
  */
 public class BorrowedBook {

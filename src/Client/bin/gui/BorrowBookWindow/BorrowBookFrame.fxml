@@ -25,7 +25,7 @@
       <Button id="btnMainMenu" fx:id="btnMainMenu" layoutX="475.0" layoutY="14.0" mnemonicParsing="false" onAction="#Main_Menu" text="Return To Main Menu" />
       <Label fx:id="Book_Description" layoutX="34.0" layoutY="134.0" text="" />
       <Button id="btnSubmit" fx:id="btnReserve" layoutX="203.0" layoutY="450.0" mnemonicParsing="false" onAction="#Submit_Reserve_Request" text="Submit Reserve Request" />
-      <Label fx:id="awaitingTextID" layoutX="203.0" layoutY="350.0" text="awaitingText" textFill="#d71e1e" />
+      <Label fx:id="awaitingTextID" layoutX="200.0" layoutY="364.0" text="awaitingText" textFill="#d71e1e" />
       <Label fx:id="RequestStatus" layoutX="233.0" layoutY="126.0" />
    </children>
 </AnchorPane>

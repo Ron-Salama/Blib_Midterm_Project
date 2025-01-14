@@ -198,8 +198,12 @@ public class ConnectToDb {
                 String name = rs.getString("Name");
                 String subject = rs.getString("Subject");
                 String description = rs.getString("ShortDescription");
-                int availableCopies = rs.getInt("NumCopies");
+                int copies = rs.getInt("NumCopies");
                 String location = rs.getString("ShelfLocation");
+                int availableCopies = rs.getInt("AvailableCopiesNum");
+                int reservedCopies = rs.getInt("ReservedCopiesNum");
+                
+
 
                 // Handle potential null values
                 if (id == null) id = "Unknown ID";
@@ -208,9 +212,10 @@ public class ConnectToDb {
                 if (description == null) description = "No description available";
                 if (location == null) location = "Unknown location";
 
+
                 // Format the book data into a single string (e.g., CSV format)
                 String bookData = id + "," + name + "," + subject + "," + description + ","
-                                  + availableCopies + "," + location;
+                                  + copies + "," + location + "," + availableCopies + "," + reservedCopies;
 
                 booksList.add(bookData); // Add the formatted string to the list
             } while (rs.next());
@@ -279,8 +284,10 @@ public class ConnectToDb {
                     String name = rs.getString("Name");
                     String subject = rs.getString("Subject");
                     String description = rs.getString("ShortDescription");
-                    int availableCopies = rs.getInt("NumCopies");
+                    int copies = rs.getInt("NumCopies");
                     String location = rs.getString("ShelfLocation");
+                    int availableCopies = rs.getInt("AvailableCopiesNum");
+                    int reservedCopies = rs.getInt("ReservedCopiesNum");
 
                     name = (name == null) ? "Unknown" : name;
                     subject = (subject == null) ? "N/A" : subject;
@@ -288,8 +295,8 @@ public class ConnectToDb {
                     location = (location == null) ? "Unknown location" : location;
 
                     return String.format(
-                            "%s,%s,%s,%s,%d,%s",
-                            id, name, subject, description, availableCopies, location);
+                            "%s,%s,%s,%s,%d,%s,%d,%d",
+                            id, name, subject, description, copies, location, availableCopies, reservedCopies);
                 } else {
                     return "No book found";
                 }
@@ -387,6 +394,45 @@ public class ConnectToDb {
             }
         }
     }
+    
+    
+    
+    
+  	 //************************************************************************************
+  	 //************************************************************************************
+  	 //************************************************************************************
+  	 //************************************************************************************
+  	 //************************************************************************************
+
+   	 //@SuppressWarnings("unused")
+	public static void incrementReservedCopiesNum(Connection conn, String bookId) throws SQLException {
+        // SQL query to increment ReservedCopiesNum by 1 for the given bookId
+        String query = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum + 1 WHERE ISBN = ? AND ReservedCopiesNum >= 0";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            // Set the bookId parameter
+            pstmt.setString(1, bookId);
+
+            // Execute the update statement
+            int affectedRows = pstmt.executeUpdate();
+
+            // If no rows were updated, it means there are no copies left or the bookId does not exist
+            if (affectedRows == 0) {
+                System.out.println("invalid bookId: " + bookId);
+            } else {
+                System.out.println("Successfully incremented ReservedCopesNum for bookId: " + bookId);
+            }
+        }
+    }
+   	 
+   	 
+   	 
+   	 //************************************************************************************
+   	 //************************************************************************************
+   	 //************************************************************************************
+   	 //************************************************************************************
+   	 //************************************************************************************
+
     public static String fetchReturnRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
 

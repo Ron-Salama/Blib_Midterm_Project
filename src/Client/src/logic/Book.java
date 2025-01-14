@@ -20,10 +20,16 @@ public class Book {
     private String subject;
     
     /** The number of available copies of the book in the library. */
-    private int availableCopies;
+    private int copies;
     
     /** The location of the book in the library. */
     private String location;
+    
+    /** The location of the book in the library. */
+    private int availableCopies;
+    
+    /** The location of the book in the library. */
+    private int reservedCopies;
 
     /**
      * Constructs a new Book with the specified details.
@@ -35,13 +41,15 @@ public class Book {
      * @param availableCopies the number of available copies of the book
      * @param location the location of the book in the library
      */
-    public Book(int id, String name, String description, String subject, int availableCopies, String location) {
+    public Book(int id, String name, String description, String subject, int copies, String location , int availableCopies, int reservedCopies) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.subject = subject;
-        this.availableCopies = availableCopies;
+        this.copies = availableCopies;
         this.location = location;
+        this.availableCopies = availableCopies;
+        this.reservedCopies = reservedCopies;
     }
 
     /**
@@ -85,8 +93,8 @@ public class Book {
      * 
      * @return the number of available copies
      */
-    public int getAvailableCopies() {
-        return availableCopies;
+    public int getCopies() {
+        return copies;
     }
 
     /**
@@ -97,6 +105,16 @@ public class Book {
     public String getLocation() {
         return location;
     }
+    
+    
+    public int getAvailableCopies() {
+		return availableCopies;
+	}
+    
+    
+    public int getReservedCopies() {
+		return reservedCopies;
+	}
 
     /**
      * Returns a string representation of the book, which includes all its details.
@@ -105,6 +123,10 @@ public class Book {
      */
     @Override
     public String toString() {
-        return "Book{id=" + id + ", name='" + name + "', description='" + description + "', subject='" + subject + "', availableCopies=" + availableCopies + ", location='" + location + "'}";
+        return "Book{id=" + id + ", name='" + name + "', description='" + description + "', subject='" + subject + "', Copies=" + copies + ", location='" + location + "', availableCopies=" + availableCopies + ", reservedCopies=" + reservedCopies + "}";
     }
+
+
+
+	
 }
