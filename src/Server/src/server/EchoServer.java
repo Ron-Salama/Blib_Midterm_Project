@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import common.ConnectToDb;
-import logic.ServerTimeDiffController;
+//import logic.ClockController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -22,9 +22,9 @@ import ocsf.server.ConnectionToClient;
 public class EchoServer extends AbstractServer {
     // Class variables *************************************************
     final public static int DEFAULT_PORT = 5555;
-    
-    private ServerTimeDiffController clock = new ServerTimeDiffController();
-    
+    /*
+    private ClockController clock = new ClockController();
+    */
     // Instance variables ***********************************************
     private Connection dbConnection; // Single DB connection
 
@@ -130,13 +130,14 @@ public class EchoServer extends AbstractServer {
                 case "FetchRegisterRequest": // Handle FetchBorrowRequest
                 	handleFetchRegisterRequestCase(client, body);
                     break;
-                case "GetDate": // Handle GetDate
+                /*case "GetDate": // Handle GetDate
                 	handleGetDate(client, body);
+                	*/
                 case "GetHistory": //handle GetHistory
                 	handleMyHistoryData(client, body);
                 case "SubmitBorrowRequest": 
                 	SubmitBorrowRequest(client, body);
-                case "Return Book:":
+                case "Return Book":
                 	handlereturnrequest(client,body);
                 	
                 default: // Handle unknown commands
@@ -154,15 +155,40 @@ public class EchoServer extends AbstractServer {
     }
     
     private void handlereturnrequest(ConnectionToClient client, String body) {
-    	   //String returnstatus = ConnectToDb.returnbook(dbConnection, body);
-		
-	}
+        System.out.println("Entering handlereturnrequest");
 
+        // Split the message by spaces to get individual parts
+        String[] messageParts = body.split(" ");
+
+        // Extract subscriber ID from the appropriate part (this should be the fifth part in the message)
+        String subscriberId = messageParts[3];  // "1" in your example
+
+        // The book info is in the 7th part, which we need to process
+        String bookDetails = messageParts[6]; // Should be "1,The Hobbit,Fantasy,0"
+
+        // Now split the book details by commas to extract the borrow ID and other information
+        String[] bookInfo = bookDetails.split(",");
+        String borrowId = bookInfo[0];  // Extract "1" (borrow ID)
+
+        // Log the extracted data for debugging
+        System.out.println("Subscriber ID: " + subscriberId + ", Borrow ID: " + borrowId);
+
+        // Call the returnbook method to remove the book from the borrowed_books table
+        String returnStatus = ConnectToDb.returnbook(dbConnection, subscriberId, borrowId);
+
+        // Send the return status back to the client
+        try {
+            client.sendToClient(returnStatus);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+/*
 	private void handleGetDate(ConnectionToClient client, String body) throws IOException {
     	String currentDate = clock.getCurrentDate();
     	client.sendToClient(currentDate);
     }
-    
+    */
     private void handleFetchCase(ConnectionToClient client, String body) throws SQLException, IOException {
     	String identifier = body;
 

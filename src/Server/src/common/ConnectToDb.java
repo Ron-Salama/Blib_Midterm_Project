@@ -55,6 +55,28 @@ public class ConnectToDb {
             return result; // Return all data as a list of strings
         }
     */
+    // Method to return the book by removing it from the borrowed_books table
+    public static String returnbook(Connection dbConnection, String subscriberId, String borrowid) {
+        String result = "Book return failed"; // Default return status
+
+        // SQL query to delete the book from the borrowed_books table based on subscriber_id and book_name
+        String sql = "DELETE FROM borrowed_books WHERE subscriber_id = ? AND borrow_id = ?";
+
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
+            stmt.setString(1, subscriberId); // Set the subscriber ID
+            stmt.setString(2, borrowid); // Set the book name
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                result = "Book returned successfully"; // Success message
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle database exceptions
+            result = "Error while returning book";
+        }
+
+        return result; // Return the status message
+    }
     // Method to fetch data for a specific subscriber based on their ID
     public static String fetchSubscriberData(Connection conn, String subscriberId) {
         String query = "SELECT * FROM subscriber WHERE subscriber_id = ?";
