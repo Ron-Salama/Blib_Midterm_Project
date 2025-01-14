@@ -441,7 +441,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
-			System.out.println("im here nigga");
 			String SName = TXTF1.getText();
             String SID = TXTF2.getText();
             String BName = TXTF3.getText();
