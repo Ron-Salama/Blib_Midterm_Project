@@ -56,15 +56,15 @@ public class ConnectToDb {
         }
     */
     // Method to return the book by removing it from the borrowed_books table
-    public static String returnbook(Connection dbConnection, String subscriberId, String borrowid) {
+    public static String returnbook(Connection dbConnection, String subscriberId, String bookID) {
         String result = "Book return failed"; // Default return status
 
         // SQL query to delete the book from the borrowed_books table based on subscriber_id and book_name
-        String sql = "DELETE FROM borrowed_books WHERE subscriber_id = ? AND borrow_id = ?";
+        String sql = "DELETE FROM borrowed_books WHERE subscriber_id = ? AND ISBN = ?";
 
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             stmt.setString(1, subscriberId); // Set the subscriber ID
-            stmt.setString(2, borrowid); // Set the book name
+            stmt.setString(2, bookID); // Set the book name
             
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -509,7 +509,7 @@ public class ConnectToDb {
             // Set the values for each field in the query
             pstmt.setString(1, ISBN); // ISBN
             pstmt.setInt(2, SID); // subscriber_id
-            pstmt.setString(3, SName); // Name
+            pstmt.setString(3, BName); // Book Name
             pstmt.setString(4, "temp"); // Subject (since it's not provided, use "temp")
             pstmt.setString(5, Btime); // Borrow Time
             pstmt.setString(6, "temp"); // Return Time (since it's not provided, use "temp")
@@ -564,6 +564,28 @@ public class ConnectToDb {
 
         return result.toString();
     }
+    public static boolean deleteRequest(Connection dbConnection, String subscriberId, String bookID) {
+        try (PreparedStatement stmt = dbConnection.prepareStatement(
+                "DELETE FROM requests WHERE requestType = 'Return For Subscriber' AND requestedByID = ? AND ISBN = ?")) {
+            stmt.setString(1, subscriberId);
+            stmt.setString(2, bookID);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean incrementBookCount(Connection dbConnection, String bookID) {
+        try (PreparedStatement stmt = dbConnection.prepareStatement(
+                "UPDATE books SET NumCopies = NumCopies + 1 WHERE ISBN = ?")) {
+            stmt.setString(1, bookID);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 
