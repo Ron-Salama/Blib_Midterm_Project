@@ -8,6 +8,8 @@ public class BorrowedBook {
 
     /** The unique identifier for the borrowing record. */
     private int borrowId;
+    
+    private int subscriberId;
 
     /** The name of the borrowed book. */
     private String name;
@@ -19,10 +21,12 @@ public class BorrowedBook {
     private String returnDate;
     
     /** The current borrowDate of the borrowed book. */
-    private String borrowedDate;
+    private String borrowDate;
     
     /** The time left to return the book. */
     private int timeLeftToReturn;
+    
+    private String ISBN;
 
     /**
      * Constructs a new BorrowedBook with the specified details.
@@ -32,11 +36,14 @@ public class BorrowedBook {
      * @param subject the subject or category of the book
      * @param timeLeftToReturn the time left to return the book, in days
      */
-    public BorrowedBook(int borrowId, String name, String subject, int timeLeftToReturn) {
+    public BorrowedBook(int borrowId, int subscriberId, String name, String subject, String borrowDate, String returnDate, String ISBN) {
         this.borrowId = borrowId;
+        this.subscriberId = subscriberId;
         this.name = name;
         this.subject = subject;
-        this.timeLeftToReturn = timeLeftToReturn;
+        this.borrowDate = borrowDate;
+        this.returnDate = returnDate;
+        this.ISBN = ISBN;
     }
 
     // Getters and setters
@@ -63,7 +70,23 @@ public class BorrowedBook {
     public void setSubject(String subject) {
         this.subject = subject;
     }
-
+    
+    public void setReturnDate(String returnDate) {
+    	this.returnDate = returnDate;
+    }
+    
+    public String getReturnDate() {
+    	return returnDate;
+    }
+    
+    public void setBorrowDate(String borrowDate) {
+    	this.borrowDate = borrowDate;
+    }
+    
+    public String getBorrowDate() {
+    	return borrowDate;
+    }
+    	
     public int getTimeLeftToReturn() {
         return timeLeftToReturn;
     }

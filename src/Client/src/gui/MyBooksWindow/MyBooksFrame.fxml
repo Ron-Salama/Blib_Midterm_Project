@@ -20,11 +20,12 @@
       <Line endX="225.00003051757812" endY="25.5175724029541" layoutX="321.0" layoutY="1.0" startX="412.8000183105469" startY="25.517587661743164" />
       <TableView fx:id="tableView" layoutY="219.0" prefHeight="314.0" prefWidth="1245.0">
         <columns>
-          <TableColumn fx:id="tableID" prefWidth="98.39999198913574" text="ID" />
+          <TableColumn fx:id="tableID" prefWidth="98.39999198913574" text="Book ID" />
           <TableColumn fx:id="tableName" prefWidth="293.0" text="Name" />
-            <TableColumn fx:id="tableSubject" minWidth="4.0" prefWidth="299.0" text="Subject" />
+            <TableColumn fx:id="tableBorrowDate" minWidth="4.0" prefWidth="150.0" text="Borrowed Date" />
+            <TableColumn fx:id="tableReturnDate" minWidth="0.0" prefWidth="126.0" text="Return Date" />
             <TableColumn fx:id="tableTimeLeft" prefWidth="175.0" text="Time Left to Return (In Days)" />
-            <TableColumn fx:id="tableActions" prefWidth="378.0" text="Actions" />
+            <TableColumn fx:id="tableActions" prefWidth="300.0" text="Actions" />
         </columns>
       </TableView>
       <Button id="btnExit" fx:id="btnBackF" layoutX="1128.0" layoutY="15.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />

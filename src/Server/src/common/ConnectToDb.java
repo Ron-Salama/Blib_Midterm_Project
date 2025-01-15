@@ -169,6 +169,7 @@ public class ConnectToDb {
                 while (rs.next()) {
                     // Combine fields into a single delimited string for sending to the client
                     String bookData = rs.getInt("borrow_id") + "," +
+                    				  rs.getInt("subscriber_id") + "," +
                                       rs.getString("Name") + "," +
                                       rs.getString("Subject") + "," +
                                       rs.getString("Borrowed_Time") + "," +
@@ -720,6 +721,28 @@ public class ConnectToDb {
         }
     }
 
+    
+    public static void updateReturnDateAfterExtension(int borrowId, Connection con) {
+        // SQL query to update the return date for a specific borrowed book
+        String query = "UPDATE borrowed_books SET Return_Time = ? WHERE borrow_id = ?";
+
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            // Set the query parameters
+            preparedStatement.setString(1, newReturnDate); // New return date
+            preparedStatement.setInt(2, borrowId); // Borrow ID of the book
+            
+            // Execute the update
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Return date updated successfully for Borrow ID: " + borrowId);
+            } else {
+                System.out.println("No record found for Borrow ID: " + borrowId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to update the return date for Borrow ID: " + borrowId);
+        }
+    }
 
 
 
