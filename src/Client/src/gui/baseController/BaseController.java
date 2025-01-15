@@ -137,8 +137,8 @@ public abstract class BaseController {
         label.setStyle(color);
     }
     
-    protected Boolean isSubsriberFrozen(Subscriber subscriber) {
-    	if (subscriber.getStatus().equals("Not Frozen")) {
+    protected Boolean isSubsriberFrozen(String subscriberStatus) {
+    	if (subscriberStatus.equals("Not Frozen")) {
     		return false;
     	}
     	return true;

@@ -47,5 +47,10 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Label id="frozenUntilAndDaysLeftDynamicText" fx:id="frozenUntilAndDaysLeftDynamicText" alignment="CENTER" layoutX="222.0" layoutY="215.0" prefHeight="64.0" prefWidth="373.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

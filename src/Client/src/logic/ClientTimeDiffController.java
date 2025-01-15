@@ -208,4 +208,12 @@ public class ClientTimeDiffController {
     public void setDateFormatter(DateTimeFormatter dateFormatter) {
         this.dateFormatter = dateFormatter;
     }
+    
+    /*
+     * Frozen subscriber status: "Frozen at:dd-MM-yyyy
+     */
+    public String[] parseFrozenSubscriberStatus(String status) {
+    	String[] frozenData = status.split(":");
+    	return frozenData; // return the date part of a frozen subscriber.
+    }
 }

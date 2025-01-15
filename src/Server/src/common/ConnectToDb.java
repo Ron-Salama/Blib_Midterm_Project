@@ -389,8 +389,8 @@ public class ConnectToDb {
 
         return result.toString();
     }
-    @SuppressWarnings("unused")
-	public static void decreaseNumCopies(Connection conn, String bookId) throws SQLException {
+    
+    public static void decreaseNumCopies(Connection conn, String bookId) throws SQLException {
         // SQL query to decrease NumCopies by 1 for the given bookId
         String query = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ? AND NumCopies > 0";
 
@@ -409,6 +409,7 @@ public class ConnectToDb {
             }
         }
     }
+    
     public static String fetchReturnRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
 

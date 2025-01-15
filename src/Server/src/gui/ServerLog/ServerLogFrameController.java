@@ -2,7 +2,9 @@ package gui.ServerLog;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +18,7 @@ import gui.baseController.BaseController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 
@@ -27,6 +30,9 @@ public class ServerLogFrameController extends BaseController implements Initiali
     @FXML
     private TextArea logTextArea;
 
+    @FXML 
+    private Label serverIPDynamicText;
+    
     private static final String LOG_FILE_PATH = "src/logic/serverLog.txt";
 
     // File pointer to track the last read position
@@ -35,6 +41,12 @@ public class ServerLogFrameController extends BaseController implements Initiali
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         startFileWatcher(); // Start monitoring the log file for updates
+        try {
+			showColoredLabelMessageOnGUI(serverIPDynamicText, "Server IP: " + InetAddress.getLocalHost().getHostAddress(), "-fx-text-fill: #4682B4;" // Steel Blue
+					+ "");
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
     }
 
     /**

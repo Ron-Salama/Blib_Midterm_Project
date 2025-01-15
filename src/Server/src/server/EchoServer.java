@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import common.ConnectToDb;
+import logic.ServerTimeDiffController;
 //import logic.ClockController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -22,9 +23,9 @@ import ocsf.server.ConnectionToClient;
 public class EchoServer extends AbstractServer {
     // Class variables *************************************************
     final public static int DEFAULT_PORT = 5555;
-    /*
-    private ClockController clock = new ClockController();
-    */
+    
+    private ServerTimeDiffController clock = new ServerTimeDiffController();
+    
     // Instance variables ***********************************************
     private Connection dbConnection; // Single DB connection
 
@@ -130,9 +131,6 @@ public class EchoServer extends AbstractServer {
                 case "FetchRegisterRequest": // Handle FetchBorrowRequest
                 	handleFetchRegisterRequestCase(client, body);
                     break;
-                /*case "GetDate": // Handle GetDate
-                	handleGetDate(client, body);
-                	*/
                 case "GetHistory": //handle GetHistory
                 	handleMyHistoryData(client, body);
                 	 break;
@@ -222,12 +220,6 @@ public class EchoServer extends AbstractServer {
     }
 
 
-/*
-	private void handleGetDate(ConnectionToClient client, String body) throws IOException {
-    	String currentDate = clock.getCurrentDate();
-    	client.sendToClient(currentDate);
-    }
-    */
     private void handleFetchCase(ConnectionToClient client, String body) throws SQLException, IOException {
     	String identifier = body;
 
