@@ -189,7 +189,7 @@ public class EchoServer extends AbstractServer {
             int borrowInfoStartIndex = body.indexOf("Borrow info:") + 13;
             String borrowInfo = body.substring(borrowInfoStartIndex).trim();
             String[] bookInfo = borrowInfo.split(" ");
-            String borrowId = bookInfo[0];
+            String bookID = bookInfo[0];
             StringBuilder bookNameBuilder = new StringBuilder();
 
             for(int i = 1; i < bookInfo.length - 2; ++i) {
@@ -202,7 +202,7 @@ public class EchoServer extends AbstractServer {
             String requestType = "Return For Subscriber";
             String borrowTime = "temp";
             String extendTime = "temp";
-            ConnectToDb.insertRequest(this.dbConnection, requestType, subscriberId, subscribername, bookName, borrowId, borrowTime, timeLeft, extendTime);
+            ConnectToDb.insertRequest(this.dbConnection, requestType, subscriberId, subscribername, bookName, bookID, borrowTime, timeLeft, extendTime);
             client.sendToClient("Return request submitted, awaiting librarian approval.");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -547,7 +547,6 @@ public class EchoServer extends AbstractServer {
     
     private void HandleBookReturn(ConnectionToClient client, String body) {
         try {
-            System.out.println("Raw body received: " + body);
             String[] messageParts = body.split(",");
             if (messageParts.length != 5) {
                 client.sendToClient("Error: Invalid input format. Expected format: SName,SID,BName,BID,BTime");
