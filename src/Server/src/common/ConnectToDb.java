@@ -701,8 +701,9 @@ public class ConnectToDb {
         return result.toString();
     }
     public static boolean deleteRequest(Connection dbConnection, String subscriberId, String bookID) {
+    	System.out.println("delete requst Subscriber id:"+subscriberId+"book id:"+bookID);
         try (PreparedStatement stmt = dbConnection.prepareStatement(
-                "DELETE FROM requests WHERE requestType = 'Return For Subscriber' AND requestedByID = ? AND ISBN = ?")) {
+                "DELETE FROM requests WHERE requestType = 'Return For Subscriber' AND requestedByID = ? AND bookId = ?")) {
             stmt.setString(1, subscriberId);
             stmt.setString(2, bookID);
             return stmt.executeUpdate() > 0;
@@ -712,6 +713,7 @@ public class ConnectToDb {
         }
     }
     public static boolean incrementBookCount(Connection dbConnection, String bookID) {
+    	System.out.println("book id for increment"+bookID);
         try (PreparedStatement stmt = dbConnection.prepareStatement(
                 "UPDATE books SET NumCopies = NumCopies + 1 WHERE ISBN = ?")) {
             stmt.setString(1, bookID);
