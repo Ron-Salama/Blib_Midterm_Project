@@ -83,15 +83,16 @@ public class MyBooksController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize TableView columns
-        tableID.setCellValueFactory(new PropertyValueFactory<>("borrowId")); // ID column
+        tableID.setCellValueFactory(new PropertyValueFactory<>("ISBN")); // ISBN column
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
-        tableBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowedTime")); // Borrow Date column
-        tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnTime")); // Return Date column
+        tableBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate")); // Borrow Date column
+        tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate")); // Return Date column
         tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
 
         setupActionsColumn();
         loadBooks();
     }
+
 
     
     private void loadBooks() {
@@ -151,8 +152,20 @@ public class MyBooksController extends BaseController implements Initializable {
 
                     extendButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
-                        System.out.println("Extend borrowing length for book: " + borrowedBook.getName());
-                        
+                    	ClientTimeDiffController clock = new ClientTimeDiffController();
+                    	String extendedReturnDate;
+                    	
+                    	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
+                    	
+                    	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) {
+                    		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
+                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                    		tableView.refresh();
+                    	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+                    	    tableView.refresh();
+                    	}else {
+                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied!", "-fx-text-fill: red;");
+                    	}
                     });
 
                     returnButton.setOnAction(event -> {
@@ -185,16 +198,9 @@ public class MyBooksController extends BaseController implements Initializable {
         }
 //
         public void extendButton(ActionEvent event, BorrowedBook selectedBook) {
-        	ClientTimeDiffController timeDiffController = new ClientTimeDiffController();
-        	LocalDateTime today = LocalDateTime.now();
-        	String newReturnDate;
-    		newReturnDate = timeDiffController.extendReturnDate(selectedBook.getReturnDate(), 14);
-        	if(timeDiffController.hasEnoughTimeBeforeDeadline(today, selectedBook.getReturnDate(), 7)){
-        		ClientUI.chat.accept("UpdateReturnDate:"+selectedBook.getBorrowId());
-        		// TODO update the new return date in the DB
-        	}
-        	else 
-        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied", "-fx-text-fill: red;");
+        	System.out.println("nnoooo");
+
+
         }
 
     /**

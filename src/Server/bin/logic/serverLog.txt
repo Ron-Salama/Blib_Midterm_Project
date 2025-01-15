@@ -1,2 +1,30 @@
 Server listening for connections on port 5555
 Connected to the database.
+Client connected.
+Client IP:127.0.0.1
+Client Hostname: 127.0.0.1
+Connection Status: Connected
+Message received: IP:192.168.250.50 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetBookInfo:0222 from 127.0.0.1 (127.0.0.1)
+Message received: BorrowRequest:1,Yuval,0222,Harry Potter and the Goblet of Fire,15-01-2025,29-01-2025 from 127.0.0.1 (127.0.0.1)
+Received BorrowRequest from client
+Message received: Fetch:22 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch return request: from 127.0.0.1 (127.0.0.1)
+Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
+Received FetchBorrowRequest from client
+Message received: FetchBorrowRequest: from 127.0.0.1 (127.0.0.1)
+Received FetchBorrowRequest from client
+Message received: SubmitBorrowRequest:Yuval,1,Harry Potter and the Goblet of Fire,0222,15-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: UpdateCopiesOfBook:Yuval,1,Harry Potter and the Goblet of Fire,0222,15-01-2025 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetBorrowedBooks:1 from 127.0.0.1 (127.0.0.1)
+Message received: GetHistory:1 from 127.0.0.1 (127.0.0.1)
+Received GetHistory request from client
+Message received: GetBorrowedBooks:1 from 127.0.0.1 (127.0.0.1)
+Message received: Return request: Subscriber ID is 1 Yuval Borrow info: 0222 Harry Potter and the Goblet of Fire temp 0 from 127.0.0.1 (127.0.0.1)
+Message received: Return Book: Subscriber ID is1 Book info is:0222 Harry Potter and the Goblet of Fire temp 0 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch:22 from 127.0.0.1 (127.0.0.1)
+Message received: Fetch return request: from 127.0.0.1 (127.0.0.1)
+Message received: Fetch return request: from 127.0.0.1 (127.0.0.1)
+Message received: Fetch return request: from 127.0.0.1 (127.0.0.1)

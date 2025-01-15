@@ -178,6 +178,12 @@ public class EchoServer extends AbstractServer {
     
     private void handleUpdateReturnDate(ConnectionToClient client, String body) {
     	
+        String[] parts = body.split(",");
+        int borrowID = Integer.parseInt(parts[0].trim());
+        String extendedReturnDate = parts[1].trim();
+        System.out.println(parts[0]);
+        System.out.println(parts[1]);
+    	ConnectToDb.updateReturnDateAfterExtension(borrowID, extendedReturnDate ,dbConnection );
     }
     
     private void HandleFetchreturnrequest(ConnectionToClient client, String body) throws IOException {
@@ -563,6 +569,7 @@ public class EchoServer extends AbstractServer {
     
     private void HandleBookReturn(ConnectionToClient client, String body) {
         try {
+            // Split the body by commas to extract individual parts (subscriber name, ID, book name, ID, and time)
             String[] messageParts = body.split(",");
             if (messageParts.length != 5) {
                 client.sendToClient("Error: Invalid input format. Expected format: SName,SID,BName,BID,BTime");

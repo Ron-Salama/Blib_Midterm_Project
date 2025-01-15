@@ -54,7 +54,13 @@ public class BorrowedBook {
     public void setBorrowId(int borrowId) {
         this.borrowId = borrowId;
     }
+    public String getISBN() {
+        return ISBN;
+    }
 
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
     public String getName() {
         return name;
     }
@@ -97,6 +103,6 @@ public class BorrowedBook {
 
     @Override
     public String toString() {
-        return  borrowId+" "+name+" "+subject+" "+timeLeftToReturn;
+        return  ISBN+" "+name+" "+subject+" "+timeLeftToReturn;
     }
 }
