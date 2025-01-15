@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import logic.ClientTimeDiffController;
 import logic.Subscriber;
 
 
@@ -28,6 +29,8 @@ import logic.Subscriber;
  */
 public class SubscriberWindowController extends BaseController implements Initializable {
 
+	private ClientTimeDiffController clock = new ClientTimeDiffController();
+	
 	/** The button to open the Search window. */
     @FXML
 	private Button btnSearch = null;
@@ -46,12 +49,18 @@ public class SubscriberWindowController extends BaseController implements Initia
     @FXML
     private Label myStatusLabel = null;
     
+    @FXML
+    private Label frozenUntilAndDaysLeftDynamicText = null;
+    
     /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
     @FXML
     private Button btnUpdate = null;
     
+    private String status = null; // Frozen at / Not Frozen
+    
+    private String frozenUntil = null; // The date until which the subscriber is frozen. format: dd-MM-yyyy EX: 21-1-1999
     
     /**
      * Initializes the SubscriberWindowController.
@@ -71,9 +80,17 @@ public class SubscriberWindowController extends BaseController implements Initia
 	        ChatClient.s1.getStatus()
 	    );
 	    
-	    if(isSubsriberFrozen(currentSubscriber)) { // Disable the borrow button in case the subscriber status is frozen.
-            btnBorrow.setDisable(true);
-        }
+	    String frozenData[] = clock.parseFrozenSubscriberStatus(currentSubscriber.getStatus()); 
+	    
+	    if (isSubsriberFrozen(frozenData[1])) {
+	    	status = frozenData[1]; // Make the status easier to manipulate and use.
+	    	frozenUntil = frozenData[2];
+	    	
+	    	btnBorrow.setDisable(true);
+            changefrozenUntilAndDaysLeftDynamicTextToSubsriberStatus();
+	    }else { // Subscriber not frozen than set the status to Not Frozen.
+	    	status = frozenData[1];
+	    }
 	   
 	    ChangeWelcomeLabelByTheTimeOfDay();
 	    changeMyStatusLabelAccordingToSubscriberStatus();
@@ -109,7 +126,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         		"Main Menu");;
     }
    
-   //***DONT DELETE IMPORTANT FOR LATER USE*** TODO
+   //TODO ***DONT DELETE IMPORTANT FOR LATER USE*** 
    /* public void getbtnMyBooks(ActionEvent event) throws Exception {
 	    openMyBooksWindow(event);
 	}
@@ -136,7 +153,7 @@ public class SubscriberWindowController extends BaseController implements Initia
         		"Update Information");;
 	}
     
-    //******DONT DELETE, THIS IS IMPORTANT FOR LATER FOR THE USE OF GOING TO THE MyBooks WINDOW AFTER PUSHING THE MyBooks BUTTON********
+    //TODO ******DONT DELETE, THIS IS IMPORTANT FOR LATER FOR THE USE OF GOING TO THE MyBooks WINDOW AFTER PUSHING THE MyBooks BUTTON********
     /*private void openMyBooksWindow(ActionEvent event) {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MyBooksWindowController/MyBooksWindow.fxml"));
         Parent root = loader.load();
@@ -195,11 +212,23 @@ public class SubscriberWindowController extends BaseController implements Initia
     	String notFrozenStyle = "-fx-text-fill: black; " +
                    "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0.2, 0, 0);";
     	
-    	if (isSubsriberFrozen(currentSubscriber)) {
+    	if (isSubsriberFrozen(status)) {
     		showColoredLabelMessageOnGUI(myStatusLabel, "My Status is: Frozen", frozenStyle);    		
     	}
     	else {
     		showColoredLabelMessageOnGUI(myStatusLabel, "My Status is: Not Frozen", notFrozenStyle);
     	}
+    }
+    
+    private void changefrozenUntilAndDaysLeftDynamicTextToSubsriberStatus() {
+    	String frozenStyle = "-fx-text-fill: linear-gradient(to right, #1e90ff, #4682b4); " +
+                "-fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.7), 5, 0.3, 0, 0); " +
+                "-fx-font-weight: bold;";
+    	
+    	//String status = currentSubscriber.getStatus();
+    	//String[] frozenDate = clock.parseFrozenSubscriberStatus(status);
+    	int daysLeftUntilUnfrozen = clock.timeDateDifferenceBetweenTwoDates(clock.timeNow(), frozenUntil);
+    	String frozenMessage = "Frozen until: " + frozenUntil + "\nDays left until unfrozen: " +  daysLeftUntilUnfrozen;
+    	showColoredLabelMessageOnGUI(frozenUntilAndDaysLeftDynamicText, frozenMessage, frozenStyle);
     }
 }

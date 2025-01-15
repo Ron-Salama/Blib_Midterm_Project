@@ -1,9 +1,7 @@
 package gui.MyBooksWindow;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
@@ -14,16 +12,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
-
-import logic.Book;
 import logic.BorrowedBook;
+import logic.ClientTimeDiffController;
 
 /**
  * Controller for the Search Window in the Library Management Tool.
@@ -35,6 +32,10 @@ import logic.BorrowedBook;
 public class MyBooksController extends BaseController implements Initializable {
 	private MyBooksController mbc;
     public static String FlagForSearch = "";
+	
+    @FXML
+	private Label extensionDynamicLabel;
+	
 	@FXML
     private Button btnExit;
 	
@@ -101,6 +102,8 @@ public class MyBooksController extends BaseController implements Initializable {
             });
         }).start();
     }
+    
+    
 
 
 
@@ -148,7 +151,10 @@ public class MyBooksController extends BaseController implements Initializable {
 
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
+                        System.out.println("Return book: " + borrowedBook.getName());
                         ClientUI.chat.accept("Return request: Subscriber ID is "+ChatClient.s1.getSubscriber_id()+" "+ChatClient.s1.getSubscriber_name()+" Borrow info: "+borrowedBook);
+                        ClientUI.chat.accept("Return Book: Subscriber ID is"+ChatClient.s1.getSubscriber_id()+" Book info is:"+borrowedBook);
+
                     });
                 }
 
@@ -171,8 +177,19 @@ public class MyBooksController extends BaseController implements Initializable {
         			"History");
         	
         }
-
-    
+//
+//        public void extendButton(ActionEvent event) {
+//        	ClientTimeDiffController timeDiffController = new ClientTimeDiffController();
+//        	LocalDateTime today = LocalDateTime.now();
+//        	String newReturnDate;
+//    		newReturnDate = timeDiffController.extendReturnDate(selectedBook.getReturnDate, 14);
+//        	BorrowedBook selectedBook = tableView.getSelectionModel().getSelectedItem();
+//        	if(timeDiffController.hasEnoughTimeBeforeDeadline(today, selectedBook.getReturnDate, 7)){
+//        		// TODO update the new return date in the DB
+//        	}
+//        	else 
+//        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied", "-fx-text-fill: red;");
+//        }
 
     /**
      * Searches for books based on filters entered in the name, description, and subject fields.

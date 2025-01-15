@@ -380,7 +380,7 @@ private void handleBorrowedBooksResponse(String data) {
           String subscriptionHistory = extractValue(parts[2]);
           String phone = extractValue(parts[3]);
           String email = extractValue(parts[4]);
-          String status = extractValue(parts[5]);
+          String status = parts[5]; // put in s1 the string "Frozen at:dd-MM-yyyy", after that process the information accordingly to your needs in another class.
           
           // Set values to the Subscriber object
           s1.setSubscriber_id(Integer.parseInt(subscriberId));
