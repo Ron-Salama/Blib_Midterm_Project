@@ -11,28 +11,28 @@
 <AnchorPane prefHeight="502.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="520.0" layoutY="14.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit To Main Menu" />
-      <TextField fx:id="TXTF1" layoutX="72.0" layoutY="288.0" />
-      <ComboBox fx:id="RequestedByCB" layoutX="174.0" layoutY="145.0" prefHeight="25.0" prefWidth="258.0" />
-      <TextField fx:id="TXTF2" layoutX="72.0" layoutY="344.0" />
-      <TextField fx:id="TXTF3" layoutX="244.0" layoutY="288.0" />
-      <Label layoutX="76.0" layoutY="149.0" text="Requested by:" />
-      <Label fx:id="LBL1" layoutX="72.0" layoutY="269.0" text="Request Type:" />
-      <Label fx:id="LBL2" layoutX="72.0" layoutY="323.0" text="Request Type:" />
-      <Label fx:id="LBL3" layoutX="244.0" layoutY="269.0" text="Request Type:" />
-      <TextField fx:id="TXTF4" layoutX="244.0" layoutY="344.0" />
-      <Label fx:id="LBL4" layoutX="244.0" layoutY="323.0" text="Request Type:" />
+      <TextField fx:id="TXTF1" layoutX="71.0" layoutY="344.0" />
+      <ComboBox fx:id="RequestedByCB" layoutX="182.0" layoutY="165.0" prefHeight="25.0" prefWidth="258.0" />
+      <TextField fx:id="TXTF2" layoutX="72.0" layoutY="288.0" />
+      <TextField fx:id="TXTF3" layoutX="244.0" layoutY="344.0" />
+      <Label layoutX="84.0" layoutY="169.0" text="Requested by:" />
+      <Label fx:id="LBL1" layoutX="71.0" layoutY="325.0" text="Request Type:" />
+      <Label fx:id="LBL2" layoutX="72.0" layoutY="267.0" text="Request Type:" />
+      <Label fx:id="LBL3" layoutX="243.0" layoutY="325.0" text="Request Type:" />
+      <TextField fx:id="TXTF4" layoutX="244.0" layoutY="288.0" />
+      <Label fx:id="LBL4" layoutX="244.0" layoutY="267.0" text="Request Type:" />
       <TextField fx:id="TXTF5" layoutX="412.0" layoutY="287.0" />
-      <Label fx:id="LBL5" layoutX="412.0" layoutY="269.0" text="Request Type:" />
-      <ComboBox fx:id="RequestCB" layoutX="174.0" layoutY="184.0" prefHeight="25.0" prefWidth="258.0" />
-      <Label layoutX="76.0" layoutY="188.0" text="Request" />
+      <Label fx:id="LBL5" layoutX="412.0" layoutY="267.0" text="Request Type:" />
+      <ComboBox fx:id="RequestCB" layoutX="182.0" layoutY="204.0" prefHeight="25.0" prefWidth="258.0" />
+      <Label layoutX="84.0" layoutY="208.0" text="Request" />
       <Button id="btnExit" fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="Back" />
-      <Button fx:id="ScanBarcode" ellipsisString="Scan Barcode" layoutX="455.0" layoutY="137.0" mnemonicParsing="false" prefHeight="93.0" prefWidth="106.0" text="Scan Barcode" />
+      <Button fx:id="ScanBarcode" ellipsisString="Scan Barcode" layoutX="458.0" layoutY="165.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="106.0" text="Scan Barcode" />
       <Button id="btnExit" fx:id="btnAccept" layoutX="71.0" layoutY="401.0" mnemonicParsing="false" onAction="#acceptRequest" prefHeight="75.0" prefWidth="493.0" text="Submit Request" />
       <DatePicker fx:id="datePicker" layoutX="411.0" layoutY="344.0" prefHeight="25.0" prefWidth="150.0" />
-      <Label fx:id="LBL6" layoutX="412.0" layoutY="323.0" text="Request Type:" />
-      <ToggleButton fx:id="Clear" layoutX="74.0" layoutY="59.0" mnemonicParsing="false" onAction="#Clear" prefHeight="41.0" prefWidth="87.0" text="Clear" />
-      <ToggleButton fx:id="BorrowForSubscriber" layoutX="200.0" layoutY="59.0" mnemonicParsing="false" onAction="#BorrowForSubscriber" prefHeight="41.0" prefWidth="87.0" text="Borrow" />
-      <ToggleButton fx:id="ReturnForSubscriber" layoutX="331.0" layoutY="59.0" mnemonicParsing="false" onAction="#ReturnForSubscriber" prefHeight="41.0" prefWidth="87.0" text="Return" />
-      <ToggleButton fx:id="Register" layoutX="473.0" layoutY="59.0" mnemonicParsing="false" onAction="#Register" prefHeight="41.0" prefWidth="87.0" text="Register" />
+      <Label fx:id="LBL6" layoutX="412.0" layoutY="324.0" text="Request Type:" />
+      <ToggleButton fx:id="Clear" layoutX="128.0" layoutY="107.0" mnemonicParsing="false" onAction="#Clear" prefHeight="25.0" prefWidth="393.0" text="Clear" />
+      <ToggleButton fx:id="BorrowForSubscriber" layoutX="128.0" layoutY="59.0" mnemonicParsing="false" onAction="#BorrowForSubscriber" prefHeight="41.0" prefWidth="131.0" text="Borrow" />
+      <ToggleButton fx:id="ReturnForSubscriber" layoutX="258.0" layoutY="59.0" mnemonicParsing="false" onAction="#ReturnForSubscriber" prefHeight="41.0" prefWidth="131.0" text="Return" />
+      <ToggleButton fx:id="Register" layoutX="389.0" layoutY="59.0" mnemonicParsing="false" onAction="#Register" prefHeight="41.0" prefWidth="131.0" text="Register" />
    </children>
 </AnchorPane>

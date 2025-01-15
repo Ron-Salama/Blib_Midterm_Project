@@ -571,7 +571,7 @@ public class EchoServer extends AbstractServer {
         try {
             // Split the body by commas to extract individual parts (subscriber name, ID, book name, ID, and time)
             String[] messageParts = body.split(",");
-            if (messageParts.length != 5) {
+            if (messageParts.length != 6) {
                 client.sendToClient("Error: Invalid input format. Expected format: SName,SID,BName,BID,BTime");
                 return;
             }
@@ -581,7 +581,8 @@ public class EchoServer extends AbstractServer {
             String bookName = messageParts[2].trim();
             String bookid = messageParts[3].trim();
             String bookTime = messageParts[4].trim();
-            System.out.println("Parsed Subscriber Name: " + subscriberName + ", Subscriber ID: " + subscriberId + ", Book Name: " + bookName + ", Book ID: " + bookid + ", Book Time: " + bookTime);
+            String returnTime = messageParts[5].trim();
+            System.out.println("Parsed Subscriber Name: " + subscriberName + ", Subscriber ID: " + subscriberId + ", Book Name: " + bookName + ", Book ID: " + bookid + ", Book Time: " + bookTime +", return Time: "+ returnTime);
             String returnRequestStatus = ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid);
             if ("Book returned successfully".equalsIgnoreCase(returnRequestStatus)) {
                 boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection, subscriberId, bookid);
