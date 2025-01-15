@@ -24,7 +24,7 @@ public class ConnectToDb {
         // Return the established connection
         return DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST&allowPublicKeyRetrieval=true&useSSL=false", "root", "Aa123456");
     }
-    /*
+
         // Method to fetch all data from the subscriber table
         public static List<String> fetchAllData(Connection conn) {
             List<String> result = new ArrayList<>();
@@ -54,7 +54,6 @@ public class ConnectToDb {
 
             return result; // Return all data as a list of strings
         }
-    */
     // Method to return the book by removing it from the borrowed_books table
     public static String returnbook(Connection dbConnection, String subscriberId, String bookID) {
         String result = "Book return failed"; // Default return status
