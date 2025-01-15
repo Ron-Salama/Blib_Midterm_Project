@@ -174,10 +174,10 @@ public class EchoServer extends AbstractServer {
    }
 		
 
-	private void handlereturnrequest(ConnectionToClient client, String body) throws IOException {
+    private void handlereturnrequest(ConnectionToClient client, String body) throws IOException {
         System.out.println("Processing return request");
 
-        // Expected message format: "Return request: Subscriber ID is 1 Yuval Borrow info: 1 1984 Fiction 0"
+        // Expected message format: "Return request: Subscriber ID is 1 Yuval Borrow info: 1 Pride and Prejudice Fiction 0"
 
         try {
             // Extract the Subscriber ID and Name
@@ -196,9 +196,16 @@ public class EchoServer extends AbstractServer {
             // Split borrow info to extract individual fields
             String[] bookInfo = borrowInfo.split(" ");
             String borrowId = bookInfo[0]; // First part (e.g., "1")
-            String bookName = bookInfo[1]; // Second part (e.g., "1984")
-            String subject = bookInfo[2];  // Third part (e.g., "Fiction")
-            String timeLeft = bookInfo[3]; // Fourth part (e.g., "0")
+
+            // Dynamically extract the book name until "subject" (third-last element)
+            StringBuilder bookNameBuilder = new StringBuilder();
+            for (int i = 1; i < bookInfo.length - 2; i++) { // Exclude the last two elements (subject and timeLeft)
+                bookNameBuilder.append(bookInfo[i]).append(" ");
+            }
+            String bookName = bookNameBuilder.toString().trim();
+
+            String subject = bookInfo[bookInfo.length - 2]; // Second-to-last part (e.g., "Fiction")
+            String timeLeft = bookInfo[bookInfo.length - 1]; // Last part (e.g., "0")
 
             // Create the return request in the database
             String requestType = "Return For Subscriber";  // Specify the type of request
@@ -514,18 +521,38 @@ public class EchoServer extends AbstractServer {
             String subscriberName = messageParts[0].trim();  // Subscriber's name
             String subscriberId = messageParts[1].trim();    // Subscriber's ID
             String bookName = messageParts[2].trim();        // Book's name
-            String borrowId = messageParts[3].trim();          // borrowID
+            String BookId = messageParts[3].trim();        // Borrow ID
             String bookTime = messageParts[4].trim();        // Book's time (or time remaining)
 
             // Log the extracted values for debugging
             System.out.println("Parsed Subscriber Name: " + subscriberName + ", Subscriber ID: " + subscriberId + 
-                               ", Book Name: " + bookName + ", Borrow ID: " + borrowId + ", Book Time: " + bookTime);
+                               ", Book Name: " + bookName + ", Book ID: " + BookId + ", Book Time: " + bookTime);
 
             // Process the return request via the database connection
-            String returnRequestStatus = ConnectToDb.returnbook(dbConnection, subscriberId, borrowId);
+            String returnRequestStatus = ConnectToDb.returnbook(dbConnection, subscriberId, BookId);
 
-            // Send the return request status back to the client
-            client.sendToClient("Return request status: " + returnRequestStatus);
+            if ("Book returned successfully".equalsIgnoreCase(returnRequestStatus)) {
+                // Delete the corresponding request from the `request` table
+                boolean requestDeleted = ConnectToDb.deleteRequest(dbConnection, subscriberId, BookId);
+
+                if (!requestDeleted) {
+                    client.sendToClient("Warning: Book returned successfully, but the request could not be removed from the request table.");
+                }
+                else {
+                	 client.sendToClient("return request was commited and deleted");
+                }
+
+                // Increase the book's available amount by 1 in the `books` table
+                boolean bookUpdated = ConnectToDb.incrementBookCount(dbConnection, BookId);
+
+                if (bookUpdated) {
+                    client.sendToClient("Book return processed successfully. Book availability updated.");
+                } else {
+                    client.sendToClient("Warning: Book returned successfully, but the book availability could not be updated.");
+                }
+            } else {
+                client.sendToClient("Return request status: " + returnRequestStatus);
+            }
         } catch (Exception e) {
             try {
                 // Handle unexpected exceptions and send error details to the client
@@ -536,6 +563,8 @@ public class EchoServer extends AbstractServer {
             e.printStackTrace(); // Log the exception for server-side debugging
         }
     }
+
+
 
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
