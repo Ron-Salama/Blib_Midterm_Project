@@ -11,6 +11,7 @@ import java.util.List;
 
 import common.ConnectToDb;
 import logic.ServerTimeDiffController;
+import logic.TaskScheduler;
 //import logic.ClockController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -28,7 +29,8 @@ public class EchoServer extends AbstractServer {
     
     // Instance variables ***********************************************
     private Connection dbConnection; // Single DB connection
-
+    
+    private TaskScheduler taskScheduler; // Used to run daily tasks.
     // Constructors ****************************************************
     public EchoServer(int port) {
         super(port);
@@ -38,6 +40,9 @@ public class EchoServer extends AbstractServer {
     @Override
     protected void serverStarted() {
     	initializeLogFile();
+    	
+    	taskScheduler = new TaskScheduler();
+        taskScheduler.startDailyTasks(); // Run the thread to update the DB daily.
 
         outputInOutputStreamAndLog("Server listening for connections on port " + getPort());
         try {
@@ -50,6 +55,10 @@ public class EchoServer extends AbstractServer {
     
     @Override
     protected void serverStopped() {
+    	if (taskScheduler != null) { // Stop the daily scheduler when the server is closing.
+            taskScheduler.stop();
+        }
+    	
         outputInOutputStreamAndLog("Server has stopped listening for connections.");
         if (dbConnection != null) {
             try {
