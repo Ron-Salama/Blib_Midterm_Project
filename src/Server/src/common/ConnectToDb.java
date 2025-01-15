@@ -722,13 +722,13 @@ public class ConnectToDb {
     }
 
     
-    public static void updateReturnDateAfterExtension(int borrowId, Connection con) {
+    public static void updateReturnDateAfterExtension(int borrowId,String extendedReturnDate, Connection con) {
         // SQL query to update the return date for a specific borrowed book
         String query = "UPDATE borrowed_books SET Return_Time = ? WHERE borrow_id = ?";
 
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
             // Set the query parameters
-            preparedStatement.setString(1, newReturnDate); // New return date
+            preparedStatement.setString(1, extendedReturnDate); // New return date
             preparedStatement.setInt(2, borrowId); // Borrow ID of the book
             
             // Execute the update
