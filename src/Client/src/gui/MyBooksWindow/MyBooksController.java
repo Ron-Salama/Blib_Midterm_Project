@@ -84,7 +84,6 @@ public class MyBooksController extends BaseController implements Initializable {
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
         tableSubject.setCellValueFactory(new PropertyValueFactory<>("subject")); // Subject column
         tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
-        
         setupActionsColumn();
         loadBooks();
 

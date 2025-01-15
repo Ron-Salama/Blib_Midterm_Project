@@ -136,7 +136,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
             
             LocalDateTime now = LocalDateTime.now();
-            String returnDate = clockController.calculateReturnDate(now, 14).toString();
+            String returnDate = clockController.calculateReturnDate(14);
             String borrowDate = clockController.timeNow();
             
             String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
