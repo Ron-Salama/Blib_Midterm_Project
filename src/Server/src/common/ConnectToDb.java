@@ -294,6 +294,7 @@ public class ConnectToDb {
             }
         }
     }
+    
     public static String fetchBookInfo(Connection conn, String bookId) {
         String query = "SELECT * FROM books WHERE ISBN = ?";
 
@@ -719,11 +720,4 @@ public class ConnectToDb {
             return false;
         }
     }
-
-
-
-
-
-
-
 }
