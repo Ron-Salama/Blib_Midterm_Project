@@ -546,7 +546,8 @@ public class ConnectToDb {
         String BName = parts.length > 2 ? parts[2] : "temp"; // Book Name (not used in the query, but included for reference)
         String ISBN = parts.length > 3 ? parts[3] : "temp"; // Book ISBN
         String Btime = parts.length > 4 ? parts[4] : "temp"; // Borrow Time
-       
+        String Rtime = parts.length > 4 ? parts[5] : "temp"; // Borrow Time
+        
         // SQL query to insert a new record into the borrowed_books table
         String query = "INSERT INTO borrowed_books (ISBN, subscriber_id, Name, Subject, Borrowed_Time, Return_Time) "
                      + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -558,7 +559,7 @@ public class ConnectToDb {
             pstmt.setString(3, BName); // Book Name
             pstmt.setString(4, "temp"); // Subject (since it's not provided, use "temp")
             pstmt.setString(5, Btime); // Borrow Time
-            pstmt.setString(6, "temp"); // Return Time (since it's not provided, use "temp")
+            pstmt.setString(6, Rtime); // Return Time 
 
             // Execute the insert and get the number of affected rows
             int affectedRows = pstmt.executeUpdate();

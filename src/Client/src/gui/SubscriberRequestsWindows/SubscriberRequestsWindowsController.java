@@ -2,6 +2,8 @@ package gui.SubscriberRequestsWindows;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,10 +25,14 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.BorrowedBook;
+import logic.ClientTimeDiffController;
 import logic.Librarian;
 import logic.Subscriber;
 import gui.LibrarianWindow.LibrarianController;
@@ -47,7 +53,17 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private Button btnBack = null;
     @FXML
     private Button btnScanBarcode = null;
-  
+    @FXML
+    private ToggleButton Clear = null;
+    @FXML
+    private ToggleButton BorrowForSubscriber = null;
+    @FXML
+    private ToggleButton ReturnForSubscriber = null;
+    @FXML
+    private ToggleButton Register = null;
+    @FXML
+    private DatePicker datePicker = null;
+    
     @FXML
     private Label LBL1;
     @FXML
@@ -58,6 +74,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private Label LBL4;
     @FXML
     private Label LBL5;
+    @FXML
+    private Label LBL6;
     @FXML
     private TextField TXTF1;
     @FXML
@@ -70,12 +88,11 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private TextField TXTF5;
 
     @FXML
-    private ComboBox<String> RequestTypeCB;
-
-    @FXML
     private ComboBox<String> RequestedByCB;
     @FXML
     private ComboBox<String> RequestCB;
+    
+    ClientTimeDiffController clock = new ClientTimeDiffController();
     
     private List<String[]> borrowRequests = new ArrayList<>();
     private List<String[]> RegisterRequests = new ArrayList<>();
@@ -83,22 +100,69 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private String requestType = "";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize request types
-        RequestTypeCB.getItems().addAll("", "Registers", "Extend Book Borrow", "Borrow For Subscriber", "Return For Subscriber");
-        RequestedByCB.getItems().add(""); // Add an empty item for default value
 
-        // Set event listeners
-        RequestTypeCB.setOnAction(event -> updateLabels());
+        RequestedByCB.getItems().add("");
+        RequestCB.getItems().add("");
         RequestedByCB.setOnAction(event -> autofillSubscriberData());
         RequestCB.setOnAction(event -> autofillRequestData());
-
+        Clear.setOnAction(event -> Clear());
+        BorrowForSubscriber.setOnAction(event -> BorrowForSubscriber());
+        ReturnForSubscriber.setOnAction(event -> ReturnForSubscriber());
+        Register.setOnAction(event -> Register());
+        Clear.setSelected(true);
     }
 
+	
 
+    public void Clear() {
+    	updateLabels("Clear");
+        deselectOtherButtons(Clear);
+        requestType="Clear";
+        datePicker.setVisible(false);
+        LBL5.setVisible(true);
+        LBL6.setVisible(false);
+        Clear.setSelected(true);
+        datePicker.setValue(null);
+    }
+    public void Register() {
+    	updateLabels("Registers");
+        deselectOtherButtons(Register);
+        requestType="Registers";
+        datePicker.setVisible(false);
+        LBL5.setVisible(false);
+        LBL6.setVisible(false);
+        Register.setSelected(true);
+        datePicker.setValue(null);
+    }
+    public void BorrowForSubscriber() {
+    	updateLabels("Borrow For Subscriber");
+        deselectOtherButtons(BorrowForSubscriber);
+        requestType="Borrow For Subscriber";
+        datePicker.setVisible(true);
+        LBL5.setVisible(true);
+        LBL6.setVisible(true);
+        BorrowForSubscriber.setSelected(true);
+        datePicker.setValue(null);
+    }
+    public void ReturnForSubscriber() {
+    	updateLabels("Return For Subscriber");
+        deselectOtherButtons(ReturnForSubscriber);
+        requestType="Return For Subscriber";
+        datePicker.setVisible(true);
+        LBL5.setVisible(true);
+        LBL6.setVisible(true);
+        ReturnForSubscriber.setSelected(true);
+        datePicker.setValue(null);
+    }
+    private void deselectOtherButtons(ToggleButton selectedButton) {
+        if (selectedButton != Clear) Clear.setSelected(false);
+        if (selectedButton != BorrowForSubscriber) BorrowForSubscriber.setSelected(false);
+        if (selectedButton != ReturnForSubscriber) ReturnForSubscriber.setSelected(false);
+        if (selectedButton != Register) Register.setSelected(false);
+    }
  // Method to update labels based on the selected request type
-    public void updateLabels() {
-        String selectedRequestType = RequestTypeCB.getValue();
-
+    public void updateLabels(String type) {
+        String selectedRequestType = type;
         // Clear all ComboBoxes and text fields
         clearFieldsAndComboBoxes();
         
@@ -107,8 +171,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             case "Registers":
                 LBL1.setText("Subscriber Name:");
                 LBL2.setText("Subscriber ID:");
-                LBL3.setText("Email:");
-                LBL4.setText("Phone Number:");
+                LBL3.setText("Phone Number:");
+                LBL4.setText("Email:");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(false);
                 ClientUI.chat.accept("FetchRegisterRequest:");
@@ -120,34 +184,28 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 LBL2.setText("Subscriber ID:");
                 LBL3.setText("Book Name:");
                 LBL4.setText("Book ID:");
-                LBL5.setText("Borrow Time:");
+                LBL5.setText("Borrowed At:");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
+                LBL6.setText("Expected Return");
                 ClientUI.chat.accept("FetchBorrowRequest:");
                 requestType = "Borrow For Subscriber";
                 addDelay();
                 handleFetchedBorrowedBooks();
+                
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
                 LBL2.setText("Subscriber ID:");
                 LBL3.setText("Book Name:");
                 LBL4.setText("Book ID:");
-                LBL5.setText("Return Time:");
+                LBL5.setText("Borrowed At:");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
+                LBL6.setText("Return Time:");
                 ClientUI.chat.accept("Fetch return request:");
                 addDelay();
                 handleReturnofBorrowedBook();
-                break;
-            case "Extend Book Borrow":
-                LBL1.setText("Subscriber Name:");
-                LBL2.setText("Subscriber ID:");
-                LBL3.setText("Book Name:");
-                LBL4.setText("Book ID:");
-                LBL5.setText("Extend Time:");
-                TXTF4.setVisible(true);
-                TXTF5.setVisible(true);
                 break;
             default:
                 LBL1.setText("");
@@ -162,8 +220,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 
     }
     private void handleReturnofBorrowedBook() {
-    	
-    	
     	
     	 ReturnRequests.clear();  // Clear the existing list to avoid duplicate data
          clearFieldsAndComboBoxes();
@@ -205,7 +261,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     }
 
 
-
+ 
 	// Method to introduce a delay of 0.5 seconds before fetching data
     private void addDelay() {
         // Create a PauseTransition with a 0.5 second delay
@@ -229,7 +285,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             // Create a list to store the selected subscriber's requests (either borrow or register requests)
             List<String[]> selectedRequests = new ArrayList<>();
 
-            String selectedRequestType = RequestTypeCB.getValue();
+            String selectedRequestType = requestType;
 
             if ("Registers".equals(selectedRequestType)) {
                 // Add register requests for the selected subscriber
@@ -272,14 +328,20 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 
         if (selectedRequest != null && !selectedRequest.isEmpty()) {
             List<String[]> selectedRequests = new ArrayList<>();
-            String selectedRequestType = RequestTypeCB.getValue();
+            String selectedRequestType = requestType;
 
             if ("Registers".equals(selectedRequestType)) {
                 selectedRequests = RegisterRequests;
             } else if ("Borrow For Subscriber".equals(selectedRequestType)) {
                 selectedRequests = borrowRequests;
+                TXTF5.setText(clock.timeNow());
+                datePicker.setValue(clock.convertStringToLocalDateTime(clock.extendReturnDate(clock.timeNow(), 14)).toLocalDate()); 
+            	
             } else if ("Return For Subscriber".equals(selectedRequestType)) {
                 selectedRequests = ReturnRequests;
+                TXTF5.setText(clock.timeNow());
+                datePicker.setValue(clock.convertStringToLocalDateTime(clock.timeNow()).toLocalDate()); 
+            	
             }
 
             for (String[] request : selectedRequests) {
@@ -290,7 +352,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                     TXTF2.setText(request[1]); // Subscriber ID
                     TXTF3.setText(request[3]); // Book Name or Email
                     TXTF4.setText(request[4]); // Book ID or Phone Number
-                    TXTF5.setText(request[5]); // Borrow/Return Time if applicable
+                     // Borrow/Return Time if applicable
                     break;
                 }
             }
@@ -431,7 +493,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 		
 	public void acceptRequest(ActionEvent event) throws Exception 
 	{
-		 String selectedRequestType = RequestTypeCB.getValue();
+		 String selectedRequestType = requestType;
 		if(selectedRequestType=="Borrow For Subscriber") 
 		{
             String SName = TXTF1.getText();
@@ -439,7 +501,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BName = TXTF3.getText();
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
-            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime;
+            String Rtime =  convertDateFormat(""+datePicker.getValue()); 
+            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;;
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
             ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
 
@@ -450,8 +513,23 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BName = TXTF3.getText();
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
-            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime;
+            String Rtime = convertDateFormat(""+datePicker.getValue()); 
+            
+            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
 			ClientUI.chat.accept("Handle return:"+body); 
 		}
 		}
+
+	    // Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
+	    public static String convertDateFormat(String dateStr) {
+	        // Define the input and output date formats
+	        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	        
+	        // Parse the original string into a LocalDate object
+	        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
+	        
+	        // Format the LocalDate object to the new string format
+	        return date.format(outputFormatter);
+	    }
 	}
