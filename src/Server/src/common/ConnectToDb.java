@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import server.EchoServer;
 //import org.omg.CORBA.Request;
 
 
@@ -40,11 +42,13 @@ public class ConnectToDb {
                     int detailed = rs.getInt("detailed_subscription_history");
                     String phone = rs.getString("subscriber_phone_number");
                     String email = rs.getString("subscriber_email");
-
+                    String status = rs.getString("status");
+                    
                     String row = "subscriber_id:" + id + ", subscriber_name:" + name +
                                  ", detailed_subscription_history:" + detailed +
                                  ", subscriber_phone_number:" + phone +
-                                 ", subscriber_email:" + email;
+                                 ", subscriber_email:" + email +
+                                 ", status:" + status;
 
                     result.add(row);
                 }
@@ -748,8 +752,56 @@ public class ConnectToDb {
     }
 
 
+    public static List<String> fetchBorrowedBooksForTaskScheduler(Connection conn) {
+        String query = "SELECT * FROM blib.borrowed_books";
 
+        List<String> borrowedBooks = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    // Combine fields into a single delimited string for sending to the client
+                    String bookData = rs.getInt("borrow_id") + "," +
+                    				  rs.getInt("subscriber_id") + "," +
+                                      rs.getString("Name") + "," +
+                                      rs.getString("Subject") + "," +
+                                      rs.getString("Borrowed_Time") + "," +
+                                      rs.getString("Return_Time") + "," +
+                                      rs.getString("ISBN");
+                    borrowedBooks.add(bookData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching borrowed books: " + e.getMessage());
+        }
+        return borrowedBooks; // Return the list of borrowed books
+    }
+    
+    public static void freezeSubscriber(Connection conn, int subscriberID) throws SQLException {
+    	// Update a subscriber's phone and email
+    	String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
 
+    	String status = "Frozen at:" + EchoServer.clock.timeNow();
 
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        	pstmt.setString(1, status); // Update SQL statement.
+        	pstmt.setInt(2, subscriberID);
+            pstmt.executeUpdate(); // Run the statement.
+        }
+    }
+    
+    public static void unfreezeSubscriber(Connection conn, int subscriberID) throws SQLException {
+    	// Update a subscriber's phone and email
+    	String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
 
+    	String status = "Not Frozen";
+    	// Debug log to check inputs
+        System.out.println("Updating subscriber: " + subscriberID + " with status: " + status);
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        	pstmt.setString(1, status); // Update SQL statement.
+        	pstmt.setInt(2, subscriberID);
+            pstmt.executeUpdate(); // Run the statement.
+        }
+    }
+    	
 }

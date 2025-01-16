@@ -24,8 +24,9 @@ import ocsf.server.ConnectionToClient;
 public class EchoServer extends AbstractServer {
     // Class variables *************************************************
     final public static int DEFAULT_PORT = 5555;
+    public static Connection taskSchedulerConnection; // Used to send SQL statements each day.
     
-    private ServerTimeDiffController clock = new ServerTimeDiffController();
+    public static ServerTimeDiffController clock = new ServerTimeDiffController();
     
     // Instance variables ***********************************************
     private Connection dbConnection; // Single DB connection
@@ -35,6 +36,7 @@ public class EchoServer extends AbstractServer {
     public EchoServer(int port) {
         super(port);
     }
+   
     
     // Instance methods ************************************************
     @Override
@@ -47,6 +49,7 @@ public class EchoServer extends AbstractServer {
         outputInOutputStreamAndLog("Server listening for connections on port " + getPort());
         try {
             dbConnection = ConnectToDb.getConnection(); // Open the connection
+            taskSchedulerConnection = dbConnection;
             outputInOutputStreamAndLog("Connected to the database.");
         } catch (SQLException e) {
             System.err.println("Error connecting to the database: " + e.getMessage());
@@ -529,7 +532,7 @@ public class EchoServer extends AbstractServer {
          }
     }
     
-    private void log(String message) {
+    private static void log(String message) {
     	// Append the message to the log file
         try (FileWriter writer = new FileWriter("src/logic/serverLog.txt", true)) { // 'true' enables append mode
             writer.write(message + System.lineSeparator()); // Add a new line after each message
@@ -538,7 +541,7 @@ public class EchoServer extends AbstractServer {
         }
     }
     
-    private void outputInOutputStreamAndLog(String msg){
+    public static void outputInOutputStreamAndLog(String msg){
     	System.out.println(msg);
     	log(msg);
     }
@@ -619,6 +622,10 @@ public class EchoServer extends AbstractServer {
 
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
+    }
+    
+    public Connection getConnection() {
+    	return dbConnection;
     }
 
 }
