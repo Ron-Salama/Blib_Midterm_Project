@@ -144,4 +144,8 @@ public abstract class BaseController {
         primaryStage.getIcons().add(icon);
    }
 
+    public String[] parseBorrowedBook(String borrowedBook) {
+		String[] borrowedBookData = borrowedBook.split(",");
+		return borrowedBookData;
+	}
 }

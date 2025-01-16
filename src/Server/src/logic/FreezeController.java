@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.ConnectToDb;
+import gui.baseController.BaseController;
 import server.EchoServer;
 
 
  //TODO: imporve log&CMD messages.
-public class FreezeController {
+public class FreezeController extends BaseController {
 	ServerTimeDiffController clock = EchoServer.clock;
 	
 	public void freeze() throws SQLException {
@@ -60,10 +61,5 @@ public class FreezeController {
 	public void freezeControllerDailyActivities() throws SQLException {
 		unfreeze(); // Unfreeze first in case the subscriber has to be frozen on the same day he's being unfreezed.
 		freeze();
-	}
-
-	private String[] parseBorrowedBook(String borrowedBook) {
-		String[] borrowedBookData = borrowedBook.split(",");
-		return borrowedBookData;
 	}
 }
