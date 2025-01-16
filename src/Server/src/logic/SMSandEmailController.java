@@ -5,10 +5,13 @@
  */
 package logic;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.mysql.cj.result.LocalTimeValueFactory;
 
 import common.ConnectToDb;
 import gui.baseController.BaseController;
@@ -84,6 +87,19 @@ public class SMSandEmailController extends BaseController {
         message.append("We are looking forward to your visit.\nSee you soon!");
 
         // Apply email and SMS sending logic when deployed.
+        System.out.println(message.toString());
+    }
+    
+    
+    public static void sendEmailWhenAReservedBookIsBackInStock(String subscriberName, String bookName, String email, LocalDateTime reservationVoidDate) {
+    	// Build the message containing all books.
+        StringBuilder message = new StringBuilder();
+        message.append("Dear ").append(subscriberName).append(",\n");
+        message.append("The book: ").append(bookName).append(" you ordered is now back in stock!\n"); 
+        message.append("You have until: ").append(reservationVoidDate).append("to borrow the book.");
+        message.append("We are looking forward to your visit.\nSee you soon!");
+
+        // Apply mail logic when deployed.
         System.out.println(message.toString());
     }
 }
