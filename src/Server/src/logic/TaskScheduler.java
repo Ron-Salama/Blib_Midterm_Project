@@ -25,7 +25,7 @@ public class TaskScheduler {
                 updateDatabase();
             }
         };
-        scheduler.scheduleAtFixedRate(dailyTask, 0, 1, TimeUnit.SECONDS); // Change timeUnit value to DAYS, WEEKS, MONTHS etc. accordingly to your needs.
+        scheduler.scheduleAtFixedRate(dailyTask, 0, 1, TimeUnit.DAYS); // Change timeUnit value to DAYS, WEEKS, MONTHS etc. accordingly to your needs.
     }
 
     private void updateDatabase() {

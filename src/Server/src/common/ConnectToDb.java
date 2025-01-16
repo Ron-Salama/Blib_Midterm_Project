@@ -42,11 +42,13 @@ public class ConnectToDb {
                     int detailed = rs.getInt("detailed_subscription_history");
                     String phone = rs.getString("subscriber_phone_number");
                     String email = rs.getString("subscriber_email");
-
+                    String status = rs.getString("status");
+                    
                     String row = "subscriber_id:" + id + ", subscriber_name:" + name +
                                  ", detailed_subscription_history:" + detailed +
                                  ", subscriber_phone_number:" + phone +
-                                 ", subscriber_email:" + email;
+                                 ", subscriber_email:" + email +
+                                 ", status:" + status;
 
                     result.add(row);
                 }
@@ -778,6 +780,19 @@ public class ConnectToDb {
     	String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
 
     	String status = "Frozen at:" + EchoServer.clock.timeNow();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        	pstmt.setString(1, status); // Update SQL statement.
+        	pstmt.setInt(2, subscriberID);
+            pstmt.executeUpdate(); // Run the statement.
+        }
+    }
+    
+    public static void unfreezeSubscriber(Connection conn, int subscriberID) throws SQLException {
+    	// Update a subscriber's phone and email
+    	String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
+
+    	String status = "Not Frozen";
     	// Debug log to check inputs
         System.out.println("Updating subscriber: " + subscriberID + " with status: " + status);
 
