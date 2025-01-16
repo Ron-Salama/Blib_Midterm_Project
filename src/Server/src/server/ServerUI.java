@@ -47,6 +47,4 @@ public class ServerUI extends Application {
 	          System.out.println("ERROR - Could not listen for clients!");
 	        }
 	}
-	
-
 }

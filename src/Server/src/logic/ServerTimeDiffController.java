@@ -208,4 +208,77 @@ public class ServerTimeDiffController {
     public void setDateFormatter(DateTimeFormatter dateFormatter) {
         this.dateFormatter = dateFormatter;
     }
+    
+    /**
+     * Checks if a month has passed between two dates.
+     *
+     * @param startDate the starting date
+     * @param endDate   the ending date
+     * @return {@code true} if at least one month has passed; otherwise, {@code false}
+     */
+    public boolean hasMonthPassed(LocalDate startDate, LocalDate endDate) {
+        long monthsBetween = ChronoUnit.MONTHS.between(startDate, endDate);
+        return monthsBetween >= 1;
+    }
+
+    /**
+     * Overloaded method to check if a month has passed between a date string and the current date.
+     *
+     * @param startDateAsString the starting date as a string
+     * @return {@code true} if at least one month has passed; otherwise, {@code false}
+     */
+    public boolean hasMonthPassed(String startDateAsString) {
+        LocalDate startDate = LocalDate.parse(startDateAsString, getDateFormatter());
+        LocalDate currentDate = LocalDate.now();
+        return hasMonthPassed(startDate, currentDate);
+    }
+
+    /**
+     * Checks if a week has passed between two dates.
+     *
+     * @param startDate the starting date
+     * @param endDate   the ending date
+     * @return {@code true} if at least one week has passed; otherwise, {@code false}
+     */
+    public boolean hasWeekPassed(LocalDate startDate, LocalDate endDate) {
+        long weeksBetween = ChronoUnit.WEEKS.between(startDate, endDate);
+        return weeksBetween >= 1;
+    }
+
+    /**
+     * Overloaded method to check if a week has passed between a date string and the current date.
+     *
+     * @param startDateAsString the starting date as a string
+     * @return {@code true} if at least one week has passed; otherwise, {@code false}
+     */
+    public boolean hasWeekPassed(String startDateAsString) {
+        LocalDate startDate = LocalDate.parse(startDateAsString, getDateFormatter());
+        LocalDate currentDate = LocalDate.now();
+        return hasWeekPassed(startDate, currentDate);
+    }
+
+    /**
+     * Checks if a week has passed between two {@code LocalDateTime} objects.
+     *
+     * @param startDateTime the starting date and time
+     * @param endDateTime   the ending date and time
+     * @return {@code true} if at least one week has passed; otherwise, {@code false}
+     */
+    public boolean hasWeekPassed(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        long weeksBetween = ChronoUnit.WEEKS.between(startDateTime, endDateTime);
+        return weeksBetween >= 1;
+    }
+
+    /**
+     * Overloaded method to check if a week has passed between a date-time string and the current date-time.
+     *
+     * @param startDateTimeAsString the starting date-time as a string
+     * @return {@code true} if at least one week has passed; otherwise, {@code false}
+     */
+    public boolean hasWeekPassedFromDateTime(String startDateTimeAsString) {
+        LocalDateTime startDateTime = convertStringToLocalDateTime(startDateTimeAsString);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        return hasWeekPassed(startDateTime, currentDateTime);
+    }
+
 }
