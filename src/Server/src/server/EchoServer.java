@@ -299,13 +299,8 @@ public class EchoServer extends AbstractServer {
     private void handleIPCase(ConnectionToClient client, String body) throws IOException {
         try {
             // Retrieve the server's IP address
-<<<<<<< Updated upstream
         	String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
             //String serverIP = "10.244.2.9";//have to change its just to work normaly
-=======
-        	//String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
-            String serverIP = "10.244.108.108";//have to change its just to work normaly
->>>>>>> Stashed changes
             // Check if the client's provided IP matches the actual server IP
             if (body.equals(serverIP)) {
                 client.sendToClient("Client connected to IP:" + serverIP);
