@@ -113,16 +113,16 @@ public class EchoServer extends AbstractServer {
             String body = message.substring(delimiterIndex + 1).trim(); // Extract the body after the prefix
 
             switch (prefix) {
+            	case "IP": // Handle IP:<Address>
+            		handleIPCase(client, body);
+            		break;
                 case "Fetch return request":
-                this.HandleFetchreturnrequest(client, body);
+                	this.HandleFetchreturnrequest(client, body);
                 case "Fetch": // Handle Fetch:ID
                     handleFetchCase(client, body);
                     break;
                 case "Update": // Handle Update:ID,Phone,Email
                 	handleUpdateCase(client, body);
-                    break;
-                case "IP": // Handle IP:<Address>
-                    handleIPCase(client, body);
                     break;
                 case "GetBooks": // Handle GetBooks:
                 	handleGetBooksCase(client, body);
@@ -296,12 +296,28 @@ public class EchoServer extends AbstractServer {
         }
     }
 
-    private void handleIPCase(ConnectionToClient client, String body) throws IOException   {
-        String serverIP = InetAddress.getLocalHost().getHostAddress();
-
-        client.sendToClient("Client connected to server with IP: " + serverIP);
-  
+    private void handleIPCase(ConnectionToClient client, String body) throws IOException {
+        try {
+            // Retrieve the server's IP address
+        	//String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
+            String serverIP = "10.244.2.9";//have to change its just to work normaly
+            // Check if the client's provided IP matches the actual server IP
+            if (body.equals(serverIP)) {
+                client.sendToClient("Client connected to IP:" + serverIP);
+         //   } else {
+               // client.sendToClient("Connection failed. The provided IP (" + body + ") does not match the server's IP (" + serverIP + ").");
+            }
+        } catch (IOException e) {
+            // Log and handle the exception for a failed response
+            System.err.println("Error communicating with the client: " + e.getMessage());
+            throw e; // Optionally rethrow to indicate failure to the calling method
+        } catch (Exception e) {
+            // Catch unexpected exceptions
+            System.err.println("Unexpected error: " + e.getMessage());
+            throw new IOException("An unexpected error occurred while handling the IP case.", e);
+        }
     }
+
     
     private void handleGetBooksCase(ConnectionToClient client, String body) throws IOException {
     	outputInOutputStreamAndLog("Received GetBooks request from client");
