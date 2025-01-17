@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
+import gui.MyBooksWindow.MyBooksController;
 import gui.SubscriberWindow.SubscriberWindowController;
 import gui.baseController.BaseController;
 import javafx.application.Platform;
@@ -39,7 +40,7 @@ public class HistoryController extends BaseController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        currentSubscriber = SubscriberWindowController.currentSubscriber;
+        currentSubscriber = MyBooksController.currentSub;
        
         // Configure TableColumn to display String values directly
         tableDescription.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
@@ -57,7 +58,7 @@ public class HistoryController extends BaseController implements Initializable {
     			"/gui/MyBooksWindow/MyBooksFrame.fxml",
     			"/gui/MyBooksWindow/MyBooksFrame.css",
     			"My Books");
-    	 
+
     }
     
     public void getExitBtn(ActionEvent event) {
