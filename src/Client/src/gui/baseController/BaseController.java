@@ -54,7 +54,7 @@ public abstract class BaseController {
             e.printStackTrace();
         }
     }
-
+    
     /**
      * Sets up and displays a new primary stage with the specified FXML and CSS files.
      *

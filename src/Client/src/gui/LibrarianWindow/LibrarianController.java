@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
+import client.ClientUI;
+import gui.MyBooksWindow.MyBooksController;
 import gui.SearchWindow.SearchFrameController;
 import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
@@ -61,7 +63,14 @@ public class LibrarianController extends BaseController implements Initializable
     
     
     public void navigateToSearchSubscriber(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING SEARCH SUBSCRIBER WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
-
+    	MyBooksController.viewing = true;
+    	MyBooksController.librarianViewing = currentLibrarian.getLibrarian_id();
+    	openWindow(event, 
+                "/gui/MyBooksWindow/MyBooksFrame.fxml", 
+                "/gui/MyBooksWindow/MyBooksFrame.css", 
+                "Reports Window");
+    	
+    	
     }
     
     public void navigateToSubscriberRequests(ActionEvent event) throws Exception { 

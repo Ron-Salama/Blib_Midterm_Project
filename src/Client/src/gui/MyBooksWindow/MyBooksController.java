@@ -6,7 +6,9 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
+import gui.SubscriberWindow.SubscriberWindowController;
 import gui.baseController.BaseController;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
+import logic.Subscriber;
 
 /**
  * Controller for the Search Window in the Library Management Tool.
@@ -35,12 +38,18 @@ public class MyBooksController extends BaseController implements Initializable {
 	
     @FXML
 	private Label extensionDynamicLabel;
-	
+    @FXML
+	private Label title;
+    @FXML
+    private Label LBLview;
+    
 	@FXML
     private Button btnExit;
 	
     @FXML
     private Button btnBackF;
+    @FXML
+    private Button btnView;
     
     @FXML
     private Button btnHistory;
@@ -69,6 +78,8 @@ public class MyBooksController extends BaseController implements Initializable {
 
     @FXML
     private TextField nameInput;
+    @FXML
+    private TextField TXTFview;
 
     @FXML
     private TextField descriptionInput;
@@ -80,24 +91,45 @@ public class MyBooksController extends BaseController implements Initializable {
      * @param url the location of the FXML file.
      * @param resourceBundle the resource bundle for internationalization.
      */
+    public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
+    public static int librarianViewing=-1;
+    public static Boolean viewing=false;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    	
         // Initialize TableView columns
         tableID.setCellValueFactory(new PropertyValueFactory<>("ISBN")); // ISBN column
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
         tableBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate")); // Borrow Date column
         tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate")); // Return Date column
         tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
+        
 
+        if(viewing) {
+        	tableView.getItems().clear();
+        	title.setText("waiting for librarian input");
+        	btnView.setVisible(true);
+        	TXTFview.setVisible(true);
+        	LBLview.setVisible(true);
+        	currentSub = new Subscriber (0,0,null,null,null,null);
+        }else {
+        	currentSub = SubscriberWindowController.currentSubscriber;
+        	title.setText("My Books");
+        	btnView.setVisible(false);
+        	TXTFview.setVisible(false);
+        	LBLview.setVisible(false);
+        }
         setupActionsColumn();
-        loadBooks();
+        tableView.getItems().clear();
+        addDelay();
+
     }
 
 
     
     private void loadBooks() {
         new Thread(() -> {
-            ClientUI.chat.accept("GetBorrowedBooks:" + ChatClient.s1.getSubscriber_id());
+            ClientUI.chat.accept("GetBorrowedBooks:" + currentSub.getSubscriber_id());
             Platform.runLater(() -> {
                 if (ChatClient.borrowedBookList != null && !ChatClient.borrowedBookList.isEmpty()) {
                     tableView.getItems().clear();
@@ -112,8 +144,32 @@ public class MyBooksController extends BaseController implements Initializable {
     
 
 
+    public void updateView(ActionEvent event) {
+    	String subID = TXTFview.getText();
+    	ClientUI.chat.accept("Fetch:"+subID);
+    	
+    	currentSub = new Subscriber(
+    	        ChatClient.s1.getSubscriber_id(),
+    	        ChatClient.s1.getDetailed_subscription_history(),
+    	        ChatClient.s1.getSubscriber_name(),
+    	        ChatClient.s1.getSubscriber_phone_number(),
+    	        ChatClient.s1.getSubscriber_email(),
+    	        ChatClient.s1.getStatus()
+    	    );
+    	title.setText("Now Viewing Subscriber: "+currentSub.getSubscriber_id()+" , "+currentSub.getSubscriber_name());
+    	addDelay();
+    }
+    private void addDelay() {
+        // Create a PauseTransition with a 0.5 second delay
+        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.2));
+        // Set the action to be executed after the pause
+        pause.setOnFinished(event -> {
+        	loadBooks();
+        });
 
-
+        // Start the pause transition
+        pause.play();
+    }
         // after TODO is done and subscriber's book are in DB we fetch them here into the table.
 //        // Fetch and populate books
 //        new Thread(() -> {
@@ -158,11 +214,18 @@ public class MyBooksController extends BaseController implements Initializable {
                     	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                     	
                     	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) {
-                    		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
-                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-                    		tableView.refresh();
-                    	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-                    	    tableView.refresh();
+                    		if(viewing) {
+                    			System.out.println("Librarian Manual Extend");
+                    			ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
+	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+	                    		tableView.getItems().clear();
+	                    		loadBooks();
+                    		}else {
+	                    		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
+	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+	                    		tableView.getItems().clear();
+	                    		loadBooks();
+                    		}
                     	}else {
                     		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied!", "-fx-text-fill: red;");
                     	}
@@ -171,8 +234,8 @@ public class MyBooksController extends BaseController implements Initializable {
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                         System.out.println("Return book: " + borrowedBook.getName());
-                        ClientUI.chat.accept("Return request: Subscriber ID is "+ChatClient.s1.getSubscriber_id()+" "+ChatClient.s1.getSubscriber_name()+" Borrow info: "+borrowedBook);
-                        ClientUI.chat.accept("Return Book: Subscriber ID is"+ChatClient.s1.getSubscriber_id()+" Book info is:"+borrowedBook);
+                        ClientUI.chat.accept("Return request: Subscriber ID is "+currentSub.getSubscriber_id()+" "+currentSub.getSubscriber_name()+" Borrow info: "+borrowedBook);
+                        ClientUI.chat.accept("Return Book: Subscriber ID is"+currentSub.getSubscriber_id()+" Book info is:"+borrowedBook);
                         
                     });
                 }
@@ -275,11 +338,18 @@ public class MyBooksController extends BaseController implements Initializable {
     }
    
     public void backFromUser(ActionEvent event) {
-    	openWindow(event,
-    			"/gui/SubscriberWindow/SubscriberWindow.fxml",
-    			"/gui/SubscriberWindow/SubscriberWindow.css",
-    			"Subscriber View");
-    	
+    	if(viewing) {
+    		tableView.getItems().clear();
+        	openWindow(event,
+        			"/gui/LibrarianWindow/LibrarianFrame.fxml",
+        			"/gui/LibrarianWindow/LibrarianFrame.css",
+        			"Librarian View");
+    	}else {
+        	openWindow(event,
+        			"/gui/SubscriberWindow/SubscriberWindow.fxml",
+        			"/gui/SubscriberWindow/SubscriberWindow.css",
+        			"Subscriber View");
+    	}
     }
 
 }

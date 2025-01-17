@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
+import gui.MyBooksWindow.MyBooksController;
 import gui.SearchWindow.SearchFrameController;
 import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
@@ -133,6 +134,8 @@ public class SubscriberWindowController extends BaseController implements Initia
     */
     
     public void openMyBooksWindow(ActionEvent event) throws Exception {
+    	MyBooksController.viewing = false;
+    	MyBooksController.librarianViewing = -1;
 		openWindow(event,
 	       		"/gui/MyBooksWindow/MyBooksFrame.fxml",
 	       		"/gui/MyBooksWindow/MyBooksFrame.css",
