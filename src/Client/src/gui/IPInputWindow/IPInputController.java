@@ -1,6 +1,7 @@
 package gui.IPInputWindow;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 import javafx.animation.PauseTransition;
@@ -78,8 +79,8 @@ public class IPInputController extends BaseController {
         
         ClientUI.chat.accept("IP:" + ip);
 
-        TimeUnit.SECONDS.sleep(6); // XXX Optimal time to allow the client to get the information from the server.
-
+        //TimeUnit.SECONDS.sleep(6); // XXX Optimal time to allow the client to get the information from the server.
+    
         if (!ClientUI.isIPValid) {
         	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");
             System.out.println("ALERT: Invalid IP detected!");
