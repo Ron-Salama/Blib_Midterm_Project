@@ -502,26 +502,46 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
             String Rtime =  convertDateFormat(""+datePicker.getValue()); 
-            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;;
+            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
             ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
-
+            ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
+			String statusOfReturn = "";
 			String SName = TXTF1.getText();
             String SID = TXTF2.getText();
             String BName = TXTF3.getText();
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
             String Rtime = convertDateFormat(""+datePicker.getValue()); 
-            
+            System.out.println("yaniv :\n\n\n\n\n\n Borrow time="+Btime+"   Return time=" + Rtime);
+            int numOfDaysOfReturn = numOfDays(Btime, Rtime);
+            if (numOfDaysOfReturn >= 0) {
+				statusOfReturn = "early";
+			}
+            else {
+				statusOfReturn = "late";
+				numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
+			}
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
 			ClientUI.chat.accept("Handle return:"+body); 
+			ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Return Successfully "+numOfDaysOfReturn+" days "+statusOfReturn);
 		}
+		else if (selectedRequestType=="Registers") {
+			 String SName = TXTF1.getText();
+			 String SID = TXTF2.getText();
+			 String PhoneNum = TXTF3.getText();
+			 String Email = TXTF4.getText();
+			 String body = ""+SName+","+SID+","+PhoneNum+","+Email;
+			 ClientUI.chat.accept("Handle register:"+body);
+			 ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Register Successfully");
 		}
+	}
 
 	    // Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
-	    public static String convertDateFormat(String dateStr) {
+	    public static String convertDateFormat(String dateStr) 
+	    {
 	        // Define the input and output date formats
 	        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -531,5 +551,13 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	        
 	        // Format the LocalDate object to the new string format
 	        return date.format(outputFormatter);
+	    }
+	    
+	    // method to convert date string from "dd-MM-yyyy" to number of days ("dd")
+	    public static int numOfDays(String Borrowtime,String Returntime) 
+	    {
+	    	int dateOfBorrow = Integer.parseInt(Borrowtime.substring(0, 2));
+	    	int dateOfReturn = Integer.parseInt(Returntime.substring(0, 2));
+	    	return dateOfBorrow-dateOfReturn;
 	    }
 	}
