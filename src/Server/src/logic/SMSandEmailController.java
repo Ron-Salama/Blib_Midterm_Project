@@ -91,12 +91,20 @@ public class SMSandEmailController extends BaseController {
     }
     
     
+    /**
+     * Sends an email notification to a subscriber when a reserved book is back in stock.
+     *
+     * @param subscriberName     The name of the subscriber.
+     * @param bookName           The name of the book that is back in stock.
+     * @param email              The subscriber's email address.
+     * @param reservationVoidDate The date until the reservation is valid.
+     */
     public static void sendEmailWhenAReservedBookIsBackInStock(String subscriberName, String bookName, String email, LocalDateTime reservationVoidDate) {
-    	// Build the message containing all books.
+        // Build the message containing all books.
         StringBuilder message = new StringBuilder();
         message.append("Dear ").append(subscriberName).append(",\n");
         message.append("The book: ").append(bookName).append(" you ordered is now back in stock!\n"); 
-        message.append("You have until: ").append(reservationVoidDate).append("to borrow the book.");
+        message.append("You have until: ").append(reservationVoidDate).append(" to borrow the book.");
         message.append("We are looking forward to your visit.\nSee you soon!");
 
         // Apply mail logic when deployed.
