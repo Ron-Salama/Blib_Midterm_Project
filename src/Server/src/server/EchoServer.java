@@ -135,6 +135,7 @@ public class EchoServer extends AbstractServer {
                 	break;
                 case "Reserve": //Handle Reservations
                 	handleReserveRequestCase(client, body);
+                	break;
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
                 	handleFetchBorrowRequestCase(client, body);
                     break;
@@ -296,14 +297,10 @@ public class EchoServer extends AbstractServer {
     }
 
     private void handleIPCase(ConnectionToClient client, String body) throws IOException   {
-    	String clientIP = body;
         String serverIP = InetAddress.getLocalHost().getHostAddress();
 
-        if (clientIP.equals(serverIP)) {
-            client.sendToClient("Client connected to IP: " + clientIP);
-        } else {
-            client.sendToClient("Could not connect to the server. The IP: " + clientIP + " does not match the IP of the server.");
-        }
+        client.sendToClient("Client connected to server with IP: " + serverIP);
+  
     }
     
     private void handleGetBooksCase(ConnectionToClient client, String body) throws IOException {

@@ -76,7 +76,7 @@ public class IPInputController extends BaseController {
         
         ClientUI.chat.accept("IP:" + ip);
 
-        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
+        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(1));
         pause.setOnFinished(e -> {
             if (!ClientUI.isIPValid) {
             	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");
@@ -85,9 +85,9 @@ public class IPInputController extends BaseController {
             } else {
             	String labelMessage = "Connected successfully to IP: " + ip;
             	showColoredLabelMessageOnGUI(awaitingLoginText, labelMessage, "-fx-text-fill: green;");
-                System.out.println("Connected successfully to IP: " + ip);
+                System.out.println(labelMessage);
 
-                PauseTransition pause1 = new PauseTransition(javafx.util.Duration.seconds(1));
+                PauseTransition pause1 = new PauseTransition(javafx.util.Duration.seconds(3));
                 pause1.setOnFinished(e1 -> openMainMenu(event));
                 pause1.play();
             }
