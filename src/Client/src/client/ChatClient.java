@@ -81,10 +81,11 @@ public class ChatClient extends AbstractClient
 	    System.out.println(response);
 
 	    // Dispatch handling based on message prefix
-	    if (response.startsWith("BorrowedBooks:")) {
+	    if (response.startsWith("Client connected to IP:")) {
+	    	handleServerConnectionIssue(true);
+	    }else if (response.startsWith("BorrowedBooks:")) {
 	        handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
-	    }
-	    else if (response.startsWith("subscriber_id:")) {
+	    } else if (response.startsWith("subscriber_id:")) {
 	        handleSubscriberData(response);
 	    }else if (response.startsWith("BorrowedBooks:")) {
             handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
@@ -99,8 +100,6 @@ public class ChatClient extends AbstractClient
 	        handleNonexistentID();
 	    } else if (response.startsWith("Could not connect to the server.")) {
 	        handleServerConnectionIssue(false);
-	    } else if (response.startsWith("Client connected to IP: ")) {
-	        handleServerConnectionIssue(true);
 	    } else if (response.startsWith("returnedBookData:")) {
 	        handleBookData(response.substring("returnedBookData:".length()));
 	    } else if (response.startsWith("BookInfo:")){
@@ -109,20 +108,15 @@ public class ChatClient extends AbstractClient
 	    	handleFetchedBorrowedBooks(response.substring("FetchedBorrowedBooks:".length()));
 	    }else if (response.startsWith("FetchedHistory:")){
 	    	processMyHistoryData(response.substring("FetchedHistory:".length()));
-	    }else if (response.startsWith("GetDate:")) {
-	    	// NOT IMPLEMENTED YET. TODO implement for borrowing books.
-	    	return;
 	    }else if (response.startsWith("FetchedRegisterRequests:")){
 	    	FetchedRegisterRequests(response.substring("FetchedRegisterRequests:".length()));
 	    }else if (response.startsWith("RegistrationSucceed:")) {
 	    	handleRegisterRequestSuccess();
   		}else if (response.startsWith("RegistrationFailed:")) {
 	    	handleRegisterRequestFailed();
-	    }
-	    else if (response.startsWith("FetchedReturnRequest:")) {
+	    }else if (response.startsWith("FetchedReturnRequest:")) {
 	    	handleReturnRequestSucess(response.substring("FetchedReturnRequest:".length()));
-	    }
-	    else if (response.startsWith("An error occurred while fetching the return request data:")) {
+	    }else if (response.startsWith("An error occurred while fetching the return request data:")) {
 	    	handleReturnRequestfailure();
 	    }
 	    else {
