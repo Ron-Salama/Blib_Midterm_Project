@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import client.ChatClient;
 import client.ClientUI;
@@ -262,17 +263,17 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 
 
  
-	// Method to introduce a delay of 0.5 seconds before fetching data
+	// Method waits for 0.5 seconds for asynchronous data fetch
     private void addDelay() {
         // Create a PauseTransition with a 0.5 second delay
-        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.5));
-        // Set the action to be executed after the pause
-        pause.setOnFinished(event -> {
-
-        });
-
-        // Start the pause transition
-        pause.play();
+    	try 
+    	{
+    		TimeUnit.MILLISECONDS.sleep(500);
+    	}
+    	catch (InterruptedException e)
+    	{
+    		// TODO
+    	}
     }
  // Method to autofill text fields based on the selected subscriber
     private void autofillSubscriberData() {

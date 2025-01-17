@@ -154,6 +154,7 @@ public abstract class BaseController {
         primaryStage.getIcons().add(icon);
    }
 
+   
 
 
 }
