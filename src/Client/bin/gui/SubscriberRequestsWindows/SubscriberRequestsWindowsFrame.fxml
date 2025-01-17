@@ -26,7 +26,7 @@
       <ComboBox fx:id="RequestCB" layoutX="182.0" layoutY="204.0" prefHeight="25.0" prefWidth="258.0" />
       <Label layoutX="84.0" layoutY="208.0" text="Request" />
       <Button id="btnExit" fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="Back" />
-      <Button fx:id="ScanBarcode" ellipsisString="Scan Barcode" layoutX="458.0" layoutY="165.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="106.0" text="Scan Barcode" />
+      <Button fx:id="ScanBarcode" ellipsisString="Scan Barcode" layoutX="458.0" layoutY="165.0" mnemonicParsing="false" onAction="#getScanBarcodeBtn" prefHeight="65.0" prefWidth="106.0" text="Scan Barcode" />
       <Button id="btnExit" fx:id="btnAccept" layoutX="71.0" layoutY="401.0" mnemonicParsing="false" onAction="#acceptRequest" prefHeight="75.0" prefWidth="493.0" text="Submit Request" />
       <DatePicker fx:id="datePicker" layoutX="411.0" layoutY="344.0" prefHeight="25.0" prefWidth="150.0" />
       <Label fx:id="LBL6" layoutX="412.0" layoutY="324.0" text="Request Type:" />

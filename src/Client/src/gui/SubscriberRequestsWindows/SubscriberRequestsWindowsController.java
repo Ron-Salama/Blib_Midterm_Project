@@ -41,7 +41,9 @@ import gui.SubscriberWindow.SubscriberWindowController;
 import gui.baseController.BaseController;
 
 public class SubscriberRequestsWindowsController extends BaseController implements Initializable {
-    private SubscriberRequestsWindowsController srwc;
+    
+    public static String[] borrowedBookInformationFromBarcode = null; // Using a Barcode the librarian can receive information about a borrowed book request.    
+    
     Librarian currentLibrarian = LibrarianController.currentLibrarian;
     
     @FXML
@@ -462,7 +464,10 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     }
     
     public void getScanBarcodeBtn(ActionEvent event) throws Exception {
-  
+    	openWindow(event,
+    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
+    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
+    			"Scan Barcode");
     }
     
     // Method to display messages (for debugging or logging)
