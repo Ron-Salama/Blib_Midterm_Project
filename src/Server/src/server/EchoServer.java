@@ -162,8 +162,14 @@ public class EchoServer extends AbstractServer {
                 case "UpdateCopiesOfBook":
                 	updateCopiesOfBook(client, body);
                 	break;
+                case "UpdateHistoryInDB":
+                	updateHistoryInDB(client,body);
+                	break;
                 case "Handle return":
                 	HandleBookReturn(client,body);
+                	break;
+                case "Handle register":
+                	HandleRegisterOfSubscriber(client, body);
                 	break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
@@ -263,7 +269,10 @@ public class EchoServer extends AbstractServer {
     	ConnectToDb.updateCopiesOfBook(dbConnection, body);
         client.sendToClient("Number of books updated");
     }
-    
+    private void updateHistoryInDB(ConnectionToClient client, String body) throws SQLException, IOException {
+    	ConnectToDb.updateHistoryInDB(dbConnection, body);
+        client.sendToClient("History ia updated");
+    }
     
     
     private void handleUpdateCase(ConnectionToClient client, String body) throws SQLException, IOException {
@@ -569,6 +578,23 @@ public class EchoServer extends AbstractServer {
             System.err.println("Error initializing log file: " + e.getMessage());
         }
     }
+    
+    
+    private void HandleRegisterOfSubscriber(ConnectionToClient client, String body) {
+    	System.out.println("First stop! you are in EchoServer");
+    	outputInOutputStreamAndLog("Received register request from client");
+        try {
+            String isRegisterSuccessfully = ConnectToDb.updateSubscriberDB(dbConnection, body);
+            if (isRegisterSuccessfully.equals("True")) {
+                client.sendToClient("Subsacriber registered successfully");
+            } else {
+                client.sendToClient("Error in registering subscriber");
+            }
+        } catch (Exception e) {
+            System.err.println("Error while processing register request: " + e.getMessage());   
+        }
+    }
+    
     
     private void HandleBookReturn(ConnectionToClient client, String body) {
         try {

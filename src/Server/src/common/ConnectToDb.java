@@ -155,6 +155,88 @@ public class ConnectToDb {
 
         return historyData;
     }
+    
+    
+    /**
+     * Registers a new subscriber in the database and inserts their ID into the detailed_subscription_history table.
+     *
+     * @param conn  Database connection object.
+     * @param body  Comma-separated string: "subscriberName,SubscriberID,PhoneNumber,Email".
+     * @return      "True" if both insertions are successful, "False" otherwise.
+     */
+    public static String updateSubscriberDB(Connection conn, String body) {
+        System.out.println("Starting subscriber registration.");
+        // Split the input body into parts
+        String[] details = body.split(",");
+
+        // Validate input format
+        if (details.length != 4) {
+            throw new IllegalArgumentException("Invalid input format. Expected: subscriberName,SubscriberID,PhoneNumber,Email");
+        }
+
+        // Extract subscriber details
+        String subscriberName = details[0].trim();
+        String subscriberId = details[1].trim();
+        String phoneNumber = details[2].trim();
+        String email = details[3].trim();
+        String status = "Not Frozen";  // Default status
+
+        // SQL query to check if subscriber ID exists in detailed_subscription_history
+        String checkHistorySql = "SELECT 1 FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
+
+        // SQL query to insert subscriber ID into detailed_subscription_history
+        String insertHistorySql = "INSERT INTO detailed_subscription_history (detailed_subscription_history, history) VALUES (?, ?)";
+
+        // SQL query to insert a new subscriber
+        String insertSubscriberSql = "INSERT INTO subscriber (subscriber_id, subscriber_name, detailed_subscription_history, subscriber_phone_number, subscriber_email, status) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement checkHistoryStmt = conn.prepareStatement(checkHistorySql)) {
+            // Check if the subscriber ID already exists in detailed_subscription_history
+            checkHistoryStmt.setString(1, subscriberId);
+            try (ResultSet rs = checkHistoryStmt.executeQuery()) {
+                if (!rs.next()) {
+                    // Insert subscriber ID into detailed_subscription_history only if it doesn't exist
+                    try (PreparedStatement insertHistoryStmt = conn.prepareStatement(insertHistorySql)) {
+                        insertHistoryStmt.setString(1, subscriberId);
+                        insertHistoryStmt.setString(2, ""); // Initialize history as empty
+
+                        insertHistoryStmt.executeUpdate();
+                        System.out.println("Subscriber ID inserted into detailed_subscription_history for ID: " + subscriberId);
+                    }
+                } else {
+                    System.out.println("Subscriber ID already exists in detailed_subscription_history: " + subscriberId);
+                }
+            }
+
+            // Insert subscriber details into subscriber table
+            try (PreparedStatement insertSubscriberStmt = conn.prepareStatement(insertSubscriberSql)) {
+                insertSubscriberStmt.setString(1, subscriberId);
+                insertSubscriberStmt.setString(2, subscriberName);
+                insertSubscriberStmt.setString(3, subscriberId);
+                insertSubscriberStmt.setString(4, phoneNumber);
+                insertSubscriberStmt.setString(5, email);
+                insertSubscriberStmt.setString(6, status);
+
+                int insertSubscriberRows = insertSubscriberStmt.executeUpdate();
+                if (insertSubscriberRows > 0) {
+                    System.out.println("New subscriber inserted successfully with ID: " + subscriberId);
+                    return "True";
+                } else {
+                    System.out.println("Failed to insert new subscriber with ID: " + subscriberId);
+                    return "False";
+                }
+            }
+        } catch (SQLException e) {
+            // Handle SQL errors
+            System.err.println("Error inserting subscriber data: " + e.getMessage());
+            return "False";
+        }
+    }
+
+
+
+
+
 
 
     
@@ -616,7 +698,9 @@ public class ConnectToDb {
             System.err.println("Error updating number of copies: " + e.getMessage());
             throw e;
         }
-
+        
+        
+        /*
         // Prepare the history message to be appended
         String checkSql1 = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
         String updateHistorySql = "UPDATE detailed_subscription_history SET history = ? WHERE detailed_subscription_history = ?";
@@ -656,11 +740,48 @@ public class ConnectToDb {
             // Handle exception for history update
             System.err.println("Error updating history: " + e.getMessage());
             throw e;
-        }
+        }*/
     }
 
 
+    
+    public static void updateHistoryInDB(Connection conn, String body) throws SQLException {
+        String[] details = body.split(","); // Assuming body is a comma-separated string
+        String checkSql = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
+        String updateHistorySql = "UPDATE detailed_subscription_history SET history = ? WHERE detailed_subscription_history = ?";
+        String sqlMessage = details[6].trim(); //contain the end of the message that saved in the history DB
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            checkStmt.setString(1, details[1].trim()); // details[1] is subscriberId
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    String existingHistory = rs.getString("history");
+                    if (existingHistory == null) {
+                        existingHistory = "";
+                    }
 
+                    String historyMessage = details[4] + "," + details[3] + "," + details[2] + "," + sqlMessage;
+                    String newHistory = existingHistory + historyMessage + ";";
+
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateHistorySql)) {
+                        updateStmt.setString(1, newHistory);
+                        updateStmt.setString(2, details[1].trim());
+
+                        int rowsAffected = updateStmt.executeUpdate();
+                        if (rowsAffected > 0) {
+                            System.out.println("History updated successfully for subscriber with ID " + details[1].trim());
+                        } else {
+                            System.out.println("Failed to update history for subscriber with ID " + details[1].trim());
+                        }
+                    }
+                } else {
+                    throw new SQLException("Subscriber with ID " + details[1].trim() + " not found in history.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating history: " + e.getMessage());
+            throw e;
+        }
+    }
 
 
     
