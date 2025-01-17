@@ -304,8 +304,8 @@ public class EchoServer extends AbstractServer {
             // Check if the client's provided IP matches the actual server IP
             if (body.equals(serverIP)) {
                 client.sendToClient("Client connected to IP:" + serverIP);
-         //   } else {
-               // client.sendToClient("Connection failed. The provided IP (" + body + ") does not match the server's IP (" + serverIP + ").");
+           } else {
+                client.sendToClient("Could not connect to the server.");
             }
         } catch (IOException e) {
             // Log and handle the exception for a failed response

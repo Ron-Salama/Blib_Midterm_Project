@@ -83,6 +83,8 @@ public class ChatClient extends AbstractClient
 	    // Dispatch handling based on message prefix
 	    if (response.startsWith("Client connected to IP:")) {
 	    	handleServerConnectionIssue(true);
+	    } else if (response.startsWith("Could not connect to the server.")) {
+	 	        handleServerConnectionIssue(false);
 	    }else if (response.startsWith("BorrowedBooks:")) {
 	        handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
 	    } else if (response.startsWith("subscriber_id:")) {
@@ -98,8 +100,6 @@ public class ChatClient extends AbstractClient
 	    } else if (response.equals("Librarian ID does not exist.") ||
 	 		   	response.equals("ID does not exist.")) {
 	        handleNonexistentID();
-	    } else if (response.startsWith("Could not connect to the server.")) {
-	        handleServerConnectionIssue(false);
 	    } else if (response.startsWith("returnedBookData:")) {
 	        handleBookData(response.substring("returnedBookData:".length()));
 	    } else if (response.startsWith("BookInfo:")){
