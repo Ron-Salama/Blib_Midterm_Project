@@ -1,6 +1,9 @@
 package gui.IPInputWindow;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.util.concurrent.TimeUnit;
+
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import client.ChatClient;
@@ -72,26 +75,22 @@ public class IPInputController extends BaseController {
             return;
         }
 
-        System.setProperty("server.ip", ip);
+        ClientUI.createChatConnection(ip);
+        
         ClientUI.chat.accept("IP:" + ip);
 
-        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
-        pause.setOnFinished(e -> {
-            if (!ClientUI.isIPValid) {
-            	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");
-                System.out.println("ALERT: Invalid IP detected!");
-               
-            } else {
-            	String labelMessage = "Connected successfully to IP: " + ip;
-            	showColoredLabelMessageOnGUI(awaitingLoginText, labelMessage, "-fx-text-fill: green;");
-                System.out.println("Connected successfully to IP: " + ip);
-
-                PauseTransition pause1 = new PauseTransition(javafx.util.Duration.seconds(1));
-                pause1.setOnFinished(e1 -> openMainMenu(event));
-                pause1.play();
-            }
-        });
-        pause.play();
+        //TimeUnit.SECONDS.sleep(6); // XXX Optimal time to allow the client to get the information from the server.
+    
+        if (!ClientUI.isIPValid) {
+        	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");
+            System.out.println("ALERT: Invalid IP detected!");
+        } else {
+        	String labelMessage = "Connected successfully to IP: " + ip;
+        	showColoredLabelMessageOnGUI(awaitingLoginText, labelMessage, "-fx-text-fill: green;");
+            System.out.println(labelMessage);
+            
+            openMainMenu(event);
+        }
     }
 
     /**
