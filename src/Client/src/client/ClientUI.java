@@ -1,5 +1,7 @@
 package client;
 
+import java.net.Inet4Address;
+
 import gui.IPInputWindow.IPInputController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -30,10 +32,13 @@ public class ClientUI extends Application {
         primaryStage.show();
         
         // Retrieve the IP from the system property (if any) or use a default IP
-        String ip = System.getProperty("server.ip");  // default to localhost if no property is set
+//        String ip = System.getProperty("server.ip");  // default to localhost if no property is set
         
-        // Initialize the client controller with the provided IP and default port
-        chat = new ClientController(ip, DEFAULT_PORT);
+       
+        
+//        // Initialize the client controller with the provided IP and default port
+//        System.out.println(ip);
+//        chat = new ClientController(ip, DEFAULT_PORT);
     }
     
     private void loadIcon(Stage primaryStage) {
@@ -45,4 +50,8 @@ public class ClientUI extends Application {
         // Set the icon for the primary stage.
         primaryStage.getIcons().add(icon);
    }
+    
+    public static void createChatConnection(String ip) {
+    	chat = new ClientController(ip, DEFAULT_PORT);
+    }
 }

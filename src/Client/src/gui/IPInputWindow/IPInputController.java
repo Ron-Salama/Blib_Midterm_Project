@@ -72,7 +72,8 @@ public class IPInputController extends BaseController {
             return;
         }
 
-        System.setProperty("server.ip", ip);
+        ClientUI.createChatConnection(ip);
+        
         ClientUI.chat.accept("IP:" + ip);
 
         PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
