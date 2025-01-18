@@ -251,7 +251,7 @@ public class ClientTimeDiffController {
      * @param startDateAsString the starting date as a string
      * @return {@code true} if at least one week has passed; otherwise, {@code false}
      */
-    public boolean hasWeekPassed(String startDateAsString) {
+    public boolean hasWeekPassedFromToday(String startDateAsString) {
         LocalDate startDate = LocalDate.parse(startDateAsString, getDateFormatter());
         LocalDate currentDate = LocalDate.now();
         return hasWeekPassed(startDate, currentDate);
