@@ -2,15 +2,14 @@ package gui.BarcodeScannerWindow;
 
 import client.ChatClient;
 import client.ClientUI;
+import gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController;
 import gui.baseController.BaseController;
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import logic.Subscriber;
 
 
 public class BarcodeScannerWindowController extends BaseController {
@@ -42,32 +41,43 @@ public class BarcodeScannerWindowController extends BaseController {
 	
 
     public void getBackBtn(ActionEvent event) throws Exception {
-        openWindow(event, 
-        		"/gui/SubscriberRequestsWindowsController/SubscriberRequestsWindowsFrame.fxml", 
-        		"/gui/SubscriberRequestsWindowsController/SubscriberRequestsWindowsFrame.css", 
+        SubscriberRequestsWindowsController.borrowInformationFromBarcode = false;
+    	openWindow(event, 
+        		"/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml", 
+        		"/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.css", 
                 "Subscriber Requests Window");
     }
 
 	
-    public void Send(ActionEvent event) throws Exception {
+    @SuppressWarnings("unlikely-arg-type")
+	public void Send(ActionEvent event) throws Exception {
         String borrowedBookID = getBorrowedBookID();
 
+        // Validate if the borrowedBookID is empty
         if (borrowedBookID.trim().isEmpty()) {
-        	showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "The ID of the back cannot be empty", "-fx-text-fill: red;");
-            return;
+            showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "The ID of the back cannot be empty", "-fx-text-fill: red;");
+            return; // Stop execution if the ID is empty
         }
         
         // Send a request to the DB to get the information of the borrowed book.
         ClientUI.chat.accept("FetchBorrowedBooksForBarcodeScanner:" + borrowedBookID);
         
-        // XXX
-        if (ChatClient.BorrowedBookInformationForBarcodeScanner == null) { // No information received.
-        	showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "No books found in the library with book ID: " + borrowedBookID, "-fx-text-fill: red;");
-        	return; 
-        }
-        
-        // Information received, now put it in the librarian requests window. // TODO: enter the data in the librarian window.
-        // my code ^^^^^ 
+        // Add a small delay for the server response (if needed).
+        addDelayInMilliseconds(2000); //XXX
 
+        // Check if no information was received for the borrowed book
+        if (ChatClient.BorrowedBookInformationForBarcodeScanner[0].equals("NoBooksFound")) { 
+            showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "No books found in the library with book ID: " + borrowedBookID, "-fx-text-fill: red;");
+            return; // Stop execution if no information is found
+        }
+
+        // If valid data is received, process and open the next window
+        SubscriberRequestsWindowsController.borrowedBookInformationFromBarcode = ChatClient.BorrowedBookInformationForBarcodeScanner;
+        
+        // Close this window and open the Subscriber Requests Window
+        openWindow(event, 
+            "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml", 
+            "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.css", 
+            "Subscriber Requests Window");
     }
 }

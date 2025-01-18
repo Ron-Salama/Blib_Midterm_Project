@@ -414,10 +414,8 @@ private void handleBorrowedBooksResponse(String data) {
 	
 	
 	private void handleBarcodeFetchBorrowedBookRequest(String data) {
-	    // Get the first request by this book ID.
-	    String borrowRequest = data.split(";")[1];
-
-	    BorrowedBookInformationForBarcodeScanner = borrowRequest.split(","); // Parse the request's information.
+		// TODO: Handle multiple books with the same id.
+	    BorrowedBookInformationForBarcodeScanner = data.split(":"); // Parse the request's information.
 	}
 	
 

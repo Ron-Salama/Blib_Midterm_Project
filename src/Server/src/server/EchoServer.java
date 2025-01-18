@@ -661,13 +661,12 @@ public class EchoServer extends AbstractServer {
 
     private void handleGetBorrowedBooksCaseForBarcodeScanner(ConnectionToClient client, String borrowedBookID) throws IOException {
         try {
-            List<String> borrowedBooks = ConnectToDb.fetchBorrowedBooksByBorrowedBookID(dbConnection, borrowedBookID);
+            String borrowedBook = ConnectToDb.fetchBorrowRequestGivenBorrowedBookID(dbConnection, borrowedBookID);
 
-            if (borrowedBooks.isEmpty()) {
+            if (borrowedBook.isEmpty()) {
                 client.sendToClient("BorrowedBooksForBarcodeScanner:NoBooksFound");
             } else {
-                String response = String.join(";", borrowedBooks); // Format list into a single string
-                client.sendToClient("BorrowedBooksForBarcodeScanner:" + response);
+                client.sendToClient("BorrowedBooksForBarcodeScanner:" + borrowedBook);
             }
         } catch (Exception e) {
             client.sendToClient("BorrowedBooksForBarcodeScanner:Error:" + e.getMessage());

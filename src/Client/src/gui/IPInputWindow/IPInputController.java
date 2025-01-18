@@ -79,7 +79,7 @@ public class IPInputController extends BaseController {
         
         ClientUI.chat.accept("IP:" + ip);
 
-        TimeUnit.SECONDS.sleep(6); // XXX Optimal time to allow the client to get the information from the server using zero-tier.
+        TimeUnit.SECONDS.sleep(2); // XXX Optimal time to allow the client to get the information from the server using zero-tier.
     
         if (!ClientUI.isIPValid) {
         	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");

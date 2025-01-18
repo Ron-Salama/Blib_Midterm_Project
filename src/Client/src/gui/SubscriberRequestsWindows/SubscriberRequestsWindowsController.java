@@ -36,6 +36,7 @@ import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
 import logic.Librarian;
 import logic.Subscriber;
+import gui.BarcodeScannerWindow.BarcodeScannerWindowController;
 import gui.LibrarianWindow.LibrarianController;
 import gui.MainMenu.MainMenuController;
 import gui.SubscriberWindow.SubscriberWindowController;
@@ -44,6 +45,7 @@ import gui.baseController.BaseController;
 public class SubscriberRequestsWindowsController extends BaseController implements Initializable {
     
     public static String[] borrowedBookInformationFromBarcode = null; // Using a Barcode the librarian can receive information about a borrowed book request.    
+    public static boolean borrowInformationFromBarcode = false;
     
     Librarian currentLibrarian = LibrarianController.currentLibrarian;
     
@@ -101,6 +103,25 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private List<String[]> RegisterRequests = new ArrayList<>();
     private List<String[]> ReturnRequests = new ArrayList<>();
     private String requestType = "";
+
+    
+    private String bookIDFromBarcode = null;
+    private String bookNameFromBarcode = null;
+    private String subscriberIDFromBarcode = null;
+    private String subscriberNameFromBarcode = null;
+    private String borrowDateFromBarcode = null;
+    private String returnDateFromBarcode = null;
+    
+//    if (borrowInformationFromBarcode) {
+//    	// Set the values given from the barcode scanner into the relavent fields. 
+//        bookIDFromBarcode = borrowedBookInformationFromBarcode[0];
+//		bookNameFromBarcode = borrowedBookInformationFromBarcode[1];
+//		subscriberIDFromBarcode = borrowedBookInformationFromBarcode[2];
+//		subscriberNameFromBarcode = borrowedBookInformationFromBarcode[3];
+//		borrowDateFromBarcode = borrowedBookInformationFromBarcode[4];
+//		returnDateFromBarcode = borrowedBookInformationFromBarcode[5];                  
+//    }
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -223,7 +244,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 requestType = "Borrow For Subscriber";
                 addDelayInMilliseconds(500); // Half a second delay.
                 handleFetchedBorrowedBooks();
-                
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
@@ -311,8 +331,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                         selectedRequests.add(request);
                     }
                 }
-            } else if ("Borrow For Subscriber".equals(selectedRequestType)) {
-                // Add borrow requests for the selected subscriber
+            } else if ("Borrow For Subscriber".equals(selectedRequestType)) {	
+            	// Add borrow requests for the selected subscriber
                 for (String[] request : borrowRequests) {
                     if (request[2].equals(selectedName)) {
                         selectedRequests.add(request);
@@ -479,6 +499,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     }
     
     public void getScanBarcodeBtn(ActionEvent event) throws Exception {
+    	borrowInformationFromBarcode = true;
     	openWindow(event,
     			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
     			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
