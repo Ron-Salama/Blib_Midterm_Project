@@ -41,7 +41,7 @@ public class SMSandEmailController extends BaseController {
             String[] bookData = parseBorrowedBook(borrowedBook);
             String subscriberID = bookData[1]; // Get subscriber ID for later use.
             String bookName = bookData[2]; // Grab the book's name.
-            String returnDate = bookData[5];
+            String returnDate = bookData[4];
 
             // Find books that need to be returned by tomorrow.
             if (clock.howMuchTimeLeftToReturnABook(returnDate) == 1) {
@@ -87,7 +87,7 @@ public class SMSandEmailController extends BaseController {
         message.append("We are looking forward to your visit.\nSee you soon!");
 
         // Apply email and SMS sending logic when deployed.
-        System.out.println(message.toString());
+        EchoServer.outputInOutputStreamAndLog(message.toString());
     }
     
     

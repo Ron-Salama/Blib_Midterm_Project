@@ -25,6 +25,7 @@ public class TaskScheduler {
 					e.printStackTrace();
 				}
             	
+            	
 				
             	// Notify in CMD and Log that the daily tasks finished running.
                 EchoServer.outputInOutputStreamAndLog("Server daily tasks done.");

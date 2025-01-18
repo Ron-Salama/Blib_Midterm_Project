@@ -58,6 +58,7 @@ public class ConnectToDb {
 
             return result; // Return all data as a list of strings
         }
+        
     // Method to return the book by removing it from the borrowed_books table
     public static String returnbook(Connection dbConnection, String subscriberId, String bookID) {
         String result = "Book return failed"; // Default return status
@@ -929,7 +930,6 @@ public class ConnectToDb {
                     String bookData = rs.getInt("borrow_id") + "," +
                     				  rs.getInt("subscriber_id") + "," +
                                       rs.getString("Name") + "," +
-                                      rs.getString("Subject") + "," +
                                       rs.getString("Borrowed_Time") + "," +
                                       rs.getString("Return_Time") + "," +
                                       rs.getString("ISBN");

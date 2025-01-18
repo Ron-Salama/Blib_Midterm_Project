@@ -19,10 +19,9 @@ public class FreezeController extends BaseController {
 		
 		for (String borrowedBook : borrowedBooksList) {
 			String[] bookData = parseBorrowedBook(borrowedBook);
-			LocalDateTime borrowDate = clock.convertStringToLocalDateTime(bookData[4]);
-			LocalDateTime returnDate = clock.convertStringToLocalDateTime(bookData[5]); 
+			LocalDateTime returnDate = clock.convertStringToLocalDateTime(bookData[4]); 
 			
-			if (clock.hasWeekPassed(borrowDate, returnDate)) {
+			if (clock.hasWeekPassed(returnDate, LocalDateTime.now())) {
 				int subscriberID = Integer.valueOf(bookData[1]); // Grab subscriber ID and convert it to integer.
 				String bookName = bookData[2];
 				
@@ -43,7 +42,7 @@ public class FreezeController extends BaseController {
 			String[] subscriberInformation = subscriber.split(", ");
 			String[] status = subscriberInformation[5].split(":");
 
-			if (!status.equals("Not Frozen")) { // subscriber is frozen.
+			if (!status[1].equals("Not Frozen")) { // subscriber is frozen.
 				int subscriberID = Integer.valueOf(subscriberInformation[0].split(":")[1]);  // Get the subscriber's ID.
 				String frozenAt = status[2]; // Grab the date in which the subscriber got frozen,
 				if (clock.hasMonthPassed(frozenAt)) { // Check if the subscriber is frozen for a month or more. if so, "unfreeze" him.

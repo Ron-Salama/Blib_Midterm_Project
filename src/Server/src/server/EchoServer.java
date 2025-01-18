@@ -43,14 +43,15 @@ public class EchoServer extends AbstractServer {
     protected void serverStarted() {
     	initializeLogFile();
     	
-    	taskScheduler = new TaskScheduler();
-        taskScheduler.startDailyTasks(); // Run the thread to update the DB daily.
 
         outputInOutputStreamAndLog("Server listening for connections on port " + getPort());
         try {
             dbConnection = ConnectToDb.getConnection(); // Open the connection
             taskSchedulerConnection = dbConnection;
             outputInOutputStreamAndLog("Connected to the database.");
+
+            taskScheduler = new TaskScheduler();
+            taskScheduler.startDailyTasks(); // Run the thread to update the DB daily.
         } catch (SQLException e) {
             System.err.println("Error connecting to the database: " + e.getMessage());
         }

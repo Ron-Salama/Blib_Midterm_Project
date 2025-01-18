@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import logic.ClientTimeDiffController;
 import logic.Librarian;
 
 public class LibrarianController extends BaseController implements Initializable  {
