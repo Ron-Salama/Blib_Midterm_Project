@@ -176,8 +176,6 @@ private void handleBorrowedBooksResponse(String data) {
 	    }
 	}
 
-
-
  
   private void handleBookInfo(String data) {
 	    try {
@@ -208,10 +206,6 @@ private void handleBorrowedBooksResponse(String data) {
 	        BorrowedBookInfo = null;
 	    }
 	}
-  
-  
-  
-  
   
 	private void handleSubscriberData(String response) {
 	    l1.setLibrarian_id(-1); // Reset librarian data
