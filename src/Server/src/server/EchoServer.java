@@ -156,6 +156,9 @@ public class EchoServer extends AbstractServer {
                 case "GetBorrowedBooks":
                     handleGetBorrowedBooksCase(client, body); // body contains the subscriber_id
                     break;
+                case "GetReservedBooks":
+                    handleGetReservedBooksCase(client, body); // body contains the subscriber_id
+                    break;
                 case "UpdateReturnDate":
                 	handleUpdateReturnDate(client, body); // body contians the borrowId
                 	break;
@@ -458,31 +461,25 @@ public class EchoServer extends AbstractServer {
         outputInOutputStreamAndLog("Received Reserve Request from client");
         String[] reserveParts = body.split(",");
 
-        if (reserveParts.length == 4) { 
+        if (reserveParts.length == 5) { 
             String subscriberId = reserveParts[0].trim();
-            String subscriberName = reserveParts[1].trim();
-            String reservedBookId = reserveParts[2].trim();
-            String bookName = reserveParts[3].trim();
+            String bookName = reserveParts[1].trim();
+            String reserveDate = reserveParts[2].trim();
+            String retrieveDate = reserveParts[3].trim();
+            String bookId = reserveParts[4].trim();
 
             try {
-                // All time-related fields are set to empty strings for reservation except for reserved time
-                String borrowDate = ""; // Leave empty if not used
-                String returnDate = ""; // Leave empty if not used
-                String extendTime = ""; // Leave empty if not used
-
                 // Send the data to insertRequest for reservation
-                ConnectToDb.insertRequest(dbConnection, 
-                                           "Reserve For Subscriber", // requestType
-                                           subscriberId,             // requestedByID
-                                           subscriberName,           // requestedByName
-                                           bookName,                 // bookName
-                                           reservedBookId,            // bookId
-                                           borrowDate,               // borrowDate (null for reservation)
-                                           returnDate,               // returnDate (null for reservation)
-                                           extendTime);              // extendTime (null for reservation)
+                ConnectToDb.insertReservedBook(dbConnection, 
+                                           subscriberId,             // subscriber_id
+                                           bookName,                 // name
+                                           reserveDate,            // reserve_time
+                                           retrieveDate,          // retrieve_time
+                                           bookId);              // ISBN
 
-                // Decrease available copies (if needed)
-                ConnectToDb.incrementReservedCopiesNum(dbConnection, reservedBookId);
+
+                // Decrease available copies
+                ConnectToDb.incrementReservedCopiesNum(dbConnection, bookId);
                 
                 client.sendToClient("Reservation successfully processed for book: " + bookName);
             } catch (Exception e) {
@@ -598,6 +595,34 @@ public class EchoServer extends AbstractServer {
             e.printStackTrace();
         }
     }
+    
+    
+    
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+    private void handleGetReservedBooksCase(ConnectionToClient client, String subscriberId) throws IOException {
+        try {
+            List<String> reservedBooks = ConnectToDb.fetchReservedBooksBySubscriberId(dbConnection, subscriberId);
+
+            if (reservedBooks.isEmpty()) {
+                client.sendToClient("ReservedBooks:NoBooksFound");
+            } else {
+                String response = String.join(";", reservedBooks); // Format list into a single string
+                client.sendToClient("ReservedBooks:" + response);
+            }
+        } catch (Exception e) {
+            client.sendToClient("ReservedBooks:Error:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
 
     
     private void handleFetchBorrowRequestCase(ConnectionToClient client, String body) throws IOException{

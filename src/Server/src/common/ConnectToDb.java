@@ -269,8 +269,46 @@ public class ConnectToDb {
         return borrowedBooks; // Return the list of borrowed books
     }
 
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+    
+    public static List<String> fetchReservedBooksBySubscriberId(Connection conn, String subscriberId) {
+        String query = "SELECT * FROM blib.reserved_books WHERE subscriber_id = ?";
 
+        List<String> reservedBooks = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, subscriberId); // Set the subscriber_id parameter
 
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    // Combine fields into a single delimited string for sending to the client
+                    String bookData = rs.getInt("reserve_id") + "," +
+                    				  rs.getInt("subscriber_id") + "," +
+                                      rs.getString("name") + "," +
+                                      rs.getString("reserve_time") + "," +
+                                      rs.getString("retrieve_time") + "," +
+                                      rs.getString("ISBN");
+                    reservedBooks.add(bookData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching borrowed books: " + e.getMessage());
+        }
+
+        return reservedBooks; // Return the list of reserved books
+    }
+
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+  //************************************************************************************
+    
     
     public static boolean checkIfIdExists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
@@ -444,6 +482,58 @@ public class ConnectToDb {
         }
     }
 }
+    
+    
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+
+    public static void insertReservedBook(Connection conn, String subscriber_id,
+            String bookName, String reserveTime, String retrieveTime, String BookId)
+            throws SQLException {
+
+    // SQL query to insert a new record into the reserved_books table without reserveId
+    String query = "INSERT INTO reserved_books (subscriber_id, name, reserve_time, retrieve_time, ISBN) "
+                 + "VALUES (?, ?, ?, ?, ?)";
+
+    try (PreparedStatement pstmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        // Set the values for each field in the query
+        pstmt.setString(1, subscriber_id);
+        pstmt.setString(2, bookName);
+        pstmt.setString(3, reserveTime);
+        pstmt.setString(4, retrieveTime);
+        pstmt.setString(5, BookId);
+
+        // Execute the insert and get the number of affected rows
+        int affectedRows = pstmt.executeUpdate();
+
+        // Debugging: Check if rows were inserted
+        if (affectedRows > 0) {
+            // Retrieve the generated reserve_id
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int reserveId = generatedKeys.getInt(1); // The generated reserve_id
+                    System.out.println("Insert successful, generated reserveId: " + reserveId);
+                } else {
+                    System.out.println("Insert failed: No generated keys returned.");
+                }
+            }
+        } else {
+            System.out.println("Insert failed: No rows inserted.");
+        }
+    }
+}
+
+    
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
     public static String fetchBorrowRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
 
@@ -659,6 +749,10 @@ public class ConnectToDb {
             }
         }
     }
+    
+    
+    
+   //
 
     /*
     public static void updateCopiesOfBook(Connection conn, String body) throws SQLException {

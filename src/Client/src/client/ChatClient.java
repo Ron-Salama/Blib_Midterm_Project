@@ -5,6 +5,7 @@ import client.*;
 import common.ChatIF;
 import logic.Book;
 import logic.BorrowedBook;
+import logic.ReservedBook;
 import logic.Subscriber;
 import logic.Librarian;
 import javafx.animation.PauseTransition;
@@ -34,6 +35,7 @@ public class ChatClient extends AbstractClient
    */
   ChatIF clientUI; 
   public static List<BorrowedBook> borrowedBookList = new ArrayList<>(); // List to hold borrowed books
+  public static List<ReservedBook> reservedBookList = new ArrayList<>(); // List to hold borrowed books
   public static Subscriber s1 = new Subscriber(0, 0, null, null, null, null);
   public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
@@ -93,6 +95,16 @@ public class ChatClient extends AbstractClient
 	        handleSubscriberData(response);
 	    }else if (response.startsWith("BorrowedBooks:")) {
             handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
+          //***************************************************************************
+          //***************************************************************************
+          //***************************************************************************
+          //***************************************************************************
+	    }else if (response.startsWith("ReservedBooks:")) {
+            handleReservedBooksResponse(response.substring("ReservedBooks:".length()));
+            //***************************************************************************
+            //***************************************************************************
+            //***************************************************************************
+            //***************************************************************************
         }else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
 	    }else if (response.startsWith("Subscriber updated successfully.")) {
@@ -176,8 +188,40 @@ private void handleBorrowedBooksResponse(String data) {
 	    }
 	}
 
-
-
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+private void handleReservedBooksResponse(String data) {
+    if (data.equals("NoBooksFound")) {
+        System.out.println("No Reserved books found.");
+        ChatClient.reservedBookList.clear();
+    } else if (data.startsWith("Error")) {
+        System.out.println("Error fetching Reserved books: " + data);
+    } else {
+        String[] bookStrings = data.split(";"); // Split rows
+        ChatClient.reservedBookList.clear();
+        for (String bookData : bookStrings) {
+            String[] fields = bookData.split(","); // Split fields
+            int reserveId = Integer.parseInt(fields[0]);
+            int subscriberId = Integer.parseInt(fields[1]);
+            String name = fields[2];
+            String reserveTime = fields[3]; // Assuming numeric
+            String retrieveTime = fields[4];   // Assuming numeric
+            String ISBN = fields[5];
+            
+            ChatClient.reservedBookList.add(new ReservedBook(reserveId, subscriberId, name, reserveTime, retrieveTime, ISBN));
+        }
+    }
+}
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
  
   private void handleBookInfo(String data) {
 	    try {
