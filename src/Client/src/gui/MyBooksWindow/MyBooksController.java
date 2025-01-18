@@ -95,74 +95,82 @@ public class MyBooksController extends BaseController implements Initializable {
     public static int librarianViewing=-1;
     public static Boolean viewing=false;
     @Override
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    	
         // Initialize TableView columns
         tableID.setCellValueFactory(new PropertyValueFactory<>("ISBN")); // ISBN column
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
         tableBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate")); // Borrow Date column
         tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate")); // Return Date column
         tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
-        
 
-        if(viewing) {
-        	tableView.getItems().clear();
-        	title.setText("waiting for librarian input");
-        	btnView.setVisible(true);
-        	TXTFview.setVisible(true);
-        	LBLview.setVisible(true);
-        	currentSub = new Subscriber (0,0,null,null,null,null);
-        }else {
-        	currentSub = SubscriberWindowController.currentSubscriber;
-        	title.setText("My Books");
-        	btnView.setVisible(false);
-        	TXTFview.setVisible(false);
-        	LBLview.setVisible(false);
+        if (viewing) {
+            currentSub = new Subscriber(0, 0, null, null, null, null);
+            tableView.getItems().clear();
+            title.setText("waiting for librarian input");
+            btnView.setVisible(true);
+            TXTFview.setVisible(true);
+            LBLview.setVisible(true);
+
+        } else {
+            currentSub = SubscriberWindowController.currentSubscriber;
+            title.setText("My Books");
+            btnView.setVisible(false);
+            TXTFview.setVisible(false);
+            LBLview.setVisible(false);
+            try {
+				loadBooks();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
-        loadBooks();
-        setupActionsColumn();
-        tableView.getItems().clear();
-        try {
-			addDelayInMilliseconds(1000); // one second delay.
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
+        // Set up the actions column
+        setupActionsColumn();
+        tableView.getItems().clear(); // Clear any items before populating the table
     }
 
 
     
-    private void loadBooks() {
-        new Thread(() -> {
+    private void loadBooks() throws InterruptedException {
+
             ClientUI.chat.accept("GetBorrowedBooks:" + currentSub.getSubscriber_id());
-            Platform.runLater(() -> {
+        	addDelayInMilliseconds(100);
                 if (ChatClient.borrowedBookList != null && !ChatClient.borrowedBookList.isEmpty()) {
                     tableView.getItems().clear();
                     tableView.getItems().addAll(ChatClient.borrowedBookList);
                 } else {
                     System.out.println("No borrowed books to display.");
+                    tableView.getItems().clear();
                 }
-            });
-        }).start();
+
     }
     
     
 
 
     public void updateView(ActionEvent event) throws InterruptedException {
-    	String subID = TXTFview.getText();
-    	ClientUI.chat.accept("Fetch:"+subID);
-    	
-    	currentSub = new Subscriber(
-    	        ChatClient.s1.getSubscriber_id(),
-    	        ChatClient.s1.getDetailed_subscription_history(),
-    	        ChatClient.s1.getSubscriber_name(),
-    	        ChatClient.s1.getSubscriber_phone_number(),
-    	        ChatClient.s1.getSubscriber_email(),
-    	        ChatClient.s1.getStatus()
-    	    );
-    	title.setText("Now Viewing Subscriber: "+currentSub.getSubscriber_id()+" , "+currentSub.getSubscriber_name());
-    	addDelayInMilliseconds(1000); // One second delay.
+
+    		String subID = TXTFview.getText();
+        	ClientUI.chat.accept("Fetch:"+subID);
+        	addDelayInMilliseconds(100);
+            currentSub = new Subscriber(
+            	  ChatClient.s1.getSubscriber_id(),
+            	  ChatClient.s1.getDetailed_subscription_history(),
+            	  ChatClient.s1.getSubscriber_name(),
+            	  ChatClient.s1.getSubscriber_phone_number(),
+            	  ChatClient.s1.getSubscriber_email(),
+            	  ChatClient.s1.getStatus()
+            );
+            addDelayInMilliseconds(100);
+            if(currentSub.getSubscriber_id() == -1) {
+            	title.setText("No ID Found");
+            }else {
+            	title.setText("Now Viewing Subscriber: "+currentSub.getSubscriber_id()+" , "+currentSub.getSubscriber_name());
+            }
+            
+    	loadBooks();
     }
 
         // after TODO is done and subscriber's book are in DB we fetch them here into the table.
@@ -214,12 +222,22 @@ public class MyBooksController extends BaseController implements Initializable {
                     			ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
 	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
 	                    		tableView.getItems().clear();
-	                    		loadBooks();
+	                    		try {
+									loadBooks();
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
                     		}else {
 	                    		ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
 	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
 	                    		tableView.getItems().clear();
-	                    		loadBooks();
+	                    		try {
+									loadBooks();
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
                     		}
                     	}else {
                     		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied!", "-fx-text-fill: red;");
