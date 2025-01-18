@@ -51,13 +51,15 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     
     @FXML
     private Button btnExit = null;
+    @FXML
+    private Button btnAccept = null;
 
     @FXML
     private Button btnSend = null;
     @FXML
     private Button btnBack = null;
     @FXML
-    private Button btnScanBarcode = null;
+    private Button ScanBarcode = null;
     @FXML
     private ToggleButton Clear = null;
     @FXML
@@ -124,7 +126,14 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    	if (borrowInformationFromBarcode) {
+    		ScanBarcode.setVisible(true);
+    		BorrowForSubscriber.setSelected(true);
+    		Clear.setSelected(false);
+    	}else {
+    		ScanBarcode.setVisible(false);
+    		Clear.setSelected(true);
+    	}
         RequestedByCB.getItems().add("");
         RequestCB.getItems().add("");
         RequestedByCB.setOnAction(event -> autofillSubscriberData());
@@ -161,12 +170,13 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 				e.printStackTrace();
 			}
 		});
-        Clear.setSelected(true);
+        
     }
 
 	
 
     public void Clear() throws InterruptedException {
+    	ScanBarcode.setVisible(false);
     	updateLabels("Clear");
         deselectOtherButtons(Clear);
         requestType="Clear";
@@ -175,8 +185,10 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         LBL6.setVisible(false);
         Clear.setSelected(true);
         datePicker.setValue(null);
+        
     }
     public void Register() throws InterruptedException {
+    	ScanBarcode.setVisible(false);
     	updateLabels("Registers");
         deselectOtherButtons(Register);
         requestType="Registers";
@@ -187,6 +199,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         datePicker.setValue(null);
     }
     public void BorrowForSubscriber() throws InterruptedException {
+    	ScanBarcode.setVisible(true);
     	updateLabels("Borrow For Subscriber");
         deselectOtherButtons(BorrowForSubscriber);
         requestType="Borrow For Subscriber";
@@ -197,6 +210,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         datePicker.setValue(null);
     }
     public void ReturnForSubscriber() throws InterruptedException {
+    	ScanBarcode.setVisible(false);
     	updateLabels("Return For Subscriber");
         deselectOtherButtons(ReturnForSubscriber);
         requestType="Return For Subscriber";
@@ -240,10 +254,19 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
                 LBL6.setText("Expected Return");
-                ClientUI.chat.accept("FetchBorrowRequest:");
-                requestType = "Borrow For Subscriber";
-                addDelayInMilliseconds(500); // Half a second delay.
-                handleFetchedBorrowedBooks();
+                if (borrowInformationFromBarcode) {
+	                bookIDFromBarcode = borrowedBookInformationFromBarcode[0];
+	        		bookNameFromBarcode = borrowedBookInformationFromBarcode[1];
+	        		subscriberIDFromBarcode = borrowedBookInformationFromBarcode[2];
+	        		subscriberNameFromBarcode = borrowedBookInformationFromBarcode[3];
+	        		borrowDateFromBarcode = borrowedBookInformationFromBarcode[4];
+	        		returnDateFromBarcode = borrowedBookInformationFromBarcode[5];                  
+                }else {
+	                ClientUI.chat.accept("FetchBorrowRequest:");
+	                requestType = "Borrow For Subscriber";
+	                addDelayInMilliseconds(500); // Half a second delay.
+	                handleFetchedBorrowedBooks();
+                }
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
