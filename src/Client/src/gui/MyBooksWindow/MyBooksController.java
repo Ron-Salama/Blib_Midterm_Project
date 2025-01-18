@@ -119,6 +119,7 @@ public class MyBooksController extends BaseController implements Initializable {
         	TXTFview.setVisible(false);
         	LBLview.setVisible(false);
         }
+        loadBooks();
         setupActionsColumn();
         tableView.getItems().clear();
         try {
