@@ -24,7 +24,7 @@ import ocsf.server.ConnectionToClient;
 public class EchoServer extends AbstractServer {
     // Class variables *************************************************
     final public static int DEFAULT_PORT = 5555;
-    public static Connection taskSchedulerConnection; // Used to send SQL statements each day.
+    public static Connection taskSchedulerConnection; // Used to send SQL statements each day, used ONLY by the taskScheduler.
     
     public static ServerTimeDiffController clock = new ServerTimeDiffController();
     
@@ -168,6 +168,9 @@ public class EchoServer extends AbstractServer {
                 	break;
                 case "Handle return":
                 	HandleBookReturn(client,body);
+                	break;
+                case "FetchBorrowedBooksForBarcodeScanner":
+                	handleGetBorrowedBooksCaseForBarcodeScanner(client, body);
                 	break;
                 case "Handle register":
                 	HandleRegisterOfSubscriber(client, body);
@@ -656,7 +659,21 @@ public class EchoServer extends AbstractServer {
 
     }
 
+    private void handleGetBorrowedBooksCaseForBarcodeScanner(ConnectionToClient client, String borrowedBookID) throws IOException {
+        try {
+            List<String> borrowedBooks = ConnectToDb.fetchBorrowedBooksByBorrowedBookID(dbConnection, borrowedBookID);
 
+            if (borrowedBooks.isEmpty()) {
+                client.sendToClient("BorrowedBooksForBarcodeScanner:NoBooksFound");
+            } else {
+                String response = String.join(";", borrowedBooks); // Format list into a single string
+                client.sendToClient("BorrowedBooksForBarcodeScanner:" + response);
+            }
+        } catch (Exception e) {
+            client.sendToClient("BorrowedBooksForBarcodeScanner:Error:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
 
     private boolean isOpen(ConnectionToClient client) {

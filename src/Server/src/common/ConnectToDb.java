@@ -924,5 +924,32 @@ public class ConnectToDb {
             pstmt.executeUpdate(); // Run the statement.
         }
     }
+    
+    public static List<String> fetchBorrowedBooksByBorrowedBookID(Connection conn, String borrowedBookID) {
+        String query = "SELECT * FROM blib.borrowed_books WHERE ISBN = ?";
+
+        List<String> borrowedBooks = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, borrowedBookID); // Set the subscriber_id parameter
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    // Combine fields into a single delimited string for sending to the client
+                    String bookData = rs.getInt("borrow_id") + "," +
+                    				  rs.getInt("subscriber_id") + "," +
+                                      rs.getString("Name") + "," +
+                                      rs.getString("Subject") + "," +
+                                      rs.getString("Borrowed_Time") + "," +
+                                      rs.getString("Return_Time") + "," +
+                                      rs.getString("ISBN");
+                    borrowedBooks.add(bookData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching borrowed books: " + e.getMessage());
+        }
+
+        return borrowedBooks; // Return the list of borrowed books
+    }
     	
 }

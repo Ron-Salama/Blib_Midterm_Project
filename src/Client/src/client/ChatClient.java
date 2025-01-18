@@ -39,9 +39,11 @@ public class ChatClient extends AbstractClient
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
   public static List<String[][]> br = new ArrayList<>(); 
   public static String[] BorrowedBookInfo;
+  public static String[] BorrowedBookInformationForBarcodeScanner;
   public static ArrayList<String> myHistoryInfo = new ArrayList<String>(); 
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
+  
   
   public static boolean isIDInDataBase;
   // Constructors ****************************************************
@@ -119,8 +121,8 @@ public class ChatClient extends AbstractClient
 	    }else if (response.startsWith("An error occurred while fetching the return request data:")) {
 	    	handleReturnRequestfailure();
 	    }
-	    else {
-	    	
+	    else if (response.startsWith("BorrowedBooksForBarcodeScanner:")){
+	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
 	    }
 	}
   
@@ -411,6 +413,12 @@ private void handleBorrowedBooksResponse(String data) {
   }
 	
 	
+	private void handleBarcodeFetchBorrowedBookRequest(String data) {
+	    // Get the first request by this book ID.
+	    String borrowRequest = data.split(";")[1];
+
+	    BorrowedBookInformationForBarcodeScanner = borrowRequest.split(","); // Parse the request's information.
+	}
 	
 
 	private String extractValue(String part) {
