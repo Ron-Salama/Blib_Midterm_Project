@@ -97,6 +97,20 @@ public class EchoServer extends AbstractServer {
             System.err.println("Error sending connection message to client: " + e.getMessage());
         }
     }
+    @Override
+    public void clientDisconnected(ConnectionToClient client) {
+        // Display client disconnection details
+        String clientIP = client.getInetAddress().getHostAddress();
+        String clientHost = client.getInetAddress().getHostName();
+        String connectionStatus = "Disconnected";
+
+        String IPMessage = "Client disconnected.\n"
+                + "Client IP: " + clientIP + "\n"
+                + "Client Hostname: " + clientHost + "\n"
+                + "Connection Status: " + connectionStatus;
+
+        outputInOutputStreamAndLog(IPMessage);
+    }
 
     public void handleMessageFromClient(Object msg, ConnectionToClient client) {
         outputInOutputStreamAndLog("Message received: " + msg + " from " + client);
