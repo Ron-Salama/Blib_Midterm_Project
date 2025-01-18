@@ -136,15 +136,27 @@ public class MyBooksController extends BaseController implements Initializable {
     private void loadBooks() throws InterruptedException {
 
             ClientUI.chat.accept("GetBorrowedBooks:" + currentSub.getSubscriber_id());
-        	addDelayInMilliseconds(100);
-                if (ChatClient.borrowedBookList != null && !ChatClient.borrowedBookList.isEmpty()) {
+            if(viewing) {
+            	addDelayInMilliseconds(100);
+            	if (ChatClient.borrowedBookList != null && !ChatClient.borrowedBookList.isEmpty()) {
                     tableView.getItems().clear();
                     tableView.getItems().addAll(ChatClient.borrowedBookList);
                 } else {
                     System.out.println("No borrowed books to display.");
                     tableView.getItems().clear();
                 }
+            }else {
+                Platform.runLater(() -> {
+                	if (ChatClient.borrowedBookList != null && !ChatClient.borrowedBookList.isEmpty()) {
+                        tableView.getItems().clear();
+                        tableView.getItems().addAll(ChatClient.borrowedBookList);
+                    } else {
+                        System.out.println("No borrowed books to display.");
+                        tableView.getItems().clear();
+                    }
+                });
 
+            }  
     }
     
     
