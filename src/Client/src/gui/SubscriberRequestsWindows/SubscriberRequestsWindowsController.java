@@ -524,7 +524,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String Rtime =  convertDateFormat(""+datePicker.getValue()); 
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
-            ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
+           // ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
