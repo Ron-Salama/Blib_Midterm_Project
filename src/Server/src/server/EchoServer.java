@@ -363,7 +363,9 @@ public class EchoServer extends AbstractServer {
         client.sendToClient("Number of books updated");
     }*/
     private void updateHistoryInDB(ConnectionToClient client, String body) throws SQLException, IOException {
+    	System.out.println("Received message on server: " + body);
     	ConnectToDb.updateHistoryInDB(dbConnection, body);
+    	
         client.sendToClient("History is updated");
     }
     

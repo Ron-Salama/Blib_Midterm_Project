@@ -93,6 +93,7 @@ public class MyBooksController extends BaseController implements Initializable {
      */
     public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
     public static int librarianViewing=-1;
+    public static String LibrarianName;
     public static Boolean viewing=false;
     @Override
 
@@ -225,14 +226,22 @@ public class MyBooksController extends BaseController implements Initializable {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                     	ClientTimeDiffController clock = new ClientTimeDiffController();
                     	String extendedReturnDate;
+                    	String ignore = "ignore";
+                    	String librarianMessage= ",Extended Successfully by Librarian " + librarianViewing + ":" + LibrarianName;
+                    	String body = currentSub.getSubscriber_name() + "," +
+                                currentSub.getSubscriber_id() + "," +
+                                borrowedBook.getName() + "," +
+                                borrowedBook.getBorrowId() + "," +
+                                borrowedBook.getBorrowDate() + "," +ignore;
                     	ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
-                    	
+                                
                     	
                     		if(viewing) {
                     			if(!(ChatClient.isBookReservedFlag)) {
                             		if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) { // add condition - AND book is not reserved - we check if book reserved in DB.
                                     	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                                 		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
+                                        ClientUI.chat.accept("UpdateHistoryInDB:"+body+librarianMessage);
                                 		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
                                 		tableView.refresh();
                                 	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
@@ -256,6 +265,7 @@ public class MyBooksController extends BaseController implements Initializable {
                             		if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) { // add condition - AND book is not reserved - we check if book reserved in DB.
                                     	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                                 		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
+                                        ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Extended Successfully");
                                 		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
                                 		tableView.refresh();
                                 	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
