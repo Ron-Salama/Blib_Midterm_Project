@@ -256,7 +256,6 @@ public class ConnectToDb {
                     String bookData = rs.getInt("borrow_id") + "," +
                     				  rs.getInt("subscriber_id") + "," +
                                       rs.getString("Name") + "," +
-                                      rs.getString("Subject") + "," +
                                       rs.getString("Borrowed_Time") + "," +
                                       rs.getString("Return_Time") + "," +
                                       rs.getString("ISBN");
@@ -486,7 +485,7 @@ public class ConnectToDb {
     
     public static void decreaseNumCopies(Connection conn, String bookId) throws SQLException {
         // SQL query to decrease NumCopies by 1 for the given bookId
-        String query = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ? AND NumCopies > 0";
+        String query = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ? AND NumCopies > 0";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             // Set the bookId parameter
@@ -499,10 +498,11 @@ public class ConnectToDb {
             if (affectedRows == 0) {
                 System.out.println("No copies available or invalid bookId: " + bookId);
             } else {
-                System.out.println("Successfully decreased NumCopies for bookId: " + bookId);
+                System.out.println("Successfully decreased AvailableCopiesNum for bookId: " + bookId);
             }
         }
     }
+    
     
     
     
@@ -621,7 +621,7 @@ public class ConnectToDb {
     }
     
     
-    public static void insertBorrowBook(Connection conn, String body) throws SQLException {
+    public static boolean insertBorrowBook(Connection conn, String body) throws SQLException {
         // Split the body string by commas
         String[] parts = body.split(",");
         
@@ -635,17 +635,16 @@ public class ConnectToDb {
         String Rtime = parts.length > 4 ? parts[5] : "temp"; // Borrow Time
         
         // SQL query to insert a new record into the borrowed_books table
-        String query = "INSERT INTO borrowed_books (ISBN, subscriber_id, Name, Subject, Borrowed_Time, Return_Time) "
-                     + "VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO borrowed_books (ISBN, subscriber_id, Name, Borrowed_Time, Return_Time) "
+                     + "VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             // Set the values for each field in the query
             pstmt.setString(1, ISBN); // ISBN
             pstmt.setInt(2, SID); // subscriber_id
             pstmt.setString(3, BName); // Book Name
-            pstmt.setString(4, "temp"); // Subject (since it's not provided, use "temp")
-            pstmt.setString(5, Btime); // Borrow Time
-            pstmt.setString(6, Rtime); // Return Time 
+            pstmt.setString(4, Btime); // Borrow Time
+            pstmt.setString(5, Rtime); // Return Time 
 
             // Execute the insert and get the number of affected rows
             int affectedRows = pstmt.executeUpdate();
@@ -653,37 +652,39 @@ public class ConnectToDb {
             // Debugging: Check if rows were inserted
             if (affectedRows > 0) {
                 System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
+                return true;
             } else {
                 System.out.println("Insert failed: No rows inserted.");
+                return false;
             }
         }
     }
 
-    
+    /*
     public static void updateCopiesOfBook(Connection conn, String body) throws SQLException {
         // Split the 'body' string to extract necessary information
         String[] details = body.split(","); // assuming ',' is the delimiter
 
         // Extract the bookId (ISBN) from the array
         String bookId = details[3].trim(); // The bookId is at index 3 in this case
-        String checkSql = "SELECT NumCopies FROM books WHERE ISBN = ?";
-        String updateSql = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ?";
+        String checkSql = "SELECT AvailableCopiesNum FROM books WHERE ISBN = ?";
+        String updateSql = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ?";
 
         try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
             // Check if the book exists and has more than 0 copies
             checkStmt.setString(1, bookId);
             try (ResultSet rs = checkStmt.executeQuery()) {
                 if (rs.next()) {
-                    int numCopies = rs.getInt("NumCopies");
-                    if (numCopies > 0) {
+                    int AvailableCopiesNum = rs.getInt("AvailableCopiesNum");
+                    if (AvailableCopiesNum > 0) {
                         // Proceed to update NumCopies
                         try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
                             updateStmt.setString(1, bookId);
                             int rowsAffected = updateStmt.executeUpdate();
                             if (rowsAffected > 0) {
-                                System.out.println("Number of copies for the book with ISBN " + bookId + " updated successfully.");
+                                System.out.println("Number of AvailableCopies for the book with ISBN " + bookId + " updated successfully.");
                             } else {
-                                System.out.println("Failed to update the number of copies for the book.");
+                                System.out.println("Failed to update the number of AvailableCopies for the book.");
                             }
                         }
                     } else {
@@ -741,7 +742,6 @@ public class ConnectToDb {
             System.err.println("Error updating history: " + e.getMessage());
             throw e;
         }*/
-    }
 
 
     
@@ -825,22 +825,24 @@ public class ConnectToDb {
 
         return result.toString();
     }
-    public static boolean deleteRequest(Connection dbConnection, String subscriberId, String bookID) {
-    	System.out.println("delete requst Subscriber id:"+subscriberId+"book id:"+bookID);
+    public static boolean deleteRequest(Connection dbConnection, String requestType, String subscriberId, String bookID) {
+        System.out.println("delete request: Type: " + requestType + ", Subscriber id: " + subscriberId + ", book id: " + bookID);
         try (PreparedStatement stmt = dbConnection.prepareStatement(
-                "DELETE FROM requests WHERE requestType = 'Return For Subscriber' AND requestedByID = ? AND bookId = ?")) {
-            stmt.setString(1, subscriberId);
-            stmt.setString(2, bookID);
+                "DELETE FROM requests WHERE requestType = ? AND requestedByID = ? AND bookId = ?")) {
+            stmt.setString(1, requestType);
+            stmt.setString(2, subscriberId);
+            stmt.setString(3, bookID);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
     public static boolean incrementBookCount(Connection dbConnection, String bookID) {
     	System.out.println("book id for increment"+bookID);
         try (PreparedStatement stmt = dbConnection.prepareStatement(
-                "UPDATE books SET NumCopies = NumCopies + 1 WHERE ISBN = ?")) {
+                "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum + 1 WHERE ISBN = ?")) {
             stmt.setString(1, bookID);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {

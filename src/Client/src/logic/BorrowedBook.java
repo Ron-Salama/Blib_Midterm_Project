@@ -36,11 +36,10 @@ public class BorrowedBook {
      * @param subject the subject or category of the book
      * @param timeLeftToReturn the time left to return the book, in days
      */
-    public BorrowedBook(int borrowId, int subscriberId, String name, String subject, String borrowDate, String returnDate, String ISBN) {
+    public BorrowedBook(int borrowId, int subscriberId, String name, String borrowDate, String returnDate, String ISBN) {
         this.borrowId = borrowId;
         this.subscriberId = subscriberId;
         this.name = name;
-        this.subject = subject;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
         this.ISBN = ISBN;
@@ -67,14 +66,6 @@ public class BorrowedBook {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
     }
     
     public void setReturnDate(String returnDate) {
@@ -103,6 +94,6 @@ public class BorrowedBook {
 
     @Override
     public String toString() {
-        return  ISBN+" "+name+" "+subject+" "+timeLeftToReturn;
+        return  ISBN+" "+name+" "+borrowDate+" "+returnDate+" "+timeLeftToReturn;
     }
 }

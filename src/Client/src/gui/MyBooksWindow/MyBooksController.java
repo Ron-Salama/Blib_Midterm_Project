@@ -229,8 +229,8 @@ public class MyBooksController extends BaseController implements Initializable {
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                         System.out.println("Return book: " + borrowedBook.getName());
-                        ClientUI.chat.accept("Return request: Subscriber ID is "+currentSub.getSubscriber_id()+" "+currentSub.getSubscriber_name()+" Borrow info: "+borrowedBook);
-                        ClientUI.chat.accept("Return Book: Subscriber ID is"+currentSub.getSubscriber_id()+" Book info is:"+borrowedBook);
+                        ClientUI.chat.accept("Return request: Subscriber ID is:"+currentSub.getSubscriber_id()+" "+currentSub.getSubscriber_name()+" Borrow info: "+borrowedBook);
+                        //ClientUI.chat.accept("Return Book: Subscriber ID is:"+currentSub.getSubscriber_id()+" Book info is:"+borrowedBook);
                         
                     });
                 }
