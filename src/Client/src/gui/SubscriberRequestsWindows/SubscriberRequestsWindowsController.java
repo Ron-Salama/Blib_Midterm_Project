@@ -4,6 +4,7 @@ package gui.SubscriberRequestsWindows;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
 import logic.Librarian;
 import logic.Subscriber;
+import gui.BarcodeScannerWindow.BarcodeScannerWindowController;
 import gui.LibrarianWindow.LibrarianController;
 import gui.MainMenu.MainMenuController;
 import gui.SubscriberWindow.SubscriberWindowController;
@@ -48,18 +50,21 @@ import gui.baseController.BaseController;
 public class SubscriberRequestsWindowsController extends BaseController implements Initializable {
     
     public static String[] borrowedBookInformationFromBarcode = null; // Using a Barcode the librarian can receive information about a borrowed book request.    
+    public static boolean borrowInformationFromBarcode = false;
     
     Librarian currentLibrarian = LibrarianController.currentLibrarian;
     
     @FXML
     private Button btnExit = null;
+    @FXML
+    private Button btnAccept = null;
 
     @FXML
     private Button btnSend = null;
     @FXML
     private Button btnBack = null;
     @FXML
-    private Button btnScanBarcode = null;
+    private Button ScanBarcode = null;
     @FXML
     private ToggleButton Clear = null;
     @FXML
@@ -107,9 +112,37 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private List<String[]> RegisterRequests = new ArrayList<>();
     private List<String[]> ReturnRequests = new ArrayList<>();
     private String requestType = "";
+
+    
+    private String bookIDFromBarcode = null;
+    private String bookNameFromBarcode = null;
+    private String subscriberIDFromBarcode = null;
+    private String subscriberNameFromBarcode = null;
+    private String borrowDateFromBarcode = null;
+    private String returnDateFromBarcode = null;
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    	if (borrowInformationFromBarcode) {
+    		requestType = "Borrow For Subscriber";
+    		ScanBarcode.setVisible(true);
+    		BorrowForSubscriber.setSelected(true);
+    		Clear.setSelected(false);
+    		TXTF1.setText(borrowedBookInformationFromBarcode[3]); // subscriber name.
+            TXTF2.setText(borrowedBookInformationFromBarcode[2]); // subscriber ID.
+            TXTF3.setText(borrowedBookInformationFromBarcode[1]); // Borrowed book name.
+            TXTF4.setText(borrowedBookInformationFromBarcode[0]); // borrowed book id.
+            TXTF5.setText(borrowedBookInformationFromBarcode[4]); // borrow time
+            
+            // Get the return date as a string, convert and set it in the correct field.
+            LocalDate returnDate = clock.convertStringToLocalDateTime(borrowedBookInformationFromBarcode[5]).toLocalDate();
+            datePicker.setValue(returnDate); // return date. 
+    		
+    		
+    	}else {
+    		ScanBarcode.setVisible(false);
+    		Clear.setSelected(true);
+    	}
         RequestedByCB.getItems().add("");
         RequestCB.getItems().add("");
         RequestedByCB.setOnAction(event -> autofillSubscriberData());
@@ -146,12 +179,13 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 				e.printStackTrace();
 			}
 		});
-        Clear.setSelected(true);
+        
     }
 
 	
 
     public void Clear() throws InterruptedException {
+    	ScanBarcode.setVisible(false);
     	updateLabels("Clear");
         deselectOtherButtons(Clear);
         requestType="Clear";
@@ -163,6 +197,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         isLost.setVisible(false);
     }
     public void Register() throws InterruptedException {
+    	ScanBarcode.setVisible(false);
     	updateLabels("Registers");
         deselectOtherButtons(Register);
         requestType="Registers";
@@ -174,6 +209,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         datePicker.setValue(null);
     }
     public void BorrowForSubscriber() throws InterruptedException {
+    	ScanBarcode.setVisible(true);
     	updateLabels("Borrow For Subscriber");
         deselectOtherButtons(BorrowForSubscriber);
         requestType="Borrow For Subscriber";
@@ -185,6 +221,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         datePicker.setValue(null);
     }
     public void ReturnForSubscriber() throws InterruptedException {
+    	ScanBarcode.setVisible(false);
     	updateLabels("Return For Subscriber");
         deselectOtherButtons(ReturnForSubscriber);
         requestType="Return For Subscriber";
@@ -229,11 +266,11 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
                 LBL6.setText("Expected Return");
-                ClientUI.chat.accept("FetchBorrowRequest:");
-                requestType = "Borrow For Subscriber";
-                addDelayInMilliseconds(500); // Half a second delay.
-                handleFetchedBorrowedBooks();
-                
+	                ClientUI.chat.accept("FetchBorrowRequest:");
+	                requestType = "Borrow For Subscriber";
+	                addDelayInMilliseconds(500); // Half a second delay.
+	                handleFetchedBorrowedBooks();
+             //   }
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
@@ -260,8 +297,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 isLost.setVisible(false);
                 break;
         }
-
     }
+
     private void handleReturnofBorrowedBook() {
     	
     	 ReturnRequests.clear();  // Clear the existing list to avoid duplicate data
@@ -323,8 +360,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                         selectedRequests.add(request);
                     }
                 }
-            } else if ("Borrow For Subscriber".equals(selectedRequestType)) {
-                // Add borrow requests for the selected subscriber
+            } else if ("Borrow For Subscriber".equals(selectedRequestType)) {	
+            	// Add borrow requests for the selected subscriber
                 for (String[] request : borrowRequests) {
                     if (request[2].equals(selectedName)) {
                         selectedRequests.add(request);
@@ -491,6 +528,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     }
     
     public void getScanBarcodeBtn(ActionEvent event) throws Exception {
+    	borrowInformationFromBarcode = true;
     	openWindow(event,
     			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
     			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",

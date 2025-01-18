@@ -948,31 +948,34 @@ public class ConnectToDb {
         }
     }
     
-    public static List<String> fetchBorrowedBooksByBorrowedBookID(Connection conn, String borrowedBookID) {
-        String query = "SELECT * FROM blib.borrowed_books WHERE ISBN = ?";
 
-        List<String> borrowedBooks = new ArrayList<>();
+    public static String fetchBorrowRequestGivenBorrowedBookID(Connection conn, String borrowedBookID) {
+        String query = "SELECT * FROM requests WHERE bookId = ? AND requestType = 'Borrow For Subscriber'";
+
+        StringBuilder bookInfo = new StringBuilder();
+
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, borrowedBookID); // Set the subscriber_id parameter
+            pstmt.setString(1, borrowedBookID.trim());
 
             try (ResultSet rs = pstmt.executeQuery()) {
+
                 while (rs.next()) {
-                    // Combine fields into a single delimited string for sending to the client
-                    String bookData = rs.getInt("borrow_id") + "," +
-                    				  rs.getInt("subscriber_id") + "," +
-                                      rs.getString("Name") + "," +
-                                      rs.getString("Subject") + "," +
-                                      rs.getString("Borrowed_Time") + "," +
-                                      rs.getString("Return_Time") + "," +
-                                      rs.getString("ISBN");
-                    borrowedBooks.add(bookData);
-                }
+                        // If this is the first row, add book information
+                        String bookData = rs.getString("bookId") + "," +
+                        				  rs.getString("bookName") + "," +
+                        				  rs.getString("requestedByID") + "," +
+                        				  rs.getString("requestedByName") + "," +
+                                          rs.getString("borrowTime") + "," +
+                                          rs.getString("returnTime");
+                        bookInfo.append(bookData);
+                        break;
+                    }
             }
         } catch (SQLException e) {
-            System.err.println("Error fetching borrowed books: " + e.getMessage());
+            System.err.println("Error fetching borrow requests: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        return borrowedBooks; // Return the list of borrowed books
+        return bookInfo.toString();
     }
-    	
-}
+}	
