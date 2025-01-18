@@ -271,7 +271,7 @@ public class EchoServer extends AbstractServer {
     }
     private void updateHistoryInDB(ConnectionToClient client, String body) throws SQLException, IOException {
     	ConnectToDb.updateHistoryInDB(dbConnection, body);
-        client.sendToClient("History ia updated");
+        client.sendToClient("History is updated");
     }
     
     

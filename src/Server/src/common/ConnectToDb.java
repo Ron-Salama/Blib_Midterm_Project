@@ -666,28 +666,28 @@ public class ConnectToDb {
 
         // Extract the bookId (ISBN) from the array
         String bookId = details[3].trim(); // The bookId is at index 3 in this case
-        String checkSql = "SELECT NumCopies FROM books WHERE ISBN = ?";
-        String updateSql = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ?";
+        String checkSql = "SELECT AvailableCopiesNum FROM books WHERE ISBN = ?";
+        String updateSql = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ?";
 
         try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
             // Check if the book exists and has more than 0 copies
             checkStmt.setString(1, bookId);
             try (ResultSet rs = checkStmt.executeQuery()) {
                 if (rs.next()) {
-                    int numCopies = rs.getInt("NumCopies");
-                    if (numCopies > 0) {
+                    int AvailableCopiesNum = rs.getInt("AvailableCopiesNum");
+                    if (AvailableCopiesNum > 0) {
                         // Proceed to update NumCopies
                         try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
                             updateStmt.setString(1, bookId);
                             int rowsAffected = updateStmt.executeUpdate();
                             if (rowsAffected > 0) {
-                                System.out.println("Number of copies for the book with ISBN " + bookId + " updated successfully.");
+                                System.out.println("Number of available copies for the book with ISBN " + bookId + " updated successfully.");
                             } else {
-                                System.out.println("Failed to update the number of copies for the book.");
+                                System.out.println("Failed to update the number of available copies for the book.");
                             }
                         }
                     } else {
-                        throw new SQLException("The number of copies for the book with ISBN " + bookId + " is already 0.");
+                        throw new SQLException("The number of available copies for the book with ISBN " + bookId + " is already 0.");
                     }
                 } else {
                     throw new SQLException("Book with ISBN " + bookId + " not found.");
@@ -695,7 +695,7 @@ public class ConnectToDb {
             }
         } catch (SQLException e) {
             // Handle exception
-            System.err.println("Error updating number of copies: " + e.getMessage());
+            System.err.println("Error updating number of available copies: " + e.getMessage());
             throw e;
         }
         

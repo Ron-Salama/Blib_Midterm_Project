@@ -1,9 +1,11 @@
 package gui.SubscriberRequestsWindows;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,10 +26,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -63,7 +67,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private ToggleButton Register = null;
     @FXML
     private DatePicker datePicker = null;
-    
+    @FXML
+    private CheckBox isLost;
     @FXML
     private Label LBL1;
     @FXML
@@ -92,6 +97,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     @FXML
     private ComboBox<String> RequestCB;
     
+   
     ClientTimeDiffController clock = new ClientTimeDiffController();
     
     private List<String[]> borrowRequests = new ArrayList<>();
@@ -123,12 +129,14 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         LBL6.setVisible(false);
         Clear.setSelected(true);
         datePicker.setValue(null);
+        isLost.setVisible(false);
     }
     public void Register() {
     	updateLabels("Registers");
         deselectOtherButtons(Register);
         requestType="Registers";
         datePicker.setVisible(false);
+        isLost.setVisible(false);
         LBL5.setVisible(false);
         LBL6.setVisible(false);
         Register.setSelected(true);
@@ -139,6 +147,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         deselectOtherButtons(BorrowForSubscriber);
         requestType="Borrow For Subscriber";
         datePicker.setVisible(true);
+        isLost.setVisible(false);
         LBL5.setVisible(true);
         LBL6.setVisible(true);
         BorrowForSubscriber.setSelected(true);
@@ -149,6 +158,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         deselectOtherButtons(ReturnForSubscriber);
         requestType="Return For Subscriber";
         datePicker.setVisible(true);
+        isLost.setVisible(true);
         LBL5.setVisible(true);
         LBL6.setVisible(true);
         ReturnForSubscriber.setSelected(true);
@@ -203,6 +213,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
                 LBL6.setText("Return Time:");
+                isLost.setVisible(true);
                 ClientUI.chat.accept("Fetch return request:");
                 addDelay();
                 handleReturnofBorrowedBook();
@@ -215,6 +226,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 LBL5.setText("");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
+                isLost.setVisible(false);
                 break;
         }
 
@@ -479,6 +491,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    TXTF3.setText("");
 	    TXTF4.setText("");
 	    TXTF5.setText("");
+	   
 	}
 	
 	// Method to clear only the RequestCB and text fields
@@ -493,7 +506,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 		
 	public void acceptRequest(ActionEvent event) throws Exception 
 	{
-		 String selectedRequestType = requestType;
+		String selectedRequestType = requestType;
 		if(selectedRequestType=="Borrow For Subscriber") 
 		{
             String SName = TXTF1.getText();
@@ -515,18 +528,25 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
             String Rtime = convertDateFormat(""+datePicker.getValue()); 
-            System.out.println("yaniv :\n\n\n\n\n\n Borrow time="+Btime+"   Return time=" + Rtime);
-            int numOfDaysOfReturn = numOfDays(Btime, Rtime);
-            if (numOfDaysOfReturn >= 0) {
-				statusOfReturn = "early";
-			}
-            else {
-				statusOfReturn = "late";
-				numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
-			}
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
 			ClientUI.chat.accept("Handle return:"+body); 
-			ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Return Successfully "+numOfDaysOfReturn+" days "+statusOfReturn);
+            boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
+            if (lostBook) 
+            {
+            	ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Lost");
+            }
+            else
+            {
+            	int numOfDaysOfReturn = numOfDays(Btime, Rtime);
+                if (numOfDaysOfReturn<=0) {
+                	statusOfReturn = "early";
+                	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
+    			}
+                else{
+                	statusOfReturn = "late";
+    			}
+            	ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Return Successfully "+numOfDaysOfReturn+" days "+statusOfReturn);
+			}
 		}
 		else if (selectedRequestType=="Registers") {
 			 String SName = TXTF1.getText();
@@ -553,11 +573,22 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	        return date.format(outputFormatter);
 	    }
 	    
-	    // method to convert date string from "dd-MM-yyyy" to number of days ("dd")
-	    public static int numOfDays(String Borrowtime,String Returntime) 
-	    {
-	    	int dateOfBorrow = Integer.parseInt(Borrowtime.substring(0, 2));
-	    	int dateOfReturn = Integer.parseInt(Returntime.substring(0, 2));
-	    	return dateOfBorrow-dateOfReturn;
+	   
+	    
+	    public int numOfDays(String Borrowtime, String Returntime) {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+	        // Parse the borrow and return dates
+	        LocalDate borrowDate = LocalDate.parse(Borrowtime, formatter);
+	        LocalDate returnDate = LocalDate.parse(Returntime, formatter);
+
+	        // Calculate the expected return date (due date)
+	        LocalDate dueDate = borrowDate.plusDays(14);
+
+	        // Calculate the difference between actual return date and due date
+	        int difference = (int) (returnDate.toEpochDay() - dueDate.toEpochDay());
+
+	        return difference;
 	    }
+
 	}
