@@ -5,7 +5,16 @@ Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
 Message received: GetBookInfo:0011 from 10.0.0.8 (10.0.0.8)
 Message received: BorrowRequest:1,Yuval,0011,The Hobbit,18-01-2025,01-02-2025 from 10.0.0.8 (10.0.0.8)
 Received BorrowRequest from client
+Message received: GetBookInfo:0022 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:11 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client
+Message received: SubmitBorrowRequest:Yuval,1,The Hobbit,0011,18-01-2025,01-02-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Yuval,1,The Hobbit,0011,18-01-2025,01-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client

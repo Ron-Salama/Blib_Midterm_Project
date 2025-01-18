@@ -95,7 +95,7 @@ CREATE TABLE `detailed_subscription_history` (
 
 LOCK TABLES `detailed_subscription_history` WRITE;
 /*!40000 ALTER TABLE `detailed_subscription_history` DISABLE KEYS */;
-INSERT INTO `detailed_subscription_history` VALUES (1,'18-01-2025,0011,The Hobbit,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Borrowed Successfully;'),(2,'01-12-2024,0022,The Catcher In The Ray,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Borrowed Successfully;'),(3,'01-12-2024,0022,The Catcher In The Ray,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Return Successfully 0 days early;18-01-2025,0022,he Hobbit,Borrowed Successfully;');
+INSERT INTO `detailed_subscription_history` VALUES (1,'18-01-2025,0011,The Hobbit,Borrowed Successfully;'),(2,'01-12-2024,0022,The Catcher In The Ray,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Borrowed Successfully;'),(3,'01-12-2024,0022,The Catcher In The Ray,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Borrowed Successfully;18-01-2025,0022,The Catcher in the Rye,Return Successfully 0 days early;18-01-2025,0011,The Hobbit,Return Successfully 0 days early;18-01-2025,0022,he Hobbit,Borrowed Successfully;');
 /*!40000 ALTER TABLE `detailed_subscription_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-18 13:58:10
+-- Dump completed on 2025-01-18 14:03:28
