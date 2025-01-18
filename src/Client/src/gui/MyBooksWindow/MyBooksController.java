@@ -154,10 +154,10 @@ public class MyBooksController extends BaseController implements Initializable {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                     	ClientTimeDiffController clock = new ClientTimeDiffController();
                     	String extendedReturnDate;
-                    	
+                    	ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
                     	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                     	
-                    	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) {
+                    	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7) && ChatClient.isBookReservedFlag) { // add condition - AND book is not reserved - we check if book reserved in DB.
                     		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
                     		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
                     		tableView.refresh();
@@ -189,6 +189,8 @@ public class MyBooksController extends BaseController implements Initializable {
             });
         }
         
+
+        
         public void navigateToHistory(ActionEvent event) {
         	openWindow(event,
         			"/gui/HistoryWindow/HistoryFrame.fxml",
@@ -197,11 +199,11 @@ public class MyBooksController extends BaseController implements Initializable {
         	
         }
 //
-        public void extendButton(ActionEvent event, BorrowedBook selectedBook) {
-        	System.out.println("nnoooo");
-
-
-        }
+//        public void extendButton(ActionEvent event, BorrowedBook selectedBook) {
+//        	System.out.println("nnoooo");
+//
+//
+//        }
 
     /**
      * Searches for books based on filters entered in the name, description, and subject fields.

@@ -727,7 +727,27 @@ public class ConnectToDb {
             return false;
         }
     }
-
+    public static boolean isBookReserved(Connection dbConnection, int bookId) {
+        String query = "SELECT ReservedCopiesNum FROM books WHERE BookID = ?";
+        
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setInt(1, bookId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int reservedCopies = resultSet.getInt("ReservedCopiesNum");
+                    return reservedCopies > 0;
+                } else {
+                    // Book ID not found in the database
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception appropriately, e.g., log it or rethrow it
+            return false;
+        }
+    }
     
     public static void updateReturnDateAfterExtension(int borrowId,String extendedReturnDate, Connection con) {
         // SQL query to update the return date for a specific borrowed book
