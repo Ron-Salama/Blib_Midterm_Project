@@ -5,6 +5,7 @@ import client.*;
 import common.ChatIF;
 import logic.Book;
 import logic.BorrowedBook;
+import logic.ClientTimeDiffController;
 import logic.Subscriber;
 import logic.Librarian;
 import javafx.animation.PauseTransition;
@@ -44,6 +45,8 @@ public class ChatClient extends AbstractClient
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
   public static boolean isBookReservedFlag = false;
+  
+  public static ClientTimeDiffController clock = new ClientTimeDiffController();
 
   
   

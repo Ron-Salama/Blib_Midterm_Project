@@ -54,6 +54,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     
     Librarian currentLibrarian = LibrarianController.currentLibrarian;
     
+    private ClientTimeDiffController clock = ChatClient.clock;
+    
     @FXML
     private Button btnExit = null;
     @FXML
@@ -105,40 +107,25 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     @FXML
     private ComboBox<String> RequestCB;
     
-   
-    ClientTimeDiffController clock = new ClientTimeDiffController();
-    
     private List<String[]> borrowRequests = new ArrayList<>();
     private List<String[]> RegisterRequests = new ArrayList<>();
     private List<String[]> ReturnRequests = new ArrayList<>();
     private String requestType = "";
-
-    
-    private String bookIDFromBarcode = null;
-    private String bookNameFromBarcode = null;
-    private String subscriberIDFromBarcode = null;
-    private String subscriberNameFromBarcode = null;
-    private String borrowDateFromBarcode = null;
-    private String returnDateFromBarcode = null;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     	if (borrowInformationFromBarcode) {
-    		requestType = "Borrow For Subscriber";
-    		ScanBarcode.setVisible(true);
-    		BorrowForSubscriber.setSelected(true);
-    		Clear.setSelected(false);
-    		TXTF1.setText(borrowedBookInformationFromBarcode[3]); // subscriber name.
-            TXTF2.setText(borrowedBookInformationFromBarcode[2]); // subscriber ID.
-            TXTF3.setText(borrowedBookInformationFromBarcode[1]); // Borrowed book name.
-            TXTF4.setText(borrowedBookInformationFromBarcode[0]); // borrowed book id.
-            TXTF5.setText(borrowedBookInformationFromBarcode[4]); // borrow time
-            
-            // Get the return date as a string, convert and set it in the correct field.
-            LocalDate returnDate = clock.convertStringToLocalDateTime(borrowedBookInformationFromBarcode[5]).toLocalDate();
-            datePicker.setValue(returnDate); // return date. 
-    		
-    		
+    		try {
+				borrowRequestSetup(borrowedBookInformationFromBarcode[3],
+						borrowedBookInformationFromBarcode[2],
+						borrowedBookInformationFromBarcode[1],
+						borrowedBookInformationFromBarcode[0],
+						borrowedBookInformationFromBarcode[4],
+						borrowedBookInformationFromBarcode[5]);
+			} catch (InterruptedException e) {
+				
+				e.printStackTrace();
+			}    		
     	}else {
     		ScanBarcode.setVisible(false);
     		Clear.setSelected(true);
@@ -181,8 +168,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 		});
         
     }
-
-	
 
     public void Clear() throws InterruptedException {
     	ScanBarcode.setVisible(false);
@@ -247,15 +232,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         // Set the fields and populate the RequestedByCB based on the selected request type
         switch (selectedRequestType) {
             case "Registers":
-                LBL1.setText("Subscriber Name:");
-                LBL2.setText("Subscriber ID:");
-                LBL3.setText("Phone Number:");
-                LBL4.setText("Email:");
-                TXTF4.setVisible(true);
-                TXTF5.setVisible(false);
-                ClientUI.chat.accept("FetchRegisterRequest:");
-                addDelayInMilliseconds(500); // Half a second delay.
-                handleFetchedRegister();
+                registerRequestSetUp();
                 break;
             case "Borrow For Subscriber":
                 LBL1.setText("Subscriber Name:");
@@ -300,7 +277,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     }
 
     private void handleReturnofBorrowedBook() {
-    	
     	 ReturnRequests.clear();  // Clear the existing list to avoid duplicate data
          clearFieldsAndComboBoxes();
 
@@ -513,27 +489,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             System.out.println("No register requests available.");
         }
     }
-    // Method to handle Exit button click
-    public void getExitBtn(ActionEvent event) throws Exception {
-    	openWindow(event,
-    			"/gui/MainMenu/MainMenuFrame.fxml",
-    			"/gui/MainMenu/MainMenuFrame.css",
-    			"MainMenu");
-    }
-    public void Back(ActionEvent event) throws Exception {
-        openWindow(event,
-                "/gui/LibrarianWindow/LibrarianFrame.fxml",
-                "/gui/LibrarianWindow/LibrarianFrame.css",
-                "Librarian Window");
-    }
-    
-    public void getScanBarcodeBtn(ActionEvent event) throws Exception {
-    	borrowInformationFromBarcode = true;
-    	openWindow(event,
-    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
-    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
-    			"Scan Barcode");
-    }
     
     // Method to display messages (for debugging or logging)
     public void display(String message) {
@@ -543,13 +498,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	// Method to clear all ComboBoxes and text fields
 	private void clearFieldsAndComboBoxes() {
 	    RequestedByCB.getItems().clear();
-	    RequestCB.getItems().clear();
-	    TXTF1.setText("");
-	    TXTF2.setText("");
-	    TXTF3.setText("");
-	    TXTF4.setText("");
-	    TXTF5.setText("");
-	   
+	    clearRequestCBAndTextFields();
 	}
 	
 	// Method to clear only the RequestCB and text fields
@@ -572,7 +521,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BName = TXTF3.getText();
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
-            String Rtime =  convertDateFormat(""+datePicker.getValue()); 
+            String Rtime =  convertDateFormat("" + datePicker.getValue()); 
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
            // ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
@@ -585,17 +534,17 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BName = TXTF3.getText();
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
-            String Rtime = convertDateFormat(""+datePicker.getValue()); 
-            String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
-			ClientUI.chat.accept("Handle return:"+body); 
+            String Rtime = convertDateFormat("" + datePicker.getValue()); 
+            String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Btime + "," + Rtime;
+			ClientUI.chat.accept("Handle return:" + body); 
             boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
             if (lostBook) 
             {
-            	ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Lost");
+            	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
             }
             else
             {
-            	int numOfDaysOfReturn = numOfDays(Btime, Rtime);
+            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(Btime, Rtime);
                 if (numOfDaysOfReturn<=0) {
                 	statusOfReturn = "early";
                 	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
@@ -603,50 +552,107 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 else{
                 	statusOfReturn = "late";
     			}
-            	ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Return Successfully "+numOfDaysOfReturn+" days "+statusOfReturn);
+            	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
 			}
 		}
-		else if (selectedRequestType=="Registers") {
+		else if (selectedRequestType == "Registers") {
 			 String SName = TXTF1.getText();
 			 String SID = TXTF2.getText();
 			 String PhoneNum = TXTF3.getText();
 			 String Email = TXTF4.getText();
-			 String body = ""+SName+","+SID+","+PhoneNum+","+Email;
-			 ClientUI.chat.accept("Handle register:"+body);
-			 ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Register Successfully");
+			 String body = "" + SName + "," + SID + "," + PhoneNum + "," + Email;
+			 ClientUI.chat.accept("Handle register:" + body);
+			 ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Register Successfully");
 		}
 	}
 
 	    // Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
 	    public static String convertDateFormat(String dateStr) 
 	    {
+	    	
 	        // Define the input and output date formats
 	        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	        
-	        // Parse the original string into a LocalDate object
+          // Parse the original string into a LocalDate object
 	        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
 	        
 	        // Format the LocalDate object to the new string format
 	        return date.format(outputFormatter);
-	    }
+    }
 	    
 	   
 	    
-	    public int numOfDays(String Borrowtime, String Returntime) {
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//	    public int numOfDays(String Borrowtime, String Returntime) {
+//	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//
+//	        // Parse the borrow and return dates
+//	        LocalDate borrowDate = LocalDate.parse(Borrowtime, formatter);
+//	        LocalDate returnDate = LocalDate.parse(Returntime, formatter);
+//
+//	        // Calculate the expected return date (due date)
+//	        LocalDate dueDate = borrowDate.plusDays(14);
+//
+//	        // Calculate the difference between actual return date and due date
+//	        int difference = (int) (returnDate.toEpochDay() - dueDate.toEpochDay());
+//
+//	        return difference;
+//	    }
 
-	        // Parse the borrow and return dates
-	        LocalDate borrowDate = LocalDate.parse(Borrowtime, formatter);
-	        LocalDate returnDate = LocalDate.parse(Returntime, formatter);
-
-	        // Calculate the expected return date (due date)
-	        LocalDate dueDate = borrowDate.plusDays(14);
-
-	        // Calculate the difference between actual return date and due date
-	        int difference = (int) (returnDate.toEpochDay() - dueDate.toEpochDay());
-
-	        return difference;
+	    // Method to handle Exit button click
+	    public void getExitBtn(ActionEvent event) throws Exception {
+	    	borrowInformationFromBarcode = true;
+	    	openWindow(event,
+	    			"/gui/MainMenu/MainMenuFrame.fxml",
+	    			"/gui/MainMenu/MainMenuFrame.css",
+	    			"MainMenu");
 	    }
-
-	}
+	    public void Back(ActionEvent event) throws Exception {
+	    	borrowInformationFromBarcode = false;
+	    	openWindow(event,
+	    			"/gui/LibrarianWindow/LibrarianFrame.fxml",
+	    			"/gui/LibrarianWindow/LibrarianFrame.css",
+	    			"Librarian Window");
+	    }
+	    
+	    public void getScanBarcodeBtn(ActionEvent event) throws Exception {
+	    	borrowInformationFromBarcode = true;
+	    	openWindow(event,
+	    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
+	    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
+	    			"Scan Barcode");
+	    }
+	    
+	    
+	    // TODO: refactor the part of borrow request in the switch case.
+	    private void borrowRequestSetup(String subscriberName, String subscriberID, String borrowedBookName, String borrowedBookID, String borrowTime, String returnTime) throws InterruptedException {
+	    	Clear(); // Clear the current fields.
+	    	BorrowForSubscriber(); // Set up the elements for borrow request.
+	    	
+	    	if (borrowInformationFromBarcode) {
+	    		TXTF1.setText(subscriberName); // subscriber name.
+	    		TXTF2.setText(subscriberID); // subscriber ID.
+	    		TXTF3.setText(borrowedBookName); // Borrowed book name.
+	    		TXTF4.setText(borrowedBookID); // borrowed book id.
+	    		TXTF5.setText(borrowTime); // borrow time
+	    		
+	    		// Get the return date as a string, convert and set it in the correct field.
+	    		LocalDate returnDate = clock.convertStringToLocalDateTime(returnTime).toLocalDate();
+	    		datePicker.setValue(returnDate); // return date. 	    		
+	    	}
+	    }
+	    
+	    
+	    
+	    private void registerRequestSetUp() throws InterruptedException {
+	    	LBL1.setText("Subscriber Name:");
+            LBL2.setText("Subscriber ID:");
+            LBL3.setText("Phone Number:");
+            LBL4.setText("Email:");
+            TXTF4.setVisible(true);
+            TXTF5.setVisible(false);
+            ClientUI.chat.accept("FetchRegisterRequest:");
+            addDelayInMilliseconds(500); // Half a second delay.
+            handleFetchedRegister();
+	    }
+}
