@@ -688,7 +688,7 @@ public class ConnectToDb {
                             }
                         }
                     } else {
-                        throw new SQLException("The number of copies for the book with ISBN " + bookId + " is already 0.");
+                        throw new SQLException("The number of available copies for the book with ISBN " + bookId + " is already 0.");
                     }
                 } else {
                     throw new SQLException("Book with ISBN " + bookId + " not found.");
@@ -696,7 +696,7 @@ public class ConnectToDb {
             }
         } catch (SQLException e) {
             // Handle exception
-            System.err.println("Error updating number of copies: " + e.getMessage());
+            System.err.println("Error updating number of available copies: " + e.getMessage());
             throw e;
         }
         
