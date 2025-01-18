@@ -1,2 +1,13 @@
 Server listening for connections on port 5555
 Connected to the database.
+Client connected.
+Client IP:192.168.250.106
+Client Hostname: DESKTOP-D2LTAS2
+Connection Status: Connected
+Message received: IP:192.168.250.106 from DESKTOP-D2LTAS2 (192.168.250.106)
+Message received: Fetch:22 from DESKTOP-D2LTAS2 (192.168.250.106)
+Message received: GetBorrowedBooks:0 from DESKTOP-D2LTAS2 (192.168.250.106)
+Message received: Fetch:1 from DESKTOP-D2LTAS2 (192.168.250.106)
+Message received: Fetch:1 from DESKTOP-D2LTAS2 (192.168.250.106)
+Message received: Fetch:1 from DESKTOP-D2LTAS2 (192.168.250.106)
+Message received: Fetch:1 from DESKTOP-D2LTAS2 (192.168.250.106)
