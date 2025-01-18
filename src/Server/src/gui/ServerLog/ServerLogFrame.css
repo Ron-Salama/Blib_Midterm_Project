@@ -3,13 +3,6 @@
     -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
 }
 
-/* Text and Titles */
-.text {
-    -fx-fill: #333333;  /* Dark text color for visibility */
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-}
-
 /* Search Section */
 #nameInput, #descriptionInput, #subjectInput {
     -fx-font-size: 14px;  /* Font size for inputs */
@@ -108,3 +101,5 @@
     -fx-background-color: #e6f7ff;  /* Light blue background when focused */
     -fx-border-color: #007acc;  /* Blue border when focused */
 }
+
+
