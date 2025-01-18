@@ -173,7 +173,7 @@ public class ConnectToDb {
         if (details.length != 4) {
             throw new IllegalArgumentException("Invalid input format. Expected: subscriberName,SubscriberID,PhoneNumber,Email");
         }
-
+        
         // Extract subscriber details
         String subscriberName = details[0].trim();
         String subscriberId = details[1].trim();
@@ -746,27 +746,36 @@ public class ConnectToDb {
 
     
     public static void updateHistoryInDB(Connection conn, String body) throws SQLException {
-        String[] details = body.split(","); // Assuming body is a comma-separated string
+        System.out.println("Updating history with body: " + body);
+        String[] details = body.split(",");
+        System.out.println("Parsed details length: " + details.length);
+
         String checkSql = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
+        String insertSql = "INSERT INTO detailed_subscription_history (detailed_subscription_history, history) VALUES (?, ?)";
         String updateHistorySql = "UPDATE detailed_subscription_history SET history = ? WHERE detailed_subscription_history = ?";
-        String sqlMessage = details[6].trim(); //contain the end of the message that saved in the history DB
+        String sqlMessage = details[6].trim();
+
         try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
-            checkStmt.setString(1, details[1].trim()); // details[1] is subscriberId
+            checkStmt.setString(1, details[1].trim());  // Subscriber ID
+            System.out.println("Checking history for subscriber ID: " + details[1].trim());
+
             try (ResultSet rs = checkStmt.executeQuery()) {
+                String historyMessage = details[4] + "," + details[3] + "," + details[2] + "," + sqlMessage + ";";
+
                 if (rs.next()) {
+                    // Subscriber exists → Update history
                     String existingHistory = rs.getString("history");
                     if (existingHistory == null) {
                         existingHistory = "";
                     }
-
-                    String historyMessage = details[4] + "," + details[3] + "," + details[2] + "," + sqlMessage;
-                    String newHistory = existingHistory + historyMessage + ";";
+                    String newHistory = existingHistory + historyMessage;
+                    System.out.println("Updating history: " + newHistory);
 
                     try (PreparedStatement updateStmt = conn.prepareStatement(updateHistorySql)) {
                         updateStmt.setString(1, newHistory);
                         updateStmt.setString(2, details[1].trim());
-
                         int rowsAffected = updateStmt.executeUpdate();
+
                         if (rowsAffected > 0) {
                             System.out.println("History updated successfully for subscriber with ID " + details[1].trim());
                         } else {
@@ -774,7 +783,19 @@ public class ConnectToDb {
                         }
                     }
                 } else {
-                    throw new SQLException("Subscriber with ID " + details[1].trim() + " not found in history.");
+                    // Subscriber does not exist → Insert new subscriber
+                    System.out.println("Subscriber not found. Inserting new subscriber with ID: " + details[1].trim());
+                    try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                        insertStmt.setString(1, details[1].trim());
+                        insertStmt.setString(2, historyMessage);
+                        int rowsInserted = insertStmt.executeUpdate();
+
+                        if (rowsInserted > 0) {
+                            System.out.println("New subscriber inserted and history updated for ID " + details[1].trim());
+                        } else {
+                            System.out.println("Failed to insert new subscriber with ID " + details[1].trim());
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -782,6 +803,7 @@ public class ConnectToDb {
             throw e;
         }
     }
+
 
 
     

@@ -93,6 +93,7 @@ public class MyBooksController extends BaseController implements Initializable {
      */
     public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
     public static int librarianViewing=-1;
+    public static String LibrarianName;
     public static Boolean viewing=false;
     @Override
 
@@ -225,14 +226,23 @@ public class MyBooksController extends BaseController implements Initializable {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                     	ClientTimeDiffController clock = new ClientTimeDiffController();
                     	String extendedReturnDate;
-                    	
+                    	String ignore = "ignore";
+                    	String librarianMessage= ",Extended Successfully by Librarian " + librarianViewing + ":" + LibrarianName;
+                    	String body = currentSub.getSubscriber_name() + "," +
+                                currentSub.getSubscriber_id() + "," +
+                                borrowedBook.getName() + "," +
+                                borrowedBook.getBorrowId() + "," +
+                                borrowedBook.getBorrowDate() + "," +ignore;
+                                
                     	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                     	
                     	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) {
                     		if(viewing) {
                     			System.out.println("Librarian Manual Extend");
                     			ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                    			System.out.println("Sending message: UpdateHistoryInDB:"+body);
+                    			ClientUI.chat.accept("UpdateHistoryInDB:"+body+librarianMessage);
+                    			showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
 	                    		tableView.getItems().clear();
 	                    		try {
 									loadBooks();
@@ -241,8 +251,12 @@ public class MyBooksController extends BaseController implements Initializable {
 									e.printStackTrace();
 								}
                     		}else {
+                    			
+                    			ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Extended Successfully");
 	                    		ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
+	                    		
 	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+	                    		
 	                    		tableView.getItems().clear();
 	                    		try {
 									loadBooks();

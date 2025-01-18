@@ -65,6 +65,7 @@ public class LibrarianController extends BaseController implements Initializable
     public void navigateToSearchSubscriber(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING SEARCH SUBSCRIBER WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
     	MyBooksController.viewing = true;
     	MyBooksController.librarianViewing = currentLibrarian.getLibrarian_id();
+    	MyBooksController.LibrarianName = currentLibrarian.getLibrarian_name();
     	openWindow(event, 
                 "/gui/MyBooksWindow/MyBooksFrame.fxml", 
                 "/gui/MyBooksWindow/MyBooksFrame.css", 
