@@ -126,7 +126,7 @@ public class IPInputController extends BaseController {
      */
     public void getExitBtn(ActionEvent event) throws Exception {
         System.out.println("exit Library Tool");
-        System.exit(1);
+        ClientUI.chat.accept("EXIT:");
     }
 
     /**

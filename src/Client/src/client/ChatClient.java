@@ -75,6 +75,7 @@ public class ChatClient extends AbstractClient
   @Override
   public void handleMessageFromServer(Object msg) 
   {
+	  	System.out.println(msg);
 	    System.out.println("--> handleMessageFromServer");
 	    if (!(msg instanceof String)) {
 	        System.out.println("Invalid message type received.");
@@ -128,6 +129,8 @@ public class ChatClient extends AbstractClient
 	    }
 	    else if (response.startsWith("BorrowedBooksForBarcodeScanner:")){
 	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
+	    }else if(response.equals("Client disconnected")) {
+	    	System.exit(1);
 	    }
 	}
   
@@ -197,8 +200,6 @@ private void handleBorrowedBooksResponse(String data) {
 	    }
 	}
 
-
-
  
   private void handleBookInfo(String data) {
 	    try {
@@ -229,10 +230,6 @@ private void handleBorrowedBooksResponse(String data) {
 	        BorrowedBookInfo = null;
 	    }
 	}
-  
-  
-  
-  
   
 	private void handleSubscriberData(String response) {
 	    l1.setLibrarian_id(-1); // Reset librarian data
