@@ -121,7 +121,11 @@ public class MyBooksController extends BaseController implements Initializable {
         }
         setupActionsColumn();
         tableView.getItems().clear();
-        addDelay();
+        try {
+			addDelayInMilliseconds(1000); // one second delay.
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
     }
 
@@ -144,7 +148,7 @@ public class MyBooksController extends BaseController implements Initializable {
     
 
 
-    public void updateView(ActionEvent event) {
+    public void updateView(ActionEvent event) throws InterruptedException {
     	String subID = TXTFview.getText();
     	ClientUI.chat.accept("Fetch:"+subID);
     	
@@ -157,19 +161,9 @@ public class MyBooksController extends BaseController implements Initializable {
     	        ChatClient.s1.getStatus()
     	    );
     	title.setText("Now Viewing Subscriber: "+currentSub.getSubscriber_id()+" , "+currentSub.getSubscriber_name());
-    	addDelay();
+    	addDelayInMilliseconds(1000); // One second delay.
     }
-    private void addDelay() {
-        // Create a PauseTransition with a 0.5 second delay
-        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.2));
-        // Set the action to be executed after the pause
-        pause.setOnFinished(event -> {
-        	loadBooks();
-        });
 
-        // Start the pause transition
-        pause.play();
-    }
         // after TODO is done and subscriber's book are in DB we fetch them here into the table.
 //        // Fetch and populate books
 //        new Thread(() -> {

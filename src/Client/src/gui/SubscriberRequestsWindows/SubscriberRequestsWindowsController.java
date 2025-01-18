@@ -106,16 +106,44 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         RequestCB.getItems().add("");
         RequestedByCB.setOnAction(event -> autofillSubscriberData());
         RequestCB.setOnAction(event -> autofillRequestData());
-        Clear.setOnAction(event -> Clear());
-        BorrowForSubscriber.setOnAction(event -> BorrowForSubscriber());
-        ReturnForSubscriber.setOnAction(event -> ReturnForSubscriber());
-        Register.setOnAction(event -> Register());
+        Clear.setOnAction(event -> {
+			try {
+				Clear();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+        BorrowForSubscriber.setOnAction(event -> {
+			try {
+				BorrowForSubscriber();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+        ReturnForSubscriber.setOnAction(event -> {
+			try {
+				ReturnForSubscriber();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+        Register.setOnAction(event -> {
+			try {
+				Register();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
         Clear.setSelected(true);
     }
 
 	
 
-    public void Clear() {
+    public void Clear() throws InterruptedException {
     	updateLabels("Clear");
         deselectOtherButtons(Clear);
         requestType="Clear";
@@ -125,7 +153,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         Clear.setSelected(true);
         datePicker.setValue(null);
     }
-    public void Register() {
+    public void Register() throws InterruptedException {
     	updateLabels("Registers");
         deselectOtherButtons(Register);
         requestType="Registers";
@@ -135,7 +163,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         Register.setSelected(true);
         datePicker.setValue(null);
     }
-    public void BorrowForSubscriber() {
+    public void BorrowForSubscriber() throws InterruptedException {
     	updateLabels("Borrow For Subscriber");
         deselectOtherButtons(BorrowForSubscriber);
         requestType="Borrow For Subscriber";
@@ -145,7 +173,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         BorrowForSubscriber.setSelected(true);
         datePicker.setValue(null);
     }
-    public void ReturnForSubscriber() {
+    public void ReturnForSubscriber() throws InterruptedException {
     	updateLabels("Return For Subscriber");
         deselectOtherButtons(ReturnForSubscriber);
         requestType="Return For Subscriber";
@@ -162,7 +190,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         if (selectedButton != Register) Register.setSelected(false);
     }
  // Method to update labels based on the selected request type
-    public void updateLabels(String type) {
+    public void updateLabels(String type) throws InterruptedException {
         String selectedRequestType = type;
         // Clear all ComboBoxes and text fields
         clearFieldsAndComboBoxes();
@@ -177,7 +205,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(false);
                 ClientUI.chat.accept("FetchRegisterRequest:");
-                addDelay();
+                addDelayInMilliseconds(500); // Half a second delay.
                 handleFetchedRegister();
                 break;
             case "Borrow For Subscriber":
@@ -191,7 +219,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 LBL6.setText("Expected Return");
                 ClientUI.chat.accept("FetchBorrowRequest:");
                 requestType = "Borrow For Subscriber";
-                addDelay();
+                addDelayInMilliseconds(500); // Half a second delay.
                 handleFetchedBorrowedBooks();
                 
                 break;
@@ -205,7 +233,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF5.setVisible(true);
                 LBL6.setText("Return Time:");
                 ClientUI.chat.accept("Fetch return request:");
-                addDelay();
+                addDelayInMilliseconds(500);
                 handleReturnofBorrowedBook();
                 break;
             default:
@@ -261,20 +289,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
          }
     }
 
-
- 
-	// Method waits for 0.5 seconds for asynchronous data fetch
-    private void addDelay() {
-        // Create a PauseTransition with a 0.5 second delay
-    	try 
-    	{
-    		TimeUnit.MILLISECONDS.sleep(500);
-    	}
-    	catch (InterruptedException e)
-    	{
-    		// TODO
-    	}
-    }
  // Method to autofill text fields based on the selected subscriber
     private void autofillSubscriberData() {
         String selectedName = RequestedByCB.getValue();

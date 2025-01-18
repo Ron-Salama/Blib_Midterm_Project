@@ -2,6 +2,7 @@ package gui.baseController;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -155,6 +156,8 @@ public abstract class BaseController {
    }
 
    
-
+   protected void addDelayInMilliseconds(int milliSeconds) throws InterruptedException {
+	   TimeUnit.MILLISECONDS.sleep(milliSeconds);
+   }
 
 }
