@@ -4,19 +4,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="533.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyBooksWindow.MyBooksController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="26.0" layoutY="13.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
-      <Text layoutX="551.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Books" textAlignment="CENTER" wrappingWidth="178.13675498962402">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Text>
       <Line endX="225.00003051757812" endY="25.5175724029541" layoutX="321.0" layoutY="1.0" startX="412.8000183105469" startY="25.517587661743164" />
       <TableView fx:id="tableView" layoutY="219.0" prefHeight="314.0" prefWidth="1245.0">
         <columns>
@@ -35,5 +30,9 @@
          </font>
       </Button>
       <Label id="extensionDynamicLabel" fx:id="extensionDynamicLabel" layoutX="334.0" layoutY="115.0" prefHeight="71.0" prefWidth="591.0" />
+      <Label id="extensionDynamicLabel" fx:id="title" layoutX="597.0" layoutY="-4.0" prefHeight="38.0" prefWidth="505.0" text="My books" />
+      <TextField fx:id="TXTFview" layoutX="344.0" layoutY="90.0" />
+      <Label fx:id="LBLview" layoutX="170.0" layoutY="94.0" text="Input Subscriber ID to View:" />
+      <Button fx:id="btnView" layoutX="512.0" layoutY="90.0" mnemonicParsing="false" onAction="#updateView" text="View" />
    </children>
 </AnchorPane>

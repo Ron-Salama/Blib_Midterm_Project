@@ -141,9 +141,6 @@ public class EchoServer extends AbstractServer {
                 case "IsBookReserved": // Handle isBookReservered:BookId
                 	handleIsBookReservedCase(client,body);
                 	break;
-                case "IP": // Handle IP:<Address>
-                    handleIPCase(client, body);
-                    break;
                 case "GetBooks": // Handle GetBooks:
                 	handleGetBooksCase(client, body);
                     break;
