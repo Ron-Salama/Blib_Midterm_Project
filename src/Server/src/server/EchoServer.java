@@ -97,8 +97,7 @@ public class EchoServer extends AbstractServer {
             System.err.println("Error sending connection message to client: " + e.getMessage());
         }
     }
-    @Override
-    public void clientDisconnected(ConnectionToClient client) {
+    public void clientDisconnect(ConnectionToClient client) throws IOException {
         // Display client disconnection details
         String clientIP = client.getInetAddress().getHostAddress();
         String clientHost = client.getInetAddress().getHostName();
@@ -110,6 +109,7 @@ public class EchoServer extends AbstractServer {
                 + "Connection Status: " + connectionStatus;
 
         outputInOutputStreamAndLog(IPMessage);
+        client.sendToClient("Client disconnected");
     }
 
     public void handleMessageFromClient(Object msg, ConnectionToClient client) {
@@ -189,6 +189,8 @@ public class EchoServer extends AbstractServer {
                 case "Handle register":
                 	HandleRegisterOfSubscriber(client, body);
                 	break;
+                case "EXIT":
+                	clientDisconnect(client);
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;

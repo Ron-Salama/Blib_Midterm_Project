@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
+import client.ClientUI;
 import gui.SearchWindow.SearchFrameController;
 import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
@@ -52,7 +53,7 @@ public class LibrarianStatusReportWindowController extends BaseController implem
     
     public void getExitBtn(ActionEvent event) throws Exception {
 		System.out.println("exit Library Tool");	
-		System.exit(1);
+		ClientUI.chat.accept("EXIT:");
 	}
     
     public void navigateToViewReports(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING VIEW REPORTS WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
