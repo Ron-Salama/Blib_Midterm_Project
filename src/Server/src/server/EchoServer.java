@@ -183,9 +183,9 @@ public class EchoServer extends AbstractServer {
     }
     private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
         try {
-            String bookId = body.trim(); // Book ID passed in the message
-            boolean isReserved = ConnectToDb.isBookReserved(dbConnection, Integer.parseInt(bookId)); // Replace with your DB logic
-            
+            String ISBN = body.trim(); // The ISBN is sent in the message body
+            boolean isReserved = ConnectToDb.isBookReserved(dbConnection, ISBN); // Updated method call
+
             if (isReserved) {
                 client.sendToClient("BookReserved:Yes");
             } else {
@@ -196,6 +196,7 @@ public class EchoServer extends AbstractServer {
             client.sendToClient("BookReserved:Error:" + e.getMessage());
         }
     }
+
     
     private void handleUpdateReturnDate(ConnectionToClient client, String body) {
     	

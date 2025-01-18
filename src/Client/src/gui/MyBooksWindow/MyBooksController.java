@@ -155,17 +155,22 @@ public class MyBooksController extends BaseController implements Initializable {
                     	ClientTimeDiffController clock = new ClientTimeDiffController();
                     	String extendedReturnDate;
                     	ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
-                    	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
-                    	
-                    	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7) && ChatClient.isBookReservedFlag) { // add condition - AND book is not reserved - we check if book reserved in DB.
-                    		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
-                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-                    		tableView.refresh();
-                    	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-                    	    tableView.refresh();
-                    	}else {
-                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied!", "-fx-text-fill: red;");
+                    	if(!(ChatClient.isBookReservedFlag)) {
+                    		if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) { // add condition - AND book is not reserved - we check if book reserved in DB.
+                            	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
+                        		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
+                        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                        		tableView.refresh();
+                        	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+                        	    tableView.refresh();
+                        	}else {
+                        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less.", "-fx-text-fill: red;");
+                        	}
                     	}
+                    	else {
+                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
+                    	}
+                    	
                     });
 
                     returnButton.setOnAction(event -> {
