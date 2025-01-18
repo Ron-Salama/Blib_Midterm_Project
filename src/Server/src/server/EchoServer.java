@@ -124,6 +124,12 @@ public class EchoServer extends AbstractServer {
                 case "Update": // Handle Update:ID,Phone,Email
                 	handleUpdateCase(client, body);
                     break;
+                case "IsBookReserved": // Handle isBookReservered:BookId
+                	handleIsBookReservedCase(client,body);
+                	break;
+                case "IP": // Handle IP:<Address>
+                    handleIPCase(client, body);
+                    break;
                 case "GetBooks": // Handle GetBooks:
                 	handleGetBooksCase(client, body);
                     break;
@@ -188,6 +194,22 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
+    private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
+        try {
+            String ISBN = body.trim(); // The ISBN is sent in the message body
+            boolean isReserved = ConnectToDb.isBookReserved(dbConnection, ISBN); // Updated method call
+
+            if (isReserved) {
+                client.sendToClient("BookReserved:Yes");
+            } else {
+                client.sendToClient("BookReserved:No");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            client.sendToClient("BookReserved:Error:" + e.getMessage());
+        }
+    }
+
     
     private void handleUpdateReturnDate(ConnectionToClient client, String body) {
     	

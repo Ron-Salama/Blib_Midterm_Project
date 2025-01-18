@@ -213,35 +213,23 @@ public class MyBooksController extends BaseController implements Initializable {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                     	ClientTimeDiffController clock = new ClientTimeDiffController();
                     	String extendedReturnDate;
-                    	
-                    	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
-                    	
-                    	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) {
-                    		if(viewing) {
-                    			System.out.println("Librarian Manual Extend");
-                    			ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-	                    		tableView.getItems().clear();
-	                    		try {
-									loadBooks();
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-                    		}else {
-	                    		ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-	                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-	                    		tableView.getItems().clear();
-	                    		try {
-									loadBooks();
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-                    		}
-                    	}else {
-                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied!", "-fx-text-fill: red;");
+                    	ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
+                    	if(!(ChatClient.isBookReservedFlag)) {
+                    		if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) { // add condition - AND book is not reserved - we check if book reserved in DB.
+                            	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
+                        		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
+                        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                        		tableView.refresh();
+                        	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+                        	    tableView.refresh();
+                        	}else {
+                        		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less.", "-fx-text-fill: red;");
+                        	}
                     	}
+                    	else {
+                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
+                    	}
+                    	
                     });
 
                     returnButton.setOnAction(event -> {
@@ -265,6 +253,8 @@ public class MyBooksController extends BaseController implements Initializable {
             });
         }
         
+
+        
         public void navigateToHistory(ActionEvent event) {
         	openWindow(event,
         			"/gui/HistoryWindow/HistoryFrame.fxml",
@@ -273,11 +263,11 @@ public class MyBooksController extends BaseController implements Initializable {
         	
         }
 //
-        public void extendButton(ActionEvent event, BorrowedBook selectedBook) {
-        	System.out.println("nnoooo");
-
-
-        }
+//        public void extendButton(ActionEvent event, BorrowedBook selectedBook) {
+//        	System.out.println("nnoooo");
+//
+//
+//        }
 
     /**
      * Searches for books based on filters entered in the name, description, and subject fields.

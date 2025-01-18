@@ -43,6 +43,8 @@ public class ChatClient extends AbstractClient
   public static ArrayList<String> myHistoryInfo = new ArrayList<String>(); 
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
+  public static boolean isBookReservedFlag = false;
+
   
   
   public static boolean isIDInDataBase;
@@ -91,6 +93,9 @@ public class ChatClient extends AbstractClient
 	        handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
 	    } else if (response.startsWith("subscriber_id:")) {
 	        handleSubscriberData(response);
+	    }
+	    else if (response.startsWith("BookReserved:")) {
+	        handleBookReservedResponse(response.substring("BookReserved:".length()));
 	    }else if (response.startsWith("BorrowedBooks:")) {
             handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
         }else if (response.startsWith("librarian_id:")) {
@@ -126,6 +131,22 @@ public class ChatClient extends AbstractClient
 	    }
 	}
   
+  private void handleBookReservedResponse(String data) {
+	    switch (data.trim()) {
+	        case "Yes":
+	            System.out.println("The book is reserved.");
+	            ChatClient.isBookReservedFlag = true;
+	            break;
+	        case "No":
+	            System.out.println("The book is not reserved.");
+	            ChatClient.isBookReservedFlag = false;
+	            break;
+	        default:
+	            System.out.println("Error checking book reservation status: " + data);
+	            break;
+	    }
+	}
+
   
   private void handleReturnRequestfailure() {
 	System.out.print("Fetch return request failed");
