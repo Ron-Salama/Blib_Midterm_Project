@@ -72,7 +72,8 @@ public class BarcodeScannerWindowController extends BaseController {
         }
 
         // If valid data is received, process and open the next window
-        SubscriberRequestsWindowsController.borrowedBookInformationFromBarcode = ChatClient.BorrowedBookInformationForBarcodeScanner;
+        String[] borrowRequestInformation = ChatClient.BorrowedBookInformationForBarcodeScanner[0].split(",");
+        SubscriberRequestsWindowsController.borrowedBookInformationFromBarcode = borrowRequestInformation;
         
         // Close this window and open the Subscriber Requests Window
         openWindow(event, 

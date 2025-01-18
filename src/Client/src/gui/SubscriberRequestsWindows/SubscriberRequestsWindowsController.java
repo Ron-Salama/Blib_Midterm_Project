@@ -3,6 +3,7 @@ package gui.SubscriberRequestsWindows;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -114,22 +115,24 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     private String borrowDateFromBarcode = null;
     private String returnDateFromBarcode = null;
     
-//    if (borrowInformationFromBarcode) {
-//    	// Set the values given from the barcode scanner into the relavent fields. 
-//        bookIDFromBarcode = borrowedBookInformationFromBarcode[0];
-//		bookNameFromBarcode = borrowedBookInformationFromBarcode[1];
-//		subscriberIDFromBarcode = borrowedBookInformationFromBarcode[2];
-//		subscriberNameFromBarcode = borrowedBookInformationFromBarcode[3];
-//		borrowDateFromBarcode = borrowedBookInformationFromBarcode[4];
-//		returnDateFromBarcode = borrowedBookInformationFromBarcode[5];                  
-//    }
-    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     	if (borrowInformationFromBarcode) {
+    		requestType = "Borrow For Subscriber";
     		ScanBarcode.setVisible(true);
     		BorrowForSubscriber.setSelected(true);
     		Clear.setSelected(false);
+    		TXTF1.setText(borrowedBookInformationFromBarcode[3]); // subscriber name.
+            TXTF2.setText(borrowedBookInformationFromBarcode[2]); // subscriber ID.
+            TXTF3.setText(borrowedBookInformationFromBarcode[1]); // Borrowed book name.
+            TXTF4.setText(borrowedBookInformationFromBarcode[0]); // borrowed book id.
+            TXTF5.setText(borrowedBookInformationFromBarcode[4]); // borrow time
+            
+            // Get the return date as a string, convert and set it in the correct field.
+            LocalDate returnDate = clock.convertStringToLocalDateTime(borrowedBookInformationFromBarcode[5]).toLocalDate();
+            datePicker.setValue(returnDate); // return date. 
+    		
+    		
     	}else {
     		ScanBarcode.setVisible(false);
     		Clear.setSelected(true);
@@ -254,19 +257,11 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
                 LBL6.setText("Expected Return");
-                if (borrowInformationFromBarcode) {
-	                bookIDFromBarcode = borrowedBookInformationFromBarcode[0];
-	        		bookNameFromBarcode = borrowedBookInformationFromBarcode[1];
-	        		subscriberIDFromBarcode = borrowedBookInformationFromBarcode[2];
-	        		subscriberNameFromBarcode = borrowedBookInformationFromBarcode[3];
-	        		borrowDateFromBarcode = borrowedBookInformationFromBarcode[4];
-	        		returnDateFromBarcode = borrowedBookInformationFromBarcode[5];                  
-                }else {
 	                ClientUI.chat.accept("FetchBorrowRequest:");
 	                requestType = "Borrow For Subscriber";
 	                addDelayInMilliseconds(500); // Half a second delay.
 	                handleFetchedBorrowedBooks();
-                }
+             //   }
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
@@ -291,8 +286,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF5.setVisible(true);
                 break;
         }
-
     }
+
     private void handleReturnofBorrowedBook() {
     	
     	 ReturnRequests.clear();  // Clear the existing list to avoid duplicate data
