@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -150,6 +152,11 @@ public class EchoServer extends AbstractServer {
                 case "Reserve": //Handle Reservations
                 	handleReserveRequestCase(client, body);
                 	break;
+                //***************************************************	
+                case "ReserveSuccess": //Handle Reservations
+                	handleReserveSuccessCase(client, body);
+                	break;
+                //***************************************************
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
                 	handleFetchBorrowRequestCase(client, body);
                     break;
@@ -465,7 +472,7 @@ public class EchoServer extends AbstractServer {
             String subscriberId = reserveParts[0].trim();
             String bookName = reserveParts[1].trim();
             String reserveDate = reserveParts[2].trim();
-            String retrieveDate = reserveParts[3].trim();
+            String reserveStatus = reserveParts[3].trim();
             String bookId = reserveParts[4].trim();
 
             try {
@@ -474,7 +481,7 @@ public class EchoServer extends AbstractServer {
                                            subscriberId,             // subscriber_id
                                            bookName,                 // name
                                            reserveDate,            // reserve_time
-                                           retrieveDate,          // retrieve_time
+                                           reserveStatus,          // reserve_status
                                            bookId);              // ISBN
 
 
@@ -623,6 +630,82 @@ public class EchoServer extends AbstractServer {
   //*************************************************************************
   //*************************************************************************
   //*************************************************************************
+    
+    
+    
+    
+    
+    
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+   //*************************************************************************
+    private void handleReserveSuccessCase(ConnectionToClient client, String body) throws IOException {
+        // Split the body to extract the subscriberId and bookId
+        String[] borrowParts = body.split(",");
+
+        if (borrowParts.length == 2) {
+            String subscriberId = borrowParts[0].trim();
+            String bookId = borrowParts[1].trim();
+
+            // Query to fetch reserved books by the subscriberId and bookId
+            String query = "SELECT * FROM reserved_books WHERE subscriber_id = ? AND ISBN = ?";
+
+            try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
+                stmt.setString(1, subscriberId); // Set the subscriberId parameter
+                stmt.setString(2, bookId); // Set the ISBN (bookId) parameter
+
+                // Execute the query and get the result set
+                ResultSet resultSet = stmt.executeQuery();
+
+                int smallestReserveId = Integer.MAX_VALUE;
+                int reserveIdToDelete = -1;  // Variable to store the reserve_id to delete
+
+                // Loop through the result set to find the row with the smallest reserve_id
+                while (resultSet.next()) {
+                    int reserveId = resultSet.getInt("reserve_id");
+                    if (reserveId < smallestReserveId) {
+                        smallestReserveId = reserveId;
+                        reserveIdToDelete = reserveId;  // Store the smallest reserve_id to delete
+                    }
+                }
+
+                if (reserveIdToDelete != -1) {
+                    // Delete the reservation with the smallest reserve_id
+                    String deleteQuery = "DELETE FROM reserved_books WHERE reserve_id = ?";
+                    try (PreparedStatement deleteStmt = dbConnection.prepareStatement(deleteQuery)) {
+                        deleteStmt.setInt(1, reserveIdToDelete); // Set the reserve_id parameter
+                        int rowsAffected = deleteStmt.executeUpdate();
+
+                        // Check if the deletion was successful
+                        if (rowsAffected > 0) {
+                            client.sendToClient("ReservedBooks:Success:Book borrowed successfully, reservation deleted.");
+                           
+                            // Create an instance of ConnectToDB and call the decreaseReservedCopiesNum method
+                            ConnectToDb.decreaseReservedCopiesNum(dbConnection, bookId);  // Decrease reserved copies for the book
+                        } else {
+                            client.sendToClient("ReservedBooks:Error:Failed to delete reservation.");
+                        }
+                    }
+                } else {
+                    client.sendToClient("ReservedBooks:Error:No reservation found for the given subscriberId and bookId.");
+                }
+            } catch (Exception e) {
+                client.sendToClient("ReservedBooks:Error:" + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
 
     
     private void handleFetchBorrowRequestCase(ConnectionToClient client, String body) throws IOException{

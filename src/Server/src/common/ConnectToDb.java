@@ -290,7 +290,7 @@ public class ConnectToDb {
                     				  rs.getInt("subscriber_id") + "," +
                                       rs.getString("name") + "," +
                                       rs.getString("reserve_time") + "," +
-                                      rs.getString("retrieve_time") + "," +
+                                      rs.getString("reserve_status") + "," +
                                       rs.getString("ISBN");
                     reservedBooks.add(bookData);
                 }
@@ -310,6 +310,10 @@ public class ConnectToDb {
   //************************************************************************************
     
     
+    
+    
+    
+ 
     public static boolean checkIfIdExists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
@@ -492,11 +496,11 @@ public class ConnectToDb {
     //**********************************************************************************************************
 
     public static void insertReservedBook(Connection conn, String subscriber_id,
-            String bookName, String reserveTime, String retrieveTime, String BookId)
+            String bookName, String reserveTime, String reserveStatus, String BookId)
             throws SQLException {
 
     // SQL query to insert a new record into the reserved_books table without reserveId
-    String query = "INSERT INTO reserved_books (subscriber_id, name, reserve_time, retrieve_time, ISBN) "
+    String query = "INSERT INTO reserved_books (subscriber_id, name, reserve_time, reserve_status, ISBN) "
                  + "VALUES (?, ?, ?, ?, ?)";
 
     try (PreparedStatement pstmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -504,7 +508,7 @@ public class ConnectToDb {
         pstmt.setString(1, subscriber_id);
         pstmt.setString(2, bookName);
         pstmt.setString(3, reserveTime);
-        pstmt.setString(4, retrieveTime);
+        pstmt.setString(4, reserveStatus);
         pstmt.setString(5, BookId);
 
         // Execute the insert and get the number of affected rows
@@ -631,6 +635,42 @@ public class ConnectToDb {
    	 //************************************************************************************
    	 //************************************************************************************
    	 //************************************************************************************
+	
+	
+	//************************************************************************************
+ 	 //************************************************************************************
+ 	 //************************************************************************************
+ 	 //************************************************************************************
+ 	 //************************************************************************************
+
+  	 //@SuppressWarnings("unused")
+	public static void decreaseReservedCopiesNum(Connection conn, String bookId) throws SQLException {
+	    // SQL query to decrement ReservedCopiesNum by 1 for the given bookId
+	    String query = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum - 1 WHERE ISBN = ? AND ReservedCopiesNum > 0";
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+	        // Set the bookId parameter
+	        pstmt.setString(1, bookId);
+
+	        // Execute the update statement
+	        int affectedRows = pstmt.executeUpdate();
+
+	        // If no rows were updated, it means there are no copies left or the bookId does not exist
+	        if (affectedRows == 0) {
+	            System.out.println("Invalid bookId: " + bookId + " or no reserved copies left.");
+	        } else {
+	            System.out.println("Successfully decremented ReservedCopiesNum for bookId: " + bookId);
+	        }
+	    }
+	}
+  	 
+  	 
+  	 
+  	 //************************************************************************************
+  	 //************************************************************************************
+  	 //************************************************************************************
+  	 //************************************************************************************
+  	 //************************************************************************************
 
     public static String fetchReturnRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();

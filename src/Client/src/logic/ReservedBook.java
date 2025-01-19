@@ -18,8 +18,8 @@ public class ReservedBook {
     /** The current reserveDate of the borrowed book. */
     private String reserveDate;
     
-    /** The current retrieveDate of the borrowed book. */
-    private String retrieveDate;
+    /** The current reserveStatus of the borrowed book. */
+    private String reserveStatus;
     
     /** The time left to retrieve the book. */
     private int timeLeftToRetrieve;
@@ -35,12 +35,12 @@ public class ReservedBook {
      * @param timeLeftToReturn the time left to return the book, in days
      * @return 
      */
-    public ReservedBook(int reserveId, int subscriberId, String name, String reserveDate, String retrieveDate, String ISBN) {
+    public ReservedBook(int reserveId, int subscriberId, String name, String reserveDate, String reserveStatus, String ISBN) {
         this.reserveId = reserveId;
         this.subscriberId = subscriberId;
         this.name = name;
         this.reserveDate = reserveDate;
-        this.retrieveDate = retrieveDate;
+        this.reserveStatus = reserveStatus;
         this.ISBN = ISBN;
     }
 
@@ -85,13 +85,13 @@ public class ReservedBook {
 	}
 
 
-	public String getRetrieveDate() {
-		return retrieveDate;
+	public String getReserveStatus() {
+		return reserveStatus;
 	}
 
 
-	public void setRetrieveDate(String retrieveDate) {
-		this.retrieveDate = retrieveDate;
+	public void setReserveStatus(String reserveStatus) {
+		this.reserveStatus = reserveStatus;
 	}
 
 
@@ -107,6 +107,6 @@ public class ReservedBook {
 
 	@Override
     public String toString() {
-        return  ISBN+" "+name+" "+reserveDate+" "+retrieveDate+" "+timeLeftToRetrieve;
+        return  ISBN+" "+name+" "+reserveDate+" "+reserveStatus+" "+timeLeftToRetrieve;
     }
 }

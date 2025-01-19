@@ -1,9 +1,2 @@
 Server listening for connections on port 5555
 Connected to the database.
-Client connected.
-Client IP:10.0.0.4
-Client Hostname: 10.0.0.4
-Connection Status: Connected
-Message received: IP:10.0.0.4 from 10.0.0.4 (10.0.0.4)
-Message received: Fetch:1 from 10.0.0.4 (10.0.0.4)
-Message received: GetReservedBooks:1 from 10.0.0.4 (10.0.0.4)

@@ -1,5 +1,6 @@
 package gui.MyReservationsWindow;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
@@ -23,13 +24,18 @@ import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
 import logic.ReservedBook;
 import logic.Subscriber;
+import gui.BorrowBookWindow.BorrowBookController;
+import logic.ClientTimeDiffController;
 
 public class MyReservationsController extends BaseController implements Initializable {
     private MyReservationsController mrc;
+    ClientTimeDiffController clockController = new ClientTimeDiffController();
     
     @FXML
 	private Label title;
-
+    
+    @FXML
+	private Label feedBack;
     
     @FXML
     private TableView<ReservedBook> tableView;
@@ -47,7 +53,7 @@ public class MyReservationsController extends BaseController implements Initiali
     private TableColumn<ReservedBook, String> tableReservationStatus;
     
     @FXML
-    private TableColumn<ReservedBook, String> actions;
+    private TableColumn<ReservedBook, Void> actions;
     
     @FXML
     private Button btnCancelReservation;
@@ -71,7 +77,7 @@ public class MyReservationsController extends BaseController implements Initiali
         tableId.setCellValueFactory(new PropertyValueFactory<>("ISBN")); // ISBN column
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
         tableReservationDate.setCellValueFactory(new PropertyValueFactory<>("reserveDate")); // Reserve Date column
-        tableReservationStatus.setCellValueFactory(new PropertyValueFactory<>("reservationStatus")); // Reservation Status column
+        tableReservationStatus.setCellValueFactory(new PropertyValueFactory<>("reserveStatus")); // Reservation Status column
         actions.setCellValueFactory(new PropertyValueFactory<>("Actions")); // Actions column
         
 
@@ -84,13 +90,9 @@ public class MyReservationsController extends BaseController implements Initiali
         
         
         
-        //********************
-        //********************
-        //********************
-        //setupActionsColumn();
-        //********************
-        //********************
-        //********************
+        
+        setupActionsColumn();
+        
         
         
         
@@ -118,39 +120,114 @@ public class MyReservationsController extends BaseController implements Initiali
     }
 
     
-   /* private void setupActionsColumn() {
-        actions.setCellFactory(param -> new TableCell<ReservedBook, Void>() { 
-            private final Button retrieveButton = new Button("Retrieve Book");
+    private void setupActionsColumn() {
+        actions.setCellFactory(param -> new TableCell<ReservedBook, Void>() {
+            private final Button retrieveButton = new Button("Retrieve");
 
             {
                 // Button action when clicked
                 retrieveButton.setOnAction(event -> {
                     ReservedBook reservedBook = getTableView().getItems().get(getIndex());
-                    handleRetrieveBook(reservedBook);
+                    handleRetrieveBook(event, reservedBook);  // Handle the "Retrieve" logic
+                    
+                    // Disable the button when it's clicked
+                    retrieveButton.setDisable(true);
+                    
+                    // After disabling the button, update the table view
+                    getTableView().refresh();  // Refresh the table to ensure the button state is updated
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+                
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null);
+                    setGraphic(null);  // No button if the row is empty or has no item
                 } else {
-                    ReservedBook reservedBook = getTableRow().getItem();
-                    if ("Available".equals(reservedBook.getReservationStatus())) {
-                        // If a copy is available, show the retrieve button
+                    ReservedBook reservedBook = (ReservedBook) getTableRow().getItem();
+                    
+                    // If the reserve status is what we expect, show the "Retrieve" button
+                    if ("your book is waiting for you :)".equals(reservedBook.getReserveStatus())) {
                         setGraphic(retrieveButton);
+                        
+                        // If the button is already clicked, disable it
+                        if (retrieveButton.isDisabled()) {
+                            retrieveButton.setDisable(true);
+                        }
                     } else {
-                        setGraphic(null); // No button if not available
+                        setGraphic(null);  // Hide the button for other statuses
                     }
                 }
             }
         });
-    }*/
+    }
+
+
+
+
     
     
     
-   /* private void updateReservationStatus() {
+    protected void handleRetrieveBook(ActionEvent event, ReservedBook reservedBook) {
+        // Log for debugging
+        System.out.println("Retrieve button clicked for book: " + reservedBook.getName());
+
+        // Step 2: Directly submit the borrow request with the specific reservedBook
+        try {
+            Submit_Borrow_Request(event, reservedBook);
+            // Feedback to the user
+            showColoredLabelMessageOnGUI(feedBack, "Book reservation success! A borrow request has been sent.\nAwaiting Librarian approval", "-fx-text-fill: green;");
+            
+            // Disable the retrieve button after clicking
+            Button retrieveButton = (Button) event.getSource();  // Get the button that was clicked
+            retrieveButton.setDisable(true);  // Disable the button to prevent further clicks
+            
+        } catch (Exception e) {
+            // Handle any potential errors
+            showColoredLabelMessageOnGUI(feedBack, "An error occurred while processing the borrow request.", "-fx-text-fill: red;");
+            e.printStackTrace();
+        }
+
+        // Step 3: Update table view to reflect changes
+        tableView.refresh();
+    }
+
+
+
+
+    
+    
+    public void Submit_Borrow_Request(ActionEvent event, ReservedBook reservedBook) throws Exception {
+        // Collect subscriber and book details from the passed reservedBook
+        String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
+        String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
+
+        // Use the details from the reservedBook
+        String bookId = reservedBook.getISBN();
+        String bookName = reservedBook.getName();
+        String borrowDate = clockController.timeNow();
+        String returnDate = clockController.calculateReturnDate(14);
+
+        String borrowRequest = subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
+        ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
+        
+        // Step 2: Call the method to delete the reservation from the database
+        deleteReservationFromDatabase(reservedBook);
+    }
+
+    private void deleteReservationFromDatabase(ReservedBook reservedBook) {
+    	// Collect subscriber and book details from the passed reservedBook
+        String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
+    	// Use the details from the reservedBook
+        String bookId = reservedBook.getISBN();
+        
+        String reserveSuccess = subscriberId + "," + bookId;
+        ClientUI.chat.accept("ReserveSuccess:" + reserveSuccess);
+    }
+
+    
+/* private void updateReservationStatus() {
         // Iterate through the reservations and update the status based on time remaining
         for (ReservedBook reservedBook : tableView.getItems()) {
             if ("Available".equals(reservedBook.getReservationStatus())) {
