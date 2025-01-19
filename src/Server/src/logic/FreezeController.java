@@ -28,8 +28,10 @@ public class FreezeController extends BaseController {
 				ConnectToDb.freezeSubscriber(EchoServer.taskSchedulerConnection, subscriberID); // Freeze user given their id.
 
 				// log on both CMD and Log that the user has been frozen.
-				String subscriber = ConnectToDb.fetchSubscriberData(EchoServer.taskSchedulerConnection, bookData[1]); 
-				EchoServer.outputInOutputStreamAndLog(clock.timeNow() + ": " + subscriber.toString() + " has been frozen because they were late at returning the book: " + bookName);
+				String subscriber = ConnectToDb.fetchSubscriberData(EchoServer.taskSchedulerConnection, bookData[1]);
+				String subscriberName = subscriber.split(",")[1].split(":")[1]; // Grab the name of the subscriber.				
+			
+				EchoServer.outputInOutputStreamAndLog(clock.timeNow() + ": subscriber No' " + subscriberID + ", " + subscriberName + " has been frozen because they were late at returning the book: " + bookName);
 				
 			}
 		}
@@ -44,12 +46,14 @@ public class FreezeController extends BaseController {
 
 			if (!status[1].equals("Not Frozen")) { // subscriber is frozen.
 				int subscriberID = Integer.valueOf(subscriberInformation[0].split(":")[1]);  // Get the subscriber's ID.
+				String subscriberName = subscriberInformation[1].split(":")[1];
 				String frozenAt = status[2]; // Grab the date in which the subscriber got frozen,
+				
 				if (clock.hasMonthPassed(frozenAt)) { // Check if the subscriber is frozen for a month or more. if so, "unfreeze" him.
 					
 					ConnectToDb.unfreezeSubscriber(EchoServer.taskSchedulerConnection, subscriberID);
 					// Log that the subscriber got unfrozen both in CMD and log.
-					EchoServer.outputInOutputStreamAndLog(clock.timeNow() + ": " + subscriber.toString() + " unfrozen since a month has passed.");
+					EchoServer.outputInOutputStreamAndLog(clock.timeNow() + ": subscriber No' " + subscriberID + ", " + subscriberName + " unfrozen since a month has passed.");
 					
 				}
 			}
