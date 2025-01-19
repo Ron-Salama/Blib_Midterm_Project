@@ -1,11 +1,15 @@
 Server listening for connections on port 5555
 Connected to the database.
+Server daily tasks done.
 Client connected.
-Client IP:10.0.0.8
-Client Hostname: 10.0.0.8
+Client IP:172.20.10.3
+Client Hostname: YuvalDesktop
 Connection Status: Connected
-Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetHistory:1 from 10.0.0.8 (10.0.0.8)
-Received GetHistory request from client
+Message received: IP:172.20.10.3 from YuvalDesktop (172.20.10.3)
+Message received: Fetch:11 from YuvalDesktop (172.20.10.3)
+Client connected.
+Client IP:172.20.10.3
+Client Hostname: YuvalDesktop
+Connection Status: Connected
+Message received: IP:172.20.10.3 from YuvalDesktop (172.20.10.3)
+Message received: Fetch:11 from YuvalDesktop (172.20.10.3)

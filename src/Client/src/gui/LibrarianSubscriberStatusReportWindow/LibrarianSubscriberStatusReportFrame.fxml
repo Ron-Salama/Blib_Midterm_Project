@@ -7,13 +7,13 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.LibrarianSubscriberStatusReportWindow.LibrarianSubscriberStatusReportController">
     <BarChart fx:id="ganttChart" layoutX="14.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0">
-        <!-- X-axis: NumberAxis for days of the month -->
+        <!-- X-axis: CategoryAxis for days of the month -->
         <xAxis>
-            <NumberAxis fx:id="xAxis" label="Day of Month"/>
+            <CategoryAxis fx:id="xAxis" label="Day of Month"/>
         </xAxis>
-        <!-- Y-axis: CategoryAxis for Subscriber names -->
+        <!-- Y-axis: NumberAxis for Subscriber IDs or numerical data -->
         <yAxis>
-            <CategoryAxis fx:id="yAxis" label="Subscriber"/>
+            <NumberAxis fx:id="yAxis" label="Subscriber"/>
         </yAxis>
     </BarChart>
 </AnchorPane>

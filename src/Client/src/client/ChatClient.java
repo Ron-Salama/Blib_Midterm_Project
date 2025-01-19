@@ -45,6 +45,7 @@ public class ChatClient extends AbstractClient
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
   public static boolean isBookReservedFlag = false;
+  public static List<Subscriber> allSubscriberData;
   
   public static ClientTimeDiffController clock = new ClientTimeDiffController();
 
@@ -134,6 +135,9 @@ public class ChatClient extends AbstractClient
 	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
 	    }else if(response.equals("Client disconnected")) {
 	    	System.exit(1);
+	    }
+	    else if (response.startsWith("AllSubscriberInformation:")) {
+	    	handleAllSubscriberInformation(response.substring("AllSubscriberInformation:".length()));
 	    }
 	}
   
@@ -431,6 +435,25 @@ private void handleBorrowedBooksResponse(String data) {
           l1.setLibrarian_id(-1); // Mark as not found
       }
   }
+	
+	private void handleAllSubscriberInformation(String msg) {
+		List<Subscriber> subscriberList = new ArrayList<Subscriber>();
+		// Split the msg so each element contains all of the information for a subscriber one at a time.
+		String[] subscribersInformation = msg.split(";");
+		
+		for (String subscriberData : subscribersInformation) {
+			String[] subscriberInformation = subscriberData.split(","); // Split the information of the subscriber themselves.
+			
+			subscriberList.add(new Subscriber(Integer.valueOf(subscriberInformation[0]),
+					Integer.valueOf(subscriberInformation[1]),
+					subscriberInformation[2],
+					subscriberInformation[3],
+					subscriberInformation[4],
+					subscriberInformation[5]));
+		}
+		
+		allSubscriberData = subscriberList;
+	}
 	
 	
 	private void handleBarcodeFetchBorrowedBookRequest(String data) {

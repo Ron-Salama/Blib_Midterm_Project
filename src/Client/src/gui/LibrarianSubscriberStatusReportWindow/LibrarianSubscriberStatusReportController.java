@@ -1,100 +1,152 @@
 package gui.LibrarianSubscriberStatusReportWindow;
 
-import java.time.LocalDateTime;
-import java.time.Year;
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
+import client.ChatClient;
+import client.ClientUI;
+import gui.baseController.BaseController;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
+import logic.Subscriber;
 
-public class LibrarianSubscriberStatusReportController {
-
-    @FXML
-    private BarChart<Number, String> ganttChart;  // Change to Number for X-axis (NumberAxis)
+public class LibrarianSubscriberStatusReportController extends BaseController{
 
     @FXML
     private AnchorPane root;
 
-    // Sample data for subscribers' frozen times
-    private List<FreezePeriod> freezePeriods;
+    @FXML
+    private BarChart<String, Number> ganttChart;
 
     @FXML
-    public void initialize() {
-        // Initialize chart title and axis labels
-        ganttChart.setTitle("Subscriber Freeze Status");
-        ganttChart.getYAxis().setLabel("Subscriber");
+    private CategoryAxis xAxis;
 
-        // Adding freeze data (this can be loaded from a database)
-        freezePeriods = Arrays.asList(
-                new FreezePeriod("Subscriber 1", LocalDateTime.of(2025, 1, 1, 0, 0), LocalDateTime.of(2025, 1, 3, 0, 0)),
-                new FreezePeriod("Subscriber 2", LocalDateTime.of(2025, 1, 2, 0, 0), LocalDateTime.of(2025, 1, 4, 0, 0)),
-                new FreezePeriod("Subscriber 3", LocalDateTime.of(2025, 1, 4, 0, 0), LocalDateTime.of(2025, 1, 7, 0, 0))
-        );
+    @FXML
+    private NumberAxis yAxis;
 
-        // Update chart with the freeze data
-        updateChart();
+    private int year = 2025; // Set the year dynamically
+    private Month month = Month.JANUARY; // Set the month dynamically
+
+    /**
+     * Initializes the view by preparing the chart data and configurations.
+     * @throws InterruptedException 
+     */
+    @FXML
+    public void initialize() throws InterruptedException {
+        // Ensure all elements are injected
+        System.out.println("ganttChart: " + ganttChart);
+        System.out.println("xAxis: " + xAxis);
+        System.out.println("yAxis: " + yAxis);
+
+        // Prepare chart data with custom dates
+        updateChart(year, month);
     }
 
-    private void updateChart() {
-        // Calculate number of days in the current month
-        int daysInMonth = getDaysInMonth();
+    /**
+     * Updates the chart with subscriber status data for a given year and month.
+     * @throws InterruptedException 
+     */
+    private void updateChart(int year, Month month) throws InterruptedException {
+    	 if (ganttChart != null && xAxis != null && yAxis != null) {
+    	        // Generate date range for the selected month
+    	        List<String> datesNotFormatted = getDateRange(year, month);
 
-        // Get the CategoryAxis from FXML for Y-axis
-        CategoryAxis yAxis = (CategoryAxis) ganttChart.getYAxis();
+    	        // Prepare a list to store the correctly formatted dates
+    	        List<String> dates = new ArrayList<>();
 
-        // Create the series for the chart
-        XYChart.Series<Number, String> series = new XYChart.Series<>();
-        series.setName("Frozen Period");
+    	        // Formatter to handle input date format (yyyy-MM-dd)
+    	        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");  // Desired output format
 
-        // Loop over the freeze periods to add the data
-        for (FreezePeriod period : freezePeriods) {
-            // Convert start and end times to integer days
-            int startDay = period.getStart().getDayOfMonth();
-            int endDay = period.getEnd().getDayOfMonth();
+    	        for (String date : datesNotFormatted) {
+    	            try {
+    	                // Parse the date string to LocalDate using the input format
+    	                LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
 
-            // Add data points for the frozen periods
-            for (int day = startDay; day <= endDay; day++) {
-                series.getData().add(new XYChart.Data<>(day, period.getSubscriberName()));
+    	                // Format the LocalDate to the desired format (dd-MM-yyyy)
+    	                dates.add(parsedDate.format(outputFormatter)); // Add formatted date to the list
+    	            } catch (Exception e) {
+    	                // Handle error if the date format does not match or conversion fails
+    	                System.err.println("Error parsing date: " + date);
+    	            }
+    	        }
+            
+
+            // Set up the x-axis categories with the dates (Days of the month)
+            xAxis.setCategories(FXCollections.observableArrayList(dates)); 
+
+            // Creating data series for multiple subscribers
+            List<XYChart.Series<String, Number>> subscriberSeriesList = new ArrayList<>();
+
+            // Gather subscriber data from database.
+            ClientUI.chat.accept("FetchAllSubscriberData:");// XXX
+            
+            // XXX add delay
+            addDelayInMilliseconds(2000);
+            
+            // Implement all of the subscriber information into a local variable.
+            
+            // XXX I stopped here on 19.1 23:50 because allSubscriberData is null, which means that the function in ChatClient doesn't get invoked.
+            List<Subscriber> subscribers = ChatClient.allSubscriberData;
+
+            // Add each subscriber's data to the chart
+            for (Subscriber subscriber : subscribers) {
+                XYChart.Series<String, Number> series = new XYChart.Series<>();
+                series.setName(subscriber.getSubscriber_name());
+
+                String status = subscriber.getStatus();
+                
+                // XXX chcek that everything is all good and well up until this point.
+                
+                
+//                // Add frozen periods for this subscriber (color bars on the Gantt chart)
+//                for (FrozenPeriod period : subscriber.getFrozenPeriods()) {
+//                    String startDate = period.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
+//                    String endDate = period.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
+//
+//                    // Add the frozen period to the chart data series
+//                    for (String date : dates) {
+//                        if (date.equals(startDate) || date.equals(endDate)) {
+//                            series.getData().add(new XYChart.Data<>(date, subscriber.getId()));
+//                        }
+//                    }
+//                }
+//                subscriberSeriesList.add(series);
             }
-        }
 
-        // Clear previous data and add the new data series
-        ganttChart.getData().clear();
-        ganttChart.getData().add(series);
-    }
-    
-    private int getDaysInMonth() {
-        // Get the number of days in the current month
-        int year = LocalDateTime.now().getYear();
-        return LocalDateTime.now().getMonth().length(Year.isLeap(year));
-    }
-
-
-    public static class FreezePeriod {
-        private final String subscriberName;
-        private final LocalDateTime start;
-        private final LocalDateTime end;
-
-        public FreezePeriod(String subscriberName, LocalDateTime start, LocalDateTime end) {
-            this.subscriberName = subscriberName;
-            this.start = start;
-            this.end = end;
-        }
-
-        public String getSubscriberName() {
-            return subscriberName;
-        }
-
-        public LocalDateTime getStart() {
-            return start;
-        }
-
-        public LocalDateTime getEnd() {
-            return end;
+            // Add the series to the chart
+            ganttChart.getData().setAll(subscriberSeriesList);
+        } else {
+            System.out.println("Something went wrong: One of the components is null.");
         }
     }
+
+    /**
+     * Generate a list of date strings for the given year and month.
+     * @param year The year of the desired month
+     * @param month The month for which to generate the date range
+     * @return List of date strings in format YYYY-MM-DD
+     */
+    private List<String> getDateRange(int year, Month month) {
+        List<String> dateRange = new ArrayList<>();
+        LocalDate start = LocalDate.of(year, month, 1);
+        int daysInMonth = start.lengthOfMonth(); // Get the number of days in the month
+
+        // Generate the date strings for all days in the month
+        for (int i = 1; i <= daysInMonth; i++) {
+            LocalDate currentDate = start.withDayOfMonth(i);
+            dateRange.add(currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        }
+
+        return dateRange;
+    }
+
 }
