@@ -87,7 +87,7 @@ public class SubscriberWindowController extends BaseController implements Initia
 	    	status = frozenData[1]; // Make the status easier to manipulate and use.
 	    	
 	    	// Take the date the account was frozen at, add a month and return it as a string.
-	    	frozenUntil = clock.convertStringToLocalDateTime(frozenData[2]).plusMonths(1).toLocalDate().format(clock.getDateFormatter()).toString(); //XXX
+	    	frozenUntil = clock.convertStringToLocalDateTime(frozenData[2]).plusMonths(1).toLocalDate().format(clock.getDateFormatter()).toString();
 	    	
 	    	btnBorrow.setDisable(true);
             changefrozenUntilAndDaysLeftDynamicTextToSubsriberStatus();
@@ -128,12 +128,6 @@ public class SubscriberWindowController extends BaseController implements Initia
         		"/gui/MainMenu/MainMenuFrame.css",
         		"Main Menu");;
     }
-   
-   //TODO ***DONT DELETE IMPORTANT FOR LATER USE*** 
-   /* public void getbtnMyBooks(ActionEvent event) throws Exception {
-	    openMyBooksWindow(event);
-	}
-    */
     
     public void openMyBooksWindow(ActionEvent event) throws Exception {
     	MyBooksController.viewing = false;
@@ -215,8 +209,6 @@ public class SubscriberWindowController extends BaseController implements Initia
                 "-fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.7), 5, 0.3, 0, 0); " +
                 "-fx-font-weight: bold;";
     	
-    	//String status = currentSubscriber.getStatus();
-    	//String[] frozenDate = clock.parseFrozenSubscriberStatus(status);
     	int daysLeftUntilUnfrozen = clock.timeDateDifferenceBetweenTwoDates(clock.timeNow(), frozenUntil);
     	String frozenMessage = "Frozen until: " + frozenUntil + "\nDays left until unfrozen: " +  daysLeftUntilUnfrozen;
     	showColoredLabelMessageOnGUI(frozenUntilAndDaysLeftDynamicText, frozenMessage, frozenStyle);

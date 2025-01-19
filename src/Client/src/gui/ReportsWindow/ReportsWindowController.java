@@ -129,5 +129,11 @@ public class ReportsWindowController extends BaseController implements Initializ
     			"Main Menu");
     }
     
+    public void openSubscriberStatusReport(ActionEvent event) throws Exception{
+    	openWindow(event,
+    			"/gui/LibrarianSubscriberStatusReportWindow/LibrarianSubscriberStatusReportFrame.fxml",
+    			"/gui/LibrarianSubscriberStatusReportWindow/LibrarianSubscriberStatusReportFrame.css",
+    			"Subscriber Status Report");
+    }
    
 }
