@@ -85,7 +85,9 @@ public class SubscriberWindowController extends BaseController implements Initia
 	    
 	    if (isSubsriberFrozen(frozenData[1])) {
 	    	status = frozenData[1]; // Make the status easier to manipulate and use.
-	    	frozenUntil = frozenData[2];
+	    	
+	    	// Take the date the account was frozen at, add a month and return it as a string.
+	    	frozenUntil = clock.convertStringToLocalDateTime(frozenData[2]).plusMonths(1).toLocalDate().format(clock.getDateFormatter()).toString(); //XXX
 	    	
 	    	btnBorrow.setDisable(true);
             changefrozenUntilAndDaysLeftDynamicTextToSubsriberStatus();
@@ -155,21 +157,6 @@ public class SubscriberWindowController extends BaseController implements Initia
         		"/gui/UpdateInfoWindow/UpdateInfoFrame.css",
         		"Update Information");;
 	}
-    
-    //TODO ******DONT DELETE, THIS IS IMPORTANT FOR LATER FOR THE USE OF GOING TO THE MyBooks WINDOW AFTER PUSHING THE MyBooks BUTTON********
-    /*private void openMyBooksWindow(ActionEvent event) {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MyBooksWindowController/MyBooksWindow.fxml"));
-        Parent root = loader.load();
-
-        // Set up the scene and stage
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/gui/MyBooksWindowController/MyBooksWindow.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("TEST--WILL--CHANGE--LATER");
-        stage.show();
-	}
-    */
     
     /**
      * Starts the Subscriber Window application.
