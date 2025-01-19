@@ -209,7 +209,7 @@ public class MyReservationsController extends BaseController implements Initiali
         String borrowDate = clockController.timeNow();
         String returnDate = clockController.calculateReturnDate(14);
 
-        String borrowRequest = subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
+        String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
         ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
         
         // Step 2: Call the method to delete the reservation from the database
