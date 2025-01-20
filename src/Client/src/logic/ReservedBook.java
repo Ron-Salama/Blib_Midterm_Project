@@ -25,6 +25,8 @@ public class ReservedBook {
     private int timeLeftToRetrieve;
     
     private String ISBN;
+    
+    private String bookIsAvailableDate;
 
     /**
      * Constructs a new BorrowedBook with the specified details.
@@ -103,8 +105,16 @@ public class ReservedBook {
 	public void setISBN(String iSBN) {
 		ISBN = iSBN;
 	}
-
-
+	
+	
+	public String getBookIsAvailableDate() {
+		return bookIsAvailableDate;
+	}
+	
+	public void setBookIsAvailableDate(String bookIsAvailableDate) {
+		this.bookIsAvailableDate = bookIsAvailableDate;
+	}
+	
 	@Override
     public String toString() {
         return  ISBN+" "+name+" "+reserveDate+" "+reserveStatus+" "+timeLeftToRetrieve;
