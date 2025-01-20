@@ -125,7 +125,10 @@ public class IPInputController extends BaseController {
      * @throws Exception if an error occurs while exiting.
      */
     public void getExitBtn(ActionEvent event) throws Exception {
-        System.out.println("exit Library Tool");
+    	System.out.println("Exit BLib library system");
+    	if (ClientUI.isIPValid != true) { // Meaning there`s no connection and the client exists by itself.
+    		System.exit(1);
+    	}
         ClientUI.chat.accept("EXIT:");
     }
 
