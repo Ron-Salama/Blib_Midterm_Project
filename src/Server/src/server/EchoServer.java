@@ -212,6 +212,10 @@ public class EchoServer extends AbstractServer {
                 	HandleLost(client,body);
                 case "EXIT":
                 	clientDisconnect(client);
+                case "FetchAllSubscriberData":
+                	handleFetchAllSubscriberData(client);
+                case "FetchAllSubscriberInformationForReports":
+                	handleFetchAllSubscriberDataForReports(client);
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -953,6 +957,14 @@ public class EchoServer extends AbstractServer {
         }
     }
 
+    private void handleFetchAllSubscriberData(ConnectionToClient client) throws IOException{
+    	client.sendToClient("AllSubscriberInformation:" + ConnectToDb.fetchAllData(dbConnection)); 
+    }
+    private void handleFetchAllSubscriberDataForReports(ConnectionToClient client) throws IOException{
+
+    	client.sendToClient("AllSubscriberInformationForReports:" + ConnectToDb.fetchAllDataForReports(dbConnection)); 
+
+    }
 
     private boolean isOpen(ConnectionToClient client) {
         return client != null;

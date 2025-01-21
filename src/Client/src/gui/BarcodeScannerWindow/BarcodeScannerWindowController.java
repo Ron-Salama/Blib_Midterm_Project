@@ -67,7 +67,7 @@ public class BarcodeScannerWindowController extends BaseController {
 
         // Check if no information was received for the borrowed book
         if (ChatClient.BorrowedBookInformationForBarcodeScanner[0].equals("NoBooksFound")) { 
-            showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "No books found in the library with book ID: " + borrowedBookID, "-fx-text-fill: red;");
+            showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "There are no borrowed books with book ID: " + borrowedBookID, "-fx-text-fill: red;");
             return; // Stop execution if no information is found
         }
         

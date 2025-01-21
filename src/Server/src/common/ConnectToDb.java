@@ -58,7 +58,46 @@ public class ConnectToDb {
 
             return result; // Return all data as a list of strings
         }
-        
+        public static List<String> fetchAllDataForReports(Connection conn) {
+            List<String> result = new ArrayList<>();
+            String query = "SELECT * FROM subscriber";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query);
+                 ResultSet rs = pstmt.executeQuery()) {
+
+                StringBuilder fullResult = new StringBuilder();
+
+                // Process each row in the result set
+                while (rs.next()) {
+                    int id = rs.getInt("subscriber_id");
+                    String name = rs.getString("subscriber_name");
+                    int detailed = rs.getInt("detailed_subscription_history");
+                    String phone = rs.getString("subscriber_phone_number");
+                    String email = rs.getString("subscriber_email");
+                    String status = rs.getString("status");
+
+                    // Build the row string and append to the full result
+                    fullResult.append(id).append(",")
+                              .append(name).append(",")
+                              .append(detailed).append(",")
+                              .append(phone).append(",")
+                              .append(email).append(",")
+                              .append(status).append(";");
+
+                    // Add a newline for readability (optional)
+                    // fullResult.append("\n"); // Uncomment if you want rows on separate lines
+                }
+
+                // Add the final result to the list
+                result.add(fullResult.toString());
+
+            } catch (SQLException e) {
+                System.out.println("Error while fetching data: " + e.getMessage());
+            }
+            return result; // Return all data as a list of strings
+        }
+
+
     // Method to return the book by removing it from the borrowed_books table
     public static String returnbook(Connection dbConnection, String subscriberId, String bookID) {
         String result = "Book return failed"; // Default return status

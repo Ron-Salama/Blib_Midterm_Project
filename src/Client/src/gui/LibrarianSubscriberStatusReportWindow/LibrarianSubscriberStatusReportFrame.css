@@ -1,0 +1,22 @@
+/* Styling for the Gantt chart */
+.chart-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.chart-legend {
+    -fx-font-size: 12px;
+}
+
+.chart-bar {
+    -fx-bar-fill: #00bcd4;  /* Color for the bars */
+}
+
+.chart-x-axis-label {
+    -fx-font-size: 14px;
+}
+
+.chart-y-axis-label {
+    -fx-font-size: 14px;
+}
