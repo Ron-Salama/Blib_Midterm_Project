@@ -165,9 +165,9 @@ public class BorrowBookController extends BaseController implements Initializabl
             //String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
             
             String reserveDate = clockController.timeNow();
-            String reserveStatus = "Book is not available at the moment :( you will be notified when a copy is available.";
+   
             
-            String reservation = "" + subscriberId + "," + bookName + "," + reserveDate + "," + reserveStatus + "," + bookId;
+            String reservation = "" + subscriberId + "," + bookName + "," + reserveDate + ","  + bookId;
             ClientUI.chat.accept("Reserve:" + reservation);
             
             // Feedback to the user

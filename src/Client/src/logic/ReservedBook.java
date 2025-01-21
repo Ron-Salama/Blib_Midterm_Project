@@ -18,15 +18,15 @@ public class ReservedBook {
     /** The current reserveDate of the borrowed book. */
     private String reserveDate;
     
-    /** The current reserveStatus of the borrowed book. */
-    private String reserveStatus;
-    
     /** The time left to retrieve the book. */
-    private int timeLeftToRetrieve;
+    private String timeLeftToRetrieve;
+    
     
     private String ISBN;
     
-    private String bookIsAvailableDate;
+    
+    private boolean retrieved = false;
+
 
     /**
      * Constructs a new BorrowedBook with the specified details.
@@ -37,12 +37,12 @@ public class ReservedBook {
      * @param timeLeftToReturn the time left to return the book, in days
      * @return 
      */
-    public ReservedBook(int reserveId, int subscriberId, String name, String reserveDate, String reserveStatus, String ISBN) {
+    public ReservedBook(int reserveId, int subscriberId, String name, String reserveDate, String timeLeftToRetrieve, String ISBN) {
         this.reserveId = reserveId;
         this.subscriberId = subscriberId;
         this.name = name;
         this.reserveDate = reserveDate;
-        this.reserveStatus = reserveStatus;
+        this.timeLeftToRetrieve = timeLeftToRetrieve;
         this.ISBN = ISBN;
     }
 
@@ -87,13 +87,13 @@ public class ReservedBook {
 	}
 
 
-	public String getReserveStatus() {
-		return reserveStatus;
+	public String getTimeLeftToRetrieve() {
+		return timeLeftToRetrieve;
 	}
 
 
-	public void setReserveStatus(String reserveStatus) {
-		this.reserveStatus = reserveStatus;
+	public void setTimeLeftToRetrieve(String timeLeftToRetrieve) {
+		this.timeLeftToRetrieve = timeLeftToRetrieve;
 	}
 
 
@@ -107,16 +107,17 @@ public class ReservedBook {
 	}
 	
 	
-	public String getBookIsAvailableDate() {
-		return bookIsAvailableDate;
-	}
 	
-	public void setBookIsAvailableDate(String bookIsAvailableDate) {
-		this.bookIsAvailableDate = bookIsAvailableDate;
+	public boolean isRetrieved() {
+	    return retrieved;
+	}
+
+	public void setRetrieved(boolean retrieved) {
+	    this.retrieved = retrieved;
 	}
 	
 	@Override
     public String toString() {
-        return  ISBN+" "+name+" "+reserveDate+" "+reserveStatus+" "+timeLeftToRetrieve;
+        return  ISBN+" "+name+" "+reserveDate+" "+timeLeftToRetrieve+" "+timeLeftToRetrieve;
     }
 }

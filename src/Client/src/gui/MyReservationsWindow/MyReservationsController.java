@@ -9,6 +9,7 @@ import client.ChatClient;
 import client.ClientUI;
 import gui.SubscriberWindow.SubscriberWindowController;
 import gui.baseController.BaseController;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
 import logic.ReservedBook;
@@ -49,8 +51,6 @@ public class MyReservationsController extends BaseController implements Initiali
     @FXML
     private TableColumn<ReservedBook, String> tableReservationDate;
 
-    @FXML
-    private TableColumn<ReservedBook, String> tableReservationStatus;
     
     @FXML
     private TableColumn<ReservedBook, Void> actions;
@@ -69,6 +69,8 @@ public class MyReservationsController extends BaseController implements Initiali
     private Button btnRefresh;
     
     public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
+    
+    int availableCopiesNum;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,7 +79,6 @@ public class MyReservationsController extends BaseController implements Initiali
         tableId.setCellValueFactory(new PropertyValueFactory<>("ISBN")); // ISBN column
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
         tableReservationDate.setCellValueFactory(new PropertyValueFactory<>("reserveDate")); // Reserve Date column
-        tableReservationStatus.setCellValueFactory(new PropertyValueFactory<>("reserveStatus")); // Reservation Status column
         actions.setCellValueFactory(new PropertyValueFactory<>("Actions")); // Actions column
         
 
@@ -110,6 +111,7 @@ public class MyReservationsController extends BaseController implements Initiali
             ClientUI.chat.accept("GetReservedBooks:" + currentSub.getSubscriber_id());
             Platform.runLater(() -> {
                 if (ChatClient.reservedBookList != null && !ChatClient.reservedBookList.isEmpty()) {
+                	//MAYBE ADD HERE TO DELETE RESERVATION TODAY IS 1 DAY MORE THAN THE ACTUAL DATE FOR TIME LEFT TO RETRIEVE
                     tableView.getItems().clear();
                     tableView.getItems().addAll(ChatClient.reservedBookList);
                 } else {
@@ -123,45 +125,50 @@ public class MyReservationsController extends BaseController implements Initiali
     private void setupActionsColumn() {
         actions.setCellFactory(param -> new TableCell<ReservedBook, Void>() {
             private final Button retrieveButton = new Button("Retrieve");
+            private final HBox centeredBox = new HBox(retrieveButton);
 
             {
+                // Style the button
+                retrieveButton.setStyle("-fx-font-size: 14px; -fx-padding: 5px;");
+
+                // Center the button inside the HBox
+                centeredBox.setStyle("-fx-alignment: CENTER;");
+                centeredBox.setSpacing(10);
+
                 // Button action when clicked
                 retrieveButton.setOnAction(event -> {
                     ReservedBook reservedBook = getTableView().getItems().get(getIndex());
-                    handleRetrieveBook(event, reservedBook);  // Handle the "Retrieve" logic
-                    
-                    // Disable the button when it's clicked
-                    retrieveButton.setDisable(true);
-                    
-                    // After disabling the button, update the table view
-                    getTableView().refresh();  // Refresh the table to ensure the button state is updated
+                    handleRetrieveBook(event, reservedBook); // Handle the "Retrieve" logic
+
+                    // Mark the book as retrieved
+                    reservedBook.setRetrieved(true);
+
+                    // Refresh the table view to reflect the updated state
+                    getTableView().refresh();
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null);  // No button if the row is empty or has no item
+                    setGraphic(null); // No button if the row is empty or has no item
                 } else {
                     ReservedBook reservedBook = (ReservedBook) getTableRow().getItem();
-                    
-                    // If the reserve status is what we expect, show the "Retrieve" button
-                    if ("your book is waiting for you :)".equals(reservedBook.getReserveStatus())) {
-                        setGraphic(retrieveButton);
-                        
-                        // If the button is already clicked, disable it
-                        if (retrieveButton.isDisabled()) {
-                            retrieveButton.setDisable(true);
-                        }
+                    if (!reservedBook.getTimeLeftToRetrieve().equals("Book is not available yet")) {
+                        setGraphic(centeredBox);
+
+                        // Enable or disable the button based on the retrieved status
+                        retrieveButton.setDisable(reservedBook.isRetrieved());
                     } else {
-                        setGraphic(null);  // Hide the button for other statuses
+                        setGraphic(null); // Hide the button for other statuses
                     }
                 }
             }
         });
     }
+
+
 
 
 
@@ -175,9 +182,9 @@ public class MyReservationsController extends BaseController implements Initiali
 
         // Step 2: Directly submit the borrow request with the specific reservedBook
         try {
-            Submit_Borrow_Request(event, reservedBook);
+        	SubmitRetrieve(event, reservedBook);
             // Feedback to the user
-            showColoredLabelMessageOnGUI(feedBack, "Book reservation success! A borrow request has been sent.\nAwaiting Librarian approval", "-fx-text-fill: green;");
+            showColoredLabelMessageOnGUI(feedBack, "Book Retrieve success! Your book list has been updated with your new book addition :)", "-fx-text-fill: green;");
             
             // Disable the retrieve button after clicking
             Button retrieveButton = (Button) event.getSource();  // Get the button that was clicked
@@ -185,7 +192,7 @@ public class MyReservationsController extends BaseController implements Initiali
             
         } catch (Exception e) {
             // Handle any potential errors
-            showColoredLabelMessageOnGUI(feedBack, "An error occurred while processing the borrow request.", "-fx-text-fill: red;");
+            showColoredLabelMessageOnGUI(feedBack, "An error occurred while processing the retrieve action.", "-fx-text-fill: red;");
             e.printStackTrace();
         }
 
@@ -198,7 +205,7 @@ public class MyReservationsController extends BaseController implements Initiali
 
     
     
-    public void Submit_Borrow_Request(ActionEvent event, ReservedBook reservedBook) throws Exception {
+    public void SubmitRetrieve(ActionEvent event, ReservedBook reservedBook) throws Exception {
         // Collect subscriber and book details from the passed reservedBook
         String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
         String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
@@ -209,8 +216,8 @@ public class MyReservationsController extends BaseController implements Initiali
         String borrowDate = clockController.timeNow();
         String returnDate = clockController.calculateReturnDate(14);
 
-        String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
-        ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
+        String Retrieve = "" + subscriberName + "," + subscriberId + "," + bookName + "," + bookId + "," + borrowDate + "," + returnDate;
+        ClientUI.chat.accept("SubmitRetrieve:" + Retrieve);
         
         // Step 2: Call the method to delete the reservation from the database
         deleteReservationFromDatabase(reservedBook);
@@ -227,94 +234,7 @@ public class MyReservationsController extends BaseController implements Initiali
     }
 
     
-/* private void updateReservationStatus() {
-        // Iterate through the reservations and update the status based on time remaining
-        for (ReservedBook reservedBook : tableView.getItems()) {
-            if ("Available".equals(reservedBook.getReservationStatus())) {
-                // Calculate time remaining (2 days from available)
-                LocalDateTime currentDate = LocalDateTime.now();
-                LocalDateTime availableDate = reservedBook.getAvailableDate(); // Assuming this field exists
-                long daysRemaining = ChronoUnit.DAYS.between(currentDate, availableDate.plusDays(2));
 
-                if (daysRemaining <= 0) {
-                    reservedBook.setReservationStatus("Expired"); // Reservation expired
-                } else {
-                    reservedBook.setReservationStatus("A copy is available! You have " + daysRemaining + " days to retrieve it.");
-                }
-            }
-        }
-        tableView.refresh(); // Refresh table to reflect status changes
-    }
-    */
-    /*private void setupActionsColumn() {
-        tableActions.setCellFactory(param -> new TableCell<ReservedBook, Void>() { // Explicitly specify the generic types
-            private final Button retrieveButton = new Button("Retrieve Book");
-
-
-            {
-
-
-            	retrieveButton.setOnAction(event -> {
-                    BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
-                	ClientTimeDiffController clock = new ClientTimeDiffController();
-                	String extendedReturnDate;
-                	
-                	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
-                	
-                	if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) {
-                		if(viewing) {
-                			System.out.println("Librarian Manual Extend");
-                			ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-                    		tableView.getItems().clear();
-                    		loadBooks();
-                		}else {
-                    		ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-                    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-                    		tableView.getItems().clear();
-                    		loadBooks();
-                		}
-                	}else {
-                		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied!", "-fx-text-fill: red;");
-                	}
-                });
-
-                returnButton.setOnAction(event -> {
-                    BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
-                    System.out.println("Return book: " + borrowedBook.getName());
-                    ClientUI.chat.accept("Return request: Subscriber ID is:"+currentSub.getSubscriber_id()+" "+currentSub.getSubscriber_name()+" Borrow info: "+borrowedBook);
-                    //ClientUI.chat.accept("Return Book: Subscriber ID is:"+currentSub.getSubscriber_id()+" Book info is:"+borrowedBook);
-                    
-                });
-            }
-    */
-    
-    /*
-    /**
-     * Sets up actions for the buttons.
-    
-    private void setupButtonActions() {
-        cancelReservationButton.setOnAction(event -> handleCancelReservation());
-        markAsCompletedButton.setOnAction(event -> handleMarkAsCompleted());
-        backButton.setOnAction(event -> handleBackAction());
-    }
-
-    /**
-     * Handles the cancel reservation button click.
-     */
-    /*private void handleCancelReservation() {
-        Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
-        if (selectedReservation != null) {
-            // Perform cancel logic
-            System.out.println("Canceling reservation for: " + selectedReservation.getTitle());
-            // reservationService.cancelReservation(selectedReservation.getId());
-            reservationTable.getItems().remove(selectedReservation);
-        } else {
-            System.out.println("No reservation selected.");
-        }
-    }*/
-
-    
 
     
     public void getRefreshBtn(ActionEvent event) {
@@ -359,10 +279,3 @@ public class MyReservationsController extends BaseController implements Initiali
     
     
 }
-
-
-
-
-
-
-

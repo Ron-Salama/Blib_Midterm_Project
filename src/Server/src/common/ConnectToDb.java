@@ -290,7 +290,7 @@ public class ConnectToDb {
                     				  rs.getInt("subscriber_id") + "," +
                                       rs.getString("name") + "," +
                                       rs.getString("reserve_time") + "," +
-                                      rs.getString("reserve_status") + "," +
+                                      rs.getString("time_left_to_retrieve") + "," +
                                       rs.getString("ISBN");
                     reservedBooks.add(bookData);
                 }
@@ -496,22 +496,21 @@ public class ConnectToDb {
     //**********************************************************************************************************
 
     public static void insertReservedBook(Connection conn, String subscriber_id,
-            String bookName, String reserveTime, String reserveStatus, String BookId)
+            String bookName, String reserveTime, String BookId)
             throws SQLException {
 
     // SQL query to insert a new record into the reserved_books table without reserveId
-    String query = "INSERT INTO reserved_books (subscriber_id, name, reserve_time, reserve_status, ISBN) "
-                 + "VALUES (?, ?, ?, ?, ?)";
+    String query = "INSERT INTO reserved_books (subscriber_id, name, reserve_time, ISBN) "
+                 + "VALUES (?, ?, ?, ?)";
 
     try (PreparedStatement pstmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
         // Set the values for each field in the query
         pstmt.setString(1, subscriber_id);
         pstmt.setString(2, bookName);
         pstmt.setString(3, reserveTime);
-        pstmt.setString(4, reserveStatus);
-        pstmt.setString(5, BookId);
+        pstmt.setString(4, BookId);
 
-        // Execute the insert and get the number of affected rows
+        // Execute the insert and get the number of affected rows]
         int affectedRows = pstmt.executeUpdate();
 
         // Debugging: Check if rows were inserted

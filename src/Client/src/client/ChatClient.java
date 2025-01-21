@@ -209,10 +209,10 @@ private void handleReservedBooksResponse(String data) {
             int subscriberId = Integer.parseInt(fields[1]);
             String name = fields[2];
             String reserveTime = fields[3]; // Assuming numeric
-            String reserveStatus = fields[4];   // Assuming numeric
+            String timeLeftToRetrieve = fields[4];   // Assuming numeric
             String ISBN = fields[5];
             
-            ChatClient.reservedBookList.add(new ReservedBook(reserveId, subscriberId, name, reserveTime, reserveStatus, ISBN));
+            ChatClient.reservedBookList.add(new ReservedBook(reserveId, subscriberId, name, reserveTime, timeLeftToRetrieve, ISBN));
         }
     }
 }
