@@ -196,9 +196,9 @@ private void handleBorrowedBooksResponse(String data) {
 	            String borrowedTime = fields[3]; // Assuming numeric
 	            String returnTime = fields[4];   // Assuming numeric
 	            String ISBN = fields[5];
-	            int timeLeftToReturn = clock.howMuchTimeLeftToReturnABook(returnTime); // Calculate time left to return
+	            //int timeLeftToReturn = returnTime - borrowedTime; // Calculate time left to return
 	            
-	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, subscriberId, name, borrowedTime, returnTime,timeLeftToReturn, ISBN));
+	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, subscriberId, name, borrowedTime, returnTime, ISBN));
 	        }
 	    }
 	}
