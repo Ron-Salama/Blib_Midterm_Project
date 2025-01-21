@@ -1087,5 +1087,30 @@ public class ConnectToDb {
 
         return borrowedBooks; // Return the list of borrowed books
     }
-    	
+ 
+    
+    public static List<String> fetchReservedRequests(Connection conn) {
+        String query = "SELECT * FROM blib.reserved_books;";
+
+        List<String> reserveRequests = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    // Combine fields into a single delimited string for sending to the client
+                    String requestData = rs.getInt("reserve_id") + "," +
+                    				  rs.getInt("subscriber_id") + "," +
+                                      rs.getString("name") + "," +
+                                      rs.getString("reserve_time") + "," +
+                                      rs.getString("retrieve_time") + "," +
+                                      rs.getString("ISBN");
+                    reserveRequests.add(requestData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching borrowed books: " + e.getMessage());
+        }
+
+        return reserveRequests; // Return the list of reserved books
+    }
 }
