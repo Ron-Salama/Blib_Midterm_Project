@@ -23,8 +23,6 @@ import javafx.stage.Stage;
  * the search window, login window, or previous screens. It also handles application exit.</p>
  */
 public class MainMenuController extends BaseController {
-
-		private MainMenuController mmc;	
 		
 		@FXML
 		private Button btnRegister = null;
@@ -101,10 +99,4 @@ public class MainMenuController extends BaseController {
 					"/gui/MainMenuController/MainMenuFrame.css",
 					"Main Menu");	 
 		}
-		
-		public void getExitBtn(ActionEvent event) throws Exception {
-			System.out.println("exit Library Tool");	
-			System.exit(1);
-		}
-		
 }
