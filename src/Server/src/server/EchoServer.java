@@ -542,13 +542,16 @@ public class EchoServer extends AbstractServer {
             String borrowTime = ""; // You can pass the actual borrow time if you have it
             String returnTime = ""; // Leave empty if not used
             String extendTime = ""; // Leave empty if not used
-
-            // Check if the RegisterId already exists in the database
-            boolean idExists = ConnectToDb.checkIfIdExists(dbConnection, RegisterId);
-
-            if (idExists) {
+            boolean Subscriberexists=ConnectToDb.checkSubscriberExists(dbConnection, RegisterId);
+            if(Subscriberexists) {
+            	client.sendToClient("RegistrationFailed: Request for Register failed, ID " + RegisterId + " already exists.");
+            	return;
+            }
+            // Check if the Request with this id already exists in the database
+            boolean requestalreadyexist = ConnectToDb.checkIfrequestexists(dbConnection, RegisterId);
+            if (requestalreadyexist) {
                 // If the ID already exists, send a response to the client
-                client.sendToClient("RegistrationFailed: Request for Register failed, ID " + RegisterId + " already exists.");
+                client.sendToClient("RegistrationFailed: there is a request for registration already");
             } else {
                 // If the ID doesn't exist, proceed with the insertRequest
                 ConnectToDb.insertRequest(dbConnection, 
@@ -689,12 +692,17 @@ public class EchoServer extends AbstractServer {
     
     
     private void HandleRegisterOfSubscriber(ConnectionToClient client, String body) {
+    	System.out.print("im in handle register");
+        String[] borrowParts = body.split(",");
+        String RegisterId = borrowParts[1].trim();
     	System.out.println("First stop! you are in EchoServer");
     	outputInOutputStreamAndLog("Received register request from client");
         try {
             String isRegisterSuccessfully = ConnectToDb.updateSubscriberDB(dbConnection, body);
             if (isRegisterSuccessfully.equals("True")) {
-                client.sendToClient("Subsacriber registered successfully");
+            	ConnectToDb.deleteRegisterRequest(dbConnection, RegisterId);
+                client.sendToClient("Subscriber registered successfully");
+                
             } else {
                 client.sendToClient("Error in registering subscriber");
             }

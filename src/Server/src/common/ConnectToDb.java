@@ -273,7 +273,7 @@ public class ConnectToDb {
 
 
     
-    public static boolean checkIfIdExists(Connection dbConnection, String RegisterId) throws SQLException {
+    public static boolean checkIfrequestexists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, RegisterId);
@@ -861,7 +861,17 @@ public class ConnectToDb {
             return false;
         }
     }
-
+    public static boolean deleteRegisterRequest(Connection dbConnection, String subscriberId) {
+        System.out.println("delete register request for Subscriber id:" + subscriberId);
+        try (PreparedStatement stmt = dbConnection.prepareStatement(
+                "DELETE FROM requests WHERE requestType = 'Request For Register' AND requestedByID = ?")) {
+            stmt.setString(1, subscriberId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static boolean incrementBookCount(Connection dbConnection, String bookID) {
     	System.out.println("book id for increment"+bookID);
         try (PreparedStatement stmt = dbConnection.prepareStatement(

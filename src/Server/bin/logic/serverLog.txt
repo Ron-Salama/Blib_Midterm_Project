@@ -1,11 +1,42 @@
 Server listening for connections on port 5555
 Connected to the database.
+Server daily tasks done.
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetHistory:1 from 10.0.0.8 (10.0.0.8)
+Message received: RegisterRequest:5,Tom_Squid,12345671,Tom@gmail,com from 10.0.0.8 (10.0.0.8)
+Received RegisterRequestCase from client
+Message received: RegisterRequest:5,Tom_Squid,12345671,Tom@gmail,com from 10.0.0.8 (10.0.0.8)
+Received RegisterRequestCase from client
+Message received: RegisterRequest:12,Tom_Squid,12345671,Tom@gmail,com from 10.0.0.8 (10.0.0.8)
+Received RegisterRequestCase from client
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchRegisterRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client
+Message received: Handle register:Tom_Squid,12,12345671,Tom@gmail from 10.0.0.8 (10.0.0.8)
+Received register request from client
+Message received: UpdateHistoryInDB:Tom_Squid,12,12345671,Tom@gmail,21-01-2025,ignore,Register Successfully from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:12 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0011 from 10.0.0.8 (10.0.0.8)
+Message received: BorrowRequest:12,Tom_Squid,0011,The Hobbit,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
+Received BorrowRequest from client
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client
+Message received: SubmitBorrowRequest:Tom_Squid,12,The Hobbit,0011,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Tom_Squid,12,The Hobbit,0011,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:12 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:12 from 10.0.0.8 (10.0.0.8)
+Message received: GetHistory:12 from 10.0.0.8 (10.0.0.8)
 Received GetHistory request from client
+Message received: Fetch:12 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0011 from 10.0.0.8 (10.0.0.8)
+Message received: BorrowRequest:12,Tom_Squid,0011,The Hobbit,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
+Received BorrowRequest from client
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client
+Message received: SubmitBorrowRequest:Tom_Squid,12,The Hobbit,0011,21-01-2025,18-02-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Tom_Squid,12,The Hobbit,0011,21-01-2025,18-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
