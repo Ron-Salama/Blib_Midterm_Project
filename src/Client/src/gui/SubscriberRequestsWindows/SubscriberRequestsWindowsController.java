@@ -563,19 +563,13 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 String SID = TXTF2.getText();
 			 String PhoneNum = TXTF3.getText();
 			 String Email = TXTF4.getText();
-<<<<<<< Updated upstream
-			 //String date = convertDateFormat(""+datePicker.getValue()); //TODO: maybe we dont need a register date in history
-			 String ignore2 = "ignore";
-			 String body1 = "" + SName + "," + SID + "," + PhoneNum + "," + Email;
-			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," + ignore2;
-=======
-			// String date = convertDateFormat(""+datePicker.getValue());
+
 			 String ignore2 = "ignore";
 			 String body1 = "" + SName + "," + SID + "," + PhoneNum + "," + Email;
 			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," + "," + ignore2;
->>>>>>> Stashed changes
-			 ClientUI.chat.accept("Handle register:"+body1);
-			 ClientUI.chat.accept("UpdateHistoryInDB:"+body2+",Register Successfully");
+
+			 ClientUI.chat.accept("Handle register:" + body1);
+			 ClientUI.chat.accept("UpdateHistoryInDB:" + body2 + ",Register Successfully");
 	         showColoredLabelMessageOnGUI(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;");
 
 		}
