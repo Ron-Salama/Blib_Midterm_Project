@@ -46,6 +46,8 @@ public class ChatClient extends AbstractClient
   public static boolean alertIndicator = true;
   public static boolean isBookReservedFlag = false;
   public static List<Subscriber> allSubscriberData;
+  public static List<String> allSubscriberDataForReport = new ArrayList<>();  // Ensures it's initialized
+
   
   public static ClientTimeDiffController clock = new ClientTimeDiffController();
 
@@ -130,6 +132,8 @@ public class ChatClient extends AbstractClient
 	    	handleReturnRequestSucess(response.substring("FetchedReturnRequest:".length()));
 	    }else if (response.startsWith("An error occurred while fetching the return request data:")) {
 	    	handleReturnRequestfailure();
+	    }else if (response.startsWith("AllSubscriberInformationForReports")) {
+	    	handleAllSubscriberInformationForReports(response.substring("AllSubscriberInformationForReports:".length()));
 	    }
 	    else if (response.startsWith("BorrowedBooksForBarcodeScanner:")){
 	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
@@ -455,7 +459,68 @@ private void handleBorrowedBooksResponse(String data) {
 		allSubscriberData = subscriberList;
 	}
 	
-	
+	private void handleAllSubscriberInformationForReports(String msg) {
+	    // Check and remove leading '[' if present
+	    if (msg.startsWith("[")) {
+	        msg = msg.substring(1);  // Removes the first character
+	    }
+	    if (msg.endsWith("]")) {
+	        msg = msg.substring(0, msg.length() - 1);  // Removes the last character
+	    }
+
+	    // List of strings to hold the subscriber data in the desired format
+	    List<String> subscriberList = new ArrayList<String>();
+	    
+	    // Split the msg so each element contains all of the information for a subscriber one at a time.
+	    String[] subscribersInformation = msg.split(";");
+	    System.out.println("Subscribers information count: " + subscribersInformation.length);  // Debugging line
+
+	    for (String subscriberData : subscribersInformation) {
+	        System.out.println("Processing subscriber data: " + subscriberData);  // Debugging line
+	        String[] subscriberInformation = subscriberData.split(","); // Split the information of the subscriber
+	        
+	        if (subscriberInformation.length < 6) {  // Ensure that there's enough data
+	            System.out.println("Invalid data: " + subscriberData);  // Debugging line
+	            continue;  // Skip invalid data
+	        }
+	        
+	        // Convert subscriber information into a formatted string
+	        try {
+	            String formattedSubscriberData = subscriberInformation[0] + "," +
+	                subscriberInformation[1] + "," +
+	                subscriberInformation[2] + "," +
+	                subscriberInformation[3] + "," +
+	                subscriberInformation[4] + "," +
+	                subscriberInformation[5];
+	            
+	            // Add the formatted string to the list
+	            subscriberList.add(formattedSubscriberData);
+	        } catch (Exception e) {
+	            System.out.println("Error processing subscriber data: " + subscriberData);  // Debugging line
+	            e.printStackTrace();  // Print the stack trace for debugging
+	        }
+	    }
+
+	    // At this point, we should have the subscriberList populated
+	    if (subscriberList.isEmpty()) {
+	        System.out.println("No valid subscribers found.");  // Debugging line
+	    } else {
+	        System.out.println("Successfully added " + subscriberList.size() + " subscribers.");  // Debugging line
+	    }
+
+	    // Check if subscriberList is correctly populated
+	    System.out.println("Subscriber list before clearing: " + subscriberList);  // Debugging line
+
+	    // Clear the previous data
+	    allSubscriberDataForReport.clear();  // Clears all elements in the list
+	    // Assign to your global variable
+	    
+	    //It doesnt reahc and do the following commend
+	    allSubscriberDataForReport = subscriberList;
+	    // Print the updated global list
+	    System.out.println("Updated allSubscriberDataForReport: " + allSubscriberDataForReport);  // Debugging line
+	}
+
 	private void handleBarcodeFetchBorrowedBookRequest(String data) {
 		// TODO: Handle multiple books with the same id.
 	    BorrowedBookInformationForBarcodeScanner = data.split(":"); // Parse the request's information.

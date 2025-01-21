@@ -2,155 +2,224 @@ package gui.LibrarianSubscriberStatusReportWindow;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import client.ChatClient;
 import client.ClientUI;
 import gui.baseController.BaseController;
+
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import logic.ClientTimeDiffController;
-import logic.Subscriber;
+import javafx.scene.control.ComboBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class LibrarianSubscriberStatusReportController extends BaseController {
 
-    // Declare the LineChart and its axes
     @FXML
-    private LineChart<String, String> lineChart;  // LineChart with String x-axis and y-axis
+    private ScatterChart<String, String> scatterChart;
 
     @FXML
-    private CategoryAxis xAxis;  // X-Axis for freeze dates
-    @FXML
-    private CategoryAxis yAxis;  // Y-Axis for subscriber names
+    private CategoryAxis xAxis;
 
-    private int year = 2025; // Set the year dynamically
-    private Month month = Month.JANUARY; // Set the month dynamically
-    private ClientTimeDiffController clock = ChatClient.clock;
-    
-    // Initialization method called when the FXML is loaded
     @FXML
-    public void initialize() {
-        // You can initialize the chart and other UI components here
-        System.out.println("Line chart successfully initialized!");
-        
-        // You can populate your chart with some initial data here if needed.
-        setupChart();
+    private CategoryAxis yAxis;
+
+    @FXML
+    private PieChart pieChartFrozen;
+
+    @FXML
+    private ComboBox<String> comboMonths;
+
+    private int year = 2025;
+    private Month month = Month.JANUARY;
+
+    @FXML
+    public void initialize() throws InterruptedException {
+        System.out.println("Scatter chart successfully initialized!");
+
+        initializeChart();
+
+        // Populate the ComboBox with month names
+        ObservableList<String> months = FXCollections.observableArrayList(
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"
+        );
+        comboMonths.setItems(months);
+        comboMonths.getSelectionModel().select(month.ordinal()); // Set default month to January
+
+        // Add a listener to update the chart when a month is selected
+        comboMonths.setOnAction(event -> {
+            try {
+                setMonth(Month.values()[comboMonths.getSelectionModel().getSelectedIndex()]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Fetch and process subscriber data
+        List<String> allSubscribers = getAllSubscribers();
+
+        // Create the series for frozen accounts, but filter by the selected month
+        XYChart.Series<String, String> frozenAccountsSeries = createFrozenAccountsSeries(allSubscribers);
+
+        // Only add series to chart if there's data for the selected month
+        if (!frozenAccountsSeries.getData().isEmpty()) {
+            scatterChart.getData().add(frozenAccountsSeries);
+        }
+
+        // Update the PieChart data
+        updatePieChart(allSubscribers);
+
+        // Set the default month and update the chart
+        setMonth(Month.JANUARY);
+        updateChartForMonth();
     }
 
-    private void setupChart() {
-        // Set the categories for the X and Y axes
-        xAxis.setLabel("Freeze Dates (dd-MM-yyyy)");
-        yAxis.setLabel("Subscriber Names");
+    private void initializeChart() {
+        xAxis.setLabel("Freeze Date");
+        yAxis.setLabel("Frozen Subscriber");
+        yAxis.setAutoRanging(true);
+    }
 
-        // Fetch subscriber data
-        List<Subscriber> subscribers = gatherFrozenDate(year, month);
+    public void setMonth(Month month) throws InterruptedException {
+        this.month = month;
+        updateChartForMonth();
+    }
 
-        if (subscribers != null && !subscribers.isEmpty()) {
-            // Create a new series for each subscriber
-            for (Subscriber subscriber : subscribers) {
-                XYChart.Series<String, String> series = new XYChart.Series<>();
-                series.setName(subscriber.getSubscriber_name()); // Set subscriber name as the series name
-                
-                //TODO: Calculate the frozen status duration.
-       
-                String[] status = clock.parseFrozenSubscriberStatus(subscriber.getStatus());
-                if (status[0].equals("Not Frozen")) {
-                	// TODO: insert only the name of the subscriber without a line.
+    private void updateChartForMonth() throws InterruptedException {
+        // Clear the existing chart data
+        scatterChart.getData().clear();
+
+        // Fetch subscriber data for the updated month
+        List<String> allSubscribers = getAllSubscribers();
+
+        // Create the series for frozen accounts, filtering by the selected month
+        XYChart.Series<String, String> frozenAccountsSeries = createFrozenAccountsSeries(allSubscribers);
+
+        // Only add series to chart if there's data for the selected month
+        if (!frozenAccountsSeries.getData().isEmpty()) {
+            scatterChart.getData().add(frozenAccountsSeries);
+        }
+
+        // Update the PieChart data for the selected month
+        updatePieChart(allSubscribers);
+    }
+
+    private List<String> getAllSubscribers() throws InterruptedException {
+        List<String> subscribers = new ArrayList<>();
+
+        // Request all subscriber information from the server
+        ClientUI.chat.accept("FetchAllSubscriberInformationForReports:");
+        addDelayInMilliseconds(200);  // Wait for server response
+
+        if (ChatClient.allSubscriberDataForReport != null) {
+            subscribers.addAll(ChatClient.allSubscriberDataForReport);
+        } else {
+            System.out.println("Error: No subscriber data received.");
+        }
+
+        return subscribers;
+    }
+
+    private XYChart.Series<String, String> createFrozenAccountsSeries(List<String> allSubscribers) {
+        XYChart.Series<String, String> frozenAccountsSeries = new XYChart.Series<>();
+        frozenAccountsSeries.setName("Frozen Accounts");
+
+        // Sort the list of subscribers by the freeze date
+        allSubscribers.sort((subscriber1, subscriber2) -> {
+            String freezeDate1 = extractFreezeDate(subscriber1.split(",")[5]);
+            String freezeDate2 = extractFreezeDate(subscriber2.split(",")[5]);
+            LocalDate date1 = convertToLocalDate(freezeDate1);
+            LocalDate date2 = convertToLocalDate(freezeDate2);
+            return date1.compareTo(date2);
+        });
+
+        // Iterate over all subscribers and extract frozen account details
+        for (String subscriberData : allSubscribers) {
+            String[] subscriberFields = subscriberData.split(",");
+
+            if (subscriberFields.length >= 6 && subscriberFields[5].contains("Frozen at:")) {
+                String freezeDate = extractFreezeDate(subscriberFields[5]);
+
+                // Only include the subscriber if frozen in the selected month
+                if (isFrozenInSelectedMonth(freezeDate)) {
+                    String subscriberName = subscriberFields[1];  // Assuming name is the second field
+                    XYChart.Data<String, String> data = new XYChart.Data<>(freezeDate, subscriberName);
+
+                    // REMOVE THE CIRCLE PART (RED CIRCLE)
+
+                    frozenAccountsSeries.getData().add(data);
                 }
-                else { // Add the subscriber data to the plot.
-                	LocalDate frozenAt = clock.convertStringToLocalDateTime(status[1]).toLocalDate(); // Check if the frozen end date is within the same month.
-                	 
-                	
-                if (frozenAt.getMonth() == month && frozenAt.getYear() == year) { // Meaning the subscriber was frozen throughout the year -> freeze them until the end of the month.
-                	// TODO: add a series from the frozen at day until the end of the month.
-                	series.getData().add(new XYChart.Data<>(frozenAt.toString(), subscriber.getSubscriber_name())); // The day in which the subscriber got frozen.
-                	
-                	// Create the first day of the month
-                    LocalDate firstDayOfMonth = LocalDate.of(year, month, 1);
-                    
-                    // Use lengthOfMonth() to get the last day of the month
-                    String lastDayOfTheMonth =  firstDayOfMonth.withDayOfMonth(firstDayOfMonth.lengthOfMonth()).toString();
-                	
-                    // Add the last day of the month as another plot point in the graph.
-                    series.getData().add(new XYChart.Data<>(frozenAt.toString(), subscriber.getSubscriber_name())); // The day in which the subscriber got frozen.
-                    
-                }else { // Meaning the subscriber's status is frozen from last month and is getting unfrozen throughout this month.
-                	String unfreezeDate = frozenAt.plusMonths(1).toString();
-                	//TODO: add a series from the start of the month until the day they are getting unfrozen.
-                	series.getData().add(new XYChart.Data<>(unfreezeDate, subscriber.getSubscriber_name()));
-                }                
-                }
-
-                // Add the series to the chart
-                lineChart.getData().add(series);
             }
         }
+
+        return frozenAccountsSeries;
     }
 
+    private void updatePieChart(List<String> allSubscribers) {
+        int totalSubscribers = allSubscribers.size();
+        int frozenCount = 0;
 
-	private List<Subscriber> gatherFrozenDate(int year, Month month) {
-	    // Generate date range for the selected month
-	    List<String> datesNotFormatted = getDateRange(year, month);
-	
-	    // Prepare a list to store the correctly formatted dates
-	    List<String> dates = new ArrayList<>();
-	
-	    // Formatter to handle input date format (yyyy-MM-dd)
-	    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");  // Desired output format
-	
-	    for (String date : datesNotFormatted) {
-	        try {
-	            // Parse the date string to LocalDate using the input format
-	            LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
-	
-	            // Format the LocalDate to the desired format (dd-MM-yyyy)
-	            dates.add(parsedDate.format(outputFormatter)); // Add formatted date to the list
-	        } catch (Exception e) {
-	            // Handle error if the date format does not match or conversion fails
-	            System.err.println("Error parsing date: " + date);
-	        }
-	    }
-	
-	    // Set up the x-axis categories with the dates (Days of the month)
-	    xAxis.setCategories(FXCollections.observableArrayList(dates));
-	
-	    // Call ChatClient to fetch subscriber data (should populate ChatClient.allSubscriberData)
-	    ClientUI.chat.accept("FetchAllSubscriberData:"); // Asynchronous data fetch
-	    
-	    // Wait for the data to be returned (preferably using a callback, but this is just a placeholder)
-	    try {
-	        addDelayInMilliseconds(2000);
-	    } catch (InterruptedException e) {
-	        e.printStackTrace();
-	    }
-	
-	    return ChatClient.allSubscriberData;  // Assuming this contains the list of Subscriber objects
-	}
+        for (String subscriberData : allSubscribers) {
+            String[] subscriberFields = subscriberData.split(",");
 
-            
-    /**
-     * Generate a list of date strings for the given year and month.
-     * @param year The year of the desired month
-     * @param month The month for which to generate the date range
-     * @return List of date strings in format YYYY-MM-DD
-     */
-    private List<String> getDateRange(int year, Month month) {
-        List<String> dateRange = new ArrayList<>();
-        LocalDate start = LocalDate.of(year, month, 1);
-        int daysInMonth = start.lengthOfMonth(); // Get the number of days in the month
-
-        // Generate the date strings for all days in the month
-        for (int i = 1; i <= daysInMonth; i++) {
-            LocalDate currentDate = start.withDayOfMonth(i);
-            dateRange.add(currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+            if (subscriberFields.length >= 6 && subscriberFields[5].contains("Frozen at:")) {
+                String freezeDate = extractFreezeDate(subscriberFields[5]);
+                if (isFrozenInSelectedMonth(freezeDate)) {
+                    frozenCount++;
+                }
+            }
         }
 
-        return dateRange;
+        PieChart.Data frozenData = new PieChart.Data("Frozen Accounts", frozenCount);
+        PieChart.Data activeData = new PieChart.Data("Active Accounts", totalSubscribers - frozenCount);
+
+        pieChartFrozen.getData().clear();
+        pieChartFrozen.getData().addAll(frozenData, activeData);
     }
+
+    private String extractFreezeDate(String status) {
+        if (status != null && status.contains("Frozen at:")) {
+            return status.split("Frozen at:")[1].trim();  // Extract the date (e.g., "05-01-2025")
+        }
+        return "Unknown";
+    }
+
+    private boolean isFrozenInSelectedMonth(String freezeDate) {
+        if (freezeDate.equals("Unknown")) return false;
+
+        String[] dateParts = freezeDate.split("-");
+        int month = Integer.parseInt(dateParts[1]);
+
+        // Check if the subscriber was frozen in the specified month
+        return month == this.month.getValue();
+    }
+
+    private LocalDate convertToLocalDate(String freezeDate) {
+        if (freezeDate.equals("Unknown")) {
+            return LocalDate.MAX;
+        }
+
+        String[] dateParts = freezeDate.split("-");
+        int day = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+        int year = Integer.parseInt(dateParts[2]);
+
+        return LocalDate.of(year, month, day);
+    }
+    public void back(ActionEvent event) throws Exception{
+    	openWindow(event,
+    			"/gui/ReportsWindow/ReportsWindow.fxml",
+    			"/gui/ReportsWindow/ReportsWindow.css",
+    			"Subscriber Status Report");
+    }
+    
 }
