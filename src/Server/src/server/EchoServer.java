@@ -193,6 +193,8 @@ public class EchoServer extends AbstractServer {
                 case "Handle register":
                 	HandleRegisterOfSubscriber(client, body);
                 	break;
+                case "Handle Lost":
+                	HandleLost(client,body);
                 case "EXIT":
                 	clientDisconnect(client);
                 default: // Handle unknown commands
@@ -208,7 +210,27 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
-    private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
+    private void HandleLost(ConnectionToClient client, String body) throws IOException, SQLException {
+    	 // Split the body by commas to extract individual parts (subscriber name, ID, book name, ID, and time)
+        String[] messageParts = body.split(",");
+    	  String subscriberName = messageParts[0].trim();
+          String subscriberId = messageParts[1].trim();
+          String bookName = messageParts[2].trim();
+          String bookid = messageParts[3].trim();
+          String bookTime = messageParts[4].trim();
+          String returnTime = messageParts[5].trim();
+          boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection,"Return For Subscriber",subscriberId, bookid);
+          if(requestDeleted) {
+        	  client.sendToClient("return request was commited and deleted but the book is lost");
+          }
+          boolean reduceamount=ConnectToDb.decreaseNumCopies(dbConnection,bookid);
+          if(reduceamount) {
+        	  client.sendToClient("Successfully decreased NumCopies for bookId: " + bookid);
+          }
+	}
+
+
+	private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
         try {
             String ISBN = body.trim(); // The ISBN is sent in the message body
             boolean isReserved = ConnectToDb.isBookReserved(dbConnection, ISBN); // Updated method call
@@ -603,7 +625,7 @@ public class EchoServer extends AbstractServer {
                                             returnDate,               // returnDate (empty string if not available)
                                             extendTime);              // extendTime (empty string if not available)
                  
-                 ConnectToDb.decreaseNumCopies(dbConnection,bookBorrowId);
+                 ConnectToDb.decreaseAvaliabeNumCopies(dbConnection,bookBorrowId);
              } catch (Exception e) {
                  client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
                  e.printStackTrace();

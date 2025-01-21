@@ -78,7 +78,6 @@ public class ChatClient extends AbstractClient
   @Override
   public void handleMessageFromServer(Object msg) 
   {
-	  	System.out.println(msg);
 	    System.out.println("--> handleMessageFromServer");
 	    if (!(msg instanceof String)) {
 	        System.out.println("Invalid message type received.");
@@ -86,8 +85,6 @@ public class ChatClient extends AbstractClient
 	    }
 
 	    String response = (String) msg;
-	    System.out.println(response);
-
 	    // Dispatch handling based on message prefix
 	    if (response.startsWith("Client connected to IP:")) {
 	    	handleServerConnectionIssue(true);
@@ -134,6 +131,9 @@ public class ChatClient extends AbstractClient
 	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
 	    }else if(response.equals("Client disconnected")) {
 	    	System.exit(1);
+	    }
+	    else {
+	    	System.out.println("The msg is "+msg);
 	    }
 	}
   

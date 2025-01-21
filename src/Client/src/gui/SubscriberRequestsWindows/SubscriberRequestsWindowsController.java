@@ -536,10 +536,10 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String Btime = TXTF5.getText();
             String Rtime = convertDateFormat("" + datePicker.getValue()); 
             String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Btime + "," + Rtime;
-			ClientUI.chat.accept("Handle return:" + body); 
             boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
             if (lostBook) 
             {
+            	ClientUI.chat.accept("Handle Lost:"+body);
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
             }
             else
@@ -552,6 +552,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 else{
                 	statusOfReturn = "late";
     			}
+                ClientUI.chat.accept("Handle return:" + body); 
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
 			}
 		}

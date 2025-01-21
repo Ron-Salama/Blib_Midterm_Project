@@ -484,7 +484,7 @@ public class ConnectToDb {
         return result.toString();
     }
     
-    public static void decreaseNumCopies(Connection conn, String bookId) throws SQLException {
+    public static void decreaseAvaliabeNumCopies(Connection conn, String bookId) throws SQLException {
         // SQL query to decrease NumCopies by 1 for the given bookId
         String query = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ? AND NumCopies > 0";
 
@@ -1010,4 +1010,26 @@ public class ConnectToDb {
 
         return bookInfo.toString();
     }
-}	
+
+    public static boolean decreaseNumCopies(Connection conn, String bookId) throws SQLException {
+        // SQL query to decrease NumCopies by 1 for the given bookId
+        String query = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            // Set the bookId parameter
+            pstmt.setString(1, bookId);
+
+            // Execute the update statement
+            int affectedRows = pstmt.executeUpdate();
+
+            // If no rows were updated, it means there are no copies left or the bookId does not exist
+            if (affectedRows == 0) {
+                System.out.println("No copies available or invalid bookId: " + bookId);
+                return false;
+            } else {
+                System.out.println("Successfully decreased AvailableCopiesNum for bookId: " + bookId);
+                return true;
+            }
+        }
+    }
+	}
