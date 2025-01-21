@@ -128,7 +128,13 @@ public class ReserveRequestDailyTasksController extends BaseController {
 	
 	public void sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary() {
 		// 1. Fetch all reservation requests * Those without the default value of status to return.
-		// 2. put in a map, 
+		// 2. put in a Map<subscriberID, List<RequestData>> - Hold all of the information from the reservations.
+		// 3. for each request 
+		// 4. fetch subscriber name (using subscriber ID) // Only on the first run.
+		// 5. fetch Book name // all of the books one by one.
+		// 6. for each Book - 
+		//     public static void sendMailToSubscriberThatNeedToRetrieveBook(String subscriberName, String bookName, int daysLeftForRetrieval) {
+
 		
 		
 		// USE PUBLIC STATIC METHOD FOR SENDING MAIL FRIM SMSANDEMAILCONTROLLER.

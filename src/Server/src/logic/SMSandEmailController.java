@@ -5,6 +5,7 @@
  */
 package logic;
 
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,5 +110,23 @@ public class SMSandEmailController extends BaseController {
 
         // Apply mail logic when deployed.
         System.out.println(message.toString());
+    }
+    
+    public static void sendMailToSubscriberThatNeedToRetrieveBook(String subscriberName, String bookName, int daysLeftForRetrieval) {
+    	// Build the message containing all books.
+        StringBuilder message = new StringBuilder();
+        message.append("Dear ").append(subscriberName).append(",\n");
+        message.append("The book: ").append(bookName).append(" you ordered is now back in stock!\n"); 
+        
+        if (daysLeftForRetrieval == 1) {
+        	message.append("You have ").append(daysLeftForRetrieval).append(" more day left to retrieve the book\n");        	
+        }
+        else {
+        	message.append("You have ").append(daysLeftForRetrieval).append(" more days left to retrieve the book\n");
+        }
+        message.append("We are looking forward to your visit.\nSee you soon!");
+        
+        // Apply mail logic when deployed.
+        EchoServer.outputInOutputStreamAndLog(message.toString());
     }
 }
