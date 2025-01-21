@@ -394,6 +394,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                     TXTF2.setText(request[1]); // Subscriber ID
                     TXTF3.setText(request[3]); // Book Name or Email
                     TXTF4.setText(request[4]); // Book ID or Phone Number
+                    TXTF5.setText(request[5]);
                      // Borrow/Return Time if applicable
                     break;
                 }
