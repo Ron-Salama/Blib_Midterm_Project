@@ -182,9 +182,22 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         PieChart.Data frozenData = new PieChart.Data("Frozen Accounts", frozenCount);
         PieChart.Data activeData = new PieChart.Data("Active Accounts", totalSubscribers - frozenCount);
 
+        // Clear previous data and add new data
         pieChartFrozen.getData().clear();
         pieChartFrozen.getData().addAll(frozenData, activeData);
+
+        // Add labels to the pie chart slices
+        addPieChartLabels(frozenData, frozenCount, totalSubscribers);
+        addPieChartLabels(activeData, totalSubscribers - frozenCount, totalSubscribers);
     }
+
+    private void addPieChartLabels(PieChart.Data data, int count, int total) {
+        double percentage = ((double) count / total) * 100;
+        String label = count + " (" + String.format("%.2f", percentage) + "%)";  // Display count and percentage
+
+        data.setName(label); // Set the label text as the slice's name (this will be displayed in the chart)
+    }
+
 
     private String extractFreezeDate(String status) {
         if (status != null && status.contains("Frozen at:")) {
