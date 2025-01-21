@@ -92,6 +92,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     @FXML
     private Label LBL6;
     @FXML
+	private Label feedbackLabel;
+    @FXML
     private TextField TXTF1;
     @FXML
     private TextField TXTF2;
@@ -506,7 +508,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    TXTF4.setText("");
 	    TXTF5.setText("");
 	}
-		
+
 	public void acceptRequest(ActionEvent event) throws Exception 
 	{
 		String selectedRequestType = requestType;
@@ -522,6 +524,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
            // ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
+            showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
+
+
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
 			String statusOfReturn = "";
@@ -537,6 +542,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             if (lostBook) 
             {
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
+                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
             }
             else
             {
@@ -549,6 +555,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 	statusOfReturn = "late";
     			}
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
+                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
 			}
 		}
 		else if (selectedRequestType == "Registers") {
@@ -556,12 +563,21 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 String SID = TXTF2.getText();
 			 String PhoneNum = TXTF3.getText();
 			 String Email = TXTF4.getText();
+<<<<<<< Updated upstream
 			 //String date = convertDateFormat(""+datePicker.getValue()); //TODO: maybe we dont need a register date in history
 			 String ignore2 = "ignore";
 			 String body1 = "" + SName + "," + SID + "," + PhoneNum + "," + Email;
 			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," + ignore2;
+=======
+			// String date = convertDateFormat(""+datePicker.getValue());
+			 String ignore2 = "ignore";
+			 String body1 = "" + SName + "," + SID + "," + PhoneNum + "," + Email;
+			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," + "," + ignore2;
+>>>>>>> Stashed changes
 			 ClientUI.chat.accept("Handle register:"+body1);
 			 ClientUI.chat.accept("UpdateHistoryInDB:"+body2+",Register Successfully");
+	         showColoredLabelMessageOnGUI(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;");
+
 		}
 	}
 
