@@ -116,12 +116,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     public void initialize(URL url, ResourceBundle resourceBundle) {
     	if (borrowInformationFromBarcode) {
     		try {
-				borrowRequestSetup(borrowedBookInformationFromBarcode[3],
-						borrowedBookInformationFromBarcode[2],
-						borrowedBookInformationFromBarcode[1],
-						borrowedBookInformationFromBarcode[0],
-						borrowedBookInformationFromBarcode[4],
-						borrowedBookInformationFromBarcode[5]);
+				borrowRequestSetupFromBarcode(borrowedBookInformationFromBarcode[0],
+						borrowedBookInformationFromBarcode[1]);
 			} catch (InterruptedException e) {
 				
 				e.printStackTrace();
@@ -628,19 +624,19 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    
 	    
 	    // TODO: refactor the part of borrow request in the switch case.
-	    private void borrowRequestSetup(String subscriberName, String subscriberID, String borrowedBookName, String borrowedBookID, String borrowTime, String returnTime) throws InterruptedException {
+	    private void borrowRequestSetupFromBarcode(String borrowedBookID, String borrowedBookName) throws InterruptedException {
 	    	Clear(); // Clear the current fields.
 	    	BorrowForSubscriber(); // Set up the elements for borrow request.
 	    	
 	    	if (borrowInformationFromBarcode) {
-	    		TXTF1.setText(subscriberName); // subscriber name.
-	    		TXTF2.setText(subscriberID); // subscriber ID.
 	    		TXTF3.setText(borrowedBookName); // Borrowed book name.
 	    		TXTF4.setText(borrowedBookID); // borrowed book id.
-	    		TXTF5.setText(borrowTime); // borrow time
+	    		
+	    		String borrowDate = clock.timeNow();
+	    		TXTF5.setText(borrowDate); // borrow time
 	    		
 	    		// Get the return date as a string, convert and set it in the correct field.
-	    		LocalDate returnDate = clock.convertStringToLocalDateTime(returnTime).toLocalDate();
+	    		LocalDate returnDate = clock.convertStringToLocalDateTime(clock.calculateReturnDate(14)).toLocalDate();
 	    		datePicker.setValue(returnDate); // return date. 	    		
 	    	}
 	    }

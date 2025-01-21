@@ -70,9 +70,15 @@ public class BarcodeScannerWindowController extends BaseController {
             showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "No books found in the library with book ID: " + borrowedBookID, "-fx-text-fill: red;");
             return; // Stop execution if no information is found
         }
-
+        
         // If valid data is received, process and open the next window
         String[] borrowRequestInformation = ChatClient.BorrowedBookInformationForBarcodeScanner[0].split(",");
+
+        // If the there are no available copies -> print and return.
+        if (Integer.valueOf(borrowRequestInformation[6]) == 0) {
+        	showColoredLabelMessageOnGUI(borrowedBookIDDynamicLabel, "There are no available copies of the book " + borrowRequestInformation[1] , "-fx-text-fill: red;");
+        	return;
+        }
         SubscriberRequestsWindowsController.borrowedBookInformationFromBarcode = borrowRequestInformation;
         
         // Close this window and open the Subscriber Requests Window

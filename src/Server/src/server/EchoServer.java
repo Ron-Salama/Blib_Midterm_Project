@@ -752,7 +752,7 @@ public class EchoServer extends AbstractServer {
 
     private void handleGetBorrowedBooksCaseForBarcodeScanner(ConnectionToClient client, String borrowedBookID) throws IOException {
         try {
-            String borrowedBook = ConnectToDb.fetchBorrowRequestGivenBorrowedBookID(dbConnection, borrowedBookID);
+            String borrowedBook = ConnectToDb.fetchBookInfo(dbConnection, borrowedBookID);
 
             if (borrowedBook.isEmpty()) {
                 client.sendToClient("BorrowedBooksForBarcodeScanner:NoBooksFound");
