@@ -546,7 +546,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             }
             else
             {
-            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(Btime, Rtime);
+            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(clock.convertStringToLocalDateTime(Btime).plusDays(14), clock.convertStringToLocalDateTime(Rtime));
                 if (numOfDaysOfReturn<=0) {
                 	statusOfReturn = "early";
                 	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
