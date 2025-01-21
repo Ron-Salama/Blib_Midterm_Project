@@ -8,7 +8,7 @@ package logic;
 public class Book {
     
     /** The unique identifier for the book. */
-    private int id;
+    private int ISBN;
     
     /** The name of the book. */
     private String name;
@@ -34,15 +34,15 @@ public class Book {
     /**
      * Constructs a new Book with the specified details.
      * 
-     * @param id the unique identifier of the book
+     * @param ISBN the unique identifier of the book
      * @param name the name of the book
      * @param description a brief description of the book
      * @param subject the subject or category of the book
      * @param availableCopies the number of available copies of the book
      * @param location the location of the book in the library
      */
-    public Book(int id, String name, String description, String subject, int copies, String location , int availableCopies, int reservedCopies) {
-        this.id = id;
+    public Book(int ISBN, String name, String description, String subject, int copies, String location , int availableCopies, int reservedCopies) {
+        this.ISBN = ISBN;
         this.name = name;
         this.description = description;
         this.subject = subject;
@@ -57,8 +57,8 @@ public class Book {
      * 
      * @return the unique identifier of the book
      */
-    public int getId() {
-        return id;
+    public int getISBN() {
+        return ISBN;
     }
 
     /**
@@ -123,7 +123,7 @@ public class Book {
      */
     @Override
     public String toString() {
-        return "Book{id=" + id + ", name='" + name + "', description='" + description + "', subject='" + subject + "', Copies=" + copies + ", location='" + location + "', availableCopies=" + availableCopies + ", reservedCopies=" + reservedCopies + "}";
+        return "Book{id=" + ISBN + ", name='" + name + "', description='" + description + "', subject='" + subject + "', Copies=" + copies + ", location='" + location + "', availableCopies=" + availableCopies + ", reservedCopies=" + reservedCopies + "}";
     }
 
 

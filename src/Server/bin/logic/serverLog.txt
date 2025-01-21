@@ -1,3 +1,14 @@
 Server listening for connections on port 5555
 Connected to the database.
-Server daily tasks done.
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 2, Spongebob has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Catcher in the Rye
+21-01-2025: subscriber No' 3, Patrick_Star has been frozen because they were late at returning the book: War and Peace
+21-01-2025: subscriber No' 4, Squidward_Tentacles has been frozen because they were late at returning the book: The Grapes of Wrath
+Client connected.
+Client IP:172.20.10.3
+Client Hostname: YuvalDesktop
+Connection Status: Connected
+Message received: IP:172.20.10.3 from YuvalDesktop (172.20.10.3)
+Message received: Fetch:1111 from YuvalDesktop (172.20.10.3)
+Message received: Fetch return request: from YuvalDesktop (172.20.10.3)
