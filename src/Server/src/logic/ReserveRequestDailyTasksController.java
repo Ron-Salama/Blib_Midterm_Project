@@ -2,6 +2,7 @@ package logic;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class ReserveRequestDailyTasksController extends BaseController {
 	
 	
 	public void reserveRequestsDailyActivity() {
-		System.out.println("THIS IS A TEST TO SEE IF Daily Activity is entered");
+
 
 		deleteOldRequests();
 		updateReservationRequestsThatHaveBooksInStock();
@@ -30,7 +31,7 @@ public class ReserveRequestDailyTasksController extends BaseController {
 	
 	public void deleteOldRequests() {
 		
-		System.out.println("THIS IS A TEST TO SEE IF DELETE REQUESTS IS EVEN CALLED");
+
 	    // Step 1: Fetch reserved books data
 	    List<String> reservedBooksData = ConnectToDb.fetchAllReservedBooks(EchoServer.taskSchedulerConnection);
 	    
@@ -57,6 +58,7 @@ public class ReserveRequestDailyTasksController extends BaseController {
 
 	        // Step 3.1: Calculate the time difference using the server's clock
 	        long daysDifference = EchoServer.clock.timeDateDifferenceBetweenTwoDates(timeLeftToRetrieve, EchoServer.clock.timeNow());
+
 	        if (daysDifference > 2) {
 	            // Step 3.2: If the time difference is >= 2 days, mark for deletion
 	            reserveIdsToDelete.add(reserveId);
@@ -77,19 +79,45 @@ public class ReserveRequestDailyTasksController extends BaseController {
 	private void deleteReservation(int reserveId) {
 	    // Perform the actual delete operation on the database
 	    try (Connection conn = EchoServer.taskSchedulerConnection) {
-	        String deleteQuery = "DELETE FROM reserved_books WHERE reserve_id = ?";
-	        try (PreparedStatement pstmt = conn.prepareStatement(deleteQuery)) {
-	            pstmt.setInt(1, reserveId);
-	            pstmt.executeUpdate();
-	            System.out.println("Reservation with ID " + reserveId + " deleted.");
-	        } catch (SQLException e) {
-	            System.err.println("Error deleting reservation with ID " + reserveId + ": " + e.getMessage());
+	        // Step 1: Fetch the ISBN of the book being deleted
+	        String fetchISBNQuery = "SELECT ISBN FROM reserved_books WHERE reserve_id = ?";
+	        String isbn = null;
+
+	        try (PreparedStatement fetchPstmt = conn.prepareStatement(fetchISBNQuery)) {
+	            fetchPstmt.setInt(1, reserveId);
+	            try (ResultSet rs = fetchPstmt.executeQuery()) {
+	                if (rs.next()) {
+	                    isbn = rs.getString("ISBN");
+	                }
+	            }
 	        }
+
+	        // If ISBN is null, return because no matching reservation was found
+	        if (isbn == null) {
+	            System.err.println("Reservation with ID " + reserveId + " not found. Skipping deletion.");
+	            return;
+	        }
+
+	        //Delete the reservation
+	        String deleteQuery = "DELETE FROM reserved_books WHERE reserve_id = ?";
+	        try (PreparedStatement deletePstmt = conn.prepareStatement(deleteQuery)) {
+	            deletePstmt.setInt(1, reserveId);
+	            deletePstmt.executeUpdate();
+	            System.out.println("Reservation with ID " + reserveId + " deleted.");
+	        }
+
+	        //Decrement the reservedCopiesNum for the corresponding ISBN
+	        String updateCopiesQuery = "UPDATE books SET reservedCopiesNum = reservedCopiesNum - 1 WHERE ISBN = ?";
+	        try (PreparedStatement updatePstmt = conn.prepareStatement(updateCopiesQuery)) {
+	            updatePstmt.setString(1, isbn);
+	            updatePstmt.executeUpdate();
+	            System.out.println("Decremented reservedCopiesNum for book with ISBN " + isbn);
+	        }
+
 	    } catch (SQLException e) {
-	        System.err.println("Error getting connection for deletion: " + e.getMessage());
+	        System.err.println("Error processing reservation deletion for ID " + reserveId + ": " + e.getMessage());
 	    }
 	}
-
 
 	
 	
