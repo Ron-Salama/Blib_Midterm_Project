@@ -10,31 +10,61 @@ Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: EXIT: from 10.0.0.8 (10.0.0.8)
+Client disconnected.
+Client IP: 10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Disconnected
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:2 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:2 Spongebob Borrow info: 0011 The Hobbit 09-12-2024 23-12-2024 -29 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Handle return:Heinz_Doofenshmirtz,1,The Hobbit,0011,09-12-2024,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Heinz_Doofenshmirtz,1,The Hobbit,0011,09-12-2024,21-01-2025,Return Successfully 29 days late from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Handle return:Spongebob,2,The Hobbit,0011,09-12-2024,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Spongebob,2,The Hobbit,0011,09-12-2024,21-01-2025,Return Successfully 29 days late from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:4 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:4 Squidward_Tentacles Borrow info: 0322 The Grapes of Wrath 14-12-2024 28-12-2024 -24 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
-Message received: Return request: Subscriber ID is:8 Gary_Snail Borrow info: 0377 The Da Vinci Code 02-01-2025 16-01-2025 -5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:1 Heinz_Doofenshmirtz Borrow info: 0022 The Catcher in the Rye 15-12-2024 29-12-2024 -23 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
-Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:10 from 10.0.0.8 (10.0.0.8)
-Message received: Return request: Subscriber ID is:10 Mrs_Puff Borrow info: 0066 Moby-Dick 11-01-2025 25-01-2025 4 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
-Client connected.
-Client IP:10.0.0.8
+Message received: Handle return:Squidward_Tentacles,4,The Grapes of Wrath,0322,14-12-2024,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Squidward_Tentacles,4,The Grapes of Wrath,0322,14-12-2024,21-01-2025,Return Successfully 24 days late from 10.0.0.8 (10.0.0.8)
+Message received: Handle return:Heinz_Doofenshmirtz,1,The Catcher in the Rye,0022,15-12-2024,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Heinz_Doofenshmirtz,1,The Catcher in the Rye,0022,15-12-2024,21-01-2025,Return Successfully 23 days late from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
+Message received: GetHistory:1 from 10.0.0.8 (10.0.0.8)
+Received GetHistory request from client
+Message received: EXIT: from 10.0.0.8 (10.0.0.8)
+Client disconnected.
+Client IP: 10.0.0.8
 Client Hostname: 10.0.0.8
-Connection Status: Connected
-Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
-Message received: Return request: Subscriber ID is:5 Mr_Krabs Borrow info: 0299 The Lord of the Rings: The Return of the King 01-01-2025 15-01-2025 -6 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Connection Status: Disconnected

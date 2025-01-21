@@ -536,7 +536,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
             String Rtime = convertDateFormat("" + datePicker.getValue()); 
-            String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Btime + "," + Rtime;
+            String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Rtime + "," + Btime;
             boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
             if (lostBook) 
             {
