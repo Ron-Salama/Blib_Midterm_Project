@@ -1,3 +1,86 @@
 Server listening for connections on port 5555
 Connected to the database.
+<<<<<<< Updated upstream
 Server daily tasks done.
+=======
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 2, Spongebob has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Catcher in the Rye
+21-01-2025: subscriber No' 3, Patrick_Star has been frozen because they were late at returning the book: War and Peace
+21-01-2025: subscriber No' 4, Squidward_Tentacles has been frozen because they were late at returning the book: The Grapes of Wrath
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:8 Gary_Snail Borrow info: 0377 The Da Vinci Code 02-01-2025 16-01-2025 -5 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:10 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:10 Mrs_Puff Borrow info: 0066 Moby-Dick 11-01-2025 25-01-2025 4 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:5 Mr_Krabs Borrow info: 0299 The Lord of the Rings: The Return of the King 01-01-2025 15-01-2025 -6 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:5 Mr_Krabs Borrow info: 0299 The Lord of the Rings: The Return of the King 01-01-2025 15-01-2025 -6 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:4 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:4 Squidward_Tentacles Borrow info: 0322 The Grapes of Wrath 14-12-2024 28-12-2024 -24 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Handle return:Squidward_Tentacles,4,The Grapes of Wrath,0322,14-12-2024,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Squidward_Tentacles,4,The Grapes of Wrath,0322,14-12-2024,21-01-2025,Return Successfully 24 days late from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:8 Gary_Snail Borrow info: 0377 The Da Vinci Code 02-01-2025 16-01-2025 -5 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:9 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:9 Karen_Plankton Borrow info: 0477 The Maze Runner 21-01-2025 04-02-2025 14 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Handle return:Karen_Plankton,9,The Maze Runner,0477,21-01-2025,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Karen_Plankton,9,The Maze Runner,0477,21-01-2025,21-01-2025,Return Successfully 14 days early from 10.0.0.8 (10.0.0.8)
+Message received: Handle return:Gary_Snail,8,The Da Vinci Code,0377,02-01-2025,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Gary_Snail,8,The Da Vinci Code,0377,02-01-2025,21-01-2025,Return Successfully 5 days late from 10.0.0.8 (10.0.0.8)
+>>>>>>> Stashed changes
