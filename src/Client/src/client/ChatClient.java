@@ -5,6 +5,7 @@ import client.*;
 import common.ChatIF;
 import logic.Book;
 import logic.BorrowedBook;
+import logic.ReservedBook;
 import logic.ClientTimeDiffController;
 import logic.Subscriber;
 import logic.Librarian;
@@ -35,6 +36,7 @@ public class ChatClient extends AbstractClient
    */
   ChatIF clientUI; 
   public static List<BorrowedBook> borrowedBookList = new ArrayList<>(); // List to hold borrowed books
+  public static List<ReservedBook> reservedBookList = new ArrayList<>(); // List to hold borrowed books
   public static Subscriber s1 = new Subscriber(0, 0, null, null, null, null);
   public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
@@ -78,7 +80,6 @@ public class ChatClient extends AbstractClient
   @Override
   public void handleMessageFromServer(Object msg) 
   {
-	  	System.out.println(msg);
 	    System.out.println("--> handleMessageFromServer");
 	    if (!(msg instanceof String)) {
 	        System.out.println("Invalid message type received.");
@@ -86,8 +87,6 @@ public class ChatClient extends AbstractClient
 	    }
 
 	    String response = (String) msg;
-	    System.out.println(response);
-
 	    // Dispatch handling based on message prefix
 	    if (response.startsWith("Client connected to IP:")) {
 	    	handleServerConnectionIssue(true);
@@ -102,6 +101,16 @@ public class ChatClient extends AbstractClient
 	        handleBookReservedResponse(response.substring("BookReserved:".length()));
 	    }else if (response.startsWith("BorrowedBooks:")) {
             handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
+          //***************************************************************************
+          //***************************************************************************
+          //***************************************************************************
+          //***************************************************************************
+	    }else if (response.startsWith("ReservedBooks:")) {
+            handleReservedBooksResponse(response.substring("ReservedBooks:".length()));
+            //***************************************************************************
+            //***************************************************************************
+            //***************************************************************************
+            //***************************************************************************
         }else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
 	    }else if (response.startsWith("Subscriber updated successfully.")) {
@@ -134,6 +143,9 @@ public class ChatClient extends AbstractClient
 	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
 	    }else if(response.equals("Client disconnected")) {
 	    	System.exit(1);
+	    }
+	    else {
+	    	System.out.println("The msg is "+msg);
 	    }
 	}
   
@@ -196,13 +208,47 @@ private void handleBorrowedBooksResponse(String data) {
 	            String borrowedTime = fields[3]; // Assuming numeric
 	            String returnTime = fields[4];   // Assuming numeric
 	            String ISBN = fields[5];
-	            //int timeLeftToReturn = returnTime - borrowedTime; // Calculate time left to return
+	            int timeLeftToReturn = clock.howMuchTimeLeftToReturnABook(returnTime); // Calculate time left to return
 	            
-	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, subscriberId, name, borrowedTime, returnTime, ISBN));
+	            ChatClient.borrowedBookList.add(new BorrowedBook(borrowId, subscriberId, name, borrowedTime, returnTime,timeLeftToReturn, ISBN));
 	        }
 	    }
 	}
 
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+private void handleReservedBooksResponse(String data) {
+    if (data.equals("NoBooksFound")) {
+        System.out.println("No Reserved books found.");
+        ChatClient.reservedBookList.clear();
+    } else if (data.startsWith("Error")) {
+        System.out.println("Error fetching Reserved books: " + data);
+    } else {
+        String[] bookStrings = data.split(";"); // Split rows
+        ChatClient.reservedBookList.clear();
+        for (String bookData : bookStrings) {
+            String[] fields = bookData.split(","); // Split fields
+            int reserveId = Integer.parseInt(fields[0]);
+            int subscriberId = Integer.parseInt(fields[1]);
+            String name = fields[2];
+            String reserveTime = fields[3]; // Assuming numeric
+            String timeLeftToRetrieve = fields[4];   // Assuming numeric
+            String ISBN = fields[5];
+            
+            ChatClient.reservedBookList.add(new ReservedBook(reserveId, subscriberId, name, reserveTime, timeLeftToRetrieve, ISBN));
+        }
+    }
+}
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
+//***********************************************************************************************
  
   private void handleBookInfo(String data) {
 	    try {

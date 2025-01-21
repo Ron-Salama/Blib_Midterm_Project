@@ -9,7 +9,7 @@
 <AnchorPane prefHeight="286.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
    <children>
       <!-- Welcome Label -->
-      <Label fx:id="welcomeLabel" layoutX="40.0" layoutY="10.0" prefWidth="280.0" text="Welcome to Blib system">
+      <Label fx:id="welcomeLabel" ellipsisString="Welcome to Blib system" layoutX="110.0" layoutY="14.0" prefWidth="280.0" text="Welcome to Blib system">
          <font>
             <Font size="20.0" />
          </font>
@@ -22,10 +22,10 @@
       </Label>
 
       <!-- Server IP Label -->
-      <Label layoutX="14.0" layoutY="88.0" text="Enter Server IP:" />
+      <Label ellipsisString="Enter Server IP:" layoutX="14.0" layoutY="88.0" text="Enter Server IP:" />
 
       <!-- TextField for IP input -->
-      <TextField fx:id="IPtxt" layoutX="115.0" layoutY="81.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
+      <TextField fx:id="IPtxt" layoutX="135.0" layoutY="81.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
 
       <!-- Awaiting Login Text -->
       <Label fx:id="awaitingLoginText" layoutX="40.0" layoutY="120.0" textFill="RED">
@@ -35,7 +35,7 @@
       </Label>
 
       <!-- Send Button -->
-      <Button id="btnSubscriberInfo" fx:id="btnSend" layoutX="300.0" layoutY="84.0" mnemonicParsing="false" onAction="#Send" text="Send" />
+      <Button id="btnSubscriberInfo" fx:id="btnSend" ellipsisString="Send" layoutX="333.0" layoutY="84.0" mnemonicParsing="false" onAction="#Send" text="Send" />
 
       <!-- Exit Button -->
       <Button id="btnExit" fx:id="btnExit" layoutX="358.0" layoutY="272.0" mnemonicParsing="false" onAction="#getExitBtn" text="Exit" />
