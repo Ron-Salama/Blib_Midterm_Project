@@ -90,6 +90,7 @@ public class ChatClient extends AbstractClient
 	    }
 
 	    String response = (String) msg;
+	    System.out.println(msg);
 	    // Dispatch handling based on message prefix
 	    if (response.startsWith("Client connected to IP:")) {
 	    	handleServerConnectionIssue(true);

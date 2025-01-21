@@ -246,6 +246,7 @@ public class EchoServer extends AbstractServer {
           if(reduceamount) {
         	  client.sendToClient("Successfully decreased NumCopies for bookId: " + bookid);
           }
+          client.sendToClient(ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid));
 	}
 
 
