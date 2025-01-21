@@ -208,6 +208,8 @@ public class EchoServer extends AbstractServer {
                 case "Handle register":
                 	HandleRegisterOfSubscriber(client, body);
                 	break;
+                case "Handle Lost":
+                	HandleLost(client,body);
                 case "EXIT":
                 	clientDisconnect(client);
                 default: // Handle unknown commands
@@ -223,7 +225,27 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
-    private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
+    private void HandleLost(ConnectionToClient client, String body) throws IOException, SQLException {
+    	 // Split the body by commas to extract individual parts (subscriber name, ID, book name, ID, and time)
+        String[] messageParts = body.split(",");
+    	  String subscriberName = messageParts[0].trim();
+          String subscriberId = messageParts[1].trim();
+          String bookName = messageParts[2].trim();
+          String bookid = messageParts[3].trim();
+          String bookTime = messageParts[4].trim();
+          String returnTime = messageParts[5].trim();
+          boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection,"Return For Subscriber",subscriberId, bookid);
+          if(requestDeleted) {
+        	  client.sendToClient("return request was commited and deleted but the book is lost");
+          }
+          boolean reduceamount=ConnectToDb.decreaseNumCopies(dbConnection,bookid);
+          if(reduceamount) {
+        	  client.sendToClient("Successfully decreased NumCopies for bookId: " + bookid);
+          }
+	}
+
+
+	private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
         try {
             String ISBN = body.trim(); // The ISBN is sent in the message body
             boolean isReserved = ConnectToDb.isBookReserved(dbConnection, ISBN); // Updated method call
@@ -596,13 +618,16 @@ public class EchoServer extends AbstractServer {
             String borrowTime = ""; // You can pass the actual borrow time if you have it
             String returnTime = ""; // Leave empty if not used
             String extendTime = ""; // Leave empty if not used
-
-            // Check if the RegisterId already exists in the database
-            boolean idExists = ConnectToDb.checkIfIdExists(dbConnection, RegisterId);
-
-            if (idExists) {
+            boolean Subscriberexists=ConnectToDb.checkSubscriberExists(dbConnection, RegisterId);
+            if(Subscriberexists) {
+            	client.sendToClient("RegistrationFailed: Request for Register failed, ID " + RegisterId + " already exists.");
+            	return;
+            }
+            // Check if the Request with this id already exists in the database
+            boolean requestalreadyexist = ConnectToDb.checkIfrequestexists(dbConnection, RegisterId);
+            if (requestalreadyexist) {
                 // If the ID already exists, send a response to the client
-                client.sendToClient("RegistrationFailed: Request for Register failed, ID " + RegisterId + " already exists.");
+                client.sendToClient("RegistrationFailed: there is a request for registration already");
             } else {
                 // If the ID doesn't exist, proceed with the insertRequest
                 ConnectToDb.insertRequest(dbConnection, 
@@ -654,7 +679,7 @@ public class EchoServer extends AbstractServer {
                                             returnDate,               // returnDate (empty string if not available)
                                             extendTime);              // extendTime (empty string if not available)
                  
-                 ConnectToDb.decreaseNumCopies(dbConnection,bookBorrowId);
+                 ConnectToDb.decreaseAvaliabeNumCopies(dbConnection,bookBorrowId);
              } catch (Exception e) {
                  client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
                  e.printStackTrace();
@@ -847,12 +872,17 @@ public class EchoServer extends AbstractServer {
     
     
     private void HandleRegisterOfSubscriber(ConnectionToClient client, String body) {
+    	System.out.print("im in handle register");
+        String[] borrowParts = body.split(",");
+        String RegisterId = borrowParts[1].trim();
     	System.out.println("First stop! you are in EchoServer");
     	outputInOutputStreamAndLog("Received register request from client");
         try {
             String isRegisterSuccessfully = ConnectToDb.updateSubscriberDB(dbConnection, body);
             if (isRegisterSuccessfully.equals("True")) {
-                client.sendToClient("Subsacriber registered successfully");
+            	ConnectToDb.deleteRegisterRequest(dbConnection, RegisterId);
+                client.sendToClient("Subscriber registered successfully");
+                
             } else {
                 client.sendToClient("Error in registering subscriber");
             }

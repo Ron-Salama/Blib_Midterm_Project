@@ -315,7 +315,7 @@ public class ConnectToDb {
     
     
  
-    public static boolean checkIfIdExists(Connection dbConnection, String RegisterId) throws SQLException {
+    public static boolean checkIfrequestexists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, RegisterId);
@@ -577,7 +577,7 @@ public class ConnectToDb {
         return result.toString();
     }
     
-    public static void decreaseNumCopies(Connection conn, String bookId) throws SQLException {
+    public static void decreaseAvaliabeNumCopies(Connection conn, String bookId) throws SQLException {
         // SQL query to decrease NumCopies by 1 for the given bookId
         String query = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ? AND NumCopies > 0";
 
@@ -994,7 +994,17 @@ public class ConnectToDb {
             return false;
         }
     }
-
+    public static boolean deleteRegisterRequest(Connection dbConnection, String subscriberId) {
+        System.out.println("delete register request for Subscriber id:" + subscriberId);
+        try (PreparedStatement stmt = dbConnection.prepareStatement(
+                "DELETE FROM requests WHERE requestType = 'Request For Register' AND requestedByID = ?")) {
+            stmt.setString(1, subscriberId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static boolean incrementBookCount(Connection dbConnection, String bookID) {
     	System.out.println("book id for increment"+bookID);
         try (PreparedStatement stmt = dbConnection.prepareStatement(
@@ -1133,6 +1143,29 @@ public class ConnectToDb {
 
         return bookInfo.toString();
     }
+
+    public static boolean decreaseNumCopies(Connection conn, String bookId) throws SQLException {
+        // SQL query to decrease NumCopies by 1 for the given bookId
+        String query = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            // Set the bookId parameter
+            pstmt.setString(1, bookId);
+
+            // Execute the update statement
+            int affectedRows = pstmt.executeUpdate();
+
+            // If no rows were updated, it means there are no copies left or the bookId does not exist
+            if (affectedRows == 0) {
+                System.out.println("No copies available or invalid bookId: " + bookId);
+                return false;
+            } else {
+                System.out.println("Successfully decreased AvailableCopiesNum for bookId: " + bookId);
+                return true;
+            }
+        }
+    }
+	}
     
     public static List<String> fetchAllReservedBooks(Connection conn) {
         String query = "SELECT * FROM blib.reserved_books";

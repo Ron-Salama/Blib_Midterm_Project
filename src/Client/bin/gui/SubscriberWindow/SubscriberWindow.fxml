@@ -39,7 +39,7 @@
       </Button>
       <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="50.0" layoutY="29.0" prefHeight="90.0" prefWidth="1019.0" wrapText="true">
          <font>
-            <Font name="System Bold" size="45" />
+            <Font name="System Bold" size="36.0" />
          </font>
       </Label>
       <Label id="myStatusLabel" fx:id="myStatusLabel" alignment="CENTER" layoutX="201.0" layoutY="163.0" prefHeight="30.0" prefWidth="416.0">
