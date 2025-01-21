@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.LibrarianSubscriberStatusReportWindow.LibrarianSubscriberStatusReportController">
-    <BarChart fx:id="ganttChart" layoutX="14.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0">
-        <!-- X-axis: CategoryAxis for days of the month -->
+    <LineChart fx:id="lineChart" layoutX="14.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0">
+        <!-- X-axis: CategoryAxis for freeze dates -->
         <xAxis>
-            <CategoryAxis fx:id="xAxis" label="Day of Month"/>
+            <CategoryAxis fx:id="xAxis" label="Freeze Dates (dd-MM-yyyy)"/>
         </xAxis>
-        <!-- Y-axis: NumberAxis for Subscriber IDs or numerical data -->
+        <!-- Y-axis: CategoryAxis for Subscriber names -->
         <yAxis>
-            <NumberAxis fx:id="yAxis" label="Subscriber"/>
+            <CategoryAxis fx:id="yAxis" label="Subscriber Names"/>
         </yAxis>
-    </BarChart>
+    </LineChart>
 </AnchorPane>
