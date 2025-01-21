@@ -42,8 +42,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
 		
 	}
 
-	
-	
 	public void freeze() throws SQLException {
 		List<String> borrowedBooksList = ConnectToDb.fetchBorrowedBooksForTaskScheduler(EchoServer.taskSchedulerConnection);
 		
