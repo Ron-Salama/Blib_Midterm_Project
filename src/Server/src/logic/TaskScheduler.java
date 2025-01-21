@@ -11,6 +11,7 @@ public class TaskScheduler {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private FreezeController freezeController = new FreezeController();
     private SMSandEmailController smsAndEmailController = new SMSandEmailController();
+    private ReserveRequestDailyTasksController reserveRequestDailyTasksController = new ReserveRequestDailyTasksController();
     
     public void startDailyTasks() {
         Runnable dailyTask = new Runnable() {
@@ -18,6 +19,7 @@ public class TaskScheduler {
             	try { // TODO: Add more functions that need to run daily in here.
 					Thread.sleep(1000); // Allow the SQL connection to be set so on startup so the function can work correctly.
 					freezeController.freezeControllerDailyActivities(); // Run all of the daily activities needed from the freezeController.
+					reserveRequestDailyTasksController.reserveRequestsDailyActivity(); // Run all of the methods that are related to the reserve functionality.
 					smsAndEmailController.smsAndEmailControllerDailyActivities(); // Send Email and SMS to users that need to return their book the next day.
 				} catch (InterruptedException e) {
 					e.printStackTrace();

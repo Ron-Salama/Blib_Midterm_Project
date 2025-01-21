@@ -14,6 +14,36 @@ import server.EchoServer;
 public class ReserveRequestDailyTasksController extends BaseController {
 	ServerTimeDiffController clock = EchoServer.clock;
 	
+	
+	public void reserveRequestsDailyActivity() {
+		deleteOldRequests();
+		updateReservationRequestsThatHaveBooksInStock();
+		sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary();
+	}
+	
+	public void deleteOldRequests() {
+		// TODO: pass on the requests
+		// 1. Fetch information about the reservation
+		// 2. put the information in Map<Integer, String>
+		// 3. for each element in the map
+		// 3.3 is clock.timeDifference...(String bookInWhichTheBookIsAvailable, clock.timeNOW) >= 2;
+		// 4. use array to store IDs of reservation requests that need to be deleted.
+		// For each element in the array - delete reservation.
+	}
+	
+	
+	public void updateReservationRequestsThatHaveBooksInStock() {
+		
+	}
+
+	
+	public void sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary() {
+		// USE PUBLIC STATIC METHOD FOR SENDING MAIL FRIM SMSANDEMAILCONTROLLER.
+		
+	}
+
+	
+	
 	public void freeze() throws SQLException {
 		List<String> borrowedBooksList = ConnectToDb.fetchBorrowedBooksForTaskScheduler(EchoServer.taskSchedulerConnection);
 		
@@ -55,11 +85,5 @@ public class ReserveRequestDailyTasksController extends BaseController {
 				}
 			}
 		}
-	}
-	
-	
-	public void freezeControllerDailyActivities() throws SQLException {
-		unfreeze(); // Unfreeze first in case the subscriber has to be frozen on the same day he's being unfreezed.
-		freeze();
 	}
 }
