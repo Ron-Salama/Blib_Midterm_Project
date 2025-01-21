@@ -33,7 +33,6 @@ import logic.Subscriber;
  * an option to navigate back to the Main Menu.</p>
  */
 public class MyBooksController extends BaseController implements Initializable {
-	private MyBooksController mbc;
     public static String FlagForSearch = "";
 	
     @FXML
@@ -92,9 +91,9 @@ public class MyBooksController extends BaseController implements Initializable {
      * @param resourceBundle the resource bundle for internationalization.
      */
     public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
-    public static int librarianViewing=-1;
+    public static int librarianViewing = -1;
     public static String LibrarianName;
-    public static Boolean viewing=false;
+    public static Boolean viewing = false;
     @Override
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -166,7 +165,7 @@ public class MyBooksController extends BaseController implements Initializable {
     public void updateView(ActionEvent event) throws InterruptedException {
 
     		String subID = TXTFview.getText();
-        	ClientUI.chat.accept("Fetch:"+subID);
+        	ClientUI.chat.accept("Fetch:" + subID);
         	addDelayInMilliseconds(100);
             currentSub = new Subscriber(
             	  ChatClient.s1.getSubscriber_id(),
@@ -180,7 +179,7 @@ public class MyBooksController extends BaseController implements Initializable {
             if(currentSub.getSubscriber_id() == -1) {
             	title.setText("No ID Found");
             }else {
-            	title.setText("Now Viewing Subscriber: "+currentSub.getSubscriber_id()+" , "+currentSub.getSubscriber_name());
+            	title.setText("Now Viewing Subscriber: " + currentSub.getSubscriber_id() + " , " + currentSub.getSubscriber_name());
             }
             
     	loadBooks();
@@ -227,12 +226,12 @@ public class MyBooksController extends BaseController implements Initializable {
                     	ClientTimeDiffController clock = new ClientTimeDiffController();
                     	String extendedReturnDate;
                     	String ignore = "ignore";
-                    	String librarianMessage= ",Extended Successfully by Librarian " + librarianViewing + ":" + LibrarianName;
+                    	String librarianMessage = ",Extended Successfully by Librarian " + librarianViewing + ":" + LibrarianName;
                     	String body = currentSub.getSubscriber_name() + "," +
                                 currentSub.getSubscriber_id() + "," +
                                 borrowedBook.getName() + "," +
                                 borrowedBook.getBorrowId() + "," +
-                                borrowedBook.getBorrowDate() + "," +ignore;
+                                borrowedBook.getBorrowDate() + "," + ignore;
                     	ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
                                 
                     	
@@ -264,8 +263,8 @@ public class MyBooksController extends BaseController implements Initializable {
                     			if(!(ChatClient.isBookReservedFlag)) {
                             		if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) { // add condition - AND book is not reserved - we check if book reserved in DB.
                                     	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
-                                		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
-                                        ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Extended Successfully");
+                                		ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
+                                        ClientUI.chat.accept("UpdateHistoryInDB:" + body +",Extended Successfully");
                                 		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
                                 		tableView.refresh();
                                 	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
