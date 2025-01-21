@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberWindow.SubscriberWindowController">
+<AnchorPane prefHeight="1000.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberWindow.SubscriberWindowController">
    <children>
 
       <!-- Other buttons -->
@@ -37,7 +37,7 @@
             <Font size="25.0" />
          </font>
       </Button>
-      <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="50.0" layoutY="29.0" prefHeight="90.0" prefWidth="716.0" wrapText="true">
+      <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="50.0" layoutY="29.0" prefHeight="90.0" prefWidth="1019.0" wrapText="true">
          <font>
             <Font name="System Bold" size="45" />
          </font>
