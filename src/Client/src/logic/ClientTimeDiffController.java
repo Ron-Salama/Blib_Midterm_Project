@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 /**
  * The {@code ClientTimeDiffController} class provides utilities for working with dates and times,
@@ -287,5 +288,33 @@ public class ClientTimeDiffController {
     public String[] parseFrozenSubscriberStatus(String status) {
     	String[] frozenData = status.split(":");
     	return frozenData; // return the date part of a frozen subscriber.
+    }
+    
+    /*
+     *  Retrieves the earliest date.
+     */
+    public String findTheEarliestDate(String[] dates) {
+    	ArrayList<LocalDate> datesInLocalDateFormat = new ArrayList<LocalDate>();
+    	
+    	// Convert all of the dates to a date format - "dd-MM-yyyy"
+    	for (String date : dates) {
+    		datesInLocalDateFormat.add(convertStringToLocalDateTime(date).toLocalDate());
+    	}
+    	
+    	// Find the earliest date
+    	LocalDate earliestDate = null;
+    	
+    	for (LocalDate date : datesInLocalDateFormat) {
+    		if (earliestDate == null) {
+    			earliestDate = date;
+    			continue; // Assign the first date and move on.
+    		}
+    		
+    		if (date.isBefore(earliestDate)) { // If there's an earlier date.
+    			earliestDate = date;
+    		}
+    	}
+    	
+    	return earliestDate.toString();
     }
 }
