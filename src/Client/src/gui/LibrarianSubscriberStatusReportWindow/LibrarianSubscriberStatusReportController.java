@@ -1,5 +1,6 @@
 package gui.LibrarianSubscriberStatusReportWindow;
 
+import java.awt.Button;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
     @FXML
     private PieChart pieChartFrozen;
+
 
     @FXML
     private ComboBox<String> comboMonths;
@@ -98,6 +100,10 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         // Clear the existing chart data
         scatterChart.getData().clear();
 
+        // Reset the axis labels for the new month
+        xAxis.setLabel("Freeze Date (" + month + " " + year + ")");
+        yAxis.setLabel("Frozen Subscriber");
+
         // Fetch subscriber data for the updated month
         List<String> allSubscribers = getAllSubscribers();
 
@@ -107,12 +113,18 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         // Only add series to chart if there's data for the selected month
         if (!frozenAccountsSeries.getData().isEmpty()) {
             scatterChart.getData().add(frozenAccountsSeries);
+        } else {
+            System.out.println("No data available for the selected month.");
         }
 
         // Update the PieChart data for the selected month
         updatePieChart(allSubscribers);
     }
-
+    public void update(ActionEvent event) throws Exception {
+    	scatterChart.getData().clear();
+    	updateChartForMonth();
+    }
+    
     private List<String> getAllSubscribers() throws InterruptedException {
         List<String> subscribers = new ArrayList<>();
 
