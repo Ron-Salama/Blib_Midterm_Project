@@ -569,7 +569,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 String date = clock.timeNow();
 			 String ignore2 = "ignore";
 			 String body1 = "" + SName + "," + SID + "," + PhoneNum + "," + Email;
-			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," + "," + ignore2;
+			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," +date+ "," + ignore2;
 
 			 ClientUI.chat.accept("Handle register:" + body1);
 			 ClientUI.chat.accept("UpdateHistoryInDB:" + body2 + ",Register Successfully");

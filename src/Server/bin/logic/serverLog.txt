@@ -1,33 +1,72 @@
 Server listening for connections on port 5555
 Connected to the database.
-Server daily tasks done.
-Client connected.
-Client IP:172.20.10.3
-Client Hostname: YuvalDesktop
-Connection Status: Connected
-Message received: IP:172.20.10.3 from YuvalDesktop (172.20.10.3)
-Message received: Fetch:11 from YuvalDesktop (172.20.10.3)
-21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Hobbit
-21-01-2025: subscriber No' 2, Spongebob has been frozen because they were late at returning the book: The Hobbit
-21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Catcher in the Rye
-21-01-2025: subscriber No' 3, Patrick_Star has been frozen because they were late at returning the book: War and Peace
-21-01-2025: subscriber No' 4, Squidward_Tentacles has been frozen because they were late at returning the book: The Grapes of Wrath
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: EXIT: from 10.0.0.8 (10.0.0.8)
-Client disconnected.
-Client IP: 10.0.0.8
-Client Hostname: 10.0.0.8
-Connection Status: Disconnected
+Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:6 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0011 from 10.0.0.8 (10.0.0.8)
+Message received: BorrowRequest:8,Gary_Snail,0011,The Hobbit,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
+Received BorrowRequest from client
+Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client
+Message received: SubmitBorrowRequest:Gary_Snail,8,The Hobbit,0011,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Gary_Snail,8,The Hobbit,0011,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetHistory:8 from 10.0.0.8 (10.0.0.8)
+Received GetHistory request from client
+Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0033 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0444 from 10.0.0.8 (10.0.0.8)
+Message received: BorrowRequest:9,Karen_Plankton,0444,Divergent,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
+Received BorrowRequest from client
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client
+Message received: SubmitBorrowRequest:Karen_Plankton,9,Divergent,0444,21-01-2025,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Karen_Plankton,9,Divergent,0444,21-01-2025,21-01-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetHistory:9 from 10.0.0.8 (10.0.0.8)
+Received GetHistory request from client
+Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetHistory:9 from 10.0.0.8 (10.0.0.8)
+Received GetHistory request from client
+Message received: GetHistory:0 from 10.0.0.8 (10.0.0.8)
+Received GetHistory request from client
+Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:9 from 10.0.0.8 (10.0.0.8)
 Client connected.
-Client IP:172.20.10.3
-Client Hostname: YuvalDesktop
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:9 from 10.0.0.8 (10.0.0.8)
+Message received: GetBooks: from 10.0.0.8 (10.0.0.8)
+Received GetBooks request from client
+Message received: Fetch:18 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetHistory:1 from 10.0.0.8 (10.0.0.8)
-Received GetHistory request from client
+Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:3 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: RegisterRequest:13,Kim_Possible,0509876543,kim_possible@spyadventures.co.il from 10.0.0.8 (10.0.0.8)
+Received RegisterRequestCase from client
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchRegisterRequest: from 10.0.0.8 (10.0.0.8)
+Received FetchBorrowRequest from client
+Message received: Handle register:Kim_Possible,13,0509876543,kim_possible@spyadventures.co.il from 10.0.0.8 (10.0.0.8)
+Received register request from client
+Message received: UpdateHistoryInDB:Kim_Possible,13,0509876543,kim_possible@spyadventures.co.il,,ignore,Register Successfully from 10.0.0.8 (10.0.0.8)
