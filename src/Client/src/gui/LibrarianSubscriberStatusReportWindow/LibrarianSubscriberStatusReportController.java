@@ -167,7 +167,9 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
     private void updatePieChart(List<String> allSubscribers) {
         int totalSubscribers = allSubscribers.size();
         int frozenCount = 0;
+        int unfrozenCount = 0;
 
+        // Iterate through the subscriber data and classify into frozen and unfrozen
         for (String subscriberData : allSubscribers) {
             String[] subscriberFields = subscriberData.split(",");
 
@@ -176,27 +178,29 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
                 if (isFrozenInSelectedMonth(freezeDate)) {
                     frozenCount++;
                 }
+            } else {
+                unfrozenCount++;
             }
         }
 
-        PieChart.Data frozenData = new PieChart.Data("Frozen Accounts", frozenCount);
-        PieChart.Data activeData = new PieChart.Data("Active Accounts", totalSubscribers - frozenCount);
+        // Create the PieChart data for Frozen and Unfrozen accounts
+        PieChart.Data frozenData = new PieChart.Data("Frozen", frozenCount);
+        PieChart.Data unfrozenData = new PieChart.Data("Unfrozen", unfrozenCount);
 
         // Clear previous data and add new data
         pieChartFrozen.getData().clear();
-        pieChartFrozen.getData().addAll(frozenData, activeData);
+        pieChartFrozen.getData().addAll(frozenData, unfrozenData);
 
-        // Add labels to the pie chart slices
-        addPieChartLabels(frozenData, frozenCount, totalSubscribers);
-        addPieChartLabels(activeData, totalSubscribers - frozenCount, totalSubscribers);
+        // Add custom labels with the number of subscribers
+        addPieChartLabels(frozenData, frozenCount);
+        addPieChartLabels(unfrozenData, unfrozenCount);
     }
 
-    private void addPieChartLabels(PieChart.Data data, int count, int total) {
-        double percentage = ((double) count / total) * 100;
-        String label = count + " (" + String.format("%.2f", percentage) + "%)";  // Display count and percentage
-
-        data.setName(label); // Set the label text as the slice's name (this will be displayed in the chart)
+    private void addPieChartLabels(PieChart.Data data, int count) {
+        // Set custom label with the number count
+        data.setName(data.getName() + "\n" + count); // Adds the count below the label
     }
+
 
 
     private String extractFreezeDate(String status) {
