@@ -42,7 +42,7 @@ public class ReserveRequestDailyTasksController extends BaseController {
 		
 		System.out.println("THIS IS A TEST TO SEE IF DELETE REQUESTS IS EVEN CALLED");
 	    // Step 1: Fetch reserved books data
-	    List<String> reservedBooksData = ConnectToDb.fetchReservedRequests(EchoServer.taskSchedulerConnection);
+	    List<String> reservedBooksData = ConnectToDb.fetchAllReservedBooks(EchoServer.taskSchedulerConnection);
 	    
 	    if (reservedBooksData == null || reservedBooksData.isEmpty()) {
 	        System.out.println("No reserved books found.");
