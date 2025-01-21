@@ -1,145 +1,40 @@
 Server listening for connections on port 5555
 Connected to the database.
-Server daily tasks done.
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 2, Spongebob has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Catcher in the Rye
+21-01-2025: subscriber No' 3, Patrick_Star has been frozen because they were late at returning the book: War and Peace
+21-01-2025: subscriber No' 4, Squidward_Tentacles has been frozen because they were late at returning the book: The Grapes of Wrath
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0011 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:1,Heinz_Doofenshmirtz,0011,The Hobbit,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: GetBookInfo:0022 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0022 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:1,Heinz_Doofenshmirtz,0022,The Catcher in the Rye,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0277 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:2,Spongebob,0277,The Lord of the Rings: The Fellowship of the Ring,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: Fetch:3 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0077 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:3,Patrick_Star,0077,War and Peace,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: GetBookInfo:0077 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0322 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:4,Squidward_Tentacles,0322,The Grapes of Wrath,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
 Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0299 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:5,Mr_Krabs,0299,The Lord of the Rings: The Return of the King,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: GetBookInfo:6 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:6 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0366 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:6,Sandy_Cheeks,0366,Life of Pi,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: GetBookInfo:0366 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:7 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0033 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:7,Plankton_Chum,0033,To Kill a Mockingbird,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: GetBookInfo:0033 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0377 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:8,Gary_Snail,0377,The Da Vinci Code,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0477 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:9,Karen_Plankton,0477,The Maze Runner,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0066 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:10,Mrs_Puff,0066,Moby-Dick,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
+Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:8 Gary_Snail Borrow info: 0377 The Da Vinci Code 02-01-2025 16-01-2025 -5 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
-Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
-Received FetchBorrowRequest from client
-Message received: SubmitBorrowRequest:Heinz_Doofenshmirtz,1,The Hobbit,0011,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Heinz_Doofenshmirtz,1,The Hobbit,0011,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Heinz_Doofenshmirtz,1,The Catcher in the Rye,0022,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Heinz_Doofenshmirtz,1,The Catcher in the Rye,0022,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Patrick_Star,3,War and Peace,0077,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Patrick_Star,3,War and Peace,0077,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Squidward_Tentacles,4,The Grapes of Wrath,0322,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Squidward_Tentacles,4,The Grapes of Wrath,0322,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Mr_Krabs,5,The Lord of the Rings: The Return of the King,0299,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Mr_Krabs,5,The Lord of the Rings: The Return of the King,0299,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Sandy_Cheeks,6,Life of Pi,0366,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Sandy_Cheeks,6,Life of Pi,0366,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Plankton_Chum,7,To Kill a Mockingbird,0033,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Plankton_Chum,7,To Kill a Mockingbird,0033,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Gary_Snail,8,The Da Vinci Code,0377,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Gary_Snail,8,The Da Vinci Code,0377,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Karen_Plankton,9,The Maze Runner,0477,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Karen_Plankton,9,The Maze Runner,0477,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: SubmitBorrowRequest:Mrs_Puff,10,Moby-Dick,0066,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Mrs_Puff,10,Moby-Dick,0066,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:2 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:2 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBookInfo:0011 from 10.0.0.8 (10.0.0.8)
-Message received: BorrowRequest:2,Spongebob,0011,The Hobbit,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Received BorrowRequest from client
-Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
-Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
-Received FetchBorrowRequest from client
-Message received: SubmitBorrowRequest:Spongebob,2,The Hobbit,0011,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
-Message received: UpdateHistoryInDB:Spongebob,2,The Hobbit,0011,21-01-2025,04-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:2 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:3 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:3 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:4 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: Return request: Subscriber ID is:1 Heinz_Doofenshmirtz Borrow info: 0011 The Hobbit 9-12-2024 23-12-2024 0 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
-Client connected.
-Client IP:10.0.0.8
-Client Hostname: 10.0.0.8
-Connection Status: Connected
-Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
-Client connected.
-Client IP:10.0.0.8
-Client Hostname: 10.0.0.8
-Connection Status: Connected
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetHistory:1 from 10.0.0.8 (10.0.0.8)
-Received GetHistory request from client
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:2 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:4 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:9 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:9 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
 Message received: GetBorrowedBooks:10 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:11 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:11 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:12 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:12 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:14 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:-1 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:10 Mrs_Puff Borrow info: 0066 Moby-Dick 11-01-2025 25-01-2025 4 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:5 Mr_Krabs Borrow info: 0299 The Lord of the Rings: The Return of the King 01-01-2025 15-01-2025 -6 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)

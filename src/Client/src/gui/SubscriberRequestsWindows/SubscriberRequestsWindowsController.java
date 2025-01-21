@@ -544,8 +544,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
             }
             else
-            {
-            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(clock.convertStringToLocalDateTime(Btime).plusDays(14).toLocalDate().toString(), clock.convertStringToLocalDateTime(Rtime).toLocalDate().toString());
+            {	
+            	String Expected_Return=clock.convertStringToLocalDateTime(Btime).plusDays(14).toLocalDate().toString();
+            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(convertDateFormat(Expected_Return), convertDateFormat(clock.convertStringToLocalDateTime(Rtime).toLocalDate().toString()));
                 if (numOfDaysOfReturn<=0) {
                 	statusOfReturn = "early";
                 	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
