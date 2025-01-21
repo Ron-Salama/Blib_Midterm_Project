@@ -1165,7 +1165,6 @@ public class ConnectToDb {
             }
         }
     }
-	}
     
     public static List<String> fetchAllReservedBooks(Connection conn) {
         String query = "SELECT * FROM blib.reserved_books";
