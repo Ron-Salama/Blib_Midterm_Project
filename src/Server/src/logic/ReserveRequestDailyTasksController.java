@@ -28,21 +28,11 @@ public class ReserveRequestDailyTasksController extends BaseController {
 		sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary();
 	}
 	
-	/*public void deleteOldRequests() {
-		// TODO: pass on the requests
-		// 1. Fetch information about the reservation
-		// 2. put the information in Map<Integer, String>
-		// 3. for each element in the map
-		// 3.3 is clock.timeDifference...(String bookInWhichTheBookIsAvailable, clock.timeNOW) >= 2;
-		// 4. use array to store IDs of reservation requests that need to be deleted.
-		// For each element in the array - delete reservation.
-	}*/
-	
 	public void deleteOldRequests() {
 		
 		System.out.println("THIS IS A TEST TO SEE IF DELETE REQUESTS IS EVEN CALLED");
 	    // Step 1: Fetch reserved books data
-	    List<String> reservedBooksData = ConnectToDb.fetchReservedRequests(EchoServer.taskSchedulerConnection);
+	    List<String> reservedBooksData = ConnectToDb.fetchAllReservedBooks(EchoServer.taskSchedulerConnection);
 	    
 	    if (reservedBooksData == null || reservedBooksData.isEmpty()) {
 	        System.out.println("No reserved books found.");
@@ -109,6 +99,10 @@ public class ReserveRequestDailyTasksController extends BaseController {
 
 	
 	public void sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary() {
+		// 1. Fetch all reservation requests * Those without the default value of status to return.
+		// 2. put in a map, 
+		
+		
 		// USE PUBLIC STATIC METHOD FOR SENDING MAIL FRIM SMSANDEMAILCONTROLLER.
 		
 	}
