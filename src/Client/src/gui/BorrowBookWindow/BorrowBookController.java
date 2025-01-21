@@ -168,9 +168,12 @@ public class BorrowBookController extends BaseController implements Initializabl
             
             // Collect subscriber and book details
             String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
-            String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
+            //String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
             
-            String reservation = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName;
+            String reserveDate = clockController.timeNow();
+   
+            
+            String reservation = "" + subscriberId + "," + bookName + "," + reserveDate + ","  + bookId;
             ClientUI.chat.accept("Reserve:" + reservation);
             
             // Feedback to the user

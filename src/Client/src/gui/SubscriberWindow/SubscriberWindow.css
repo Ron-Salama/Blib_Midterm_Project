@@ -96,6 +96,19 @@
     -fx-cursor: hand;
 }
 
+/* My Reservations button */
+#btnMyReservations {
+    -fx-background-color: linear-gradient(to bottom, #3498db, #2980b9); /* Vibrant blue gradient */
+    -fx-border-color: #2980b9;
+    -fx-border-width: 2px;
+}
+
+#btnMyReservations:hover {
+    -fx-background-color: linear-gradient(to bottom, #2980b9, #3498db); /* Reverse gradient */
+    -fx-border-color: #3498db;
+    -fx-cursor: hand;
+}
+
 /* Profile Circle */
 .profile-circle {
     -fx-fill: radial-gradient(center 50% 50%, radius 50%, #4e91f5, #1c6dd0); /* Radial gradient */
