@@ -269,13 +269,9 @@ public class ConnectToDb {
 
         return borrowedBooks; // Return the list of borrowed books
     }
-
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
+    
+    
+  
     
     public static List<String> fetchReservedBooksBySubscriberId(Connection conn, String subscriberId) {
         String query = "SELECT * FROM blib.reserved_books WHERE subscriber_id = ?";
@@ -301,20 +297,8 @@ public class ConnectToDb {
         }
 
         return reservedBooks; // Return the list of reserved books
-    }
-
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
-  //************************************************************************************
+    }    
     
-    
-    
-    
-    
- 
     public static boolean checkIfrequestexists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
@@ -792,6 +776,8 @@ public class ConnectToDb {
     
     
     
+    
+    
    //
 
     /*
@@ -1143,6 +1129,56 @@ public class ConnectToDb {
 
         return bookInfo.toString();
     }
+    
+    public static List<String> fetchAllReservedBooks(Connection conn) {
+        String query = "SELECT * FROM blib.reserved_books";
+
+        List<String> reservedBooks = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    // Combine fields into a single delimited string for sending to the client
+                    String bookData = rs.getInt("reserve_id") + "," +
+                                      rs.getInt("subscriber_id") + "," +
+                                      rs.getString("name") + "," +
+                                      rs.getString("reserve_time") + "," +
+                                      rs.getString("time_left_to_retrieve") + "," +
+                                      rs.getString("ISBN");
+                    reservedBooks.add(bookData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching reserved books: " + e.getMessage());
+        }
+
+        return reservedBooks; // Return the list of reserved books
+    }
+    
+    
+    public static List<String> fetchAllReservedBooksWhereBookIsAvailable(Connection conn) {
+        String query = "SELECT * FROM blib.reserved_books WHERE time_left_to_retrieve != 'Book is not available yet'";
+
+        List<String> reservedBooks = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    // Combine fields into a single delimited string for sending to the client
+                    String bookData = rs.getInt("reserve_id") + "," +
+                                      rs.getInt("subscriber_id") + "," +
+                                      rs.getString("name") + "," +
+                                      rs.getString("reserve_time") + "," +
+                                      rs.getString("time_left_to_retrieve") + "," +
+                                      rs.getString("ISBN");
+                    reservedBooks.add(bookData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching reserved books: " + e.getMessage());
+        }
+
+        return reservedBooks; // Return the list of reserved books
+    }
+
 
     public static boolean decreaseNumCopies(Connection conn, String bookId) throws SQLException {
         // SQL query to decrease NumCopies by 1 for the given bookId
