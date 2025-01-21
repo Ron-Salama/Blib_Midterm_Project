@@ -36,13 +36,14 @@ public class BorrowedBook {
      * @param subject the subject or category of the book
      * @param timeLeftToReturn the time left to return the book, in days
      */
-    public BorrowedBook(int borrowId, int subscriberId, String name, String borrowDate, String returnDate, String ISBN) {
+    public BorrowedBook(int borrowId, int subscriberId, String name, String borrowDate, String returnDate,int timeLeftToReturn, String ISBN) {
         this.borrowId = borrowId;
         this.subscriberId = subscriberId;
         this.name = name;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
         this.ISBN = ISBN;
+        this.timeLeftToReturn=timeLeftToReturn;
     }
 
     // Getters and setters

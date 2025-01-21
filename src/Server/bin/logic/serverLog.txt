@@ -1,12 +1,21 @@
 Server listening for connections on port 5555
 Connected to the database.
+<<<<<<< Updated upstream
 Server daily tasks done.
+=======
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 2, Spongebob has been frozen because they were late at returning the book: The Hobbit
+21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Catcher in the Rye
+21-01-2025: subscriber No' 3, Patrick_Star has been frozen because they were late at returning the book: War and Peace
+21-01-2025: subscriber No' 4, Squidward_Tentacles has been frozen because they were late at returning the book: The Grapes of Wrath
+>>>>>>> Stashed changes
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
+<<<<<<< Updated upstream
 Message received: GetBookInfo:0011 from 10.0.0.8 (10.0.0.8)
 Message received: BorrowRequest:1,Heinz_Doofenshmirtz,0011,The Hobbit,21-01-2025,04-02-2025 from 10.0.0.8 (10.0.0.8)
 Received BorrowRequest from client
@@ -110,12 +119,20 @@ Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:1 from 10.0.0.8 (10.0.0.8)
 Message received: GetBorrowedBooks:1 from 10.0.0.8 (10.0.0.8)
 Message received: Return request: Subscriber ID is:1 Heinz_Doofenshmirtz Borrow info: 0011 The Hobbit 9-12-2024 23-12-2024 0 from 10.0.0.8 (10.0.0.8)
+=======
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:6 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:6 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:6 Sandy_Cheeks Borrow info: 0366 Life of Pi 22-12-2024 5-01-2025 0 from 10.0.0.8 (10.0.0.8)
+>>>>>>> Stashed changes
 Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
+<<<<<<< Updated upstream
 Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
 Client connected.
 Client IP:10.0.0.8
@@ -143,3 +160,7 @@ Message received: Fetch:12 from 10.0.0.8 (10.0.0.8)
 Message received: GetBorrowedBooks:12 from 10.0.0.8 (10.0.0.8)
 Message received: Fetch:14 from 10.0.0.8 (10.0.0.8)
 Message received: GetBorrowedBooks:-1 from 10.0.0.8 (10.0.0.8)
+=======
+Message received: Handle return:Sandy_Cheeks,6,Life of Pi,0366,22-12-2024,21-01-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Sandy_Cheeks,6,Life of Pi,0366,22-12-2024,21-01-2025,Return Successfully 30 days late from 10.0.0.8 (10.0.0.8)
+>>>>>>> Stashed changes
