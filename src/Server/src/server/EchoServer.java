@@ -181,6 +181,11 @@ public class EchoServer extends AbstractServer {
                 case "SubmitBorrowRequest": 
                 	SubmitBorrowRequest(client, body);
                 	break;
+                //***********************************************
+                case "SubmitRetrieve": 
+                	SubmitRetrieve(client, body);
+                	break;
+                //***********************************************
                 case "Return request":
                 	handlereturnrequest(client,body);
                     break;
@@ -343,7 +348,54 @@ public class EchoServer extends AbstractServer {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    private void SubmitRetrieve(ConnectionToClient client, String body) throws SQLException, IOException {
+        try {
+            // Parse the body to extract necessary details
+            String[] requestDetails = body.split(",");
+            if (requestDetails.length >= 6) {
+                String subscriberName = requestDetails[0]; // Optional, if needed
+                String subscriberId = requestDetails[1];
+                String bookTitle = requestDetails[2]; // Optional, if needed
+                String bookID = requestDetails[3];
+                String requestDate = requestDetails[4]; // Optional, if needed
+                String returnDate = requestDetails[5]; // Optional, if needed
+                
 
+
+                // Step 1: Process the actual borrowing logic
+                boolean isRetrieved = ConnectToDb.insertBorrowBook(dbConnection, body);
+
+                if (isRetrieved) {
+                	ConnectToDb.decreaseNumCopies(dbConnection,bookID);
+                	client.sendToClient("Book retrieved Successfully and has been added to your borrowed books list.");
+                	
+                   
+                } else {
+                    client.sendToClient("Retrieve action could not be processed.");
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid details provided: " + body);
+            }
+        } catch (Exception e) {
+            // Handle exceptions and inform the client
+            client.sendToClient("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
 
     
     
@@ -468,12 +520,11 @@ public class EchoServer extends AbstractServer {
         outputInOutputStreamAndLog("Received Reserve Request from client");
         String[] reserveParts = body.split(",");
 
-        if (reserveParts.length == 5) { 
+        if (reserveParts.length == 4) { 
             String subscriberId = reserveParts[0].trim();
             String bookName = reserveParts[1].trim();
             String reserveDate = reserveParts[2].trim();
-            String reserveStatus = reserveParts[3].trim();
-            String bookId = reserveParts[4].trim();
+            String bookId = reserveParts[3].trim();
 
             try {
                 // Send the data to insertRequest for reservation
@@ -481,11 +532,10 @@ public class EchoServer extends AbstractServer {
                                            subscriberId,             // subscriber_id
                                            bookName,                 // name
                                            reserveDate,            // reserve_time
-                                           reserveStatus,          // reserve_status
                                            bookId);              // ISBN
 
 
-                // Decrease available copies
+                // increase reserved copies number
                 ConnectToDb.incrementReservedCopiesNum(dbConnection, bookId);
                 
                 client.sendToClient("Reservation successfully processed for book: " + bookName);

@@ -1,6 +1,6 @@
 /* General styling for the entire window */
 AnchorPane {
-    -fx-background-color: #f4f4f9;  /* Light background to match myBooks */
+    -fx-background-color: #f4f4f9;  /* Light background */
     -fx-padding: 10px;
 }
 
@@ -17,7 +17,7 @@ AnchorPane {
 
 #reservationTable .table-column {
     -fx-font-family: "Arial";
-    -fx-font-size: 14px;  /* Match font size to myBooks for consistency */
+    -fx-font-size: 14px;
     -fx-text-fill: #333333;
     -fx-alignment: CENTER;
 }
@@ -26,14 +26,14 @@ AnchorPane {
 .button {
     -fx-background-color: #4e91f5;  /* Blue background for buttons */
     -fx-text-fill: white;  /* White text for contrast */
-    -fx-font-size: 14px;  /* Font size for buttons consistent with text */
+    -fx-font-size: 14px;  /* Font size for buttons */
     -fx-font-weight: bold;
-    -fx-border-radius: 5px;  /* Rounded corners for a softer look */
+    -fx-border-radius: 5px;  /* Rounded corners */
     -fx-cursor: hand;  /* Hand cursor for clickable buttons */
-    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Subtle drop shadow for depth */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Subtle drop shadow */
 }
 
-#btnBack, #btnExit, #btnRefresh {
+#btnBack, #btnExit {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
@@ -57,37 +57,23 @@ AnchorPane {
 }
 
 #btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red on hover for feedback */
+    -fx-background-color: #c0392b;  /* Darker red on hover */
 }
 
 #btnExit:pressed {
-    -fx-background-color: #b03a2e;  /* Darker red on press for emphasis */
-}
-
-/* Refresh Button Specific Styling */
-#btnRefresh {
-    -fx-background-color: #f2fc71;  /* Yellow background for refresh button */
-    -fx-text-fill: black;  /* Black text for contrast */
-}
-
-#btnRefresh:hover {
-    -fx-background-color: #fcf501;  /* Darker yellow when hovered */
-}
-
-#btnRefresh:pressed {
-    -fx-background-color: #f2fc71;  /* Keep the same yellow when pressed */
+    -fx-background-color: #b03a2e;  /* Darker red on press */
 }
 
 /* Label Styling */
 Label {
     -fx-font-family: "Arial";
-    -fx-font-size: 14px;  /* Consistent font size with buttons and table for readability */
-    -fx-text-fill: #333333;  /* Dark text for clarity */
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
 }
 
 /* Title Label Styling */
 #title {
-    -fx-font-size: 20px;  /* Larger font size for titles to make them stand out */
+    -fx-font-size: 20px;  /* Larger font size for titles */
     -fx-font-weight: bold;
     -fx-text-fill: #444444;  /* Slightly lighter gray for title text */
 }
