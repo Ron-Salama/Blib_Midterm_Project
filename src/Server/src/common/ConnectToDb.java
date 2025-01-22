@@ -1000,4 +1000,22 @@ public class ConnectToDb {
 
         return bookInfo.toString();
     }
+    
+    public static String fetchClosestReturnDate(Connection dbConnection, String isbn) throws SQLException {
+        String query = "SELECT MIN(Return_Time) AS ClosestReturnDate " +
+                       "FROM borrowed_books " +
+                       "WHERE ISBN = ? AND Return_Time IS NOT NULL";
+
+        try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("ClosestReturnDate");
+            }
+        }
+
+        return null; // If no records are found
+    }
+
 }	

@@ -1,14 +1,16 @@
 Server listening for connections on port 5555
 Connected to the database.
-21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Hobbit
-21-01-2025: subscriber No' 2, Spongebob has been frozen because they were late at returning the book: The Hobbit
-21-01-2025: subscriber No' 1, Heinz_Doofenshmirtz has been frozen because they were late at returning the book: The Catcher in the Rye
-21-01-2025: subscriber No' 3, Patrick_Star has been frozen because they were late at returning the book: War and Peace
-21-01-2025: subscriber No' 4, Squidward_Tentacles has been frozen because they were late at returning the book: The Grapes of Wrath
 Client connected.
-Client IP:172.20.10.3
-Client Hostname: YuvalDesktop
+Client IP:10.100.102.6
+Client Hostname: 10.100.102.6
 Connection Status: Connected
-Message received: IP:172.20.10.3 from YuvalDesktop (172.20.10.3)
-Message received: Fetch:1111 from YuvalDesktop (172.20.10.3)
-Message received: Fetch return request: from YuvalDesktop (172.20.10.3)
+Message received: IP:10.100.102.6 from 10.100.102.6 (10.100.102.6)
+Message received: Fetch:1 from 10.100.102.6 (10.100.102.6)
+Message received: GetBooks: from 10.100.102.6 (10.100.102.6)
+Received GetBooks request from client
+Message received: FetchClosestReturnDate:0011 from 10.100.102.6 (10.100.102.6)
+Message received: FetchClosestReturnDate:0022 from 10.100.102.6 (10.100.102.6)
+Message received: FetchClosestReturnDate:0033 from 10.100.102.6 (10.100.102.6)
+Message received: FetchClosestReturnDate:0100 from 10.100.102.6 (10.100.102.6)
+Message received: FetchClosestReturnDate:0111 from 10.100.102.6 (10.100.102.6)
+Message received: FetchClosestReturnDate:0144 from 10.100.102.6 (10.100.102.6)

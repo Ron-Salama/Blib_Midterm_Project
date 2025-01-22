@@ -3,6 +3,7 @@ package client;
 import ocsf.client.*;
 import client.*;
 import common.ChatIF;
+import gui.SearchWindow.SearchFrameController;
 import logic.Book;
 import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
@@ -45,6 +46,7 @@ public class ChatClient extends AbstractClient
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
   public static boolean isBookReservedFlag = false;
+  public static String closestReturnDate;
   
   public static ClientTimeDiffController clock = new ClientTimeDiffController();
 
@@ -52,6 +54,7 @@ public class ChatClient extends AbstractClient
   
   public static boolean isIDInDataBase;
   // Constructors ****************************************************
+public static String currentISBN;
   
   /**
    * Constructs an instance of the chat client.
@@ -117,6 +120,8 @@ public class ChatClient extends AbstractClient
 	    	handleBookInfo(response.substring("BookInfo:".length()));
 	    } else if (response.startsWith("FetchedBorrowedBooks:")){
 	    	handleFetchedBorrowedBooks(response.substring("FetchedBorrowedBooks:".length()));
+	    } else if (response.startsWith("ClosestReturnDate:")){
+	    	closestReturnDate = response.substring("ClosestReturnDate:".length()); // fix this
 	    }else if (response.startsWith("FetchedHistory:")){
 	    	processMyHistoryData(response.substring("FetchedHistory:".length()));
 	    }else if (response.startsWith("FetchedRegisterRequests:")){
@@ -342,7 +347,7 @@ private void handleBorrowedBooksResponse(String data) {
 	        bookList.clear(); // Clear existing book data
 	        for (String bookData : bookStrings) {
 	            String[] fields = bookData.split(",");
-	            int id = Integer.parseInt(fields[0]);
+	            String isbn = fields[0];
 	            String name = fields[1];
 	            String subject = fields[2];
 	            String description = fields[3];
@@ -350,7 +355,7 @@ private void handleBorrowedBooksResponse(String data) {
 	            String location = fields[5];
 	            int availableCopies = Integer.parseInt(fields[6]);
 	            int reservedCopies = Integer.parseInt(fields[7]); 
-	            bookList.add(new Book(id, name, description, subject, copies, location, availableCopies, reservedCopies));
+	            bookList.add(new Book(isbn, name, description, subject, copies, location, availableCopies, reservedCopies));
 	        }
 	    } catch (Exception e) {
 	        System.out.println("Error parsing book data: " + e.getMessage());

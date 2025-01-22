@@ -8,7 +8,7 @@ package logic;
 public class Book {
     
     /** The unique identifier for the book. */
-    private int ISBN;
+    private String ISBN;
     
     /** The name of the book. */
     private String name;
@@ -31,6 +31,8 @@ public class Book {
     /** The location of the book in the library. */
     private int reservedCopies;
 
+    /** The location of the book in the library. */
+    private String closestReturnDate;
     /**
      * Constructs a new Book with the specified details.
      * 
@@ -41,7 +43,7 @@ public class Book {
      * @param availableCopies the number of available copies of the book
      * @param location the location of the book in the library
      */
-    public Book(int ISBN, String name, String description, String subject, int copies, String location , int availableCopies, int reservedCopies) {
+    public Book(String ISBN, String name, String description, String subject, int copies, String location , int availableCopies, int reservedCopies) {
         this.ISBN = ISBN;
         this.name = name;
         this.description = description;
@@ -57,7 +59,7 @@ public class Book {
      * 
      * @return the unique identifier of the book
      */
-    public int getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
@@ -115,7 +117,14 @@ public class Book {
     public int getReservedCopies() {
 		return reservedCopies;
 	}
-
+    
+    public void setClosestReturnDate(String returnDate) {
+    	closestReturnDate = returnDate;
+    }
+    
+    public String getClosestReturnDate() {
+    	return closestReturnDate;
+    }
     /**
      * Returns a string representation of the book, which includes all its details.
      * 
@@ -123,7 +132,7 @@ public class Book {
      */
     @Override
     public String toString() {
-        return "Book{id=" + ISBN + ", name='" + name + "', description='" + description + "', subject='" + subject + "', Copies=" + copies + ", location='" + location + "', availableCopies=" + availableCopies + ", reservedCopies=" + reservedCopies + "}";
+        return "Book{isbn=" + ISBN + ", name='" + name + "', description='" + description + "', subject='" + subject + "', Copies=" + copies + ", location='" + location + "', availableCopies=" + availableCopies + ", reservedCopies=" + reservedCopies + "}";
     }
 
 

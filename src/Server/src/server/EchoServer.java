@@ -193,6 +193,9 @@ public class EchoServer extends AbstractServer {
                 case "Handle register":
                 	HandleRegisterOfSubscriber(client, body);
                 	break;
+                case "FetchClosestReturnDate":
+                	handleFetchClosestReturnDate(client,body);
+                	break;
                 case "EXIT":
                 	clientDisconnect(client);
                 default: // Handle unknown commands
@@ -765,7 +768,19 @@ public class EchoServer extends AbstractServer {
         }
     }
 
-
+    private void handleFetchClosestReturnDate(ConnectionToClient client, String isbn) {
+        try {
+            String closestReturnDate = ConnectToDb.fetchClosestReturnDate(dbConnection, isbn);
+            System.out.println(closestReturnDate);
+            client.sendToClient("ClosestReturnDate:" + (closestReturnDate != null ? closestReturnDate : "Unavailable"));
+        } catch (Exception e) {
+            try {
+                client.sendToClient("ClosestReturnDate:Error");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
     }

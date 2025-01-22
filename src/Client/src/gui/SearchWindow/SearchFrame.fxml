@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="533.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SearchWindow.SearchFrameController">
+<AnchorPane prefHeight="533.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SearchWindow.SearchFrameController">
    <children>
       <Button id="btnSearchBooks" fx:id="btnSearchBooks" layoutX="441.0" layoutY="86.0" mnemonicParsing="false" onAction="#Search" prefHeight="46.0" prefWidth="109.0" text="Search" />
       <Button id="btnExit" fx:id="btnExit" layoutX="26.0" layoutY="13.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
@@ -30,12 +30,13 @@
       <TextField fx:id="descriptionInput" layoutX="240.0" layoutY="173.0" />
       <TableView fx:id="tableView" layoutX="10.0" layoutY="217.0" prefHeight="473.0" prefWidth="1235.0">
         <columns>
-          <TableColumn fx:id="tableID" prefWidth="98.39999198913574" text="ID" />
-          <TableColumn fx:id="tableName" prefWidth="338.6666793823242" text="Name" />
-            <TableColumn fx:id="tableSubject" prefWidth="94.66677856445312" text="Subject" />
-            <TableColumn fx:id="tableDescription" prefWidth="378.666748046875" text="Description" />
-            <TableColumn fx:id="tableCopies" prefWidth="149.33319091796875" text="Available Copies" />
-            <TableColumn fx:id="tableLocation" prefWidth="176.0" text="Location on Shelf" />
+          <TableColumn fx:id="tableISBN" prefWidth="98.39999198913574" text="ISBN" />
+          <TableColumn fx:id="tableName" prefWidth="285.0" text="Name" />
+            <TableColumn fx:id="tableSubject" prefWidth="85.0" text="Subject" />
+            <TableColumn fx:id="tableDescription" prefWidth="384.0" text="Description" />
+            <TableColumn fx:id="tableCopies" prefWidth="112.0" text="Available Copies" />
+            <TableColumn fx:id="tableLocation" prefWidth="141.0" text="Location on Shelf" />
+            <TableColumn fx:id="tableClosestReturnDate" prefWidth="128.0" text="Closest Return Date" />
         </columns>
       </TableView>
       <Button id="btnExit" fx:id="btnBackF" layoutX="1128.0" layoutY="15.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
