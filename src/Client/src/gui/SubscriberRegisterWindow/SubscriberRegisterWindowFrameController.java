@@ -75,12 +75,6 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
         }
 
         waitForServerResponse();
-//        // Pause the thread for 200ms before checking isIDInDataBase
-//        try {
-//            Thread.sleep(200);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace(); // Handle the interruption
-//        }
 
         // Now check if the ID is in the database
         if (ChatClient.isIDInDataBase) {
@@ -92,7 +86,6 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
         }
     }
 
-    
     public void btnReturnToMainMenu(ActionEvent event) {
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",

@@ -214,13 +214,18 @@ public class EchoServer extends AbstractServer {
                 case "NewExtensionApprovedBySubscriber": // Used to notify the librarian whenever a book's return date is updated by an extension.
                 	handleBookReturnExtensionBySubscriber(body);
                 	break;
+                case "PullNewExtenstion":
+                	handleNewReturnDatesForLibrarian(client);
+                	break;
                 case "EXIT":
                 	clientDisconnect(client);
                 	break;
                 case "FetchAllSubscriberData":
                 	handleFetchAllSubscriberData(client);
+                	break;
                 case "FetchAllSubscriberInformationForReports":
                 	handleFetchAllSubscriberDataForReports(client);
+                	break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;

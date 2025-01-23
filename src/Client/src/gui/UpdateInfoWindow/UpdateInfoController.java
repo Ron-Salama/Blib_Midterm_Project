@@ -84,7 +84,6 @@ public class UpdateInfoController extends BaseController implements Initializabl
         waitForServerResponse();
         
         if(ChatClient.alertIndicator) {
-
             // Feedback to the user
             showColoredLabelMessageOnGUI(UpdateStatus, "You have successfully updated your personal information.", "-fx-text-fill: green;");
         }else {

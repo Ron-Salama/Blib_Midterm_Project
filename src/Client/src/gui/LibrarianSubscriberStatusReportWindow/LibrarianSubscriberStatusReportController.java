@@ -245,11 +245,11 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
         return LocalDate.of(year, month, day);
     }
+    
     public void back(ActionEvent event) throws Exception{
     	openWindow(event,
     			"/gui/ReportsWindow/ReportsWindow.fxml",
     			"/gui/ReportsWindow/ReportsWindow.css",
     			"Subscriber Status Report");
     }
-    
 }

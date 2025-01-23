@@ -241,14 +241,10 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
                 LBL6.setText("Expected Return");
-	                ClientUI.chat.accept("FetchBorrowRequest:");
-	                requestType = "Borrow For Subscriber";
-	                
-	                waitForServerResponse();
-	                //addDelayInMilliseconds(500); // Half a second delay.
-	                
-	                handleFetchedBorrowedBooks();
-             //   }
+                ClientUI.chat.accept("FetchBorrowRequest:");
+                requestType = "Borrow For Subscriber";
+                waitForServerResponse();
+                handleFetchedBorrowedBooks();
                 break;
             case "Return For Subscriber":
                 LBL1.setText("Subscriber Name:");
@@ -262,7 +258,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 isLost.setVisible(true);
                 ClientUI.chat.accept("Fetch return request:");
                 waitForServerResponse();
-                //addDelayInMilliseconds(500);
                 handleReturnofBorrowedBook();
                 break;
             default:
@@ -531,14 +526,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             }else {
     			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
             }
-           // ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
             showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
-
-
-            showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
-
-
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
 			String statusOfReturn = "";
@@ -555,7 +544,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             	ClientUI.chat.accept("Handle Lost:"+body);
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
-                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
             }
             else
             {	
@@ -570,7 +558,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     			}
                 ClientUI.chat.accept("Handle return:" + body); 
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
-                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
 			}
 		}
@@ -587,7 +574,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 ClientUI.chat.accept("Handle register:" + body1);
 			 ClientUI.chat.accept("UpdateHistoryInDB:" + body2 + ",Register Successfully");
 	         showColoredLabelMessageOnGUI(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;");
-
 		}
 	}
 
@@ -648,8 +634,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    			"Scan Barcode");
 	    }
 	    
-	    
-	    // TODO: refactor the part of borrow request in the switch case.
 	    private void borrowRequestSetupFromBarcode(String borrowedBookID, String borrowedBookName) throws InterruptedException {
 	    	Clear(); // Clear the current fields.
 	    	BorrowForSubscriber(); // Set up the elements for borrow request.
@@ -679,7 +663,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             ClientUI.chat.accept("FetchRegisterRequest:");
             
             waitForServerResponse();
-            //addDelayInMilliseconds(500); // Half a second delay.
             handleFetchedRegister();
 	    }
 }

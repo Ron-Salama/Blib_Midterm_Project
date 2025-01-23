@@ -128,12 +128,7 @@ public class SearchFrameController extends BaseController implements Initializab
        
         ClientUI.chat.accept("GetBooks:");
         waitForServerResponse();
-        try {
-			loadBooks();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        loadBooks();
 //            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
 //        }).start();
     }
@@ -142,7 +137,7 @@ public class SearchFrameController extends BaseController implements Initializab
      * If no books are available, displays a message in the console.
      * @throws InterruptedException 
      */
-    private void loadBooks() throws InterruptedException {
+    private void loadBooks() {
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
             tableView.getItems().clear();
 
@@ -151,11 +146,11 @@ public class SearchFrameController extends BaseController implements Initializab
                     book.setClosestReturnDate("Available");
                 } else {
                     ClientUI.chat.accept("FetchClosestReturnDate:" + book.getISBN());
-                    addDelayInMilliseconds(200);
+
+                    waitForServerResponse();
+                    
                     String currentBookClosestReturnDate = ChatClient.closestReturnDate;
-                    book.setClosestReturnDate(currentBookClosestReturnDate);
-                    
-                    
+                    book.setClosestReturnDate(currentBookClosestReturnDate);   
                 }
             }
             tableView.getItems().addAll(ChatClient.bookList); // Populate the table

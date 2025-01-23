@@ -193,35 +193,8 @@ public class MyBooksController extends BaseController implements Initializable {
     	loadBooks();
     }
 
-        // after TODO is done and subscriber's book are in DB we fetch them here into the table.
-//        // Fetch and populate books
-//        new Thread(() -> {
-//        	ClientUI.chat.accept("GetBorrowedBooks:");
-//            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
-//        }).start();
-//    }
-    /**
-     * Loads borrowed books into the TableView by fetching them from the server.
-     * If no books are borrowed, displays a message in the console.
-     * TODO: Implement after adding subscriber's books to database. 
-     */
-//    private void loadBooks() {
-//        // Send "GetBooks" request to the server to fetch the books
-//        //ClientUI.chat.accept("GetBooks:");
-//
-//        // Ensure bookList is not empty
-//        if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
-//            // Populate the TableView with all books initially
-//            Platform.runLater(() -> {
-//                tableView.getItems().clear();  // Clear any existing data
-//                tableView.getItems().addAll(ChatClient.bookList);  // Add all books to the table
-//            });
-//        } else {
-//            System.out.println("No books are currently borrowed.");
-//        }
-//    }
         private void setupActionsColumn() {
-        	String extendedReturnDate = null; // XXX can cause porblems because of the double variable, check this one out.
+        	String extendedReturnDate = null; // XXX can cause problems because of the double variable, check this one out.
             tableActions.setCellFactory(param -> new TableCell<BorrowedBook, Void>() { // Explicitly specify the generic types
                 private final Button extendButton = new Button("Extend borrowing length");
                 private final Button returnButton = new Button("Return");
@@ -276,9 +249,6 @@ public class MyBooksController extends BaseController implements Initializable {
                         ClientUI.chat.accept("Return request: Subscriber ID is:"+currentSub.getSubscriber_id()+" "+currentSub.getSubscriber_name()+" Borrow info: "+borrowedBook);
                         // Send information about the request to the librarians.
                         ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
-                                		
-                        //ClientUI.chat.accept("Return Book: Subscriber ID is:"+currentSub.getSubscriber_id()+" Book info is:"+borrowedBook);
-                        
                     });
                 }
 
@@ -294,80 +264,12 @@ public class MyBooksController extends BaseController implements Initializable {
             });
         }
         
-
-        
         public void navigateToHistory(ActionEvent event) {
         	openWindow(event,
         			"/gui/HistoryWindow/HistoryFrame.fxml",
         			"/gui/HistoryWindow/HistoryFrame.css",
-        			"History");
-        	
+        			"History");        	
         }
-//
-//        public void extendButton(ActionEvent event, BorrowedBook selectedBook) {
-//        	System.out.println("nnoooo");
-//
-//
-//        }
-
-    /**
-     * Searches for books based on filters entered in the name, description, and subject fields.
-     * Displays the filtered results in the TableView.
-     *
-     * @param event the event triggered by clicking the search button.
-     * @throws Exception if an error occurs during the search.
-     */
-//    public void Search(ActionEvent event) throws Exception {
-//        ClientUI.chat.accept("GetBooks:");  // Get the latest books
-//
-//        // Ensure bookList is not empty
-//        if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
-//            // If all filter fields are empty, show all books
-//            if (nameInput.getText().isEmpty() && descriptionInput.getText().isEmpty() && (subjectInput.getValue() == null || subjectInput.getValue().toString().isEmpty())) {
-//                // No filtering, show all books
-//                Platform.runLater(() -> {
-//                    tableView.getItems().clear();  // Clear any existing data
-//                    tableView.getItems().addAll(ChatClient.bookList);  // Add all books to the table
-//                });
-//            } else {
-//                // Otherwise, filter books based on the input fields
-//                List<Book> filteredBooks = new ArrayList<>();
-//
-//                for (Book book : ChatClient.bookList) {
-//                    boolean matches = true;
-//
-//                    // Check for name filter
-//                    if (!nameInput.getText().isEmpty() && !book.getName().toLowerCase().contains(nameInput.getText().toLowerCase())) {
-//                        matches = false;
-//                    }
-//
-//                    // Check for description filter
-//                    if (!descriptionInput.getText().isEmpty() && !book.getDescription().toLowerCase().contains(descriptionInput.getText().toLowerCase())) {
-//                        matches = false;
-//                    }
-//
-//                    // Check for subject filter from ComboBox
-//                    if (subjectInput.getValue() != null && !subjectInput.getValue().toString().isEmpty() && !book.getSubject().toLowerCase().contains(subjectInput.getValue().toString().toLowerCase())) {
-//                        matches = false;
-//                    }
-//
-//                    // If all filters match, add the book to the filtered list
-//                    if (matches) {
-//                        filteredBooks.add(book);
-//                    }
-//                }
-//
-//                // Populate the TableView with the filtered books
-//                Platform.runLater(() -> {
-//                    tableView.getItems().clear();  // Clear any existing data
-//                    tableView.getItems().addAll(filteredBooks);  // Add the filtered books to the table
-//                });
-//            }
-//        } else {
-//            System.out.println("No books to display.");
-//        }
-//    }
-
 
     /**
      * Handles the Exit button action, navigating back to the Main Menu.
@@ -395,5 +297,4 @@ public class MyBooksController extends BaseController implements Initializable {
         			"Subscriber View");
     	}
     }
-
 }

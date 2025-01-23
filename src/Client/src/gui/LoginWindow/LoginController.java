@@ -65,15 +65,8 @@ public class LoginController extends BaseController {
         ClientUI.chat.accept("Fetch:" + id);
 
         waitForServerResponse();
-//        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
-//        pause.setOnFinished(e -> {
-//            try {
-                handleResponse(event);
-//            } catch (Exception e1) {
-//                e1.printStackTrace();
-//            }
-//        });
-//        pause.play();
+
+        handleResponse(event);
     }
 
     /**
@@ -143,15 +136,6 @@ public class LoginController extends BaseController {
      */
     public void loadSubscriber(Subscriber s1) {
         this.lfc.loadSubscriber(s1);
-    }
-
-    /**
-     * Displays a message in the console.
-     *
-     * @param message the message to display.
-     */
-    public void display(String message) {
-        System.out.println(message);
     }
 
     /**

@@ -60,18 +60,12 @@ public class LibrarianController extends BaseController implements Initializable
 		}
     }
     
-    public void getExitBtn(ActionEvent event) throws Exception {
-		System.out.println("exit Library Tool");	
-		ClientUI.chat.accept("EXIT:");
-	}
-    
     public void navigateToViewReports(ActionEvent event) throws Exception { 
     	openWindow(event, 
                 "/gui/ReportsWindow/ReportsWindow.fxml", 
                 "/gui/ReportsWindow/ReportsWindow.css", 
                 "Reports Window");
     }
-    
     
     public void navigateToSearchSubscriber(ActionEvent event) throws Exception { // *REMOVE NOTES AFTER CREATING SEARCH SUBSCRIBER WINDOW AND LINK BUTTON "VIEW REPORTS" TO THAT WINDOW*
     	MyBooksController.viewing = true;
@@ -81,18 +75,14 @@ public class LibrarianController extends BaseController implements Initializable
                 "/gui/MyBooksWindow/MyBooksFrame.fxml", 
                 "/gui/MyBooksWindow/MyBooksFrame.css", 
                 "Reports Window");
-    	
-    	
     }
     
     public void navigateToSubscriberRequests(ActionEvent event) throws Exception { 
         openWindow(event, 
                 "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.fxml", 
                 "/gui/SubscriberRequestsWindows/SubscriberRequestsWindowsFrame.css", 
-                "Subscriber Requests Window");
-    	
+                "Subscriber Requests Window");	
     }
-    
     
     public void navigateToSearchWindow(ActionEvent event) throws Exception {
         SearchFrameController.FlagForSearch = "Librarian";
@@ -137,14 +127,17 @@ public class LibrarianController extends BaseController implements Initializable
     	
     	ClientUI.chat.accept("PullNewExtenstion:");
     	
-    	addDelayInMilliseconds(5000); // XXX DELETE LATER
+    	waitForServerResponse();
     	
+    	if (ChatClient.extendedReturnDatesFromSubscriber.isEmpty()) { // Return in case there's no information to work on.
+    		return;
+    	}
     	
     	String[] extendedReturnDatesFromSubscribers = ChatClient.extendedReturnDatesFromSubscriber.split(";");
     	
     	for (String extensionInformation : extendedReturnDatesFromSubscribers) {
     		String data[] = extensionInformation.split(",");
-    		returnDateUpdatesTextArea.appendText(data[0] + ": Subscriber ID: " + data[1] + ", " + data[2] + " extension approved.\nNew return date: " + data[4] + ", for the book \"" + data[3] + "\".\n");
+    		returnDateUpdatesTextArea.appendText(data[0] + ": Subscriber ID: " + data[1] + ", " + data[2] + " extension approved. New return date: " + data[4] + ", for the book \"" + data[3] + "\".\n");
     	}
     }
 }
