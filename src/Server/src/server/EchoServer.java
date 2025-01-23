@@ -1019,8 +1019,7 @@ public class EchoServer extends AbstractServer {
     
     private void handleNewReturnDatesForLibrarian(ConnectionToClient client) throws SQLException, IOException {
     	// Grab only the first element and send it back to the client.
-    	String newReturnDates = ConnectToDb.pullNewExtendedReturnDates(dbConnection).split(";")[0];
-    	
+    	String newReturnDates = ConnectToDb.pullNewExtendedReturnDates(dbConnection);
     	client.sendToClient("ExtendedReturnDatesForsSubscriber:" + newReturnDates);
     }
     
