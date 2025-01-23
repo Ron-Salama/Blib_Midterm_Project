@@ -504,8 +504,22 @@ public class EchoServer extends AbstractServer {
     private void handleIPCase(ConnectionToClient client, String body) throws IOException {
         try {
             // Retrieve the server's IP address
-        	String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
-            //String serverIP = "10.244.2.9";//have to change its just to work normaly
+        	//String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
+        	//////////////////////////////////////////////////////////////////////////////////////////
+        	///
+        	///
+        	///
+        	///
+        	///
+        	///                          this is the rows we need to change if we work with zerotier
+        	///
+        	///
+        	///
+        	///
+        	///
+        	///
+        	/////////////////////////////////////////////////////////////////////////////////////////
+            String serverIP = "10.244.2.9";//have to change its just to work normaly
             // Check if the client's provided IP matches the actual server IP
             if (body.equals(serverIP)) {
                 client.sendToClient("Client connected to IP:" + serverIP);
@@ -525,7 +539,7 @@ public class EchoServer extends AbstractServer {
 
     
     private void handleGetBooksCase(ConnectionToClient client, String body) throws IOException {
-    	outputInOutputStreamAndLog("Received GetBooks request from client");
+    	//outputInOutputStreamAndLog("Received GetBooks request from client");
 
         try {
             List<String> booksData = ConnectToDb.fetchBooksData(dbConnection);
@@ -547,7 +561,7 @@ public class EchoServer extends AbstractServer {
     
     
     private void handleMyHistoryData(ConnectionToClient client, String body) throws IOException {
-    	outputInOutputStreamAndLog("Received GetHistory request from client");
+    	//outputInOutputStreamAndLog("Received GetHistory request from client");
         try {
             String historyData = ConnectToDb.fetchHistoryData(dbConnection, body);
 
@@ -589,7 +603,7 @@ public class EchoServer extends AbstractServer {
     //********************************************************************************************
     //********************************************************************************************
     private void handleReserveRequestCase(ConnectionToClient client, String body) throws IOException {
-        outputInOutputStreamAndLog("Received Reserve Request from client");
+        //outputInOutputStreamAndLog("Received Reserve Request from client");
         String[] reserveParts = body.split(",");
 
         if (reserveParts.length == 4) { 
@@ -631,7 +645,7 @@ public class EchoServer extends AbstractServer {
     
     
     private void handleRegisterRequestCase(ConnectionToClient client, String body) throws IOException {
-   	 outputInOutputStreamAndLog("Received RegisterRequestCase from client");
+   	 //outputInOutputStreamAndLog("Received RegisterRequestCase from client");
         String[] borrowParts = body.split(",");
 
         String RegisterId = borrowParts[0].trim();
@@ -677,7 +691,7 @@ public class EchoServer extends AbstractServer {
    }
     
     private void handleBorrowRequestCase(ConnectionToClient client, String body) throws IOException {
-    	 outputInOutputStreamAndLog("Received BorrowRequest from client");
+    	// outputInOutputStreamAndLog("Received BorrowRequest from client");
          String[] borrowParts = body.split(",");
          
          if (borrowParts.length == 6) {
@@ -834,7 +848,7 @@ public class EchoServer extends AbstractServer {
 
     
     private void handleFetchBorrowRequestCase(ConnectionToClient client, String body) throws IOException{
-    	outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
+    	//outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
 
          try {
         	 String borrowRequests = ConnectToDb.fetchBorrowRequest(dbConnection);
@@ -847,7 +861,7 @@ public class EchoServer extends AbstractServer {
     }
     
     private void handleFetchRegisterRequestCase(ConnectionToClient client, String body) throws IOException{
-    	outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
+    	//outputInOutputStreamAndLog("Received FetchBorrowRequest from client"); 
 
          try {
              String RegisterRequests = ConnectToDb.fetchRegisterRequest(dbConnection);
@@ -898,7 +912,6 @@ public class EchoServer extends AbstractServer {
     
     
     private void HandleRegisterOfSubscriber(ConnectionToClient client, String body) {
-    	System.out.print("im in handle register");
         String[] borrowParts = body.split(",");
         String RegisterId = borrowParts[1].trim();
     	System.out.println("First stop! you are in EchoServer");
@@ -927,12 +940,12 @@ public class EchoServer extends AbstractServer {
                 return;
             }
 
-            String subscriberName = messageParts[0].trim();
+            //String subscriberName = messageParts[0].trim();
             String subscriberId = messageParts[1].trim();
-            String bookName = messageParts[2].trim();
+            //String bookName = messageParts[2].trim();
             String bookid = messageParts[3].trim();
-            String bookTime = messageParts[4].trim();
-            String returnTime = messageParts[5].trim();
+            //String bookTime = messageParts[4].trim();
+           // String returnTime = messageParts[5].trim();
             String returnRequestStatus = ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid);
             if ("Book returned successfully".equalsIgnoreCase(returnRequestStatus)) {
                 boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection,"Return For Subscriber",subscriberId, bookid);
