@@ -292,15 +292,15 @@ public class ConnectToDb {
     }
 
 
-    //delete the text inside extensions_by_subscribers in librarian table
+ // Delete the text inside extensions_by_subscribers in the librarian table
     public static String cleanExtensionsBySubscribersInLibrarian(Connection conn) {
-        String query = "UPDATE librarian SET extensions_by_subscribers = NULL";
+        String query = "UPDATE librarian SET extensions_by_subscribers = ''";
         
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             int rowsUpdated = pstmt.executeUpdate();
             
             if (rowsUpdated > 0) {
-                return "Successfully cleared 'extensions_by_subscribers' column for " + rowsUpdated + " rows.";
+                return "Extension daily cleanup done.";
             } else {
                 return "No rows were updated. The table may already be clean.";
             }
@@ -308,6 +308,7 @@ public class ConnectToDb {
             return "Error while clearing 'extensions_by_subscribers' column: " + e.getMessage();
         }
     }
+
 
 
     
