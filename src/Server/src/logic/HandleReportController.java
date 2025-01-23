@@ -13,10 +13,8 @@ public class HandleReportController {
 		int latebooks = ConnectToDb.FetchYesterdaylates(EchoServer.taskSchedulerConnection);
 		ConnectToDb.updateAmountOflateBooksYesterday(EchoServer.taskSchedulerConnection, latebooks);
 		int amountfrozen= ConnectToDb.FetchAmountFrozen(EchoServer.taskSchedulerConnection);
-		System.out.println("frozen"+amountfrozen);
 		ConnectToDb.amountfrozen(EchoServer.taskSchedulerConnection,amountfrozen);
 		int notfrozen=ConnectToDb.FetchAmountNotFrozen(EchoServer.taskSchedulerConnection);
-		System.out.println("not frozen"+notfrozen);
 		ConnectToDb.amountNotfrozen(EchoServer.taskSchedulerConnection,notfrozen);
 	}
 }

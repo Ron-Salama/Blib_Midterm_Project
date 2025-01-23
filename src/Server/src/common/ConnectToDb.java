@@ -1420,7 +1420,6 @@ public class ConnectToDb {
 	        // Log the result to ensure it's being retrieved correctly
 	        if (rs.next()) {
 	            int count = rs.getInt(1);
-	            System.out.println("Books that should have been returned but weren't: " + count);
 	            return count;  // Return the count of books
 	        }
 	    } catch (SQLException e) {
