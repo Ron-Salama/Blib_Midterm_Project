@@ -50,7 +50,8 @@ public class ChatClient extends AbstractClient
   public static boolean isBookReservedFlag = false;
   public static List<Subscriber> allSubscriberData;
   public static List<String> allSubscriberDataForReport = new ArrayList<>();  // Ensures it's initialized
-
+  public static List<String> allFrozenDataForReport = new ArrayList<>();  // Ensures it's initialized
+  
   public static boolean isIPValid = false;
   
   public static boolean messageReceivedFromServer = false;
@@ -153,6 +154,8 @@ public static String currentISBN;
 	    	handleReturnRequestfailure();
 	    }else if (response.startsWith("AllSubscriberInformationForReports")) {
 	    	handleAllSubscriberInformationForReports(response.substring("AllSubscriberInformationForReports:".length()));
+	    }else if (response.startsWith("AllFrozenInformationForReports")) {
+	    	handleAllFrozenInformationForReports(response.substring("AllFrozenInformationForReports:".length()));
 	    }
 	    else if (response.startsWith("BorrowedBooksForBarcodeScanner:")){
 	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
@@ -510,6 +513,67 @@ private void handleReservedBooksResponse(String data) {
 		allSubscriberData = subscriberList;
 	}
 	
+	
+	private void handleAllFrozenInformationForReports(String msg) {
+	    // Check and remove leading '[' if present
+	    if (msg.startsWith("[")) {
+	        msg = msg.substring(1);  // Removes the first character
+	    }
+	    if (msg.endsWith("]")) {
+	        msg = msg.substring(0, msg.length() - 1);  // Removes the last character
+	    }
+
+	    // List of strings to hold the data from the 'databydate' table in the desired format
+	    List<String> dataList = new ArrayList<String>();
+	    
+	    // Split the msg so each element contains all of the information for a record one at a time.
+	    String[] records = msg.split(";");
+	    System.out.println("Records count: " + records.length);  // Debugging line
+
+	    for (String recordData : records) {
+	        System.out.println("Processing record data: " + recordData);  // Debugging line
+	        String[] recordInformation = recordData.split(","); // Split the information of the record
+	        
+	        if (recordInformation.length < 5) {  // Ensure that there's enough data
+	            System.out.println("Invalid data: " + recordData);  // Debugging line
+	            continue;  // Skip invalid data
+	        }
+	        
+	        // Convert the record information into a formatted string
+	        try {
+	            String formattedRecordData = recordInformation[0] + "," +  // idDateByDate
+	                recordInformation[1] + "," +  // Frozen
+	                recordInformation[2] + "," +  // NotFrozen
+	                recordInformation[3] + "," +  // BorrowedBooks
+	                recordInformation[4];         // Late
+	            
+	            // Add the formatted string to the list
+	            dataList.add(formattedRecordData);
+	        } catch (Exception e) {
+	            System.out.println("Error processing record data: " + recordData);  // Debugging line
+	            e.printStackTrace();  // Print the stack trace for debugging
+	        }
+	    }
+
+	    // At this point, we should have the dataList populated
+	    if (dataList.isEmpty()) {
+	        System.out.println("No valid records found.");  // Debugging line
+	    } else {
+	        System.out.println("Successfully added " + dataList.size() + " records.");  // Debugging line
+	    }
+
+	    // Check if dataList is correctly populated
+	    System.out.println("Data list before clearing: " + dataList);  // Debugging line
+
+	    // Clear the previous data
+	    allFrozenDataForReport.clear();  // Clears all elements in the list
+	    // Assign to your global variable
+	    allFrozenDataForReport = dataList;
+
+	    // Print the updated global list
+	    System.out.println("Updated allFrozenDataForReport: " + allFrozenDataForReport);  // Debugging line
+	}
+
 	private void handleAllSubscriberInformationForReports(String msg) {
 	    // Check and remove leading '[' if present
 	    if (msg.startsWith("[")) {
@@ -524,14 +588,14 @@ private void handleReservedBooksResponse(String data) {
 	    
 	    // Split the msg so each element contains all of the information for a subscriber one at a time.
 	    String[] subscribersInformation = msg.split(";");
-	    System.out.println("Subscribers information count: " + subscribersInformation.length);  // Debugging line
+	    //System.out.println("Subscribers information count: " + subscribersInformation.length);  // Debugging line
 
 	    for (String subscriberData : subscribersInformation) {
-	        System.out.println("Processing subscriber data: " + subscriberData);  // Debugging line
+	        //System.out.println("Processing subscriber data: " + subscriberData);  // Debugging line
 	        String[] subscriberInformation = subscriberData.split(","); // Split the information of the subscriber
 	        
 	        if (subscriberInformation.length < 6) {  // Ensure that there's enough data
-	            System.out.println("Invalid data: " + subscriberData);  // Debugging line
+	            //System.out.println("Invalid data: " + subscriberData);  // Debugging line
 	            continue;  // Skip invalid data
 	        }
 	        
@@ -547,20 +611,20 @@ private void handleReservedBooksResponse(String data) {
 	            // Add the formatted string to the list
 	            subscriberList.add(formattedSubscriberData);
 	        } catch (Exception e) {
-	            System.out.println("Error processing subscriber data: " + subscriberData);  // Debugging line
+	            //System.out.println("Error processing subscriber data: " + subscriberData);  // Debugging line
 	            e.printStackTrace();  // Print the stack trace for debugging
 	        }
 	    }
 
 	    // At this point, we should have the subscriberList populated
-	    if (subscriberList.isEmpty()) {
-	        System.out.println("No valid subscribers found.");  // Debugging line
-	    } else {
-	        System.out.println("Successfully added " + subscriberList.size() + " subscribers.");  // Debugging line
-	    }
+	    //if (subscriberList.isEmpty()) {
+	    //    System.out.println("No valid subscribers found.");  // Debugging line
+	    //} else {
+	    //    System.out.println("Successfully added " + subscriberList.size() + " subscribers.");  // Debugging line
+	    //}
 
 	    // Check if subscriberList is correctly populated
-	    System.out.println("Subscriber list before clearing: " + subscriberList);  // Debugging line
+	    //System.out.println("Subscriber list before clearing: " + subscriberList);  // Debugging line
 
 	    // Clear the previous data
 	    allSubscriberDataForReport.clear();  // Clears all elements in the list

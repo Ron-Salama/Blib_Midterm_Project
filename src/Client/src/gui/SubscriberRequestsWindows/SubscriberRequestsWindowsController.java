@@ -202,6 +202,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         LBL6.setVisible(true);
         BorrowForSubscriber.setSelected(true);
         datePicker.setValue(null);
+        datePicker.setDisable(true);
+
     }
     public void ReturnForSubscriber() throws InterruptedException {
     	ScanBarcode.setVisible(false);
@@ -214,6 +216,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         LBL6.setVisible(true);
         ReturnForSubscriber.setSelected(true);
         datePicker.setValue(null);
+        datePicker.setDisable(false);
+
     }
     private void deselectOtherButtons(ToggleButton selectedButton) {
         if (selectedButton != Clear) Clear.setSelected(false);
@@ -240,6 +244,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 LBL5.setText("Borrowed At:");
                 TXTF4.setVisible(true);
                 TXTF5.setVisible(true);
+                datePicker.setDisable(true);
                 LBL6.setText("Expected Return");
                 ClientUI.chat.accept("FetchBorrowRequest:");
                 requestType = "Borrow For Subscriber";
@@ -256,6 +261,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 TXTF5.setVisible(true);
                 LBL6.setText("Return Time:");
                 isLost.setVisible(true);
+                datePicker.setDisable(false);
+
                 ClientUI.chat.accept("Fetch return request:");
                 waitForServerResponse();
                 handleReturnofBorrowedBook();
@@ -528,6 +535,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             }
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
             showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
+
+
+            showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
 			String statusOfReturn = "";
@@ -538,6 +548,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String Btime = TXTF5.getText();
             String Rtime = convertDateFormat("" + datePicker.getValue()); 
             String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Rtime + "," + Btime;
+            
             boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
             if (lostBook) 
             {
@@ -647,7 +658,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	    		
 	    		// Get the return date as a string, convert and set it in the correct field.
 	    		LocalDate returnDate = clock.convertStringToLocalDateTime(clock.calculateReturnDate(14)).toLocalDate();
-	    		datePicker.setValue(returnDate); // return date. 	    		
+	    		datePicker.setValue(returnDate); // return date. 	 
+	    		datePicker.isDisable();
 	    	}
 	    }
 	    

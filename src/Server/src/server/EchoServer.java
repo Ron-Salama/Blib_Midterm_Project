@@ -226,6 +226,9 @@ public class EchoServer extends AbstractServer {
                 case "FetchAllSubscriberInformationForReports":
                 	handleFetchAllSubscriberDataForReports(client);
                 	break;
+                case "FetchAllFrozenInformationForReports":
+                	handleFetchAllFrozenDataForReports(client);
+                    break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -1039,6 +1042,12 @@ public class EchoServer extends AbstractServer {
     	client.sendToClient("AllSubscriberInformationForReports:" + ConnectToDb.fetchAllDataForReports(dbConnection)); 
 
     }
+    private void handleFetchAllFrozenDataForReports(ConnectionToClient client) throws IOException{
+
+    	client.sendToClient("AllFrozenInformationForReports:" + ConnectToDb.fetchAllFrozenDataForReports(dbConnection)); 
+
+    }
+    
     private void handleFetchClosestReturnDate(ConnectionToClient client, String isbn) {
         try {
             String closestReturnDate = ConnectToDb.fetchClosestReturnDate(dbConnection, isbn);
