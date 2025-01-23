@@ -528,6 +528,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
 
 
+            showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
+
+
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
 			String statusOfReturn = "";
@@ -544,6 +547,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             	ClientUI.chat.accept("Handle Lost:"+body);
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
+                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
             }
             else
             {	
@@ -558,6 +562,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     			}
                 ClientUI.chat.accept("Handle return:" + body); 
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
+                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
 			}
 		}
