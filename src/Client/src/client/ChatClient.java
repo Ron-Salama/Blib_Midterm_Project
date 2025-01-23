@@ -50,6 +50,8 @@ public class ChatClient extends AbstractClient
   public static List<Subscriber> allSubscriberData;
   public static List<String> allSubscriberDataForReport = new ArrayList<>();  // Ensures it's initialized
 
+  public static boolean isIPValid = false;
+  
   public static boolean messageReceivedFromServer = false;
   
   public static ClientTimeDiffController clock = new ClientTimeDiffController();
@@ -372,11 +374,11 @@ private void handleReservedBooksResponse(String data) {
 	}
 
 
-	private void handleServerConnectionIssue(boolean isConnected) {
-	    ClientUI.isIPValid = isConnected;
-	    String message = isConnected ? "Server connection successful." : "Failed to connect to the server.";
-	    System.out.println(message);
-	}
+//	private void handleServerConnectionIssue(boolean isConnected) {
+//	    isIPValid = isConnected;
+//	    String message = isConnected ? "Server connection successful." : "Failed to connect to the server.";
+//	    System.out.println(message);
+//	}
 
 	private void handleBookData(String data) {
 	    if (data.equals("NoBooksFound")) {

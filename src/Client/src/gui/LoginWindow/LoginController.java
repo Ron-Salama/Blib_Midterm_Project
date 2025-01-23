@@ -64,15 +64,16 @@ public class LoginController extends BaseController {
         ChatClient.l1.setLibrarian_id(-1);
         ClientUI.chat.accept("Fetch:" + id);
 
-        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
-        pause.setOnFinished(e -> {
-            try {
+        waitForServerResponse();
+//        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(0.1));
+//        pause.setOnFinished(e -> {
+//            try {
                 handleResponse(event);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        });
-        pause.play();
+//            } catch (Exception e1) {
+//                e1.printStackTrace();
+//            }
+//        });
+//        pause.play();
     }
 
     /**

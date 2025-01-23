@@ -118,11 +118,17 @@ public class SearchFrameController extends BaseController implements Initializab
         	btnBackF.setVisible(true);
         }
         // Fetch and populate books
-        new Thread(() -> {
-        	ClientUI.chat.accept("GetBooks:");
-            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
-        }).start();
+        
+        
+//        new Thread(() -> {
+       
+        ClientUI.chat.accept("GetBooks:");
+        waitForServerResponse();
+        loadBooks();
+//            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
+//        }).start();
     }
+    
     /**
      * Loads books into the TableView by fetching them from the server.
      * If no books are available, displays a message in the console.
@@ -153,6 +159,7 @@ public class SearchFrameController extends BaseController implements Initializab
     public void Search(ActionEvent event) throws Exception {
         ClientUI.chat.accept("GetBooks:");  // Get the latest books
 
+        waitForServerResponse();
         // Ensure bookList is not empty
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
             // If all filter fields are empty, show all books

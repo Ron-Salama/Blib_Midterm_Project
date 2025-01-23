@@ -80,6 +80,9 @@ public class UpdateInfoController extends BaseController implements Initializabl
         String obj = ""+id + "," + phoneNumber + "," + email;
 
         ClientUI.chat.accept("Update:" + obj);
+        
+        waitForServerResponse();
+        
         if(ChatClient.alertIndicator) {
 
             // Feedback to the user

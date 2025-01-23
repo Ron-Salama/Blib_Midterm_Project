@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 public class ClientUI extends Application {
     public static ClientController chat; // only one instance
     final public static int DEFAULT_PORT = 5555;
-    public static boolean isIPValid;
     
     public static void main(String args[]) throws Exception {   
         launch(args);
