@@ -243,7 +243,10 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 LBL6.setText("Expected Return");
 	                ClientUI.chat.accept("FetchBorrowRequest:");
 	                requestType = "Borrow For Subscriber";
-	                addDelayInMilliseconds(500); // Half a second delay.
+	                
+	                waitForServerResponse();
+	                //addDelayInMilliseconds(500); // Half a second delay.
+	                
 	                handleFetchedBorrowedBooks();
              //   }
                 break;
@@ -258,7 +261,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 LBL6.setText("Return Time:");
                 isLost.setVisible(true);
                 ClientUI.chat.accept("Fetch return request:");
-                addDelayInMilliseconds(500);
+                waitForServerResponse();
+                //addDelayInMilliseconds(500);
                 handleReturnofBorrowedBook();
                 break;
             default:
@@ -673,7 +677,9 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             TXTF4.setVisible(true);
             TXTF5.setVisible(false);
             ClientUI.chat.accept("FetchRegisterRequest:");
-            addDelayInMilliseconds(500); // Half a second delay.
+            
+            waitForServerResponse();
+            //addDelayInMilliseconds(500); // Half a second delay.
             handleFetchedRegister();
 	    }
 }

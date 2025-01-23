@@ -45,11 +45,14 @@ public class HistoryController extends BaseController implements Initializable {
         // Configure TableColumn to display String values directly
         tableDescription.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
 
-        // Fetch and populate books
-        new Thread(() -> {
-            ClientUI.chat.accept("GetHistory:" + currentSubscriber.getSubscriber_id());
-            Platform.runLater(this::loadHistory); // Populate the table after data is fetched
-        }).start();
+//        // Fetch and populate books
+//        new Thread(() -> {
+        ClientUI.chat.accept("GetHistory:" + currentSubscriber.getSubscriber_id());
+        waitForServerResponse();
+        loadHistory();
+        
+        //Platform.runLater(this::loadHistory); // Populate the table after data is fetched
+//        }).start();
     }
 
     

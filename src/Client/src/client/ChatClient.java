@@ -51,6 +51,9 @@ public class ChatClient extends AbstractClient
   public static List<Subscriber> allSubscriberData;
   public static List<String> allSubscriberDataForReport = new ArrayList<>();  // Ensures it's initialized
 
+  public static boolean isIPValid = false;
+  
+  public static boolean messageReceivedFromServer = false;
   public static String closestReturnDate;
   
   public static ClientTimeDiffController clock = new ClientTimeDiffController();
@@ -96,9 +99,9 @@ public static String currentISBN;
 	    System.out.println(msg);
 	    // Dispatch handling based on message prefix
 	    if (response.startsWith("Client connected to IP:")) {
-	    	handleServerConnectionIssue(true);
+	    	isIPValid = true;
 	    } else if (response.startsWith("Could not connect to the server.")) {
-	 	        handleServerConnectionIssue(false);
+	 	        isIPValid = false;
 	    }else if (response.startsWith("BorrowedBooks:")) {
 	        handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
 	    } else if (response.startsWith("subscriber_id:")) {
@@ -158,12 +161,10 @@ public static String currentISBN;
 	    else if (response.startsWith("AllSubscriberInformation:")) {
 	    	handleAllSubscriberInformation(response.substring("AllSubscriberInformation:".length()));
 	    }
-		}
-  
-
-
-
-
+	    
+	    // release the lock so that the client's window can continue on working.
+	    messageReceivedFromServer = true;
+	}
   
   private void handleBookReservedResponse(String data) {
 	    switch (data.trim()) {
@@ -375,13 +376,6 @@ private void handleReservedBooksResponse(String data) {
 	    } catch (Exception e) {
 	        System.out.println("Error parsing My History data: " + e.getMessage());
 	    }
-	}
-
-
-	private void handleServerConnectionIssue(boolean isConnected) {
-	    ClientUI.isIPValid = isConnected;
-	    String message = isConnected ? "Server connection successful." : "Failed to connect to the server.";
-	    System.out.println(message);
 	}
 
 	private void handleBookData(String data) {

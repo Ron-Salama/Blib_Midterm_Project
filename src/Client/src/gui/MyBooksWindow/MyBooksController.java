@@ -136,8 +136,10 @@ public class MyBooksController extends BaseController implements Initializable {
     private void loadBooks() throws InterruptedException {
 
             ClientUI.chat.accept("GetBorrowedBooks:" + currentSub.getSubscriber_id());
+            
+            waitForServerResponse();
+            
             if(viewing) {
-            	addDelayInMilliseconds(100);
             	if (ChatClient.borrowedBookList != null && !ChatClient.borrowedBookList.isEmpty()) {
                     tableView.getItems().clear();
                     tableView.getItems().addAll(ChatClient.borrowedBookList);
@@ -166,7 +168,9 @@ public class MyBooksController extends BaseController implements Initializable {
 
     		String subID = TXTFview.getText();
         	ClientUI.chat.accept("Fetch:" + subID);
-        	addDelayInMilliseconds(100);
+
+        	waitForServerResponse();
+        	
             currentSub = new Subscriber(
             	  ChatClient.s1.getSubscriber_id(),
             	  ChatClient.s1.getDetailed_subscription_history(),
@@ -175,7 +179,9 @@ public class MyBooksController extends BaseController implements Initializable {
             	  ChatClient.s1.getSubscriber_email(),
             	  ChatClient.s1.getStatus()
             );
-            addDelayInMilliseconds(100);
+            
+            //addDelayInMilliseconds(100);
+            
             if(currentSub.getSubscriber_id() == -1) {
             	title.setText("No ID Found");
             }else {
@@ -233,6 +239,8 @@ public class MyBooksController extends BaseController implements Initializable {
                                 borrowedBook.getBorrowId() + "," +
                                 clock.timeNow() + "," + ignore;
                     	ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
+                    	
+                    	waitForServerResponse();
                                 
                     	
                     		if(viewing) {

@@ -87,9 +87,11 @@ public class BorrowBookController extends BaseController implements Initializabl
         ChatClient.awaitResponse = true; // Ensure waiting for response
         ClientUI.chat.accept("GetBookInfo:" + bookId);  // Request book info
 
+        waitForServerResponse();
+        
         // Wait until response is received
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.1)); // Adjust duration if necessary
-        pause.setOnFinished(e -> {
+        //PauseTransition pause = new PauseTransition(Duration.seconds(0.1)); // Adjust duration if necessary
+        //pause.setOnFinished(e -> {
             if (ChatClient.BorrowedBookInfo != null) {
                 Book_Description.setText(
                 	"Book Details:\n" +
@@ -131,8 +133,8 @@ public class BorrowBookController extends BaseController implements Initializabl
                 btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found
                 
             }
-        });
-        pause.play();
+       // });
+       // pause.play();
     }
 
     public void Submit_Borrow_Request(ActionEvent event) throws Exception {
@@ -147,6 +149,8 @@ public class BorrowBookController extends BaseController implements Initializabl
             
             String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
             ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
+            
+            waitForServerResponse();
             
             // Feedback to the user
             showColoredLabelMessageOnGUI(RequestStatus, "Borrow request submitted successfully!\nAwaiting Librarian approval", "-fx-text-fill: green;");
@@ -175,8 +179,11 @@ public class BorrowBookController extends BaseController implements Initializabl
             String body = "" + subscriberName + "," + subscriberId + "," + bookName + "," + bookId + "," + borrowDate + "," + "temp";
             
             String reservation = "" + subscriberId + "," + bookName + "," + reserveDate + ","  + bookId;
+            
             ClientUI.chat.accept("Reserve:" + reservation);
             ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Reserved Successfully");
+            
+            
             // Feedback to the user
             showColoredLabelMessageOnGUI(RequestStatus, 
                 "You have successfully reserved the book.", 

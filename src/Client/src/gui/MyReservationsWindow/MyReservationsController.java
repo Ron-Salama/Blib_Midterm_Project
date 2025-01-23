@@ -95,8 +95,6 @@ public class MyReservationsController extends BaseController implements Initiali
         setupActionsColumn();
         
         
-        
-        
         tableView.getItems().clear();
         try {
 			addDelayInMilliseconds(1000); // one second delay.
@@ -107,9 +105,12 @@ public class MyReservationsController extends BaseController implements Initiali
     }
 
     private void loadBooks() {
-        new Thread(() -> {
+//        new Thread(() -> {
             ClientUI.chat.accept("GetReservedBooks:" + currentSub.getSubscriber_id());
-            Platform.runLater(() -> {
+            
+            waitForServerResponse();
+            
+//            Platform.runLater(() -> {
                 if (ChatClient.reservedBookList != null && !ChatClient.reservedBookList.isEmpty()) {
                 	//MAYBE ADD HERE TO DELETE RESERVATION TODAY IS 1 DAY MORE THAN THE ACTUAL DATE FOR TIME LEFT TO RETRIEVE
                     tableView.getItems().clear();
@@ -117,8 +118,8 @@ public class MyReservationsController extends BaseController implements Initiali
                 } else {
                     System.out.println("No reserved books to display.");
                 }
-            });
-        }).start();
+//            });
+//        }).start();
     }
 
     
@@ -219,6 +220,8 @@ public class MyReservationsController extends BaseController implements Initiali
         String Retrieve = "" + subscriberName + "," + subscriberId + "," + bookName + "," + bookId + "," + borrowDate + "," + returnDate;
         ClientUI.chat.accept("SubmitRetrieve:" + Retrieve);
         
+        waitForServerResponse();
+        
         // Step 2: Call the method to delete the reservation from the database
         deleteReservationFromDatabase(reservedBook);
     }
@@ -231,6 +234,7 @@ public class MyReservationsController extends BaseController implements Initiali
         
         String reserveSuccess = subscriberId + "," + bookId;
         ClientUI.chat.accept("ReserveSuccess:" + reserveSuccess);
+        waitForServerResponse();
     }
 
     

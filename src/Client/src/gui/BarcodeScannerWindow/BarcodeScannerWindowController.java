@@ -62,8 +62,7 @@ public class BarcodeScannerWindowController extends BaseController {
         // Send a request to the DB to get the information of the borrowed book.
         ClientUI.chat.accept("FetchBorrowedBooksForBarcodeScanner:" + borrowedBookID);
         
-        // Add a small delay for the server response (if needed).
-        addDelayInMilliseconds(2000); //XXX
+        waitForServerResponse();
 
         // Check if no information was received for the borrowed book
         if (ChatClient.BorrowedBookInformationForBarcodeScanner[0].equals("NoBooksFound")) { 

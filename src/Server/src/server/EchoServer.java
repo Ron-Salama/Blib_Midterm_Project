@@ -95,29 +95,7 @@ public class EchoServer extends AbstractServer {
         }
     }
 
-    @Override
-    public void clientConnected(ConnectionToClient client) {
-        // Display client connection details once when a client connects
-        String clientIP = client.getInetAddress().getHostAddress();
-        String clientHost = client.getInetAddress().getHostName();
-        String connectionStatus = isOpen(client) ? "Connected" : "Disconnected";
-        
-        String IPMessege = "Client connected.\n"
-        		+ "Client IP:" + clientIP + "\n"
-        		+ "Client Hostname: " + clientHost + "\n"
-        		+ "Connection Status: " + connectionStatus;
-        
-        outputInOutputStreamAndLog(IPMessege);
-        		
-        
-        
-        // Send a message to the client to inform them of the successful connection
-        try {
-            client.sendToClient("You have successfully connected to the server.");
-        } catch (IOException e) {
-            System.err.println("Error sending connection message to client: " + e.getMessage());
-        }
-    }
+
     public void clientDisconnect(ConnectionToClient client) throws IOException {
         // Display client disconnection details
         String clientIP = client.getInetAddress().getHostAddress();
@@ -543,6 +521,17 @@ public class EchoServer extends AbstractServer {
     }
 
     private void handleIPCase(ConnectionToClient client, String body) throws IOException {
+        // Display client connection details once when a client connects
+        String clientIP = client.getInetAddress().getHostAddress();
+        String clientHost = client.getInetAddress().getHostName();
+        String connectionStatus = isOpen(client) ? "Connected" : "Disconnected";
+        
+        String IPMessege = "Client connected.\n"
+        		+ "Client IP:" + clientIP + "\n"
+        		+ "Client Hostname: " + clientHost + "\n"
+        		+ "Connection Status: " + connectionStatus;
+        
+        outputInOutputStreamAndLog(IPMessege);
         try {
             // Retrieve the server's IP address
         	String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need

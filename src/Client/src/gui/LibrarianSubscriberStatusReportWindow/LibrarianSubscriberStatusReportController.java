@@ -130,7 +130,8 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
         // Request all subscriber information from the server
         ClientUI.chat.accept("FetchAllSubscriberInformationForReports:");
-        addDelayInMilliseconds(200);  // Wait for server response
+
+        waitForServerResponse();
 
         if (ChatClient.allSubscriberDataForReport != null) {
             subscribers.addAll(ChatClient.allSubscriberDataForReport);

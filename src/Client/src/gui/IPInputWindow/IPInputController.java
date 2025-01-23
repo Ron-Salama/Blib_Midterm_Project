@@ -1,31 +1,15 @@
 package gui.IPInputWindow;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.concurrent.TimeUnit;
-
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import client.ChatClient;
-import client.ClientController;
 import client.ClientUI;
-import common.ChatIF;
-import gui.MainMenu.MainMenuController;
-import gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController;
+import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.Subscriber;
-import gui.baseController.*;
 
 /**
  * Controller class for the IP Input window of the Library Management Tool.
@@ -79,9 +63,11 @@ public class IPInputController extends BaseController {
         
         ClientUI.chat.accept("IP:" + ip);
 
-        TimeUnit.SECONDS.sleep(2); // XXX Optimal time to allow the client to get the information from the server using zero-tier.
+        waitForServerResponse();
+        
+        //TimeUnit.SECONDS.sleep(2); // XXX Optimal time to allow the client to get the information from the server using zero-tier.
     
-        if (!ClientUI.isIPValid) {
+        if (!ChatClient.isIPValid) {
         	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");
             System.out.println("ALERT: Invalid IP detected!");
         } else {
@@ -126,7 +112,7 @@ public class IPInputController extends BaseController {
      */
     public void getExitBtn(ActionEvent event) throws Exception {
     	System.out.println("Exit BLib library system");
-    	if (ClientUI.isIPValid != true) { // Meaning there`s no connection and the client exists by itself.
+    	if (ChatClient.isIPValid != true) { // Meaning there`s no connection and the client exists by itself.
     		System.exit(1);
     	}
         ClientUI.chat.accept("EXIT:");
@@ -139,14 +125,5 @@ public class IPInputController extends BaseController {
      */
     public void loadSubscriber(Subscriber s1) {
         this.lipc.loadSubscriber(s1);
-    }
-
-    /**
-     * Displays a message in the console.
-     *
-     * @param message the message to display.
-     */
-    public void display(String message) {
-        System.out.println(message);
     }
 }

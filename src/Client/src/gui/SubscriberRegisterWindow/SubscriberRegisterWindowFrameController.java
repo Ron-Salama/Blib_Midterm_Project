@@ -71,14 +71,16 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
 
             // Send the update message to the server
             ClientUI.chat.accept("RegisterRequest:" + obj);
+            
         }
 
-        // Pause the thread for 200ms before checking isIDInDataBase
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace(); // Handle the interruption
-        }
+        waitForServerResponse();
+//        // Pause the thread for 200ms before checking isIDInDataBase
+//        try {
+//            Thread.sleep(200);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace(); // Handle the interruption
+//        }
 
         // Now check if the ID is in the database
         if (ChatClient.isIDInDataBase) {

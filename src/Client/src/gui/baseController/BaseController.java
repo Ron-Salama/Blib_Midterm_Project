@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import client.ChatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -159,4 +160,16 @@ public abstract class BaseController {
    protected void addDelayInMilliseconds(int milliSeconds) throws InterruptedException {
 	   TimeUnit.MILLISECONDS.sleep(milliSeconds);
    }
+   
+   protected void waitForServerResponse() {
+	    while (!ChatClient.messageReceivedFromServer) {
+	        try {
+	            Thread.sleep(10); // Sleep for 10 milliseconds
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt(); // Restore interrupt status
+	            break;
+	        }
+	    }
+	    ChatClient.messageReceivedFromServer = false; // Lock the window again for the next run.
+	}
 }
