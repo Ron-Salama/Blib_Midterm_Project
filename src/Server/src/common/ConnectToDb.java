@@ -5,14 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.ServerTimeDiffController;
 import server.EchoServer;
 //import org.omg.CORBA.Request;
 
-
 public class ConnectToDb {
+	private ServerTimeDiffController clock = EchoServer.clock;
+	
     // Method to establish a connection to the database
     public static Connection getConnection() throws SQLException {
         try {
@@ -1329,6 +1332,40 @@ public class ConnectToDb {
 
         return "No data found in the 'extensions_by_subscribers' field.";
     }
+	public static int FetchYesterdayBorrows(Connection taskSchedulerConnection) {
+
+		        // Step 1: Yesterday's date in DD/MM/YYYY format
+		        LocalDate yesterday = clock.
+		        String formattedDate = yesterday.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Already dd/MM/yyyy
+
+		        // Step 2: Database connection and query execution
+		        String url = "jdbc:mysql://your_host/your_database";
+		        String user = "your_user";
+		        String password = "your_password";
+
+		        String query = """
+		            SELECT COUNT(*)
+		            FROM borrowed_books
+		            WHERE STR_TO_DATE(borrowed_date, '%d-%m-%Y') = STR_TO_DATE(?, '%d/%m/%Y')""";
+
+		        try (Connection conn = DriverManager.getConnection(url, user, password);
+		             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+		            // Set the parameter with the formatted date
+		            stmt.setString(1, formattedDate);
+
+		            // Execute the query
+		            ResultSet rs = stmt.executeQuery();
+		            if (rs.next()) {
+		                System.out.println("Number of matching rows: " + rs.getInt(1));
+		            }
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+
+	}
 
 
     
