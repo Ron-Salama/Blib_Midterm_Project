@@ -87,9 +87,11 @@ public class BorrowBookController extends BaseController implements Initializabl
         ChatClient.awaitResponse = true; // Ensure waiting for response
         ClientUI.chat.accept("GetBookInfo:" + bookId);  // Request book info
 
+        waitForServerResponse();
+        
         // Wait until response is received
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.1)); // Adjust duration if necessary
-        pause.setOnFinished(e -> {
+        //PauseTransition pause = new PauseTransition(Duration.seconds(0.1)); // Adjust duration if necessary
+        //pause.setOnFinished(e -> {
             if (ChatClient.BorrowedBookInfo != null) {
                 Book_Description.setText(
                 	"Book Details:\n" +
@@ -131,8 +133,8 @@ public class BorrowBookController extends BaseController implements Initializabl
                 btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found
                 
             }
-        });
-        pause.play();
+       // });
+       // pause.play();
     }
 
     public void Submit_Borrow_Request(ActionEvent event) throws Exception {

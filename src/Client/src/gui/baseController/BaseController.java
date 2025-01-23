@@ -162,10 +162,14 @@ public abstract class BaseController {
    }
    
    protected void waitForServerResponse() {
-	   while (ChatClient.messageReceivedFromServer == false) { // Wait until ChatClient notifies that it received the message and the client's window can continue onwards.
-		   continue;
-	   }
-	   
-	   ChatClient.messageReceivedFromServer = false; // Lock the window again for the next run.
-   }
+	    while (!ChatClient.messageReceivedFromServer) {
+	        try {
+	            Thread.sleep(10); // Sleep for 10 milliseconds
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt(); // Restore interrupt status
+	            break;
+	        }
+	    }
+	    ChatClient.messageReceivedFromServer = false; // Lock the window again for the next run.
+	}
 }

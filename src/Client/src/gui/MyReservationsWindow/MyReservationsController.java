@@ -95,8 +95,6 @@ public class MyReservationsController extends BaseController implements Initiali
         setupActionsColumn();
         
         
-        
-        
         tableView.getItems().clear();
         try {
 			addDelayInMilliseconds(1000); // one second delay.

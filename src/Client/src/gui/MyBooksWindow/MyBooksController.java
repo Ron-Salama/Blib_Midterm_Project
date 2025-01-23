@@ -179,7 +179,9 @@ public class MyBooksController extends BaseController implements Initializable {
             	  ChatClient.s1.getSubscriber_email(),
             	  ChatClient.s1.getStatus()
             );
-            addDelayInMilliseconds(100);
+            
+            //addDelayInMilliseconds(100);
+            
             if(currentSub.getSubscriber_id() == -1) {
             	title.setText("No ID Found");
             }else {
