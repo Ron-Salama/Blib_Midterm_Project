@@ -110,7 +110,7 @@ public class MyReservationsController extends BaseController implements Initiali
             
             waitForServerResponse();
             
-//            Platform.runLater(() -> {
+           Platform.runLater(() -> {
                 if (ChatClient.reservedBookList != null && !ChatClient.reservedBookList.isEmpty()) {
                 	//MAYBE ADD HERE TO DELETE RESERVATION TODAY IS 1 DAY MORE THAN THE ACTUAL DATE FOR TIME LEFT TO RETRIEVE
                     tableView.getItems().clear();
@@ -118,9 +118,8 @@ public class MyReservationsController extends BaseController implements Initiali
                 } else {
                     System.out.println("No reserved books to display.");
                 }
-//            });
-//        }).start();
-    }
+            });
+        }
 
     
     private void setupActionsColumn() {
