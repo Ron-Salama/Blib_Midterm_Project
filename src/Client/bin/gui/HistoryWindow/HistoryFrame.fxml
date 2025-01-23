@@ -10,8 +10,8 @@
 
 <AnchorPane prefHeight="533.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HistoryWindow.HistoryController">
    <children>
-      <Button id="btnExit" fx:id="btnBackF" layoutX="1187.0" layoutY="23.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
-      <Button id="btnExit" fx:id="btnExit" layoutX="36.0" layoutY="23.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
+      <Button id="btnExit" fx:id="btnBackF" layoutX="32.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
+      <Button id="btnExit" fx:id="btnExit" layoutX="1069.0" layoutY="22.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
       <Text layoutX="544.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My History" textAlignment="CENTER" wrappingWidth="178.13675498962402">
          <font>
             <Font name="System Bold" size="18.0" />

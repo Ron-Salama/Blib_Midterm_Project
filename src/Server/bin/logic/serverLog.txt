@@ -1,16 +1,140 @@
 Server listening for connections on port 5555
 Connected to the database.
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
 Client connected.
 Client IP:10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Connected
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
 Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:2 from 10.0.0.8 (10.0.0.8)
-Message received: Return request: Subscriber ID is:2 Spongebob Borrow info: 0011 The Hobbit 07-12-2024 21-12-2024 -31 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: IsBookReserved:0299 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: IsBookReserved:0299 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:10 from 10.0.0.8 (10.0.0.8)
+Message received: IsBookReserved:0066 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:3 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:3 from 10.0.0.8 (10.0.0.8)
+Message received: IsBookReserved:0077 from 10.0.0.8 (10.0.0.8)
 Message received: EXIT: from 10.0.0.8 (10.0.0.8)
 Client disconnected.
 Client IP: 10.0.0.8
 Client Hostname: 10.0.0.8
 Connection Status: Disconnected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:13 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:13 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0166 from 10.0.0.8 (10.0.0.8)
+Message received: BorrowRequest:13,Kim_Possible,0166,Les Misérables,23-01-2025,06-02-2025 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Message received: SubmitBorrowRequest:Kim_Possible,13,Les Misérables,0166,23-01-2025,06-02-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Kim_Possible,13,Les Misérables,0166,23-01-2025,06-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
+Message received: GetBooks: from 10.0.0.8 (10.0.0.8)
+Message received: GetBooks: from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0077 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowedBooksForBarcodeScanner:0122 from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Message received: SubmitBorrowRequestBarcode:Buster_Baxter,12,The Iliad,0122,23-01-2025,06-02-2025 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Buster_Baxter,12,The Iliad,0122,23-01-2025,06-02-2025,Borrowed Successfully from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:10 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0166 from 10.0.0.8 (10.0.0.8)
+Message received: Reserve:10,Les Misérables,23-01-2025,0166 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Mrs_Puff,10,Les Misérables,0166,23-01-2025,temp,Reserved Successfully from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0122 from 10.0.0.8 (10.0.0.8)
+Message received: Reserve:10,Les Misérables,23-01-2025,0122 from 10.0.0.8 (10.0.0.8)
+Message received: UpdateHistoryInDB:Mrs_Puff,10,Les Misérables,0122,23-01-2025,temp,Reserved Successfully from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:10 from 10.0.0.8 (10.0.0.8)
