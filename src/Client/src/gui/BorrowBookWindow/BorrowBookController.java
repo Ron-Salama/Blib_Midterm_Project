@@ -108,15 +108,8 @@ public class BorrowBookController extends BaseController implements Initializabl
                 bookName = ChatClient.BorrowedBookInfo[1];
                 copiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[4]);
                 reservedCopiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[7]);
-
                 // Update borrow status based on available copies
-                if (reservedCopiesNum >= copiesNum) { //TODO: check if this line works correctly!!!!
-                	borrowStatus = "NO_COPIES";
-                	btnReserve.setVisible(true);
-                	awaitingTextID.setText("There are no spare copies of the book " + bookName + "to borrow." + "\nWould you like to Reserve it?");
-                    btnSubmitToLibrarian.setDisable(true); // Disable if no copies
-                	
-                }else if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
+                if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
                     borrowStatus = "NO_COPIES";
                     btnReserve.setVisible(true);
                     awaitingTextID.setText("There are no more Copies of the book " + bookName + "\nWould you like to Reserve it?");
@@ -166,7 +159,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             // All copies are reserved
             showColoredLabelMessageOnGUI(RequestStatus, 
                 "All the current copies of the book are reserved.\nPlease try to reserve at a later time when a copy is\navailable to be reserved.", 
-                "-fx-text-fill: orange;");
+                "-fx-text-fill: red;");
         } else if ("NO_COPIES".equals(borrowStatus)) {
             // Proceed with reservation logic
         	String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
