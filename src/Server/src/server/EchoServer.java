@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -172,11 +174,19 @@ public class EchoServer extends AbstractServer {
                 case "Reserve": //Handle Reservations
                 	handleReserveRequestCase(client, body);
                 	break;
+                //***************************************************	
+                case "ReserveSuccess": //Handle Reservations
+                	handleReserveSuccessCase(client, body);
+                	break;
+                //***************************************************
                 case "FetchBorrowRequest": // Handle FetchBorrowRequest
                 	handleFetchBorrowRequestCase(client, body);
                     break;
                 case "GetBorrowedBooks":
                     handleGetBorrowedBooksCase(client, body); // body contains the subscriber_id
+                    break;
+                case "GetReservedBooks":
+                    handleGetReservedBooksCase(client, body); // body contains the subscriber_id
                     break;
                 case "UpdateReturnDate":
                 	handleUpdateReturnDate(client, body); // body contians the borrowId
@@ -193,6 +203,11 @@ public class EchoServer extends AbstractServer {
                 case "SubmitBorrowRequest": 
                 	SubmitBorrowRequest(client, body);
                 	break;
+                //***********************************************
+                case "SubmitRetrieve": 
+                	SubmitRetrieve(client, body);
+                	break;
+                //***********************************************
                 case "Return request":
                 	handlereturnrequest(client,body);
                     break;
@@ -214,6 +229,8 @@ public class EchoServer extends AbstractServer {
                 case "FetchClosestReturnDate":
                 	handleFetchClosestReturnDate(client,body);
                 	break;
+                case "Handle Lost":
+                	HandleLost(client,body);
                 case "EXIT":
                 	clientDisconnect(client);
                 default: // Handle unknown commands
@@ -229,7 +246,27 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
-    private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
+    private void HandleLost(ConnectionToClient client, String body) throws IOException, SQLException {
+    	 // Split the body by commas to extract individual parts (subscriber name, ID, book name, ID, and time)
+        String[] messageParts = body.split(",");
+    	  String subscriberName = messageParts[0].trim();
+          String subscriberId = messageParts[1].trim();
+          String bookName = messageParts[2].trim();
+          String bookid = messageParts[3].trim();
+          String bookTime = messageParts[4].trim();
+          String returnTime = messageParts[5].trim();
+          boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection,"Return For Subscriber",subscriberId, bookid);
+          if(requestDeleted) {
+        	  client.sendToClient("return request was commited and deleted but the book is lost");
+          }
+          boolean reduceamount=ConnectToDb.decreaseNumCopies(dbConnection,bookid);
+          if(reduceamount) {
+        	  client.sendToClient("Successfully decreased NumCopies for bookId: " + bookid);
+          }
+	}
+
+
+	private void handleIsBookReservedCase(ConnectionToClient client, String body) throws IOException {
         try {
             String ISBN = body.trim(); // The ISBN is sent in the message body
             boolean isReserved = ConnectToDb.isBookReserved(dbConnection, ISBN); // Updated method call
@@ -376,7 +413,54 @@ public class EchoServer extends AbstractServer {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    private void SubmitRetrieve(ConnectionToClient client, String body) throws SQLException, IOException {
+        try {
+            // Parse the body to extract necessary details
+            String[] requestDetails = body.split(",");
+            if (requestDetails.length >= 6) {
+                String subscriberName = requestDetails[0]; // Optional, if needed
+                String subscriberId = requestDetails[1];
+                String bookTitle = requestDetails[2]; // Optional, if needed
+                String bookID = requestDetails[3];
+                String requestDate = requestDetails[4]; // Optional, if needed
+                String returnDate = requestDetails[5]; // Optional, if needed
+                
 
+
+                // Step 1: Process the actual borrowing logic
+                boolean isRetrieved = ConnectToDb.insertBorrowBook(dbConnection, body);
+
+                if (isRetrieved) {
+                	ConnectToDb.decreaseNumCopies(dbConnection,bookID);
+                	client.sendToClient("Book retrieved Successfully and has been added to your borrowed books list.");
+                	
+                   
+                } else {
+                    client.sendToClient("Retrieve action could not be processed.");
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid details provided: " + body);
+            }
+        } catch (Exception e) {
+            // Handle exceptions and inform the client
+            client.sendToClient("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
+    //******************************************************************************************
 
     
     
@@ -505,29 +589,21 @@ public class EchoServer extends AbstractServer {
 
         if (reserveParts.length == 4) { 
             String subscriberId = reserveParts[0].trim();
-            String subscriberName = reserveParts[1].trim();
-            String reservedBookId = reserveParts[2].trim();
-            String bookName = reserveParts[3].trim();
+            String bookName = reserveParts[1].trim();
+            String reserveDate = reserveParts[2].trim();
+            String bookId = reserveParts[3].trim();
 
             try {
-                // All time-related fields are set to empty strings for reservation except for reserved time
-                String borrowDate = ""; // Leave empty if not used
-                String returnDate = ""; // Leave empty if not used
-                String extendTime = ""; // Leave empty if not used
-
                 // Send the data to insertRequest for reservation
-                ConnectToDb.insertRequest(dbConnection, 
-                                           "Reserve For Subscriber", // requestType
-                                           subscriberId,             // requestedByID
-                                           subscriberName,           // requestedByName
-                                           bookName,                 // bookName
-                                           reservedBookId,            // bookId
-                                           borrowDate,               // borrowDate (null for reservation)
-                                           returnDate,               // returnDate (null for reservation)
-                                           extendTime);              // extendTime (null for reservation)
+                ConnectToDb.insertReservedBook(dbConnection, 
+                                           subscriberId,             // subscriber_id
+                                           bookName,                 // name
+                                           reserveDate,            // reserve_time
+                                           bookId);              // ISBN
 
-                // Decrease available copies (if needed)
-                ConnectToDb.incrementReservedCopiesNum(dbConnection, reservedBookId);
+
+                // increase reserved copies number
+                ConnectToDb.incrementReservedCopiesNum(dbConnection, bookId);
                 
                 client.sendToClient("Reservation successfully processed for book: " + bookName);
             } catch (Exception e) {
@@ -563,13 +639,16 @@ public class EchoServer extends AbstractServer {
             String borrowTime = ""; // You can pass the actual borrow time if you have it
             String returnTime = ""; // Leave empty if not used
             String extendTime = ""; // Leave empty if not used
-
-            // Check if the RegisterId already exists in the database
-            boolean idExists = ConnectToDb.checkIfIdExists(dbConnection, RegisterId);
-
-            if (idExists) {
+            boolean Subscriberexists=ConnectToDb.checkSubscriberExists(dbConnection, RegisterId);
+            if(Subscriberexists) {
+            	client.sendToClient("RegistrationFailed: Request for Register failed, ID " + RegisterId + " already exists.");
+            	return;
+            }
+            // Check if the Request with this id already exists in the database
+            boolean requestalreadyexist = ConnectToDb.checkIfrequestexists(dbConnection, RegisterId);
+            if (requestalreadyexist) {
                 // If the ID already exists, send a response to the client
-                client.sendToClient("RegistrationFailed: Request for Register failed, ID " + RegisterId + " already exists.");
+                client.sendToClient("RegistrationFailed: there is a request for registration already");
             } else {
                 // If the ID doesn't exist, proceed with the insertRequest
                 ConnectToDb.insertRequest(dbConnection, 
@@ -621,7 +700,7 @@ public class EchoServer extends AbstractServer {
                                             returnDate,               // returnDate (empty string if not available)
                                             extendTime);              // extendTime (empty string if not available)
                  
-                 ConnectToDb.decreaseNumCopies(dbConnection,bookBorrowId);
+                 ConnectToDb.decreaseAvaliabeNumCopies(dbConnection,bookBorrowId);
              } catch (Exception e) {
                  client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
                  e.printStackTrace();
@@ -643,6 +722,110 @@ public class EchoServer extends AbstractServer {
             e.printStackTrace();
         }
     }
+    
+    
+    
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+    private void handleGetReservedBooksCase(ConnectionToClient client, String subscriberId) throws IOException {
+        try {
+            List<String> reservedBooks = ConnectToDb.fetchReservedBooksBySubscriberId(dbConnection, subscriberId);
+
+            if (reservedBooks.isEmpty()) {
+                client.sendToClient("ReservedBooks:NoBooksFound");
+            } else {
+                String response = String.join(";", reservedBooks); // Format list into a single string
+                client.sendToClient("ReservedBooks:" + response);
+            }
+        } catch (Exception e) {
+            client.sendToClient("ReservedBooks:Error:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+  //*************************************************************************
+    
+    
+    
+    
+    
+    
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+   //*************************************************************************
+    private void handleReserveSuccessCase(ConnectionToClient client, String body) throws IOException {
+        // Split the body to extract the subscriberId and bookId
+        String[] borrowParts = body.split(",");
+
+        if (borrowParts.length == 2) {
+            String subscriberId = borrowParts[0].trim();
+            String bookId = borrowParts[1].trim();
+
+            // Query to fetch reserved books by the subscriberId and bookId
+            String query = "SELECT * FROM reserved_books WHERE subscriber_id = ? AND ISBN = ?";
+
+            try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
+                stmt.setString(1, subscriberId); // Set the subscriberId parameter
+                stmt.setString(2, bookId); // Set the ISBN (bookId) parameter
+
+                // Execute the query and get the result set
+                ResultSet resultSet = stmt.executeQuery();
+
+                int smallestReserveId = Integer.MAX_VALUE;
+                int reserveIdToDelete = -1;  // Variable to store the reserve_id to delete
+
+                // Loop through the result set to find the row with the smallest reserve_id
+                while (resultSet.next()) {
+                    int reserveId = resultSet.getInt("reserve_id");
+                    if (reserveId < smallestReserveId) {
+                        smallestReserveId = reserveId;
+                        reserveIdToDelete = reserveId;  // Store the smallest reserve_id to delete
+                    }
+                }
+
+                if (reserveIdToDelete != -1) {
+                    // Delete the reservation with the smallest reserve_id
+                    String deleteQuery = "DELETE FROM reserved_books WHERE reserve_id = ?";
+                    try (PreparedStatement deleteStmt = dbConnection.prepareStatement(deleteQuery)) {
+                        deleteStmt.setInt(1, reserveIdToDelete); // Set the reserve_id parameter
+                        int rowsAffected = deleteStmt.executeUpdate();
+
+                        // Check if the deletion was successful
+                        if (rowsAffected > 0) {
+                            client.sendToClient("ReservedBooks:Success:Book borrowed successfully, reservation deleted.");
+                           
+                            // Create an instance of ConnectToDB and call the decreaseReservedCopiesNum method
+                            ConnectToDb.decreaseReservedCopiesNum(dbConnection, bookId);  // Decrease reserved copies for the book
+                        } else {
+                            client.sendToClient("ReservedBooks:Error:Failed to delete reservation.");
+                        }
+                    }
+                } else {
+                    client.sendToClient("ReservedBooks:Error:No reservation found for the given subscriberId and bookId.");
+                }
+            } catch (Exception e) {
+                client.sendToClient("ReservedBooks:Error:" + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
+    //*************************************************************************
 
     
     private void handleFetchBorrowRequestCase(ConnectionToClient client, String body) throws IOException{
@@ -710,12 +893,17 @@ public class EchoServer extends AbstractServer {
     
     
     private void HandleRegisterOfSubscriber(ConnectionToClient client, String body) {
+    	System.out.print("im in handle register");
+        String[] borrowParts = body.split(",");
+        String RegisterId = borrowParts[1].trim();
     	System.out.println("First stop! you are in EchoServer");
     	outputInOutputStreamAndLog("Received register request from client");
         try {
             String isRegisterSuccessfully = ConnectToDb.updateSubscriberDB(dbConnection, body);
             if (isRegisterSuccessfully.equals("True")) {
-                client.sendToClient("Subsacriber registered successfully");
+            	ConnectToDb.deleteRegisterRequest(dbConnection, RegisterId);
+                client.sendToClient("Subscriber registered successfully");
+                
             } else {
                 client.sendToClient("Error in registering subscriber");
             }

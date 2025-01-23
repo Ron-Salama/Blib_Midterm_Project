@@ -392,6 +392,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                     TXTF2.setText(request[1]); // Subscriber ID
                     TXTF3.setText(request[3]); // Book Name or Email
                     TXTF4.setText(request[4]); // Book ID or Phone Number
+                    TXTF5.setText(request[5]);
                      // Borrow/Return Time if applicable
                     break;
                 }
@@ -536,17 +537,18 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
             String Rtime = convertDateFormat("" + datePicker.getValue()); 
-            String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Btime + "," + Rtime;
-			ClientUI.chat.accept("Handle return:" + body); 
+            String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Rtime + "," + Btime;
             boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
             if (lostBook) 
             {
+            	ClientUI.chat.accept("Handle Lost:"+body);
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
             }
             else
-            {
-            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(Btime, Rtime);
+            {	
+            	String Expected_Return=clock.convertStringToLocalDateTime(Btime).plusDays(14).toLocalDate().toString();
+            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(convertDateFormat(Expected_Return), convertDateFormat(clock.convertStringToLocalDateTime(Rtime).toLocalDate().toString()));
                 if (numOfDaysOfReturn<=0) {
                 	statusOfReturn = "early";
                 	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
@@ -554,6 +556,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 else{
                 	statusOfReturn = "late";
     			}
+                ClientUI.chat.accept("Handle return:" + body); 
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
 			}
@@ -563,7 +566,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 String SID = TXTF2.getText();
 			 String PhoneNum = TXTF3.getText();
 			 String Email = TXTF4.getText();
-
+			 String date = clock.timeNow();
 			 String ignore2 = "ignore";
 			 String body1 = "" + SName + "," + SID + "," + PhoneNum + "," + Email;
 			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," + "," + ignore2;

@@ -39,6 +39,10 @@ public class SubscriberWindowController extends BaseController implements Initia
     /** The button to open the My Books window. */
     @FXML
     private Button btnMyBooks = null;
+    
+    /** The button to open the My Reservations window. */
+    @FXML
+    private Button btnMyReservations = null;
 
     /** The button to open the Borrow window. */
     @FXML
@@ -142,6 +146,14 @@ public class SubscriberWindowController extends BaseController implements Initia
 	       		"/gui/MyBooksWindow/MyBooksFrame.fxml",
 	       		"/gui/MyBooksWindow/MyBooksFrame.css",
 	       		"My Books");;
+	}
+    
+    
+    public void openMyReservationsWindow(ActionEvent event) throws Exception {
+		openWindow(event,
+	       		"/gui/MyReservationsWindow/MyReservationsFrame.fxml",
+	       		"/gui/MyReservationsWindow/MyReservationsFrame.css",
+	       		"My Reservations");;
 	}
     
 	public void openBorrowWindow(ActionEvent event) throws Exception {

@@ -9,25 +9,25 @@
    <children>
 
       <!-- Other buttons -->
-      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="319.0" layoutY="425.0" mnemonicParsing="false" onAction="#openBorrowWindow" prefHeight="75.0" prefWidth="160.0" text="Borrow">
+      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="190.0" layoutY="425.0" mnemonicParsing="false" onAction="#openBorrowWindow" prefHeight="75.0" prefWidth="160.0" text="Borrow">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
 
-      <Button id="btnSearch" fx:id="btnSearch" layoutX="137.0" layoutY="425.0" mnemonicParsing="false" onAction="#search" prefHeight="75.0" prefWidth="160.0" text="Search">
+      <Button id="btnSearch" fx:id="btnSearch" layoutX="14.0" layoutY="425.0" mnemonicParsing="false" onAction="#search" prefHeight="75.0" prefWidth="160.0" text="Search">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
 
-      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="513.0" layoutY="425.0" mnemonicParsing="false" onAction="#openMyBooksWindow" prefHeight="75.0" prefWidth="160.0" text="My Books">
+      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="369.0" layoutY="425.0" mnemonicParsing="false" onAction="#openMyBooksWindow" prefHeight="75.0" prefWidth="160.0" text="My Books">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
 
-      <Button id="btnBack" fx:id="btnBack" layoutX="-3.0" layoutY="-1.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="29.0" prefWidth="34.0" text="←">
+      <Button id="btnBack" fx:id="btnBack" ellipsisString="←" layoutX="-3.0" layoutY="-1.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="29.0" prefWidth="34.0" text="←">
          <font>
             <Font size="14.0" />
          </font>
@@ -39,7 +39,7 @@
       </Button>
       <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="50.0" layoutY="29.0" prefHeight="90.0" prefWidth="1019.0" wrapText="true">
          <font>
-            <Font name="System Bold" size="45" />
+            <Font name="System Bold" size="36.0" />
          </font>
       </Label>
       <Label id="myStatusLabel" fx:id="myStatusLabel" alignment="CENTER" layoutX="201.0" layoutY="163.0" prefHeight="30.0" prefWidth="416.0">
@@ -52,5 +52,10 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <Button id="btnMyReservations" fx:id="btnMyReservations" ellipsisString="My Reservations" layoutX="547.0" layoutY="425.0" mnemonicParsing="false" onAction="#openMyReservationsWindow" prefHeight="75.0" prefWidth="219.0" text="My Reservations">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -165,14 +165,18 @@ public class BorrowBookController extends BaseController implements Initializabl
                 "-fx-text-fill: orange;");
         } else if ("NO_COPIES".equals(borrowStatus)) {
             // Proceed with reservation logic
-            
+        	String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
             // Collect subscriber and book details
             String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
-            String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
+            //String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
+            String borrowDate = clockController.timeNow();
             
-            String reservation = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName;
+            String reserveDate = clockController.timeNow();
+            String body = "" + subscriberName + "," + subscriberId + "," + bookName + "," + bookId + "," + borrowDate + "," + "temp";
+            
+            String reservation = "" + subscriberId + "," + bookName + "," + reserveDate + ","  + bookId;
             ClientUI.chat.accept("Reserve:" + reservation);
-            
+            ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Reserved Successfully");
             // Feedback to the user
             showColoredLabelMessageOnGUI(RequestStatus, 
                 "You have successfully reserved the book.", 

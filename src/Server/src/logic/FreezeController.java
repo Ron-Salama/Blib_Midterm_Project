@@ -25,11 +25,17 @@ public class FreezeController extends BaseController {
 				int subscriberID = Integer.valueOf(bookData[1]); // Grab subscriber ID and convert it to integer.
 				String bookName = bookData[2];
 				
+				String subscriber = ConnectToDb.fetchSubscriberData(EchoServer.taskSchedulerConnection, bookData[1]);
+				String subscriberData[] = subscriber.split(",");
+				if (subscriberData[5].split(":")[1].equals("Frozen at")) { // Doesn't allow refreezing a frozen subscriber.
+					continue;
+				}
+				
 				ConnectToDb.freezeSubscriber(EchoServer.taskSchedulerConnection, subscriberID); // Freeze user given their id.
 
 				// log on both CMD and Log that the user has been frozen.
-				String subscriber = ConnectToDb.fetchSubscriberData(EchoServer.taskSchedulerConnection, bookData[1]);
-				String subscriberName = subscriber.split(",")[1].split(":")[1]; // Grab the name of the subscriber.				
+				// TODO: fix this one.
+				String subscriberName = subscriberData[1].split(":")[1]; // Grab the name of the subscriber.				
 			
 				EchoServer.outputInOutputStreamAndLog(clock.timeNow() + ": subscriber No' " + subscriberID + ", " + subscriberName + " has been frozen because they were late at returning the book: " + bookName);
 				
