@@ -1386,21 +1386,20 @@ public class ConnectToDb {
 	        }
 	        // Step 3: SQL query to insert a new row with today's date
 	        String query2 = "INSERT INTO databydate (idDataByDate, NotFrozen, Frozen, BorrowedBooks, Late) "
-	                       + "VALUES (STR_TO_DATE(?, '%Y-%m-%d'), 0, 0, 0, 0)";  // Default values for other fields
+	                + "VALUES (STR_TO_DATE(?, '%Y-%m-%d'), 0, 0, null, null)";  // Default values for other fields
 
-	        try (PreparedStatement stmt2 = taskSchedulerConnection.prepareStatement(query2)) {
-	            // Step 4: Set the parameters for the query
-	            stmt2.setString(1, today);  // Set today's date
-
-	            // Step 5: Execute the insert statement
-	            stmt2.executeUpdate();
-	        } catch (SQLException e) {
-	            throw new SQLException("Error while inserting data: " + e.getMessage(), e);
-	        }
-	    } catch (SQLException e) {
-	        throw new SQLException("Error while checking if row exists: " + e.getMessage(), e);
-	    }
+	 try (PreparedStatement stmt2 = taskSchedulerConnection.prepareStatement(query2)) {
+	     // Set the date parameter for idDataByDate
+	     stmt2.setString(1, today);  // 'today' should be a string in the format YYYY-MM-DD
+	     
+	     // Execute the insert statement
+	     stmt2.executeUpdate();
+	 } catch (SQLException e) {
+	     throw new SQLException("Error while inserting data: " + e.getMessage(), e);
+	 }
+	 }
 	}
+
 	public static int FetchYesterdaylates(Connection conn) throws SQLException {
 	    // Step 1: Get yesterday's date in DD/MM/YYYY format
 		  String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
