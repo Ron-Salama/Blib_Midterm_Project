@@ -128,7 +128,12 @@ public class ReportsWindowController extends BaseController implements Initializ
     			"/gui/MainMenu/MainMenuFrame.css",
     			"Main Menu");
     }
-    
+    public void openBorrowedBooksReport(ActionEvent event) throws Exception{
+    	openWindow(event,
+    			"/gui/LibrarianBorrowedBooksReportWindow/LibrarianBorrowedBooksReportFrame.fxml",
+    			"/gui/LibrarianBorrowedBooksReportWindow/LibrarianBorrowedBooksReportFrame.css",
+    			"Borrowed Books Status Report");
+    }
     public void openSubscriberStatusReport(ActionEvent event) throws Exception{
     	openWindow(event,
     			"/gui/LibrarianSubscriberStatusReportWindow/LibrarianSubscriberStatusReportFrame.fxml",

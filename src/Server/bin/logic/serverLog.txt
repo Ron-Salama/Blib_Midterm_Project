@@ -1,18 +1,23 @@
 Server listening for connections on port 5555
 Connected to the database.
-Server daily tasks done.
 Client connected.
 Client IP:192.168.250.213
 Client Hostname: DESKTOP-D2LTAS2
 Connection Status: Connected
 Message received: IP:192.168.250.213 from DESKTOP-D2LTAS2 (192.168.250.213)
-Message received: Fetch:22 from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: Fetch:1111 from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllFrozenInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: Fetch:2222 from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: Fetch:10 from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: GetBorrowedBooks:10 from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllFrozenInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
 Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
 Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
 Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllFrozenInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
 Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
-Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
-Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
-Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
-Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
-Message received: FetchAllSubscriberInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
+Message received: FetchAllFrozenInformationForReports: from DESKTOP-D2LTAS2 (192.168.250.213)
