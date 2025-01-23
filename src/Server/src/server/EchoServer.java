@@ -237,6 +237,8 @@ public class EchoServer extends AbstractServer {
                 	handleFetchAllSubscriberData(client);
                 case "FetchAllSubscriberInformationForReports":
                 	handleFetchAllSubscriberDataForReports(client);
+                case "FetchAllFrozenInformationForReports":
+                	handleFetchAllFrozenDataForReports(client);
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -504,7 +506,7 @@ public class EchoServer extends AbstractServer {
     private void handleIPCase(ConnectionToClient client, String body) throws IOException {
         try {
             // Retrieve the server's IP address
-        	//String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
+        	String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
         	//////////////////////////////////////////////////////////////////////////////////////////
         	///
         	///
@@ -519,7 +521,7 @@ public class EchoServer extends AbstractServer {
         	///
         	///
         	/////////////////////////////////////////////////////////////////////////////////////////
-            String serverIP = "10.244.2.9";//have to change its just to work normaly
+            //String serverIP = "10.244.2.9";//have to change its just to work normaly
             // Check if the client's provided IP matches the actual server IP
             if (body.equals(serverIP)) {
                 client.sendToClient("Client connected to IP:" + serverIP);
@@ -1000,6 +1002,12 @@ public class EchoServer extends AbstractServer {
     	client.sendToClient("AllSubscriberInformationForReports:" + ConnectToDb.fetchAllDataForReports(dbConnection)); 
 
     }
+    private void handleFetchAllFrozenDataForReports(ConnectionToClient client) throws IOException{
+
+    	client.sendToClient("AllFrozenInformationForReports:" + ConnectToDb.fetchAllFrozenDataForReports(dbConnection)); 
+
+    }
+    
     private void handleFetchClosestReturnDate(ConnectionToClient client, String isbn) {
         try {
             String closestReturnDate = ConnectToDb.fetchClosestReturnDate(dbConnection, isbn);

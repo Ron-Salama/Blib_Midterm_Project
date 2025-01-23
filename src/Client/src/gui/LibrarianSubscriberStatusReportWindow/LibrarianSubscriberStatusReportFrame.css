@@ -10,7 +10,7 @@
 }
 
 .chart-bar {
-    -fx-bar-fill: #00bcd4;  /* Color for the bars */
+    -fx-bar-fill: #00bcd4;  /* Default color for the bars */
 }
 
 .chart-x-axis-label {
@@ -19,4 +19,12 @@
 
 .chart-y-axis-label {
     -fx-font-size: 14px;
+}
+
+.default-color0.chart-bar {
+    -fx-bar-fill: red;
+}
+
+.default-color1.chart-bar {
+    -fx-bar-fill: blue;
 }

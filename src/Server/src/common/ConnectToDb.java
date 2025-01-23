@@ -1,5 +1,6 @@
 package common;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,6 +76,45 @@ public class ConnectToDb {
 
             return result; // Return all data as a list of strings
         }
+        
+        public static List<String> fetchAllFrozenDataForReports(Connection conn) {
+            List<String> result = new ArrayList<>();
+            String query = "SELECT * FROM databydate"; // Query updated to fetch from 'databydate' table
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query);
+                 ResultSet rs = pstmt.executeQuery()) {
+
+                StringBuilder fullResult = new StringBuilder();
+
+                // Process each row in the result set
+                while (rs.next()) {
+                    Date id = rs.getDate("idDataByDate");  // Fetch idDataByDate
+                    int frozen = rs.getInt("Frozen");    // Fetch Frozen
+                    int notFrozen = rs.getInt("NotFrozen"); // Fetch NotFrozen
+                    int borrowedBooks = rs.getInt("BorrowedBooks"); // Fetch BorrowedBooks
+                    int late = rs.getInt("Late");        // Fetch Late
+
+                    // Build the row string and append to the full result
+                    fullResult.append(id).append(",")
+                              .append(frozen).append(",")
+                              .append(notFrozen).append(",")
+                              .append(borrowedBooks).append(",")
+                              .append(late).append(";");
+
+                    // Add a newline for readability (optional)
+                    // fullResult.append("\n"); // Uncomment if you want rows on separate lines
+                }
+
+                // Add the final result to the list
+                result.add(fullResult.toString());
+
+            } catch (SQLException e) {
+                System.out.println("Error while fetching data: " + e.getMessage());
+            }
+            return result; // Return all data as a list of strings
+        }
+
+
         public static List<String> fetchAllDataForReports(Connection conn) {
             List<String> result = new ArrayList<>();
             String query = "SELECT * FROM subscriber";

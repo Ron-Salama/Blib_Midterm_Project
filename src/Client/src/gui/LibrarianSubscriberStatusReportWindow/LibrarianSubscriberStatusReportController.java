@@ -3,6 +3,7 @@ package gui.LibrarianSubscriberStatusReportWindow;
 import java.awt.Button;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +15,35 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import logic.SubscriberData;
 
 public class LibrarianSubscriberStatusReportController extends BaseController {
+	@FXML
+	private TableView<SubscriberData> subscriberTable;
 
+	@FXML
+	private TableColumn<SubscriberData, String> colSubscriberId;
+
+	@FXML
+	private TableColumn<SubscriberData, String> colSubscriberName;
+
+	@FXML
+	private TableColumn<SubscriberData, String> colFrozenAt;
+
+	@FXML
+	private TableColumn<SubscriberData, String> colExpectedRelease;
     @FXML
     private ScatterChart<String, String> scatterChart;
 
@@ -35,8 +55,14 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
     @FXML
     private PieChart pieChartFrozen;
+    @FXML
+    private BarChart barChart;
+    @FXML
+    private CategoryAxis barXAxis;
+    @FXML
+    private NumberAxis barYAxis;
 
-
+    
     @FXML
     private ComboBox<String> comboMonths;
 
@@ -45,6 +71,30 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
     @FXML
     public void initialize() throws InterruptedException {
+    	colSubscriberId.setCellValueFactory(new PropertyValueFactory<>("subscriberId"));
+        colSubscriberName.setCellValueFactory(new PropertyValueFactory<>("subscriberName"));
+        colFrozenAt.setCellValueFactory(new PropertyValueFactory<>("frozenAt"));
+        colExpectedRelease.setCellValueFactory(new PropertyValueFactory<>("expectedRelease"));
+
+        // Fetch and process subscriber data
+        List<String> allSubscribers = getAllSubscribers();
+        ObservableList<SubscriberData> subscriberDataList = FXCollections.observableArrayList();
+
+        for (String subscriberData : allSubscribers) {
+            String[] subscriberFields = subscriberData.split(",");
+            if (subscriberFields.length >= 6) {
+                String subscriberId = subscriberFields[0];
+                String subscriberName = subscriberFields[1];
+                String frozenAt = extractFreezeDate(subscriberFields[5]);
+                String expectedRelease = "N/A"; // Placeholder if not available in the data
+
+                // Create a new SubscriberData object and add it to the list
+                subscriberDataList.add(new SubscriberData(subscriberId, subscriberName, frozenAt, expectedRelease));
+            }
+        }
+
+        // Set the data into the TableView
+        subscriberTable.setItems(subscriberDataList);
         System.out.println("Scatter chart successfully initialized!");
 
         initializeChart();
@@ -61,13 +111,14 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         comboMonths.setOnAction(event -> {
             try {
                 setMonth(Month.values()[comboMonths.getSelectionModel().getSelectedIndex()]);
+                populateBarChart();  // Re-populate the bar chart when the month changes
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
 
         // Fetch and process subscriber data
-        List<String> allSubscribers = getAllSubscribers();
+//        List<String> allSubscribers = getAllSubscribers();
 
         // Create the series for frozen accounts, but filter by the selected month
         XYChart.Series<String, String> frozenAccountsSeries = createFrozenAccountsSeries(allSubscribers);
@@ -80,9 +131,69 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         // Update the PieChart data
         updatePieChart(allSubscribers);
 
+        // Populate the bar chart
+        populateBarChart();
+
         // Set the default month and update the chart
         setMonth(Month.JANUARY);
         updateChartForMonth();
+
+    }
+    private void populateBarChart() throws InterruptedException {
+        // Clear previous data
+        barChart.getData().clear();
+
+        List<String> frozenData = getAllFrozenData();
+
+        // Create series for Frozen and Not Frozen
+        XYChart.Series<String, Number> frozenSeries = new XYChart.Series<>();
+        frozenSeries.setName("Frozen");
+
+        XYChart.Series<String, Number> notFrozenSeries = new XYChart.Series<>();
+        notFrozenSeries.setName("Not Frozen");
+
+        // Filter and add data to the series for the selected month
+        for (String record : frozenData) {
+            String[] recordFields = record.split(",");
+            if (recordFields.length >= 3) {
+                String idDateByDate = convertDateFormat(recordFields[0]);
+                int frozenCount = Integer.parseInt(recordFields[1]);
+                int notFrozenCount = Integer.parseInt(recordFields[2]);
+
+                // Only add data for the selected month
+                if (isDataForSelectedMonth(idDateByDate)) {
+                    frozenSeries.getData().add(new XYChart.Data<>(idDateByDate, frozenCount));
+                    notFrozenSeries.getData().add(new XYChart.Data<>(idDateByDate, notFrozenCount));
+                }
+            }
+        }
+
+        // Add series to the bar chart
+        barChart.getData().addAll(frozenSeries, notFrozenSeries);
+    }
+    private boolean isDataForSelectedMonth(String dateStr) {
+        // Split the date string into day, month, and year
+        String[] dateParts = dateStr.split("-");
+        int month = Integer.parseInt(dateParts[1]);  // Extract the month from the date
+
+        // Check if the month matches the selected month from the ComboBox
+        return month == this.month.getValue();
+    }
+
+    private List<String> getAllFrozenData() throws InterruptedException {
+        List<String> frozenData = new ArrayList<>();
+
+        // Request frozen subscriber information from the server
+        ClientUI.chat.accept("FetchAllFrozenInformationForReports:");
+        addDelayInMilliseconds(200);  // Wait for server response
+
+        if (ChatClient.allFrozenDataForReport != null) {
+            frozenData.addAll(ChatClient.allFrozenDataForReport);
+        } else {
+            System.out.println("Error: No frozen subscriber data received.");
+        }
+
+        return frozenData;
     }
 
     private void initializeChart() {
@@ -250,5 +361,17 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
     			"/gui/ReportsWindow/ReportsWindow.css",
     			"Subscriber Status Report");
     }
-    
+    public static String convertDateFormat(String dateStr) 
+    {
+    	
+        // Define the input and output date formats
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        
+      // Parse the original string into a LocalDate object
+        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
+        
+        // Format the LocalDate object to the new string format
+        return date.format(outputFormatter);
+}
 }
