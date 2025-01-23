@@ -211,18 +211,16 @@ public class EchoServer extends AbstractServer {
                 case "Handle Lost":
                 	HandleLost(client,body);
                 	break;
+                case "NewExtensionApprovedBySubscriber": // Used to notify the librarian whenever a book's return date is updated by an extension.
+                	handleBookReturnExtensionBySubscriber(body);
+                	break;
                 case "EXIT":
                 	clientDisconnect(client);
                 	break;
                 case "FetchAllSubscriberData":
                 	handleFetchAllSubscriberData(client);
-                	break;
                 case "FetchAllSubscriberInformationForReports":
                 	handleFetchAllSubscriberDataForReports(client);
-                	break;
-                case "SubmitBorrowRequestBarcode":
-                	handleBorrowfrombarcode(client,body);
-                	break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -1049,6 +1047,18 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
+    
+    private void handleBookReturnExtensionBySubscriber(String body) throws SQLException{
+    	// Update on each extension approval inside the librarian's database.
+    	ConnectToDb.updateExtensionApprovedBySubscriber(dbConnection, body);
+    }
+    
+    private void handleNewReturnDatesForLibrarian(ConnectionToClient client) throws SQLException, IOException {
+    	// Grab only the first element and send it back to the client.
+    	String newReturnDates = ConnectToDb.pullNewExtendedReturnDates(dbConnection);
+    	client.sendToClient("ExtendedReturnDatesForsSubscriber:" + newReturnDates);
+    }
+    
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
     }

@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -291,14 +292,25 @@ public class ConnectToDb {
     }
 
 
+ // Delete the text inside extensions_by_subscribers in the librarian table
+    public static String cleanExtensionsBySubscribersInLibrarian(Connection conn) {
+        String query = "UPDATE librarian SET extensions_by_subscribers = ''";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            int rowsUpdated = pstmt.executeUpdate();
+            
+            if (rowsUpdated > 0) {
+                return "Extension daily cleanup done.";
+            } else {
+                return "No rows were updated. The table may already be clean.";
+            }
+        } catch (SQLException e) {
+            return "Error while clearing 'extensions_by_subscribers' column: " + e.getMessage();
+        }
+    }
 
 
 
-
-
-    
-    
-    
     
     public static List<String> fetchBorrowedBooksBySubscriberId(Connection conn, String subscriberId) {
         String query = "SELECT * FROM blib.borrowed_books WHERE subscriber_id = ?";
@@ -1274,4 +1286,51 @@ public class ConnectToDb {
 
         return reservedBooks; // Return the list of reserved books
     }
+    
+    public static void updateExtensionApprovedBySubscriber(Connection conn, String data) throws SQLException {
+        String currentData = "";
+        String fetchQuery = "SELECT extensions_by_subscribers FROM blib.librarian";
+        String updateQuery = "UPDATE blib.librarian SET extensions_by_subscribers = ?";
+
+        try (PreparedStatement fetchStmt = conn.prepareStatement(fetchQuery);
+             ResultSet rs = fetchStmt.executeQuery()) {
+
+            if (rs.next()) {
+                currentData = rs.getString("extensions_by_subscribers");
+            }
+        }
+
+        String updatedData = currentData + data;
+
+        try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+            updateStmt.setString(1, updatedData);
+            updateStmt.executeUpdate();
+        }
+    } 
+    
+    /**
+     * Pulls the first entry from the 'extensions_by_subscribers' field in the 'blib.librarian' table.
+     *
+     * @param conn The database connection object.
+     * @return The first result as a string, or a message if no data is found.
+     * @throws SQLException If an SQL error occurs during the operation.
+     */
+    public static String pullNewExtendedReturnDates(Connection conn) throws SQLException {
+        String query = "SELECT extensions_by_subscribers FROM librarian LIMIT 1";
+
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                // Fetch the first result and return it directly.
+                return rs.getString("extensions_by_subscribers");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+        }
+
+        return "No data found in the 'extensions_by_subscribers' field.";
+    }
+
+
+    
+    
 }
