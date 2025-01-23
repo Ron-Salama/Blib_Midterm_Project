@@ -128,7 +128,12 @@ public class SearchFrameController extends BaseController implements Initializab
        
         ClientUI.chat.accept("GetBooks:");
         waitForServerResponse();
-        loadBooks();
+        try {
+			loadBooks();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
 //        }).start();
     }

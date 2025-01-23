@@ -130,7 +130,8 @@ public class EchoServer extends AbstractServer {
             		handleIPCase(client, body);
             		break;
                 case "Fetch return request":
-                	this.HandleFetchreturnrequest(client, body);
+                	HandleFetchreturnrequest(client, body);
+                	break;
                 case "Fetch": // Handle Fetch:ID
                     handleFetchCase(client, body);
                     break;
@@ -209,14 +210,19 @@ public class EchoServer extends AbstractServer {
                 	break;
                 case "Handle Lost":
                 	HandleLost(client,body);
+                	break;
                 case "EXIT":
                 	clientDisconnect(client);
+                	break;
                 case "FetchAllSubscriberData":
                 	handleFetchAllSubscriberData(client);
+                	break;
                 case "FetchAllSubscriberInformationForReports":
                 	handleFetchAllSubscriberDataForReports(client);
+                	break;
                 case "SubmitBorrowRequestBarcode":
                 	handleBorrowfrombarcode(client,body);
+                	break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
