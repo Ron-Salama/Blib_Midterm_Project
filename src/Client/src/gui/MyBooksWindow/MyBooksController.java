@@ -82,7 +82,13 @@ public class MyBooksController extends BaseController implements Initializable {
 
     @FXML
     private TextField descriptionInput;
+    public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
+    public static int librarianViewing = -1;
+    public static String LibrarianName;
+    public static Boolean viewing = false;
 
+    private ClientTimeDiffController clock = ChatClient.clock;
+    
     /**
      * Initializes the Search Window by setting up the TableView and ComboBox.
      * Populates the table with all available books when the page loads.
@@ -90,10 +96,6 @@ public class MyBooksController extends BaseController implements Initializable {
      * @param url the location of the FXML file.
      * @param resourceBundle the resource bundle for internationalization.
      */
-    public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
-    public static int librarianViewing = -1;
-    public static String LibrarianName;
-    public static Boolean viewing = false;
     @Override
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -219,6 +221,7 @@ public class MyBooksController extends BaseController implements Initializable {
 //        }
 //    }
         private void setupActionsColumn() {
+        	String extendedReturnDate = null; // XXX can cause porblems because of the double variable, check this one out.
             tableActions.setCellFactory(param -> new TableCell<BorrowedBook, Void>() { // Explicitly specify the generic types
                 private final Button extendButton = new Button("Extend borrowing length");
                 private final Button returnButton = new Button("Return");
