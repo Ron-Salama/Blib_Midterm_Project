@@ -6,12 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.ServerTimeDiffController;
 import server.EchoServer;
 //import org.omg.CORBA.Request;
-
 
 public class ConnectToDb {
     // Method to establish a connection to the database
@@ -882,10 +883,6 @@ public class ConnectToDb {
         }
     }
     
-    
-    
-    
-    
    //
 
     /*
@@ -1369,8 +1366,194 @@ public class ConnectToDb {
 
         return "No data found in the 'extensions_by_subscribers' field.";
     }
-
-
     
+	public static int FetchYesterdayBorrows(Connection conn) throws SQLException {
+		// Step 1: Yesterday's date in DD/MM/YYYY format
+		String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+   
+        String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Borrowed_Time,'%d-%m-%Y') = STR_TO_DATE(?,'%Y-%m-%d')";
     
-}
+	    try (PreparedStatement stmt = conn.prepareStatement(query);){
+	    	// Set the parameter with the formatted date
+	    	stmt.setString(1, yesterday);
+	    	// Execute the query
+	    	ResultSet rs = stmt.executeQuery();
+	    	if (rs.next()) {
+	    		return rs.getInt(1);
+	    	}
+	    } catch (SQLException e) {
+	    	throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+			}
+		return -1;
+		}
+	
+	public static void updateAmountOfBorrowedBooksYesterday(Connection conn, int amountOfBooksBorrowedYesterday) throws SQLException {
+	    // Step 1: Get yesterday's date in the proper format
+	    String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+
+	    // Step 2: SQL query to update the number of borrowed books for yesterday
+	    String query = "UPDATE databydate SET BorrowedBooks = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(query)) {
+	        // Step 3: Set the parameters for the query
+	        stmt.setInt(1, amountOfBooksBorrowedYesterday); // Set the amount of books borrowed
+	        stmt.setString(2, yesterday);                  // Set the formatted date
+
+	        // Step 4: Execute the update statement
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
+	    }
+	}
+	public static void insertCurrentDate(Connection taskSchedulerConnection) throws SQLException {
+	    // Step 1: Get today's date in the proper format (YYYY-MM-DD)
+	    String today = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().toString();  // Gets the current date in YYYY-MM-DD format
+
+	    // Step 2: SQL query to check if the row already exists for today's date
+	    String query1 = "SELECT COUNT(*) FROM databydate WHERE idDataByDate = STR_TO_DATE(?, '%Y-%m-%d')";
+	    
+	    try (PreparedStatement stmt1 = taskSchedulerConnection.prepareStatement(query1)) {
+	        stmt1.setString(1, today);  // Set today's date
+
+	        try (ResultSet rs = stmt1.executeQuery()) {  // Use executeQuery() to get the result
+	            if (rs.next()) {
+	                int count = rs.getInt(1);
+	                if (count > 0) {
+	                    // If count is greater than 0, the row exists, so no need to insert
+	                    return;  
+	                }
+	            }
+	        }
+	        // Step 3: SQL query to insert a new row with today's date
+	        String query2 = "INSERT INTO databydate (idDataByDate, NotFrozen, Frozen, BorrowedBooks, Late) "
+	                + "VALUES (STR_TO_DATE(?, '%Y-%m-%d'), 0, 0, null, null)";  // Default values for other fields
+
+	 try (PreparedStatement stmt2 = taskSchedulerConnection.prepareStatement(query2)) {
+	     // Set the date parameter for idDataByDate
+	     stmt2.setString(1, today);  // 'today' should be a string in the format YYYY-MM-DD
+	     
+	     // Execute the insert statement
+	     stmt2.executeUpdate();
+	 } catch (SQLException e) {
+	     throw new SQLException("Error while inserting data: " + e.getMessage(), e);
+	 }
+	 }
+	}
+
+	public static int FetchYesterdaylates(Connection conn) throws SQLException {
+	    // Step 1: Get yesterday's date in DD/MM/YYYY format
+		  String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+	    // Log the calculated yesterday date to ensure it's correct
+	    System.out.println("Yesterday's Date: " + yesterday);
+
+	    // SQL query to count how many books should have been returned by yesterday but haven't
+	    String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Return_Time, '%d-%m-%Y') < STR_TO_DATE(?, '%Y-%m-%d')";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(query)) {
+	        // Set the parameter with the formatted yesterday's date (DD/MM/YYYY)
+	        stmt.setString(1, yesterday);
+	        
+	        // Execute the query
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        // Log the result to ensure it's being retrieved correctly
+	        if (rs.next()) {
+	            int count = rs.getInt(1);
+	            return count;  // Return the count of books
+	        }
+	    } catch (SQLException e) {
+	        throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+	    }
+	    
+	    return -1;  // In case of error or no records found
+	}
+
+	public static void updateAmountOflateBooksYesterday(Connection taskSchedulerConnection, int latebooks) throws SQLException {
+		    // Step 1: Get yesterday's date in the proper format
+		    String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+
+		    // Step 2: SQL query to update the number of borrowed books for yesterday
+		    String query = "UPDATE databydate SET Late = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
+
+		    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
+		        // Step 3: Set the parameters for the query
+		        stmt.setInt(1, latebooks); // Set the amount of books borrowed
+		        stmt.setString(2, yesterday);                  // Set the formatted date
+
+		        // Step 4: Execute the update statement
+		        stmt.executeUpdate();
+		    } catch (SQLException e) {
+		        throw new SQLException("Error while updating data: " + e.getMessage(), e);
+		    }
+		}
+	public static int FetchAmountFrozen(Connection taskSchedulerConnection) throws SQLException {
+	    // SQL query to count how many subscribers have a status different from 'Not Frozen'
+	    String query = "SELECT COUNT(*) FROM subscriber WHERE status != 'Not Frozen'";
+
+	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query);
+	         ResultSet rs = stmt.executeQuery()) {
+	        if (rs.next()) {
+	            return rs.getInt(1); // Return the count of rows
+	        }
+	    } catch (SQLException e) {
+	        throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+	    }
+
+	    return 0; // Return 0 if no data is found or in case of error
+	}
+	public static void amountfrozen(Connection taskSchedulerConnection, int amountfrozen) throws SQLException {
+		 // Step 1: Get yesterday's date in the proper format
+	    String today = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().toString();
+
+	    // Step 2: SQL query to update the number of borrowed books for yesterday
+	    String query = "UPDATE databydate SET Frozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
+
+	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
+	        // Step 3: Set the parameters for the query
+	        stmt.setInt(1, amountfrozen); // Set the amount of books borrowed
+	        stmt.setString(2, today);                  // Set the formatted date
+
+	        // Step 4: Execute the update statement
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
+	    }
+	}
+	
+	public static int FetchAmountNotFrozen(Connection taskSchedulerConnection) throws SQLException {
+	    // SQL query to count how many subscribers have a status different from 'Not Frozen'
+	    String query = "SELECT COUNT(*) FROM subscriber WHERE status = 'Not Frozen'";
+
+	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query);
+	         ResultSet rs = stmt.executeQuery()) {
+	        if (rs.next()) {
+	            return rs.getInt(1); // Return the count of rows
+	        }
+	    } catch (SQLException e) {
+	        throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+	    }
+
+	    return 0; // Return 0 if no data is found or in case of error
+	}
+	public static void amountNotfrozen(Connection taskSchedulerConnection, int amountNotfrozen) throws SQLException {
+		 // Step 1: Get yesterday's date in the proper format
+	    String today = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().toString();
+
+	    // Step 2: SQL query to update the number of borrowed books for yesterday
+	    String query = "UPDATE databydate SET NotFrozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
+
+	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
+	        // Step 3: Set the parameters for the query
+	        stmt.setInt(1, amountNotfrozen); // Set the amount of books borrowed
+	        stmt.setString(2, today);                  // Set the formatted date
+
+	        // Step 4: Execute the update statement
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
+	    }
+	}
+	}
+
+		
+

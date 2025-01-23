@@ -13,6 +13,7 @@ public class TaskScheduler {
     private SMSandEmailController smsAndEmailController = new SMSandEmailController();
     private ReserveRequestDailyTasksController reserveRequestDailyTasksController = new ReserveRequestDailyTasksController();
     private ExtensionBySubscriberController extensionBySubscriberController = new ExtensionBySubscriberController();
+    private HandleReportController yesterdayBorrowsController = new HandleReportController();
     
     public void startDailyTasks() {
         Runnable dailyTask = new Runnable() {
@@ -23,6 +24,7 @@ public class TaskScheduler {
 					reserveRequestDailyTasksController.reserveRequestsDailyActivity(); // Run all of the methods that are related to the reserve functionality.
 					smsAndEmailController.smsAndEmailControllerDailyActivities(); // Send Email and SMS to users that need to return their book the next day.
 					extensionBySubscriberController.cleanEveryDayExetnsionsInLibrarian();
+					yesterdayBorrowsController.yesterdayborrowcounter();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}catch (SQLException e) {
