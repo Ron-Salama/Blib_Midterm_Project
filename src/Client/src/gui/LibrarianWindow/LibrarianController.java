@@ -140,11 +140,11 @@ public class LibrarianController extends BaseController implements Initializable
     	addDelayInMilliseconds(5000); // XXX DELETE LATER
     	
     	
-    	extendedReturnDatesFromSubscribers = ChatClient.extendedReturnDatesFromSubscriber;
+    	String[] extendedReturnDatesFromSubscribers = ChatClient.extendedReturnDatesFromSubscriber.split(";");
     	
-    	// Parse and put in the text area
-    	// XXX ASSIGN THE STRING HERE.
-    	returnDateUpdatesTextArea.appendText(extendedReturnDatesFromSubscribers);
-    	
+    	for (String extensionInformation : extendedReturnDatesFromSubscribers) {
+    		String data[] = extensionInformation.split(",");
+    		returnDateUpdatesTextArea.appendText(data[0] + ": Subscriber ID: " + data[1] + ", " + data[2] + " extension approved.\nNew return date: " + data[4] + ", for the book \"" + data[3] + "\".\n");
+    	}
     }
 }
