@@ -522,7 +522,11 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String Btime = TXTF5.getText();
             String Rtime =  convertDateFormat("" + datePicker.getValue()); 
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
-			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
+            if(borrowInformationFromBarcode) {
+            	ClientUI.chat.accept("SubmitBorrowRequestBarcode:"+body);
+            }else {
+    			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
+            }
            // ClientUI.chat.accept("UpdateCopiesOfBook:"+body);
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
             showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");

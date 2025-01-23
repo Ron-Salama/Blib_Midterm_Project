@@ -158,7 +158,7 @@ public static String currentISBN;
 	    else if (response.startsWith("AllSubscriberInformation:")) {
 	    	handleAllSubscriberInformation(response.substring("AllSubscriberInformation:".length()));
 	    }
-	}
+		}
   
 
 

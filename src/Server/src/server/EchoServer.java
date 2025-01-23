@@ -237,6 +237,8 @@ public class EchoServer extends AbstractServer {
                 	handleFetchAllSubscriberData(client);
                 case "FetchAllSubscriberInformationForReports":
                 	handleFetchAllSubscriberDataForReports(client);
+                case "SubmitBorrowRequestBarcode":
+                	handleBorrowfrombarcode(client,body);
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -250,7 +252,46 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
-    private void HandleLost(ConnectionToClient client, String body) throws IOException, SQLException {
+    private void handleBorrowfrombarcode(ConnectionToClient client, String body) throws IOException {
+    	try {
+            // Parse the body to extract necessary details
+            String[] requestDetails = body.split(",");
+            if (requestDetails.length >= 6) {
+                String subscriberName = requestDetails[0]; // Optional, if needed
+                String subscriberId = requestDetails[1];
+                String bookTitle = requestDetails[2]; // Optional, if needed
+                String bookID = requestDetails[3];
+                String requestDate = requestDetails[4]; // Optional, if needed
+                String returnDate = requestDetails[5]; // Optional, if needed
+                
+                String requestType = "Borrow For Subscriber"; // Define request type explicitly
+
+                // Step 1: Process the actual borrowing logic
+                boolean isBorrowed = ConnectToDb.insertBorrowBook(dbConnection, body);
+                
+                if (isBorrowed) {
+                    // Step 2: Delete the borrow request
+                    ConnectToDb.decreaseAvaliabeNumCopies(dbConnection,bookID);
+                    client.sendToClient("Borrow request processed successfully and Amount of Available bookds decreased.");
+                    }
+                 else {
+                    client.sendToClient("Borrow request could not be processed.");
+                } 
+            	}
+                else {
+                throw new IllegalArgumentException("Invalid request details provided: " + body);
+                }
+    	}
+            catch (Exception e) {
+            // Handle exceptions and inform the client
+            client.sendToClient("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+		
+	
+
+	private void HandleLost(ConnectionToClient client, String body) throws IOException, SQLException {
     	 // Split the body by commas to extract individual parts (subscriber name, ID, book name, ID, and time)
         String[] messageParts = body.split(",");
     	  String subscriberName = messageParts[0].trim();
@@ -396,7 +437,7 @@ public class EchoServer extends AbstractServer {
 
                 // Step 1: Process the actual borrowing logic
                 boolean isBorrowed = ConnectToDb.insertBorrowBook(dbConnection, body);
-
+                
                 if (isBorrowed) {
                     // Step 2: Delete the borrow request
                     boolean isDeleted = ConnectToDb.deleteRequest(dbConnection, requestType, subscriberId, bookID);
@@ -504,7 +545,7 @@ public class EchoServer extends AbstractServer {
     private void handleIPCase(ConnectionToClient client, String body) throws IOException {
         try {
             // Retrieve the server's IP address
-        	//String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
+        	String serverIP = InetAddress.getLocalHost().getHostAddress();//this is the row we need
         	//////////////////////////////////////////////////////////////////////////////////////////
         	///
         	///
@@ -519,7 +560,7 @@ public class EchoServer extends AbstractServer {
         	///
         	///
         	/////////////////////////////////////////////////////////////////////////////////////////
-            String serverIP = "10.244.2.9";//have to change its just to work normaly
+            //String serverIP = "10.244.2.9";//have to change its just to work normaly
             // Check if the client's provided IP matches the actual server IP
             if (body.equals(serverIP)) {
                 client.sendToClient("Client connected to IP:" + serverIP);
