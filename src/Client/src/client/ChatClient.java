@@ -130,7 +130,7 @@ public static String currentISBN;
 	    } else if (response.startsWith("FetchedBorrowedBooks:")){
 	    	handleFetchedBorrowedBooks(response.substring("FetchedBorrowedBooks:".length()));
 	    } else if (response.startsWith("ClosestReturnDate:")){
-	    	closestReturnDate = response.substring("ClosestReturnDate:".length()); // fix this
+	    	closestReturnDate = response.substring("ClosestReturnDate:".length());
 	    }else if (response.startsWith("FetchedHistory:")){
 	    	processMyHistoryData(response.substring("FetchedHistory:".length()));
 	    }else if (response.startsWith("FetchedRegisterRequests:")){
@@ -141,8 +141,6 @@ public static String currentISBN;
 	    	handleRegisterRequestFailed();
 	    }else if (response.startsWith("FetchedReturnRequest:")) {
 	    	handleReturnRequestSucess(response.substring("FetchedReturnRequest:".length()));
-	    } else if (response.startsWith("ReturnDates:")) {
-	        handleReturnDatesResponse(response.substring("ReturnDates:".length()));
 	    }else if (response.startsWith("An error occurred while fetching the return request data:")) {
 	    	handleReturnRequestfailure();
 	    }
@@ -156,28 +154,6 @@ public static String currentISBN;
 	    }
 	}
   
-  private void handleReturnDatesResponse(String data) {
-	    if ("NoRecordsFound".equals(data)) {
-	        System.out.println("No return dates found for the given ISBN.");
-	    } else if (data.startsWith("Error:")) {
-	        System.err.println("Error fetching return dates: " + data.substring(6));
-	    } else {
-	        // Find the earliest return date
-	        String[] returnDates = data.split(";");
-	        String earliestDate = clock.findTheEarliestDate(returnDates);
-
-	        // Notify the SearchFrameController to update the table
-	        if (earliestDate != null) {
-	            Platform.runLater(() -> {
-	                SearchFrameController.updateEarliestReturnDate(ChatClient.currentISBN, earliestDate);
-	            });
-	        } else {
-	            Platform.runLater(() -> {
-	                SearchFrameController.updateEarliestReturnDate(ChatClient.currentISBN, "N/A");
-	            });
-	        }
-	    }
-	}
 
 
 

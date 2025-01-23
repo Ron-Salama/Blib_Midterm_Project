@@ -281,6 +281,9 @@ public class SearchFrameController extends BaseController implements Initializab
     	subjectInput.getItems().addAll(subjects);
         subjectInput.setValue(""); 
     }
+
+
+
     
 
     
