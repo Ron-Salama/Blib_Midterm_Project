@@ -14,8 +14,6 @@ import server.EchoServer;
 //import org.omg.CORBA.Request;
 
 public class ConnectToDb {
-	private ServerTimeDiffController clock = EchoServer.clock;
-	
     // Method to establish a connection to the database
     public static Connection getConnection() throws SQLException {
         try {
@@ -845,10 +843,6 @@ public class ConnectToDb {
         }
     }
     
-    
-    
-    
-    
    //
 
     /*
@@ -1332,42 +1326,45 @@ public class ConnectToDb {
 
         return "No data found in the 'extensions_by_subscribers' field.";
     }
-	public static int FetchYesterdayBorrows(Connection taskSchedulerConnection) {
-
-		        // Step 1: Yesterday's date in DD/MM/YYYY format
-		        LocalDate yesterday = clock.
-		        String formattedDate = yesterday.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Already dd/MM/yyyy
-
-		        // Step 2: Database connection and query execution
-		        String url = "jdbc:mysql://your_host/your_database";
-		        String user = "your_user";
-		        String password = "your_password";
-
-		        String query = """
-		            SELECT COUNT(*)
-		            FROM borrowed_books
-		            WHERE STR_TO_DATE(borrowed_date, '%d-%m-%Y') = STR_TO_DATE(?, '%d/%m/%Y')""";
-
-		        try (Connection conn = DriverManager.getConnection(url, user, password);
-		             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-		            // Set the parameter with the formatted date
-		            stmt.setString(1, formattedDate);
-
-		            // Execute the query
-		            ResultSet rs = stmt.executeQuery();
-		            if (rs.next()) {
-		                System.out.println("Number of matching rows: " + rs.getInt(1));
-		            }
-		        } catch (SQLException e) {
-		            e.printStackTrace();
-		        }
-		    }
+    
+	public static int FetchYesterdayBorrows(Connection conn) throws SQLException {
+		// Step 1: Yesterday's date in DD/MM/YYYY format
+		String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+   
+        String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Borrowed_Time,'%d-%m-%Y') = STR_TO_DATE(?,'%d/%m/%Y')";
+    
+	    try (PreparedStatement stmt = conn.prepareStatement(query);){
+	    	// Set the parameter with the formatted date
+	    	stmt.setString(1, yesterday);
+	    	// Execute the query
+	    	ResultSet rs = stmt.executeQuery();
+	    	if (rs.next()) {
+	    		System.out.println("Number of matching rows: " + rs.getInt(1));
+	    		return rs.getInt(1);
+	    	}
+	    } catch (SQLException e) {
+	    	throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+			}
+		return -1;
 		}
+	
+	public static void updateAmountOfBorrowedBooksYesterday(Connection conn, int amountOfBooksBorrowedYesterday) throws SQLException {
+	    // Step 1: Get yesterday's date in the proper format
+	    String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
 
+	    // Step 2: SQL query to update the number of borrowed books for yesterday
+	    String query = "UPDATE databydate SET BorrowedBooks = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(query)) {
+	        // Step 3: Set the parameters for the query
+	        stmt.setInt(1, amountOfBooksBorrowedYesterday); // Set the amount of books borrowed
+	        stmt.setString(2, yesterday);                  // Set the formatted date
+
+	        // Step 4: Execute the update statement
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
+	    }
 	}
 
-
-    
-    
 }
