@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import client.ChatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -158,5 +159,13 @@ public abstract class BaseController {
    
    protected void addDelayInMilliseconds(int milliSeconds) throws InterruptedException {
 	   TimeUnit.MILLISECONDS.sleep(milliSeconds);
+   }
+   
+   protected void waitForServerResponse() {
+	   while (ChatClient.messageReceivedFromServer == false) { // Wait until ChatClient notifies that it received the message and the client's window can continue onwards.
+		   continue;
+	   }
+	   
+	   ChatClient.messageReceivedFromServer = false; // Lock the window again for the next run.
    }
 }

@@ -50,6 +50,7 @@ public class ChatClient extends AbstractClient
   public static List<Subscriber> allSubscriberData;
   public static List<String> allSubscriberDataForReport = new ArrayList<>();  // Ensures it's initialized
 
+  public static boolean messageReceivedFromServer = false;
   
   public static ClientTimeDiffController clock = new ClientTimeDiffController();
 
@@ -153,6 +154,9 @@ public class ChatClient extends AbstractClient
 	    else if (response.startsWith("AllSubscriberInformation:")) {
 	    	handleAllSubscriberInformation(response.substring("AllSubscriberInformation:".length()));
 	    }
+	    
+	    // release the lock so that the client's window can continue on working.
+	    messageReceivedFromServer = true;
 	}
   
   private void handleBookReservedResponse(String data) {
