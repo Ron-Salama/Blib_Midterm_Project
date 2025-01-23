@@ -10,7 +10,7 @@ import java.util.List;
 import client.ChatClient;
 import client.ClientUI;
 import gui.baseController.BaseController;
-
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import logic.ClientTimeDiffController;
 import logic.SubscriberData;
 
 public class LibrarianSubscriberStatusReportController extends BaseController {
@@ -68,10 +69,11 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
     private int year = 2025;
     private Month month = Month.JANUARY;
-
+    private ClientTimeDiffController clock = ChatClient.clock;
     @FXML
     public void initialize() throws InterruptedException {
-    	colSubscriberId.setCellValueFactory(new PropertyValueFactory<>("subscriberId"));
+        scatterChart.setVisible(false);
+        colSubscriberId.setCellValueFactory(new PropertyValueFactory<>("subscriberId"));
         colSubscriberName.setCellValueFactory(new PropertyValueFactory<>("subscriberName"));
         colFrozenAt.setCellValueFactory(new PropertyValueFactory<>("frozenAt"));
         colExpectedRelease.setCellValueFactory(new PropertyValueFactory<>("expectedRelease"));
@@ -79,25 +81,6 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         // Fetch and process subscriber data
         List<String> allSubscribers = getAllSubscribers();
         ObservableList<SubscriberData> subscriberDataList = FXCollections.observableArrayList();
-
-        for (String subscriberData : allSubscribers) {
-            String[] subscriberFields = subscriberData.split(",");
-            if (subscriberFields.length >= 6) {
-                String subscriberId = subscriberFields[0];
-                String subscriberName = subscriberFields[1];
-                String frozenAt = extractFreezeDate(subscriberFields[5]);
-                String expectedRelease = "N/A"; // Placeholder if not available in the data
-
-                // Create a new SubscriberData object and add it to the list
-                subscriberDataList.add(new SubscriberData(subscriberId, subscriberName, frozenAt, expectedRelease));
-            }
-        }
-
-        // Set the data into the TableView
-        subscriberTable.setItems(subscriberDataList);
-        System.out.println("Scatter chart successfully initialized!");
-
-        initializeChart();
 
         // Populate the ComboBox with month names
         ObservableList<String> months = FXCollections.observableArrayList(
@@ -107,38 +90,60 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         comboMonths.setItems(months);
         comboMonths.getSelectionModel().select(month.ordinal()); // Set default month to January
 
-        // Add a listener to update the chart when a month is selected
+        // Add listener to update the chart and table when a month is selected
         comboMonths.setOnAction(event -> {
             try {
                 setMonth(Month.values()[comboMonths.getSelectionModel().getSelectedIndex()]);
+                filterAndUpdateTable(allSubscribers);  // Re-populate the table when the month changes
                 populateBarChart();  // Re-populate the bar chart when the month changes
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
 
-        // Fetch and process subscriber data
-//        List<String> allSubscribers = getAllSubscribers();
-
-        // Create the series for frozen accounts, but filter by the selected month
-        XYChart.Series<String, String> frozenAccountsSeries = createFrozenAccountsSeries(allSubscribers);
-
-        // Only add series to chart if there's data for the selected month
-        if (!frozenAccountsSeries.getData().isEmpty()) {
-            scatterChart.getData().add(frozenAccountsSeries);
-        }
-
-        // Update the PieChart data
-        updatePieChart(allSubscribers);
-
-        // Populate the bar chart
-        populateBarChart();
+        // Initial population of the table and charts for the selected month
+        filterAndUpdateTable(allSubscribers);
+        populateBarChart();  // Populate the bar chart
 
         // Set the default month and update the chart
         setMonth(Month.JANUARY);
         updateChartForMonth();
-
     }
+
+
+    private void filterAndUpdateTable(List<String> allSubscribers) {
+        // Filter the subscriber data for the selected month
+        ObservableList<SubscriberData> filteredData = FXCollections.observableArrayList();
+        
+        for (String subscriberData : allSubscribers) {
+            String[] subscriberFields = subscriberData.split(",");
+            if (subscriberFields.length >= 6) {
+                String frozenAt = extractFreezeDate(subscriberFields[5]);
+                if (isFrozenInSelectedMonth(frozenAt)) {
+                    String subscriberId = subscriberFields[0];
+                    String subscriberName = subscriberFields[1];
+                    String expectedRelease = extractFreezeDate(subscriberFields[5]);
+                    
+                    // If expectedRelease is "Unknown" or empty, set it to "Not Frozen"
+                    if (expectedRelease.equals("Unknown") || expectedRelease.isEmpty()) {
+                        expectedRelease = "Not Frozen";
+                    } else {
+                        expectedRelease = convertDateFormat(clock.convertStringToLocalDateTime(extractFreezeDate(subscriberFields[5])).toLocalDate().plusMonths(1).toString());
+                    }
+
+                    // Create a new SubscriberData object and add it to the filtered list
+                    filteredData.add(new SubscriberData(subscriberId, subscriberName, frozenAt, expectedRelease));
+                }
+            }
+        }
+
+        // Set the filtered data into the TableView
+        subscriberTable.setItems(filteredData);
+    }
+
+
+    	
+   
     private void populateBarChart() throws InterruptedException {
         // Clear previous data
         barChart.getData().clear();
@@ -170,6 +175,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
         // Add series to the bar chart
         barChart.getData().addAll(frozenSeries, notFrozenSeries);
+        
     }
     private boolean isDataForSelectedMonth(String dateStr) {
         // Split the date string into day, month, and year
@@ -197,9 +203,12 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
     }
 
     private void initializeChart() {
+    	
         xAxis.setLabel("Freeze Date");
         yAxis.setLabel("Frozen Subscriber");
         yAxis.setAutoRanging(true);
+
+
     }
 
     public void setMonth(Month month) throws InterruptedException {

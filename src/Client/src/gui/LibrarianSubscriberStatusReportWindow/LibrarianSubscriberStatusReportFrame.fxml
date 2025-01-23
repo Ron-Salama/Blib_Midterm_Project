@@ -11,11 +11,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.collections.ObservableList?>
 
 <AnchorPane prefHeight="518.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianSubscriberStatusReportWindow.LibrarianSubscriberStatusReportController">
     <children>
@@ -28,7 +23,7 @@
                 <CategoryAxis fx:id="yAxis" label="Subscriber" />
             </yAxis>
         </ScatterChart>
-<TableView fx:id="subscriberTable" layoutX="38.0" layoutY="300.0" prefHeight="150.0" prefWidth="1148.0">
+<TableView fx:id="subscriberTable" layoutX="48.0" layoutY="131.0" prefHeight="362.0" prefWidth="1003.0">
             <columns>
                 <TableColumn fx:id="colSubscriberId" prefWidth="200.0" text="Subscriber ID" />
                 <TableColumn fx:id="colSubscriberName" prefWidth="300.0" text="Subscriber Name" />
@@ -37,10 +32,10 @@
             </columns>
         </TableView>
         <!-- PieChart -->
-        <PieChart fx:id="pieChartFrozen" layoutX="665.0" layoutY="130.0" prefHeight="341.0" prefWidth="426.0" />
+        <PieChart fx:id="pieChartFrozen" layoutX="1051.0" layoutY="151.0" prefHeight="341.0" prefWidth="426.0" />
         
         <!-- BarChart -->
-        <BarChart fx:id="barChart" layoutX="3.0" layoutY="552.0" prefHeight="371.0" prefWidth="1192.0" stylesheets="@LibrarianSubscriberStatusReportFrame.css">
+        <BarChart fx:id="barChart" layoutX="3.0" layoutY="552.0" prefHeight="371.0" prefWidth="1425.0" stylesheets="@LibrarianSubscriberStatusReportFrame.css">
         
             <xAxis>
                 <CategoryAxis fx:id="barXAxis" label="Categories" />
@@ -54,7 +49,7 @@
         <Button fx:id="back" layoutX="1006.0" layoutY="20.0" mnemonicParsing="false" onAction="#back" text="Back" />
         <ComboBox fx:id="comboMonths" layoutX="438.0" layoutY="45.0" prefWidth="150.0" />
         <Button fx:id="update" layoutX="599.0" layoutY="45.0" mnemonicParsing="false" onAction="#update" text="update" />
-      <Label layoutX="801.0" layoutY="103.0" text="Currently Frozen/Unfrozen Status" />
+      <Label layoutX="48.0" layoutY="103.0" text="Currently Frozen/Unfrozen Status" />
       <Label layoutX="513.0" layoutY="543.0" text="Monthly Frozen/Unfrozen Status" />
     </children>
 </AnchorPane>
