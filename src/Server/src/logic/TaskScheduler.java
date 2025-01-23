@@ -13,7 +13,7 @@ public class TaskScheduler {
     private SMSandEmailController smsAndEmailController = new SMSandEmailController();
     private ReserveRequestDailyTasksController reserveRequestDailyTasksController = new ReserveRequestDailyTasksController();
     private ExtensionBySubscriberController extensionBySubscriberController = new ExtensionBySubscriberController();
-    private YesterdayBorrowsController yesterdayBorrowsController = new YesterdayBorrowsController();
+    private HandleReportController yesterdayBorrowsController = new HandleReportController();
     
     public void startDailyTasks() {
         Runnable dailyTask = new Runnable() {
