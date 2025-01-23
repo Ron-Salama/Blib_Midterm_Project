@@ -226,73 +226,46 @@ public class MyBooksController extends BaseController implements Initializable {
 
                 {
                     buttonBox.setStyle("-fx-alignment: CENTER;");
-
+                 // Extend Button Action
                     extendButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
-                    	ClientTimeDiffController clock = new ClientTimeDiffController();
-                    	String extendedReturnDate;
-                    	String ignore = "ignore";
-                    	String librarianMessage = ",Extended Successfully by Librarian " + librarianViewing + ":" + LibrarianName;
-                    	String body = currentSub.getSubscriber_name() + "," +
-                                currentSub.getSubscriber_id() + "," +
-                                borrowedBook.getName() + "," +
-                                borrowedBook.getBorrowId() + "," +
-                                clock.timeNow() + "," + ignore;
-                    	ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
-                    	
-                    	waitForServerResponse();
-                                
-                    	
-                    		if(viewing) {
-                    			if(!(ChatClient.isBookReservedFlag)) {
-                            		if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) { // add condition - AND book is not reserved - we check if book reserved in DB.
-                                    	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
-                                		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
-                                        ClientUI.chat.accept("UpdateHistoryInDB:"+body+librarianMessage);
-                                		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-                                		tableView.refresh();
-                                	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-                                	    tableView.refresh();
-                                	}else {
-                                		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less.", "-fx-text-fill: red;");
-                                	}
-                            	}
-                            	else {
-                            		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
-                            	}
-	                    		tableView.getItems().clear();
-	                    		try {
-									loadBooks();
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-                    		}else {
-                    			if(!(ChatClient.isBookReservedFlag)) {
-                            		if(clock.hasEnoughTimeBeforeDeadline(borrowedBook.getReturnDate(), 7)) { // add condition - AND book is not reserved - we check if book reserved in DB.
-                                    	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
-                                		ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-                                        ClientUI.chat.accept("UpdateHistoryInDB:" + body +",Extended Successfully");
-                                		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
-                                		tableView.refresh();
-                                	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-                                	    tableView.refresh();
-                                	}else {
-                                		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less.", "-fx-text-fill: red;");
-                                	}
-                            	}
-                            	else {
-                            		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
-                            	}
-	                    		tableView.getItems().clear();
-	                    		try {
-									loadBooks();
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-                    		}
-                    	});
+                        if (borrowedBook != null) {
+                            ClientTimeDiffController clock = new ClientTimeDiffController();
+                            String extendedReturnDate;
+                            String ignore = "ignore";
+                            String librarianMessage = ",Extended Successfully by Librarian " + librarianViewing + ":" + LibrarianName;
+                            String body = currentSub.getSubscriber_name() + "," +
+                                    currentSub.getSubscriber_id() + "," +
+                                    borrowedBook.getName() + "," +
+                                    borrowedBook.getBorrowId() + "," +
+                                    clock.timeNow() + "," + ignore;
+
+                            ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
+                            waitForServerResponse();
+
+                            if (!ChatClient.isBookReservedFlag) {
+                                if (borrowedBook.getTimeLeftToReturn() < 7 && borrowedBook.getTimeLeftToReturn() > 0) {
+                                    extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
+                                    ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
+                                    ClientUI.chat.accept("UpdateHistoryInDB:" + body + librarianMessage);
+                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                                    tableView.refresh();
+                                    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+                                    tableView.getItems().clear();
+                                    try {
+										loadBooks();
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+                                } else {
+                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;");
+                                }
+                            } else {
+                                showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
+                            }
+                        }
+                    });
 
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());

@@ -45,12 +45,6 @@ public class BorrowedBook {
         this.ISBN = ISBN;
         this.timeLeftToReturn=timeLeftToReturn;
     }
-    public int gettimeLeftToReturn(){
-    	return timeLeftToReturn;
-    }
-    public void settimeLeftToReturn(int timeLeftToReturn){
-    	this.timeLeftToReturn=timeLeftToReturn;
-    }
     // Getters and setters
     public int getBorrowId() {
         return borrowId;

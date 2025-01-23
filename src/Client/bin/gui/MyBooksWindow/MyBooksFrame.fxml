@@ -29,7 +29,7 @@
             <Font size="17.0" />
          </font>
       </Button>
-      <Label id="extensionDynamicLabel" fx:id="extensionDynamicLabel" layoutX="334.0" layoutY="115.0" prefHeight="71.0" prefWidth="591.0" />
+      <Label id="extensionDynamicLabel" fx:id="extensionDynamicLabel" layoutX="159.0" layoutY="133.0" prefHeight="71.0" prefWidth="850.0" />
       <Label id="extensionDynamicLabel" fx:id="title" layoutX="597.0" layoutY="-4.0" prefHeight="38.0" prefWidth="505.0" text="My books" />
       <TextField fx:id="TXTFview" layoutX="344.0" layoutY="90.0" />
       <Label fx:id="LBLview" layoutX="170.0" layoutY="94.0" text="Input Subscriber ID to View:" />
