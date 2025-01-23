@@ -111,7 +111,7 @@ public class BorrowBookController extends BaseController implements Initializabl
                 if (reservedCopiesNum >= copiesNum) { //TODO: check if this line works correctly!!!!
                 	borrowStatus = "NO_COPIES";
                 	btnReserve.setVisible(true);
-                	awaitingTextID.setText("There are no spare copies of the book " + bookName + "to borrow." + "\nWould you like to Reserve it?");
+                	awaitingTextID.setText("There are no spare copies of the book " + bookName + " to borrow." + "\nWould you like to Reserve it?");
                     btnSubmitToLibrarian.setDisable(true); // Disable if no copies
                 	
                 }else if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
