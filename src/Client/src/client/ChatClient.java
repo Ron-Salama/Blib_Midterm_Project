@@ -96,9 +96,9 @@ public class ChatClient extends AbstractClient
 	    System.out.println(msg);
 	    // Dispatch handling based on message prefix
 	    if (response.startsWith("Client connected to IP:")) {
-	    	handleServerConnectionIssue(true);
+	    	isIPValid = true;
 	    } else if (response.startsWith("Could not connect to the server.")) {
-	 	        handleServerConnectionIssue(false);
+	 	        isIPValid = false;
 	    }else if (response.startsWith("BorrowedBooks:")) {
 	        handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
 	    } else if (response.startsWith("subscriber_id:")) {
@@ -372,13 +372,6 @@ private void handleReservedBooksResponse(String data) {
 	        System.out.println("Error parsing My History data: " + e.getMessage());
 	    }
 	}
-
-
-//	private void handleServerConnectionIssue(boolean isConnected) {
-//	    isIPValid = isConnected;
-//	    String message = isConnected ? "Server connection successful." : "Failed to connect to the server.";
-//	    System.out.println(message);
-//	}
 
 	private void handleBookData(String data) {
 	    if (data.equals("NoBooksFound")) {

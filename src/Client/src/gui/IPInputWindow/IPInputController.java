@@ -126,13 +126,4 @@ public class IPInputController extends BaseController {
     public void loadSubscriber(Subscriber s1) {
         this.lipc.loadSubscriber(s1);
     }
-
-    /**
-     * Displays a message in the console.
-     *
-     * @param message the message to display.
-     */
-    public void display(String message) {
-        System.out.println(message);
-    }
 }
