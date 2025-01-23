@@ -22,7 +22,7 @@ public class TaskScheduler {
 					freezeController.freezeControllerDailyActivities(); // Run all of the daily activities needed from the freezeController.
 					reserveRequestDailyTasksController.reserveRequestsDailyActivity(); // Run all of the methods that are related to the reserve functionality.
 					smsAndEmailController.smsAndEmailControllerDailyActivities(); // Send Email and SMS to users that need to return their book the next day.
-					extensionBySubscriberController.yanivMETHOD();
+					extensionBySubscriberController.cleanEveryDayExetnsionsInLibrarian();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}catch (SQLException e) {

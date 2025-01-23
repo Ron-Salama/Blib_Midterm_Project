@@ -292,14 +292,24 @@ public class ConnectToDb {
     }
 
 
+    //delete the text inside extensions_by_subscribers in librarian table
+    public static String cleanExtensionsBySubscribersInLibrarian(Connection conn) {
+        String query = "UPDATE librarian SET extensions_by_subscribers = NULL";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            int rowsUpdated = pstmt.executeUpdate();
+            
+            if (rowsUpdated > 0) {
+                return "Successfully cleared 'extensions_by_subscribers' column for " + rowsUpdated + " rows.";
+            } else {
+                return "No rows were updated. The table may already be clean.";
+            }
+        } catch (SQLException e) {
+            return "Error while clearing 'extensions_by_subscribers' column: " + e.getMessage();
+        }
+    }
 
 
-
-
-
-    
-    
-    
     
     public static List<String> fetchBorrowedBooksBySubscriberId(Connection conn, String subscriberId) {
         String query = "SELECT * FROM blib.borrowed_books WHERE subscriber_id = ?";
