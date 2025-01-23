@@ -1,16 +1,7 @@
 Server listening for connections on port 5555
 Connected to the database.
 Client connected.
-Client IP:10.0.0.8
-Client Hostname: 10.0.0.8
+Client IP:10.0.0.3
+Client Hostname: YuvalDesktop.local
 Connection Status: Connected
-Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:2 from 10.0.0.8 (10.0.0.8)
-Message received: GetBorrowedBooks:2 from 10.0.0.8 (10.0.0.8)
-Message received: Return request: Subscriber ID is:2 Spongebob Borrow info: 0011 The Hobbit 07-12-2024 21-12-2024 -31 from 10.0.0.8 (10.0.0.8)
-Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
-Message received: EXIT: from 10.0.0.8 (10.0.0.8)
-Client disconnected.
-Client IP: 10.0.0.8
-Client Hostname: 10.0.0.8
-Connection Status: Disconnected
+Message received: IP:10.0.0.3 from YuvalDesktop.local (10.0.0.3)

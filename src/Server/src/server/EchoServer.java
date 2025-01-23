@@ -153,6 +153,7 @@ public class EchoServer extends AbstractServer {
             		break;
                 case "Fetch return request":
                 	this.HandleFetchreturnrequest(client, body);
+                	break;
                 case "Fetch": // Handle Fetch:ID
                     handleFetchCase(client, body);
                     break;
@@ -231,12 +232,22 @@ public class EchoServer extends AbstractServer {
                 	break;
                 case "Handle Lost":
                 	HandleLost(client,body);
+                	break;
+                case "NewExtensionApprovedBySubscriber": // Used to notify the librarian whenever a book's return date is updated by an extension.
+                	handleBookReturnExtensionBySubscriber(body);
+                	break;
                 case "EXIT":
                 	clientDisconnect(client);
+                	break;
                 case "FetchAllSubscriberData":
                 	handleFetchAllSubscriberData(client);
-                case "FetchAllSubscriberInformationForReports":
+                	break;
+                case "FetchAllSubscriberInformationForReports": // Put new extension requests information into the database for the librarian.
                 	handleFetchAllSubscriberDataForReports(client);
+                	break;
+                case "PullNewExtenstion": // Take the information about the new requests for the librarian. This String will be used in the librarian's textArea element.
+                	handleNewReturnDatesForLibrarian(client);
+                	break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -1000,6 +1011,19 @@ public class EchoServer extends AbstractServer {
             }
         }
     }
+    
+    private void handleBookReturnExtensionBySubscriber(String body) throws SQLException{
+    	// Update on each extension approval inside the librarian's database.
+    	ConnectToDb.updateExtensionApprovedBySubscriber(dbConnection, body);
+    }
+    
+    private void handleNewReturnDatesForLibrarian(ConnectionToClient client) throws SQLException, IOException {
+    	// Grab only the first element and send it back to the client.
+    	String newReturnDates = ConnectToDb.pullNewExtendedReturnDates(dbConnection).split(";")[0];
+    	
+    	client.sendToClient("ExtendedReturnDatesForsSubscriber:" + newReturnDates);
+    }
+    
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
     }

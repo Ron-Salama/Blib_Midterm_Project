@@ -241,7 +241,7 @@ public class MyBooksController extends BaseController implements Initializable {
                                     	extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                                 		ClientUI.chat.accept("UpdateReturnDate:"+borrowedBook.getBorrowId()+","+extendedReturnDate);
                                         ClientUI.chat.accept("UpdateHistoryInDB:"+body+librarianMessage);
-                                		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                                		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");                		
                                 		tableView.refresh();
                                 	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
                                 	    tableView.refresh();
@@ -266,6 +266,10 @@ public class MyBooksController extends BaseController implements Initializable {
                                 		ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
                                         ClientUI.chat.accept("UpdateHistoryInDB:" + body +",Extended Successfully");
                                 		showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                                		
+                                		// Send information about the request to the librarians.
+                                		ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
+                                		
                                 		tableView.refresh();
                                 	    tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
                                 	    tableView.refresh();

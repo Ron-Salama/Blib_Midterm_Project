@@ -52,6 +52,7 @@ public class ChatClient extends AbstractClient
   public static List<String> allSubscriberDataForReport = new ArrayList<>();  // Ensures it's initialized
 
   public static String closestReturnDate;
+  public static String extendedReturnDatesFromSubscriber = null;
   
   public static ClientTimeDiffController clock = new ClientTimeDiffController();
 
@@ -154,6 +155,8 @@ public static String currentISBN;
 	    	handleBarcodeFetchBorrowedBookRequest(response.substring("BorrowedBooksForBarcodeScanner:".length()));
 	    }else if(response.equals("Client disconnected")) {
 	    	System.exit(1);
+	    } else if (response.startsWith("ExtendedReturnDatesForsSubscriber:")) {
+	    	handleExtendedReturnDatesFromSubscriber(response.substring("ExtendedReturnDatesForsSubscriber:".length()));
 	    }
 	    else if (response.startsWith("AllSubscriberInformation:")) {
 	    	handleAllSubscriberInformation(response.substring("AllSubscriberInformation:".length()));
@@ -591,6 +594,10 @@ private void handleReservedBooksResponse(String data) {
 	
 	private void handleRegisterRequestSuccess() {
 		isIDInDataBase = false;
+	}
+	
+	private void handleExtendedReturnDatesFromSubscriber(String extendedReturnDatesByUser){
+		extendedReturnDatesFromSubscriber = extendedReturnDatesByUser;
 	}
 	
 	/**

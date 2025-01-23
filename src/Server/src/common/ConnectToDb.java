@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1274,4 +1275,51 @@ public class ConnectToDb {
 
         return reservedBooks; // Return the list of reserved books
     }
+    
+    public static void updateExtensionApprovedBySubscriber(Connection conn, String data) throws SQLException {
+        String currentData = "";
+        String fetchQuery = "SELECT extensions_by_subscribers FROM blib.librarian";
+        String updateQuery = "UPDATE blib.librarian SET extensions_by_subscribers = ?";
+
+        try (PreparedStatement fetchStmt = conn.prepareStatement(fetchQuery);
+             ResultSet rs = fetchStmt.executeQuery()) {
+
+            if (rs.next()) {
+                currentData = rs.getString("extensions_by_subscribers");
+            }
+        }
+
+        String updatedData = currentData + data;
+
+        try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+            updateStmt.setString(1, updatedData);
+            updateStmt.executeUpdate();
+        }
+    } 
+    
+    /**
+     * Pulls the first entry from the 'extensions_by_subscribers' field in the 'blib.librarian' table.
+     *
+     * @param conn The database connection object.
+     * @return The first result as a string, or a message if no data is found.
+     * @throws SQLException If an SQL error occurs during the operation.
+     */
+    public static String pullNewExtendedReturnDates(Connection conn) throws SQLException {
+        String query = "SELECT extensions_by_subscribers FROM librarian LIMIT 1";
+
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                // Fetch the first result and return it directly.
+                return rs.getString("extensions_by_subscribers");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+        }
+
+        return "No data found in the 'extensions_by_subscribers' field.";
+    }
+
+
+    
+    
 }
