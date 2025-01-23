@@ -38,6 +38,24 @@ public class EchoServer extends AbstractServer {
     }
    
     
+    private void handleFetchReturnDates(ConnectionToClient client, String body) throws IOException {
+        try {
+            String isbn = body.trim(); // The ISBN is sent in the message body
+            List<String> returnDates = ConnectToDb.fetchReturnDates(dbConnection, isbn);
+
+            if (returnDates == null || returnDates.isEmpty()) {
+                client.sendToClient("ReturnDates:NoRecordsFound");
+            } else {
+                String response = String.join(";", returnDates);
+                client.sendToClient("ReturnDates:" + response);
+            }
+        } catch (Exception e) {
+            client.sendToClient("ReturnDates:Error:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    
     // Instance methods ************************************************
     @Override
     protected void serverStarted() {

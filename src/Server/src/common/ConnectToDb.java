@@ -26,6 +26,23 @@ public class ConnectToDb {
         // Return the established connection
         return DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST&allowPublicKeyRetrieval=true&useSSL=false", "root", "Aa123456");
     }
+    public static List<String> fetchReturnDates(Connection dbConnection, String isbn) throws SQLException {
+        List<String> returnDates = new ArrayList<>();
+        String query = "SELECT return_date FROM borrow_table WHERE isbn = ?";
+        
+        try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                String returnDate = rs.getString("return_date");
+                returnDates.add(returnDate);
+            }
+        }
+        
+        return returnDates;
+    }
+
 
         // Method to fetch all data from the subscriber table
         public static List<String> fetchAllData(Connection conn) {
