@@ -40,6 +40,24 @@ public class EchoServer extends AbstractServer {
     }
    
     
+    private void handleFetchReturnDates(ConnectionToClient client, String body) throws IOException {
+        try {
+            String isbn = body.trim(); // The ISBN is sent in the message body
+            List<String> returnDates = ConnectToDb.fetchReturnDates(dbConnection, isbn);
+
+            if (returnDates == null || returnDates.isEmpty()) {
+                client.sendToClient("ReturnDates:NoRecordsFound");
+            } else {
+                String response = String.join(";", returnDates);
+                client.sendToClient("ReturnDates:" + response);
+            }
+        } catch (Exception e) {
+            client.sendToClient("ReturnDates:Error:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    
     // Instance methods ************************************************
     @Override
     protected void serverStarted() {
@@ -207,6 +225,9 @@ public class EchoServer extends AbstractServer {
                 	break;
                 case "Handle register":
                 	HandleRegisterOfSubscriber(client, body);
+                	break;
+                case "FetchClosestReturnDate":
+                	handleFetchClosestReturnDate(client,body);
                 	break;
                 case "Handle Lost":
                 	HandleLost(client,body);
@@ -966,7 +987,19 @@ public class EchoServer extends AbstractServer {
     	client.sendToClient("AllSubscriberInformationForReports:" + ConnectToDb.fetchAllDataForReports(dbConnection)); 
 
     }
-
+    private void handleFetchClosestReturnDate(ConnectionToClient client, String isbn) {
+        try {
+            String closestReturnDate = ConnectToDb.fetchClosestReturnDate(dbConnection, isbn);
+            System.out.println(closestReturnDate);
+            client.sendToClient("ClosestReturnDate:" + (closestReturnDate != null ? closestReturnDate : "Unavailable"));
+        } catch (Exception e) {
+            try {
+                client.sendToClient("ClosestReturnDate:Error");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
     private boolean isOpen(ConnectionToClient client) {
         return client != null;
     }

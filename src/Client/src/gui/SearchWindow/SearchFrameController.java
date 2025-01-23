@@ -32,6 +32,7 @@ import logic.Book;
 public class SearchFrameController extends BaseController implements Initializable {
 	private SearchFrameController sfc;
     public static String FlagForSearch = "";
+
 	@FXML
     private Button btnExit;
 
@@ -45,7 +46,7 @@ public class SearchFrameController extends BaseController implements Initializab
     private TableView<Book> tableView;
 
     @FXML
-    private TableColumn<Book, Integer> tableID;
+    private TableColumn<Book, String> tableISBN;
     
     @FXML
     private TableColumn<Book, String> tableName;
@@ -61,6 +62,9 @@ public class SearchFrameController extends BaseController implements Initializab
     
     @FXML
     private TableColumn<Book, String> tableLocation;
+    
+    @FXML
+    private TableColumn<Book, String> tableClosestReturnDate;
 
 
     @FXML
@@ -82,18 +86,17 @@ public class SearchFrameController extends BaseController implements Initializab
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize TableView columns
-        tableID.setCellValueFactory(new PropertyValueFactory<Book, Integer>("id"));
-        
-        // Format the ISBN (ID) with leading zeros when displaying it in the table
-        tableID.setCellFactory(column -> new TableCell<Book, Integer>() {
+        tableISBN.setCellValueFactory(new PropertyValueFactory<Book, String>("ISBN"));
+        // Optionally format the ISBN (if any specific formatting is needed) when displaying it in the table
+        tableISBN.setCellFactory(column -> new TableCell<Book, String>() {
             @Override
-            protected void updateItem(Integer item, boolean empty) {
+            protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    // Format the ISBN (ID) with leading zeros (example: 10 digits)
-                    setText(String.format("%04d", item));  // Adjust 10 digits as necessary
+                    // Directly display the ISBN string; you can adjust formatting if necessary
+                    setText(item);
                 }
             }
         });
@@ -104,6 +107,7 @@ public class SearchFrameController extends BaseController implements Initializab
         tableSubject.setCellValueFactory(new PropertyValueFactory<Book, String>("subject"));
         tableCopies.setCellValueFactory(new PropertyValueFactory<Book, Integer>("availableCopies"));
         tableLocation.setCellValueFactory(new PropertyValueFactory<Book, String>("location"));
+        tableClosestReturnDate.setCellValueFactory(new PropertyValueFactory<Book, String>("closestReturnDate"));
         
         // Add subjects to the ComboBox
         addSubjectsToComboBox();
@@ -120,28 +124,49 @@ public class SearchFrameController extends BaseController implements Initializab
         // Fetch and populate books
         new Thread(() -> {
         	ClientUI.chat.accept("GetBooks:");
-            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
+            Platform.runLater(() -> {
+				try {
+					loadBooks();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}); // Populate the table after data is fetched
         }).start();
+    }
+
+    
+    public void refreshTable() {
+        tableView.refresh(); // Refresh the table
     }
     /**
      * Loads books into the TableView by fetching them from the server.
      * If no books are available, displays a message in the console.
+     * @throws InterruptedException 
      */
-    private void loadBooks() {
-        // Send "GetBooks" request to the server to fetch the books
-        //ClientUI.chat.accept("GetBooks:");
-
-        // Ensure bookList is not empty
+    private void loadBooks() throws InterruptedException {
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
-            // Populate the TableView with all books initially
-            Platform.runLater(() -> {
-                tableView.getItems().clear();  // Clear any existing data
-                tableView.getItems().addAll(ChatClient.bookList);  // Add all books to the table
-            });
+            tableView.getItems().clear();
+
+            for (Book book : ChatClient.bookList) {
+                if (book.getAvailableCopies() > 0) {
+                    book.setClosestReturnDate("Available");
+                } else {
+                    ClientUI.chat.accept("FetchClosestReturnDate:" + book.getISBN());
+                    addDelayInMilliseconds(200);
+                    String currentBookClosestReturnDate = ChatClient.closestReturnDate;
+                    book.setClosestReturnDate(currentBookClosestReturnDate);
+                    
+                    
+                }
+            }
+            tableView.getItems().addAll(ChatClient.bookList); // Populate the table
         } else {
             System.out.println("No books to display.");
         }
     }
+
+
 
     /**
      * Searches for books based on filters entered in the name, description, and subject fields.
@@ -256,4 +281,11 @@ public class SearchFrameController extends BaseController implements Initializab
     	subjectInput.getItems().addAll(subjects);
         subjectInput.setValue(""); 
     }
+
+
+
+    
+
+    
+
 }
