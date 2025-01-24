@@ -122,15 +122,10 @@ public class SearchFrameController extends BaseController implements Initializab
         	btnBackF.setVisible(true);
         }
         // Fetch and populate books
-        
-        
-//        new Thread(() -> {
-       
         ClientUI.chat.accept("GetBooks:");
         waitForServerResponse();
         loadBooks();
-//            Platform.runLater(this::loadBooks); // Populate the table after data is fetched
-//        }).start();
+
     }
     /**
      * Loads books into the TableView by fetching them from the server.

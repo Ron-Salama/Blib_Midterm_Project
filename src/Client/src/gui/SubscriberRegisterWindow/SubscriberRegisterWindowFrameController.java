@@ -71,6 +71,7 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
 
             // Send the update message to the server
             ClientUI.chat.accept("RegisterRequest:" + obj);
+            waitForServerResponse();
             
         }
 

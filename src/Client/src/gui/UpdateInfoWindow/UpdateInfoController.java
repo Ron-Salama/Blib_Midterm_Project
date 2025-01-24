@@ -64,7 +64,7 @@ public class UpdateInfoController extends BaseController implements Initializabl
     	
 		 txtSubscriber_id.setText(""+currentSub.getSubscriber_id());
 		 txtSubscriber_name.setText(""+currentSub.getSubscriber_name());
-		 txtSubscriber_email.setText(""+currentSub.getSubscriber_email());
+		 txtSubscriber_email.setText("" + currentSub.getSubscriber_email());
 		 txtSubscriber_phoneNumber.setText(""+currentSub.getSubscriber_phone_number());
     	
     }

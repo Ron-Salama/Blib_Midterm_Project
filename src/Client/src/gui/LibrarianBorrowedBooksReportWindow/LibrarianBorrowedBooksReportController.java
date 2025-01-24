@@ -155,7 +155,7 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
 
         // Request frozen data from the server
         ClientUI.chat.accept("FetchAllFrozenInformationForReports:");
-        addDelayInMilliseconds(200);  // Wait for server response
+        waitForServerResponse();
 
         if (ChatClient.allFrozenDataForReport != null) {
             frozenData.addAll(ChatClient.allFrozenDataForReport);
@@ -164,11 +164,6 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         }
 
         return frozenData;
-    }
-
-    // Optional method for adding delay to simulate server response time (you can adjust or remove this)
-    private void addDelayInMilliseconds(long milliseconds) throws InterruptedException {
-        Thread.sleep(milliseconds);
     }
 
     public void back(ActionEvent event) throws Exception{

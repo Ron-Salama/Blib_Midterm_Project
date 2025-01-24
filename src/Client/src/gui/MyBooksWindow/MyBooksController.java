@@ -167,9 +167,15 @@ public class MyBooksController extends BaseController implements Initializable {
 
 
     public void updateView(ActionEvent event) throws InterruptedException {
-
+    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "", "-fx-text-fill: red;");
     		String subID = TXTFview.getText();
-        	ClientUI.chat.accept("Fetch:" + subID);
+
+    		if (subID.isEmpty()) {
+    			showColoredLabelMessageOnGUI(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;");
+    			return;
+    		}
+    		
+    		ClientUI.chat.accept("Fetch:" + subID);
 
         	waitForServerResponse();
         	
@@ -182,7 +188,6 @@ public class MyBooksController extends BaseController implements Initializable {
             	  ChatClient.s1.getStatus()
             );
             
-            //addDelayInMilliseconds(100);
             
             if(currentSub.getSubscriber_id() == -1) {
             	title.setText("No ID Found");
@@ -224,6 +229,7 @@ public class MyBooksController extends BaseController implements Initializable {
                                     extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                                     ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
                                     ClientUI.chat.accept("UpdateHistoryInDB:" + body + librarianMessage);
+                                    waitForServerResponse();
                                     showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
                                     tableView.refresh();
                                     tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
@@ -246,9 +252,10 @@ public class MyBooksController extends BaseController implements Initializable {
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                         System.out.println("Return book: " + borrowedBook.getName());
-                        ClientUI.chat.accept("Return request: Subscriber ID is:"+currentSub.getSubscriber_id()+" "+currentSub.getSubscriber_name()+" Borrow info: "+borrowedBook);
+                        ClientUI.chat.accept("Return request: Subscriber ID is:" + currentSub.getSubscriber_id() + " " + currentSub.getSubscriber_name() + " Borrow info: " + borrowedBook);
                         // Send information about the request to the librarians.
                         ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
+                        waitForServerResponse();
                     });
                 }
 

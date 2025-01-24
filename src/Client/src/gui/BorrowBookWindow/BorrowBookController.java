@@ -88,10 +88,7 @@ public class BorrowBookController extends BaseController implements Initializabl
         ClientUI.chat.accept("GetBookInfo:" + bookId);  // Request book info
 
         waitForServerResponse();
-        
-        // Wait until response is received
-        //PauseTransition pause = new PauseTransition(Duration.seconds(0.1)); // Adjust duration if necessary
-        //pause.setOnFinished(e -> {
+
             if (ChatClient.BorrowedBookInfo != null) {
                 Book_Description.setText(
                 	"Book Details:\n" +
@@ -126,8 +123,6 @@ public class BorrowBookController extends BaseController implements Initializabl
                 btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found
                 
             }
-       // });
-       // pause.play();
     }
 
     public void Submit_Borrow_Request(ActionEvent event) throws Exception {
@@ -136,14 +131,11 @@ public class BorrowBookController extends BaseController implements Initializabl
             String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
             String subscriberName = SubscriberWindowController.currentSubscriber.getSubscriber_name();
             
-            LocalDateTime now = LocalDateTime.now();
             String returnDate = clockController.calculateReturnDate(14);
             String borrowDate = clockController.timeNow();
             
             String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
             ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
-            
-            waitForServerResponse();
             
             // Feedback to the user
             showColoredLabelMessageOnGUI(RequestStatus, "Borrow request submitted successfully!\nAwaiting Librarian approval", "-fx-text-fill: green;");
@@ -175,7 +167,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             
             ClientUI.chat.accept("Reserve:" + reservation);
             ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Reserved Successfully");
-            
+            waitForServerResponse();
             
             // Feedback to the user
             showColoredLabelMessageOnGUI(RequestStatus, 
@@ -249,14 +241,5 @@ public class BorrowBookController extends BaseController implements Initializabl
             default:
                 return "Unable to borrow this book due to an unknown error.";
         }
-    }
-
-    /**
-     * Displays a message in the console.
-     *
-     * @param message the message to display.
-     */
-    public void display(String message) {
-        System.out.println(message);
     }
 }

@@ -530,13 +530,13 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
             if(borrowInformationFromBarcode) {
             	ClientUI.chat.accept("SubmitBorrowRequestBarcode:"+body);
+            	waitForServerResponse();
             }else {
     			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
+    			waitForServerResponse();
             }
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
-            showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
-
-
+            waitForServerResponse();
             showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
@@ -554,6 +554,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             {
             	ClientUI.chat.accept("Handle Lost:"+body);
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
+            	waitForServerResponse();
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
             }
             else
@@ -569,6 +570,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     			}
                 ClientUI.chat.accept("Handle return:" + body); 
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
+            	waitForServerResponse();
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
 			}
 		}
@@ -584,6 +586,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 
 			 ClientUI.chat.accept("Handle register:" + body1);
 			 ClientUI.chat.accept("UpdateHistoryInDB:" + body2 + ",Register Successfully");
+			 waitForServerResponse();
 	         showColoredLabelMessageOnGUI(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;");
 		}
 	}

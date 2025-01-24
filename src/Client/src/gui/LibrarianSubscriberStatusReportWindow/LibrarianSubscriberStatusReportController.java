@@ -191,7 +191,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
         // Request frozen subscriber information from the server
         ClientUI.chat.accept("FetchAllFrozenInformationForReports:");
-        addDelayInMilliseconds(200);  // Wait for server response
+        waitForServerResponse();
 
         if (ChatClient.allFrozenDataForReport != null) {
             frozenData.addAll(ChatClient.allFrozenDataForReport);
