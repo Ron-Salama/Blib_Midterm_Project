@@ -34,7 +34,7 @@ import logic.Subscriber;
  */
 public class MyBooksController extends BaseController implements Initializable {
     public static String FlagForSearch = "";
-	
+    
     @FXML
 	private Label extensionDynamicLabel;
     @FXML
@@ -86,7 +86,7 @@ public class MyBooksController extends BaseController implements Initializable {
     public static int librarianViewing = -1;
     public static String LibrarianName;
     public static Boolean viewing = false;
-
+    public static Boolean fromHistory = false;
     private ClientTimeDiffController clock = ChatClient.clock;
     
     /**
@@ -107,7 +107,17 @@ public class MyBooksController extends BaseController implements Initializable {
         tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
 
         if (viewing) {
-            currentSub = new Subscriber(0, 0, null, null, null, null);
+        	if(fromHistory) {
+        		TXTFview.setText(""+currentSub.getSubscriber_id());
+        		try {
+					updateViewInfo();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}else {
+                currentSub = new Subscriber(0, 0, null, null, null, null);
+        	}
             tableView.getItems().clear();
             title.setText("waiting for librarian input");
             btnView.setVisible(true);
@@ -123,7 +133,6 @@ public class MyBooksController extends BaseController implements Initializable {
             try {
 				loadBooks();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
@@ -159,7 +168,6 @@ public class MyBooksController extends BaseController implements Initializable {
                         tableView.getItems().clear();
                     }
                 });
-
             }  
     }
     
@@ -167,39 +175,48 @@ public class MyBooksController extends BaseController implements Initializable {
 
 
     public void updateView(ActionEvent event) throws InterruptedException {
-    		showColoredLabelMessageOnGUI(extensionDynamicLabel, "", "-fx-text-fill: red;");
-    		String subID = TXTFview.getText();
-
-    		if (subID.isEmpty()) {
-    			showColoredLabelMessageOnGUI(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;");
-    			return;
-    		}
-    		
-    		ClientUI.chat.accept("Fetch:" + subID);
-
-        	waitForServerResponse();
-        	
-            currentSub = new Subscriber(
-            	  ChatClient.s1.getSubscriber_id(),
-            	  ChatClient.s1.getDetailed_subscription_history(),
-            	  ChatClient.s1.getSubscriber_name(),
-            	  ChatClient.s1.getSubscriber_phone_number(),
-            	  ChatClient.s1.getSubscriber_email(),
-            	  ChatClient.s1.getStatus()
-            );
-            
-            
-            if(currentSub.getSubscriber_id() == -1) {
-            	title.setText("No ID Found");
-            }else {
-            	title.setText("Now Viewing Subscriber: " + currentSub.getSubscriber_id() + " , " + currentSub.getSubscriber_name());
-            }
-            
-    	loadBooks();
+    	updateViewInfo();
     }
+    
+    private void updateViewInfo() throws InterruptedException {
+        Platform.runLater(() -> {
+            showColoredLabelMessageOnGUI(extensionDynamicLabel, "", "-fx-text-fill: red;");
+            String subID = TXTFview.getText();
 
+            if (subID.isEmpty()) {
+                showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "You must enter a subscriber ID to find their history.", "-fx-text-fill: red;", 3);
+                return;
+            }
+
+            ClientUI.chat.accept("Fetch:" + subID);
+
+            waitForServerResponse();
+
+            currentSub = new Subscriber(
+                ChatClient.s1.getSubscriber_id(),
+                ChatClient.s1.getDetailed_subscription_history(),
+                ChatClient.s1.getSubscriber_name(),
+                ChatClient.s1.getSubscriber_phone_number(),
+                ChatClient.s1.getSubscriber_email(),
+                ChatClient.s1.getStatus()
+            );
+
+            if (currentSub.getSubscriber_id() == -1) {
+                title.setText("No ID Found");
+            } else {
+                title.setText("Now Viewing Subscriber: " + currentSub.getSubscriber_id() + " , " + currentSub.getSubscriber_name());
+            }
+
+            try {
+				loadBooks();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        });
+    }
+    
         private void setupActionsColumn() {
-        	String extendedReturnDate = null; // XXX can cause problems because of the double variable, check this one out.
             tableActions.setCellFactory(param -> new TableCell<BorrowedBook, Void>() { // Explicitly specify the generic types
                 private final Button extendButton = new Button("Extend borrowing length");
                 private final Button returnButton = new Button("Return");
@@ -230,7 +247,7 @@ public class MyBooksController extends BaseController implements Initializable {
                                     ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
                                     ClientUI.chat.accept("UpdateHistoryInDB:" + body + librarianMessage);
                                     waitForServerResponse();
-                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;"); // XXX
                                     tableView.refresh();
                                     tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
                                     tableView.getItems().clear();
@@ -241,21 +258,27 @@ public class MyBooksController extends BaseController implements Initializable {
 										e.printStackTrace();
 									}
                                 } else {
-                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;");
+
+                                   showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;",3);
                                 }
                             } else {
-                                showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
+                            	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;",3);
+
                             }
                         }
                     });
 
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
+                        String extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
+                        
                         System.out.println("Return book: " + borrowedBook.getName());
                         ClientUI.chat.accept("Return request: Subscriber ID is:" + currentSub.getSubscriber_id() + " " + currentSub.getSubscriber_name() + " Borrow info: " + borrowedBook);
                         // Send information about the request to the librarians.
                         ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
                         waitForServerResponse();
+                        showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "The book \"" + borrowedBook.getName() + "\" has returned back to the library.", "-fx-text-fill: green;", 3);
+                        returnButton.setDisable(true); // Lock the button so the user can't press this button infinitely.
                     });
                 }
 
@@ -284,6 +307,7 @@ public class MyBooksController extends BaseController implements Initializable {
      * @param event the event triggered by clicking the exit button.
      */
     public void getExitBtn(ActionEvent event) {
+    	fromHistory = false;
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",
     			"/gui/MainMenu/MainMenuFrame.css",
@@ -291,6 +315,7 @@ public class MyBooksController extends BaseController implements Initializable {
     }
    
     public void backFromUser(ActionEvent event) {
+    	fromHistory = false;
     	if(viewing) {
     		tableView.getItems().clear();
         	openWindow(event,

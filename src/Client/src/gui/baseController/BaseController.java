@@ -1,10 +1,11 @@
 package gui.baseController;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import client.ChatClient;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.Subscriber;
 
 /**
  * BaseController is an abstract class that provides utility methods for window and UI management 
@@ -137,6 +137,18 @@ public abstract class BaseController {
     protected void showColoredLabelMessageOnGUI(Label label, String message, String color) {
     	label.setText(message);
         label.setStyle(color);
+    }
+    
+    protected void showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(Label label, String message, String style, int delayInSeconds) {
+        Platform.runLater(() -> {
+            label.setText(message);
+            label.setStyle(style);
+
+            // Create a PauseTransition to clear the message after 3 seconds
+            PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(delayInSeconds));
+            pause.setOnFinished(e -> label.setText("")); // Clear the label
+            pause.play();
+        });
     }
     
     protected Boolean isSubsriberFrozen(String subscriberStatus) {

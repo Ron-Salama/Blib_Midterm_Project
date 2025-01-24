@@ -57,6 +57,7 @@ public class HistoryController extends BaseController implements Initializable {
 
     
     public void backFromUser(ActionEvent event) {
+    	MyBooksController.fromHistory = true;
     	openWindow(event,
     			"/gui/MyBooksWindow/MyBooksFrame.fxml",
     			"/gui/MyBooksWindow/MyBooksFrame.css",
@@ -65,6 +66,7 @@ public class HistoryController extends BaseController implements Initializable {
     }
     
     public void getExitBtn(ActionEvent event) {
+    	
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",
     			"/gui/MainMenu/MainMenuFrame.css",
