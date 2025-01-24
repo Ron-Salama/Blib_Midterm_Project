@@ -248,6 +248,7 @@ public class MyBooksController extends BaseController implements Initializable {
                                     // if the extension isnt from subscribers window
                                     if(librarianViewing == -1) {
                                     	librarianMessage=",Extended Successfully by" +" The"+" Subscriber";
+                                    	 ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
                                     }
                                     ClientUI.chat.accept("UpdateHistoryInDB:" + body + librarianMessage);
                                     waitForServerResponse();
@@ -274,12 +275,11 @@ public class MyBooksController extends BaseController implements Initializable {
 
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
-                        String extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
+                        
                         
                         System.out.println("Return book: " + borrowedBook.getName());
                         ClientUI.chat.accept("Return request: Subscriber ID is:" + currentSub.getSubscriber_id() + " " + currentSub.getSubscriber_name() + " Borrow info: " + borrowedBook);
                         // Send information about the request to the librarians.
-                        ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
                         waitForServerResponse();
                         showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "The book \"" + borrowedBook.getName() + "\" has returned back to the library.", "-fx-text-fill: green;", 3);
                         returnButton.setDisable(true); // Lock the button so the user can't press this button infinitely.
