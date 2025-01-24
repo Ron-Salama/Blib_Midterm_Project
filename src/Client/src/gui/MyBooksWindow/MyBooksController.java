@@ -178,36 +178,43 @@ public class MyBooksController extends BaseController implements Initializable {
     }
     
     private void updateViewInfo() throws InterruptedException {
-		showColoredLabelMessageOnGUI(extensionDynamicLabel, "", "-fx-text-fill: red;");
-		String subID = TXTFview.getText();
+        Platform.runLater(() -> {
+            showColoredLabelMessageOnGUI(extensionDynamicLabel, "", "-fx-text-fill: red;");
+            String subID = TXTFview.getText();
 
-		if (subID.isEmpty()) {
-			showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;",3);
-			return;
-		}
-		
-		ClientUI.chat.accept("Fetch:" + subID);
+            if (subID.isEmpty()) {
+                showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "You must enter a subscriber ID to find their history.", "-fx-text-fill: red;", 3);
+                return;
+            }
 
-    	waitForServerResponse();
-    	
-        currentSub = new Subscriber(
-        	  ChatClient.s1.getSubscriber_id(),
-        	  ChatClient.s1.getDetailed_subscription_history(),
-        	  ChatClient.s1.getSubscriber_name(),
-        	  ChatClient.s1.getSubscriber_phone_number(),
-        	  ChatClient.s1.getSubscriber_email(),
-        	  ChatClient.s1.getStatus()
-        );
-        
-        
-        if(currentSub.getSubscriber_id() == -1) {
-        	title.setText("No ID Found");
-        }else {
-        	title.setText("Now Viewing Subscriber: " + currentSub.getSubscriber_id() + " , " + currentSub.getSubscriber_name());
-        }
-        
-	loadBooks();
+            ClientUI.chat.accept("Fetch:" + subID);
+
+            waitForServerResponse();
+
+            currentSub = new Subscriber(
+                ChatClient.s1.getSubscriber_id(),
+                ChatClient.s1.getDetailed_subscription_history(),
+                ChatClient.s1.getSubscriber_name(),
+                ChatClient.s1.getSubscriber_phone_number(),
+                ChatClient.s1.getSubscriber_email(),
+                ChatClient.s1.getStatus()
+            );
+
+            if (currentSub.getSubscriber_id() == -1) {
+                title.setText("No ID Found");
+            } else {
+                title.setText("Now Viewing Subscriber: " + currentSub.getSubscriber_id() + " , " + currentSub.getSubscriber_name());
+            }
+
+            try {
+				loadBooks();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        });
     }
+
     
         private void setupActionsColumn() {
         	String extendedReturnDate = null; // XXX can cause problems because of the double variable, check this one out.
@@ -295,6 +302,7 @@ public class MyBooksController extends BaseController implements Initializable {
      * @param event the event triggered by clicking the exit button.
      */
     public void getExitBtn(ActionEvent event) {
+    	fromHistory = false;
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",
     			"/gui/MainMenu/MainMenuFrame.css",
@@ -302,6 +310,7 @@ public class MyBooksController extends BaseController implements Initializable {
     }
    
     public void backFromUser(ActionEvent event) {
+    	fromHistory = false;
     	if(viewing) {
     		tableView.getItems().clear();
         	openWindow(event,
