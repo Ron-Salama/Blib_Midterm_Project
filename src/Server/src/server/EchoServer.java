@@ -1003,6 +1003,7 @@ public class EchoServer extends AbstractServer {
                 boolean bookUpdated = ConnectToDb.incrementBookCount(this.dbConnection, bookid);
                 if (bookUpdated) {
                     client.sendToClient("Book return processed successfully. Book availability updated.");
+                    ConnectToDb.updateFirstReservation(this.dbConnection, bookid);
                 } else {
                     client.sendToClient("Warning: Book returned successfully, but the book availability could not be updated.");
                 }
