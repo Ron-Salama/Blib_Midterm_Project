@@ -86,7 +86,7 @@ public class MyBooksController extends BaseController implements Initializable {
     public static int librarianViewing = -1;
     public static String LibrarianName;
     public static Boolean viewing = false;
-
+    public static Boolean fromHistory = false;
     private ClientTimeDiffController clock = ChatClient.clock;
     
     /**
@@ -107,7 +107,17 @@ public class MyBooksController extends BaseController implements Initializable {
         tableTimeLeft.setCellValueFactory(new PropertyValueFactory<>("timeLeftToReturn")); // Time Left column
 
         if (viewing) {
-            currentSub = new Subscriber(0, 0, null, null, null, null);
+        	if(fromHistory) {
+        		TXTFview.setText(""+currentSub.getSubscriber_id());
+        		try {
+					updateViewInfo();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}else {
+                currentSub = new Subscriber(0, 0, null, null, null, null);
+        	}
             tableView.getItems().clear();
             title.setText("waiting for librarian input");
             btnView.setVisible(true);
@@ -169,7 +179,7 @@ public class MyBooksController extends BaseController implements Initializable {
     }
     
     private void updateViewInfo() throws InterruptedException {
-        Platform.runLater() -> {
+        Platform.runLater(() -> {
             showColoredLabelMessageOnGUI(extensionDynamicLabel, "", "-fx-text-fill: red;");
             String subID = TXTFview.getText();
 
@@ -203,7 +213,7 @@ public class MyBooksController extends BaseController implements Initializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        };
+        });
     }
     
         private void setupActionsColumn() {
@@ -248,17 +258,12 @@ public class MyBooksController extends BaseController implements Initializable {
 										e.printStackTrace();
 									}
                                 } else {
-<<<<<<< HEAD
+
                                    showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;",3);
                                 }
                             } else {
                             	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;",3);
-=======
-                                   showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;", 3);
-                                }
-                            } else {
-                            	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;", 3);
->>>>>>> parent of 5682c5b (history bug)
+
                             }
                         }
                     });
