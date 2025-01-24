@@ -123,7 +123,6 @@ public class MyBooksController extends BaseController implements Initializable {
             try {
 				loadBooks();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
@@ -171,7 +170,7 @@ public class MyBooksController extends BaseController implements Initializable {
     		String subID = TXTFview.getText();
 
     		if (subID.isEmpty()) {
-    			showColoredLabelMessageOnGUI(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;");
+    			showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;");
     			return;
     		}
     		
@@ -230,7 +229,7 @@ public class MyBooksController extends BaseController implements Initializable {
                                     ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
                                     ClientUI.chat.accept("UpdateHistoryInDB:" + body + librarianMessage);
                                     waitForServerResponse();
-                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
+                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;"); // XXX
                                     tableView.refresh();
                                     tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
                                     tableView.getItems().clear();
@@ -241,10 +240,10 @@ public class MyBooksController extends BaseController implements Initializable {
 										e.printStackTrace();
 									}
                                 } else {
-                                    showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;");
+                                   showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;");
                                 }
                             } else {
-                                showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
+                            	showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
                             }
                         }
                     });
