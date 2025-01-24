@@ -20,8 +20,8 @@ public class ReserveRequestDailyTasksController extends BaseController {
 	
 	
 	public void reserveRequestsDailyActivity() {
+
 		deleteOldRequests();
-		updateReservationRequestsThatHaveBooksInStock();
 		sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary();
 	}
 	
@@ -51,12 +51,14 @@ public class ReserveRequestDailyTasksController extends BaseController {
 	        int reserveId = entry.getKey();
 	        String timeLeftToRetrieve = entry.getValue();
 
-	        // Calculate the time difference using the server's clock
-	        long daysDifference = EchoServer.clock.timeDateDifferenceBetweenTwoDates(EchoServer.clock.timeNow(), timeLeftToRetrieve);
-
-	        if (daysDifference <= 0) {
-	            // If the time difference is <= 0 days, mark for deletion
-	            reserveIdsToDelete.add(reserveId);
+	        if (!timeLeftToRetrieve.equals("Book is not available yet")) {
+	        	// Calculate the time difference using the server's clock
+	        	long daysDifference = EchoServer.clock.timeDateDifferenceBetweenTwoDates(EchoServer.clock.timeNow(), timeLeftToRetrieve);
+	        	
+	        	if (daysDifference <= 0) {
+	        		// If the time difference is <= 0 days, mark for deletion
+	        		reserveIdsToDelete.add(reserveId);
+	        	}	        	
 	        }
 	    }
 	    // Delete the reservations
