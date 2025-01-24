@@ -15,8 +15,6 @@ import gui.baseController.BaseController;
 import ocsf.server.ConnectionToClient;
 import server.EchoServer;
 
-
- //TODO: imporve log&CMD messages.
 public class ReserveRequestDailyTasksController extends BaseController {
 	ServerTimeDiffController clock = EchoServer.clock;
 	
@@ -116,9 +114,18 @@ public class ReserveRequestDailyTasksController extends BaseController {
 	    }
 	}
 
-	
-	
 	public void updateReservationRequestsThatHaveBooksInStock() {
+		// TODO: finish implementing this method.
+		// Step 1: Grab all of the reservations from the database.
+		// Step 2: Create a Map(ISBN, numberOfReservation).
+		// Step 3: Grab amount of available copies in library.
+		// Step 4: Check if availableCopies >= reservationCopies
+		// 
+		//* make sure to count reservation that have a date on them already.
+		// -> count how many reserved copies of that book are already reserved.
+		// decrease the amount of reservations by the amount of books that are already reserved.
+		//
+		// if the new amount is larger than 0: update each reservation that has "Book is not available yet" by today's date + 2 days.
 		
 	}
 	
