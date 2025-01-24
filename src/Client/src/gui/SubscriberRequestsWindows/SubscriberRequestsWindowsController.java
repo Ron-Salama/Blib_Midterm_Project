@@ -347,7 +347,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                         selectedRequests.add(request);
                     }
                 }
-                
             }
             else if ( "Return For Subscriber".equals(selectedRequestType)) {
               for (String[] request : ReturnRequests) {
@@ -494,12 +493,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             System.out.println("No register requests available.");
         }
     }
-    
-    // Method to display messages (for debugging or logging)
-    public void display(String message) {
-        System.out.println(message);
-    }
-
+  
 	// Method to clear all ComboBoxes and text fields
 	private void clearFieldsAndComboBoxes() {
 	    RequestedByCB.getItems().clear();
@@ -519,6 +513,11 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	public void acceptRequest(ActionEvent event) throws Exception 
 	{
 		String selectedRequestType = requestType;
+		
+		if (!areAllFieldsFilled(feedbackLabel, selectedRequestType, TXTF1, TXTF2, TXTF3, TXTF4, TXTF5)) {
+			return;
+		}
+		
 		if(selectedRequestType=="Borrow For Subscriber") 
 		{
             String SName = TXTF1.getText();
@@ -528,6 +527,15 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String Btime = TXTF5.getText();
             String Rtime =  convertDateFormat("" + datePicker.getValue()); 
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
+            
+            // Check if the subscriber is frozen.
+            ClientUI.chat.accept("Fetch:" + SID); // Send the subscriber ID to the server so we can check if that subscriber is frozen.
+            waitForServerResponse();
+            if (ChatClient.s1.getStatus().split(":")[1].equals("Frozen at")) {
+            	showColoredLabelMessageOnGUI(feedbackLabel, "The subscriber " + ChatClient.s1.getSubscriber_name() + " is currently frozen and can't borrow books.", "-fx-text-fill: blue;");
+            	return;
+            }
+            
             if(borrowInformationFromBarcode) {
             	ClientUI.chat.accept("SubmitBorrowRequestBarcode:"+body);
             	waitForServerResponse();
@@ -591,93 +599,159 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 		}
 	}
 
-	    // Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
-	    public static String convertDateFormat(String dateStr) 
-	    {
-	    	
-	        // Define the input and output date formats
-	        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-	        
-          // Parse the original string into a LocalDate object
-	        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
-	        
-	        // Format the LocalDate object to the new string format
-	        return date.format(outputFormatter);
+    // Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
+    public static String convertDateFormat(String dateStr) {
+        // Define the input and output date formats
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        
+        // Parse the original string into a LocalDate object
+        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
+        
+        // Format the LocalDate object to the new string format
+        return date.format(outputFormatter);
     }
-	    
-	   
-	    
-//	    public int numOfDays(String Borrowtime, String Returntime) {
-//	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//
-//	        // Parse the borrow and return dates
-//	        LocalDate borrowDate = LocalDate.parse(Borrowtime, formatter);
-//	        LocalDate returnDate = LocalDate.parse(Returntime, formatter);
-//
-//	        // Calculate the expected return date (due date)
-//	        LocalDate dueDate = borrowDate.plusDays(14);
-//
-//	        // Calculate the difference between actual return date and due date
-//	        int difference = (int) (returnDate.toEpochDay() - dueDate.toEpochDay());
-//
-//	        return difference;
-//	    }
 
-	    // Method to handle Exit button click
-	    public void getExitBtn(ActionEvent event) throws Exception {
-	    	borrowInformationFromBarcode = true;
-	    	openWindow(event,
-	    			"/gui/MainMenu/MainMenuFrame.fxml",
-	    			"/gui/MainMenu/MainMenuFrame.css",
-	    			"MainMenu");
-	    }
-	    public void Back(ActionEvent event) throws Exception {
-	    	borrowInformationFromBarcode = false;
-	    	openWindow(event,
-	    			"/gui/LibrarianWindow/LibrarianFrame.fxml",
-	    			"/gui/LibrarianWindow/LibrarianFrame.css",
-	    			"Librarian Window");
-	    }
-	    
-	    public void getScanBarcodeBtn(ActionEvent event) throws Exception {
-	    	borrowInformationFromBarcode = true;
-	    	openWindow(event,
-	    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
-	    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
-	    			"Scan Barcode");
-	    }
-	    
-	    private void borrowRequestSetupFromBarcode(String borrowedBookID, String borrowedBookName) throws InterruptedException {
-	    	Clear(); // Clear the current fields.
-	    	BorrowForSubscriber(); // Set up the elements for borrow request.
-	    	
-	    	if (borrowInformationFromBarcode) {
-	    		TXTF3.setText(borrowedBookName); // Borrowed book name.
-	    		TXTF4.setText(borrowedBookID); // borrowed book id.
-	    		
-	    		String borrowDate = clock.timeNow();
-	    		TXTF5.setText(borrowDate); // borrow time
-	    		
-	    		// Get the return date as a string, convert and set it in the correct field.
-	    		LocalDate returnDate = clock.convertStringToLocalDateTime(clock.calculateReturnDate(14)).toLocalDate();
-	    		datePicker.setValue(returnDate); // return date. 	 
-	    		datePicker.isDisable();
-	    	}
-	    }
-	    
-	    
-	    
-	    private void registerRequestSetUp() throws InterruptedException {
-	    	LBL1.setText("Subscriber Name:");
-            LBL2.setText("Subscriber ID:");
-            LBL3.setText("Phone Number:");
-            LBL4.setText("Email:");
-            TXTF4.setVisible(true);
-            TXTF5.setVisible(false);
-            ClientUI.chat.accept("FetchRegisterRequest:");
-            
-            waitForServerResponse();
-            handleFetchedRegister();
-	    }
+    // Method to handle Exit button click
+    public void getExitBtn(ActionEvent event) throws Exception {
+    	borrowInformationFromBarcode = true;
+    	openWindow(event,
+    			"/gui/MainMenu/MainMenuFrame.fxml",
+    			"/gui/MainMenu/MainMenuFrame.css",
+    			"MainMenu");
+    }
+    public void Back(ActionEvent event) throws Exception {
+    	borrowInformationFromBarcode = false;
+    	openWindow(event,
+    			"/gui/LibrarianWindow/LibrarianFrame.fxml",
+    			"/gui/LibrarianWindow/LibrarianFrame.css",
+    			"Librarian Window");
+    }
+    
+    public void getScanBarcodeBtn(ActionEvent event) throws Exception {
+    	borrowInformationFromBarcode = true;
+    	openWindow(event,
+    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
+    			"/gui/BarcodeScannerWindow/BarcodeScannerWindowFrame.fxml",
+    			"Scan Barcode");
+    }
+    
+    private void borrowRequestSetupFromBarcode(String borrowedBookID, String borrowedBookName) throws InterruptedException {
+    	Clear(); // Clear the current fields.
+    	BorrowForSubscriber(); // Set up the elements for borrow request.
+    	
+    	if (borrowInformationFromBarcode) {
+    		TXTF3.setText(borrowedBookName); // Borrowed book name.
+    		TXTF4.setText(borrowedBookID); // borrowed book id.
+    		
+    		String borrowDate = clock.timeNow();
+    		TXTF5.setText(borrowDate); // borrow time
+    		
+    		// Get the return date as a string, convert and set it in the correct field.
+    		LocalDate returnDate = clock.convertStringToLocalDateTime(clock.calculateReturnDate(14)).toLocalDate();
+    		datePicker.setValue(returnDate); // return date. 	 
+    		datePicker.isDisable();
+    	}
+    }
+    
+    
+    
+    private void registerRequestSetUp() throws InterruptedException {
+    	LBL1.setText("Subscriber Name:");
+        LBL2.setText("Subscriber ID:");
+        LBL3.setText("Phone Number:");
+        LBL4.setText("Email:");
+        TXTF4.setVisible(true);
+        TXTF5.setVisible(false);
+        ClientUI.chat.accept("FetchRegisterRequest:");
+        
+        waitForServerResponse();
+        handleFetchedRegister();
+    }
+    
+    
+    private boolean areAllFieldsFilled(Label feedbackLabel, String selectedRequestType, TextField TXTF1, TextField TXTF2, TextField TXTF3, TextField TXTF4, TextField TXTF5) {
+        StringBuilder missingFields = new StringBuilder("Please fill out the following fields: ");
+        boolean allFieldsFilled = true;
+
+        switch (selectedRequestType) {
+            case "Borrow For Subscriber":
+                if (TXTF1.getText() == null || TXTF1.getText().trim().isEmpty()) {
+                    missingFields.append("Subscriber Name, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF2.getText() == null || TXTF2.getText().trim().isEmpty()) {
+                    missingFields.append("Subscriber ID, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF3.getText() == null || TXTF3.getText().trim().isEmpty()) {
+                    missingFields.append("Book Name, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF4.getText() == null || TXTF4.getText().trim().isEmpty()) {
+                    missingFields.append("Book ID, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF5.getText() == null || TXTF5.getText().trim().isEmpty()) {
+                    missingFields.append("Borrow Time, ");
+                    allFieldsFilled = false;
+                }
+                break;
+
+            case "Return For Subscriber":
+                if (TXTF1.getText() == null || TXTF1.getText().trim().isEmpty()) {
+                    missingFields.append("Subscriber Name, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF2.getText() == null || TXTF2.getText().trim().isEmpty()) {
+                    missingFields.append("Subscriber ID, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF3.getText() == null || TXTF3.getText().trim().isEmpty()) {
+                    missingFields.append("Book Name, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF4.getText() == null || TXTF4.getText().trim().isEmpty()) {
+                    missingFields.append("Book ID, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF5.getText() == null || TXTF5.getText().trim().isEmpty()) {
+                    missingFields.append("Return Time, ");
+                    allFieldsFilled = false;
+                }
+                break;
+
+            case "Registers":
+                if (TXTF1.getText() == null || TXTF1.getText().trim().isEmpty()) {
+                    missingFields.append("Subscriber Name, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF2.getText() == null || TXTF2.getText().trim().isEmpty()) {
+                    missingFields.append("Subscriber ID, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF3.getText() == null || TXTF3.getText().trim().isEmpty()) {
+                    missingFields.append("Phone Number, ");
+                    allFieldsFilled = false;
+                }
+                if (TXTF4.getText() == null || TXTF4.getText().trim().isEmpty()) {
+                    missingFields.append("Email, ");
+                    allFieldsFilled = false;
+                }
+                break;
+
+            default:
+                showColoredLabelMessageOnGUI(feedbackLabel, "Unknown request type.", "-fx-text-fill: red;");
+                return false;
+        }
+
+        if (!allFieldsFilled) {
+            // Remove the trailing comma and space
+            missingFields.setLength(missingFields.length() - 2);
+            showColoredLabelMessageOnGUI(feedbackLabel, missingFields.toString(), "-fx-text-fill: red;");
+        }
+
+        return allFieldsFilled;
+    }
+
 }
