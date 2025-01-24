@@ -139,13 +139,13 @@ public abstract class BaseController {
         label.setStyle(color);
     }
     
-    protected void showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(Label label, String message, String style) {
+    protected void showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(Label label, String message, String style, int delayInSeconds) {
         Platform.runLater(() -> {
             label.setText(message);
             label.setStyle(style);
 
             // Create a PauseTransition to clear the message after 3 seconds
-            PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(2));
+            PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(delayInSeconds));
             pause.setOnFinished(e -> label.setText("")); // Clear the label
             pause.play();
         });

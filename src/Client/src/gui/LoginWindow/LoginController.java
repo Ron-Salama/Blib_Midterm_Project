@@ -55,9 +55,7 @@ public class LoginController extends BaseController {
         String id = getID();
 
         if (id.trim().isEmpty()) {
-            System.out.println("You must enter an ID number");
-            awaitingLoginText.setStyle("-fx-text-fill: red;");
-            awaitingLoginText.setText("You must enter an ID number.");
+        	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(awaitingLoginText, "You must enter an ID number", "-fx-text-fill: red;", 3);
             return;
         }
         ChatClient.s1.setSubscriber_id(-1);
@@ -66,7 +64,14 @@ public class LoginController extends BaseController {
 
         waitForServerResponse();
 
+        if ((ChatClient.l1.getLibrarian_id() == -1) && (ChatClient.s1.getSubscriber_id() == -1)) {
+        	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(awaitingLoginText, "No user found.", "-fx-text-fill: red;", 3);
+        	return; // No use found therefore there's no need to continue.
+        }
+        
         handleResponse(event);
+        
+        
     }
 
     /**
@@ -80,23 +85,10 @@ public class LoginController extends BaseController {
      * @throws Exception if an error occurs while handling the response.
      */
     private void handleResponse(ActionEvent event) throws Exception {
-        System.out.println("Librarian ID: " + ChatClient.l1.getLibrarian_id());
-        System.out.println("Subscriber ID: " + ChatClient.s1.getSubscriber_id());
-
         if (ChatClient.l1.getLibrarian_id() != -1) {
-            System.out.println("Librarian ID Found");
-            awaitingLoginText.setStyle("-fx-text-fill: green;");
-            awaitingLoginText.setText("Welcome Back Librarian " + ChatClient.l1.getLibrarian_name());
             navigateToLibrarianWindow(event);
         } else if (ChatClient.s1.getSubscriber_id() != -1) {
-            System.out.println("Subscriber ID Found");
-            awaitingLoginText.setStyle("-fx-text-fill: green;");
-            awaitingLoginText.setText("Welcome Back Subscriber " + ChatClient.s1.getSubscriber_name());
             navigateToSubscriberWindow(event);
-        } else {
-            System.out.println("No matching ID found for Librarian or Subscriber");
-            awaitingLoginText.setStyle("-fx-text-fill: red;");
-            awaitingLoginText.setText("No user found.");
         }
     }
 
@@ -127,15 +119,6 @@ public class LoginController extends BaseController {
                    "/gui/MainMenu/MainMenuFrame.fxml", 
                    "/gui/MainMenu/MainMenuFrame.css", 
                    "Main Menu");
-    }
-
-    /**
-     * Loads subscriber data into the current controller.
-     *
-     * @param s1 the {@link Subscriber} object to load.
-     */
-    public void loadSubscriber(Subscriber s1) {
-        this.lfc.loadSubscriber(s1);
     }
 
     /**

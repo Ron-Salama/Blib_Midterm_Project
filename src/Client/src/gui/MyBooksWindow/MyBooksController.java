@@ -34,7 +34,7 @@ import logic.Subscriber;
  */
 public class MyBooksController extends BaseController implements Initializable {
     public static String FlagForSearch = "";
-	
+    
     @FXML
 	private Label extensionDynamicLabel;
     @FXML
@@ -158,7 +158,6 @@ public class MyBooksController extends BaseController implements Initializable {
                         tableView.getItems().clear();
                     }
                 });
-
             }  
     }
     
@@ -170,7 +169,7 @@ public class MyBooksController extends BaseController implements Initializable {
     		String subID = TXTFview.getText();
 
     		if (subID.isEmpty()) {
-    			showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;");
+    			showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;", 3);
     			return;
     		}
     		
@@ -198,7 +197,6 @@ public class MyBooksController extends BaseController implements Initializable {
     }
 
         private void setupActionsColumn() {
-        	String extendedReturnDate = null; // XXX can cause problems because of the double variable, check this one out.
             tableActions.setCellFactory(param -> new TableCell<BorrowedBook, Void>() { // Explicitly specify the generic types
                 private final Button extendButton = new Button("Extend borrowing length");
                 private final Button returnButton = new Button("Return");
@@ -240,21 +238,25 @@ public class MyBooksController extends BaseController implements Initializable {
 										e.printStackTrace();
 									}
                                 } else {
-                                   showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;");
+                                   showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;", 3);
                                 }
                             } else {
-                            	showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
+                            	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;", 3);
                             }
                         }
                     });
 
                     returnButton.setOnAction(event -> {
                         BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
+                        String extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
+                        
                         System.out.println("Return book: " + borrowedBook.getName());
                         ClientUI.chat.accept("Return request: Subscriber ID is:" + currentSub.getSubscriber_id() + " " + currentSub.getSubscriber_name() + " Borrow info: " + borrowedBook);
                         // Send information about the request to the librarians.
                         ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
                         waitForServerResponse();
+                        showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "The book \"" + borrowedBook.getName() + "\" has returned back to the library.", "-fx-text-fill: green;", 3);
+                        returnButton.setDisable(true); // Lock the button so the user can't press this button infinitely.
                     });
                 }
 

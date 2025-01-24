@@ -110,7 +110,7 @@ public class LibrarianController extends BaseController implements Initializable
     	 int hourOfDay = Integer.parseInt(hour);
     	 
     	 if (hourOfDay < 12 && 7 < hourOfDay) {
-    		 message = "Good Morning, " + currentLibrarian.getLibrarian_name() +  " ☀️";
+    		 message = "Good Morning, " + currentLibrarian.getLibrarian_name() +  " ☀";
     	 }
     	 else if (hourOfDay >= 12 && 18 > hourOfDay) {
     		 message = "Good Afternoon, " + currentLibrarian.getLibrarian_name() + " 🌅";
