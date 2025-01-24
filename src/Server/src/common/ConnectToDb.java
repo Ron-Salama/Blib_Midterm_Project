@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import logic.ServerTimeDiffController;
 import server.EchoServer;
 //import org.omg.CORBA.Request;
 
@@ -23,10 +23,13 @@ public class ConnectToDb {
             throw new SQLException("Driver loading failed", ex);
         }
 
+        
         // Return the established connection
         return DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST&allowPublicKeyRetrieval=true&useSSL=false", "root", "Aa123456");
     }
 
+    public static ServerTimeDiffController clock = new ServerTimeDiffController();
+    
         // Method to fetch all data from the subscriber table
         public static List<String> fetchAllData(Connection conn) {
             List<String> result = new ArrayList<>();
@@ -999,6 +1002,66 @@ public class ConnectToDb {
             return false;
         }
     }
+    
+    
+    
+    
+    
+    //************************************************************************
+    //************************************************************************
+    //************************************************************************
+    //************************************************************************
+    public static boolean updateFirstReservation(Connection dbConnection, String bookID) {
+        System.out.println("Book ID to update first reservation: " + bookID);
+
+        try {
+            // Step 1: Find the smallest reserve_id with "Book is not available yet"
+            String fetchReservationQuery = "SELECT reserve_id FROM reserved_books WHERE ISBN = ? AND time_left_to_retrieve = 'Book is not available yet' ORDER BY reserve_id ASC LIMIT 1";
+            int smallestReserveId = -1;
+
+            try (PreparedStatement fetchStmt = dbConnection.prepareStatement(fetchReservationQuery)) {
+                fetchStmt.setString(1, bookID);
+                try (ResultSet rs = fetchStmt.executeQuery()) {
+                    if (rs.next()) {
+                        smallestReserveId = rs.getInt("reserve_id");
+                    } else {
+                        // No reservations found with "Book is not available yet"
+                        System.out.println("No reservations with 'Book is not available yet' found for book with ISBN: " + bookID);
+                        return false;
+                    }
+                }
+            }
+
+            // Step 2: Update the `time_left_to_retrieve` for the smallest reserve_id
+            String updateReservationQuery = "UPDATE reserved_books SET time_left_to_retrieve = ? WHERE reserve_id = ?";
+            String twoDays = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow())
+                    .toLocalDate().plusDays(2).toString(); // Get current date + 2 days
+
+            try (PreparedStatement updateStmt = dbConnection.prepareStatement(updateReservationQuery)) {
+                updateStmt.setString(1, twoDays);
+                updateStmt.setInt(2, smallestReserveId);
+
+                int rowsAffected = updateStmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Updated reservation with reserve_id: " + smallestReserveId);
+                    return true;
+                } else {
+                    System.out.println("Failed to update reservation with reserve_id: " + smallestReserveId);
+                    return false;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    //************************************************************************
+    //************************************************************************
+    //************************************************************************
+    //************************************************************************
     public static boolean isBookReserved(Connection dbConnection, String ISBN) {
         String query = "SELECT ReservedCopiesNum FROM books WHERE ISBN = ?";
         

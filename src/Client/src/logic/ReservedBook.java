@@ -118,6 +118,6 @@ public class ReservedBook {
 	
 	@Override
     public String toString() {
-        return  ISBN+" "+name+" "+reserveDate+" "+timeLeftToRetrieve+" "+timeLeftToRetrieve;
+        return  ISBN+" "+name+" "+reserveDate+" "+timeLeftToRetrieve;
     }
 }

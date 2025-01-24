@@ -1,3 +1,37 @@
 Server listening for connections on port 5555
 Connected to the database.
-Server daily tasks done.
+24-01-2025: subscriber No' 3, Patrick_Star has been frozen because they were late at returning the book: War and Peace
+24-01-2025: subscriber No' 4, Squidward_Tentacles has been frozen because they were late at returning the book: The Grapes of Wrath
+24-01-2025: subscriber No' 5, Mr_Krabs has been frozen because they were late at returning the book: The Lord of the Rings: The Return of the King
+24-01-2025: subscriber No' 6, Sandy_Cheeks has been frozen because they were late at returning the book: Life of Pi
+24-01-2025: subscriber No' 7, Plankton_Chum has been frozen because they were late at returning the book: To Kill a Mockingbird
+Client connected.
+Client IP:10.0.0.4
+Client Hostname: 10.0.0.4
+Connection Status: Connected
+Message received: IP:10.0.0.4 from 10.0.0.4 (10.0.0.4)
+Message received: Fetch:13 from 10.0.0.4 (10.0.0.4)
+Message received: GetBorrowedBooks:13 from 10.0.0.4 (10.0.0.4)
+Message received: Fetch:10 from 10.0.0.4 (10.0.0.4)
+Message received: GetReservedBooks:10 from 10.0.0.4 (10.0.0.4)
+Message received: Fetch:13 from 10.0.0.4 (10.0.0.4)
+Client connected.
+Client IP:10.0.0.4
+Client Hostname: 10.0.0.4
+Connection Status: Connected
+Message received: IP:10.0.0.4 from 10.0.0.4 (10.0.0.4)
+Message received: Fetch:3 from 10.0.0.4 (10.0.0.4)
+Message received: GetBorrowedBooks:3 from 10.0.0.4 (10.0.0.4)
+Message received: Return request: Subscriber ID is:3 Patrick_Star Borrow info: 0077 War and Peace 11-12-2024 25-12-2024 0 from 10.0.0.4 (10.0.0.4)
+Message received: Fetch:1111 from 10.0.0.4 (10.0.0.4)
+Message received: Fetch return request: from 10.0.0.4 (10.0.0.4)
+Client connected.
+Client IP:10.0.0.4
+Client Hostname: 10.0.0.4
+Connection Status: Connected
+Message received: Handle return:Patrick_Star,3,War and Peace,0077,24-01-2025,24-01-2025 from 10.0.0.4 (10.0.0.4)
+Message received: UpdateHistoryInDB:Patrick_Star,3,War and Peace,0077,24-01-2025,24-01-2025,Return Successfully 0 days early from 10.0.0.4 (10.0.0.4)
+Message received: Fetch:5 from 10.0.0.4 (10.0.0.4)
+Message received: GetReservedBooks:5 from 10.0.0.4 (10.0.0.4)
+Message received: GetReservedBooks:5 from 10.0.0.4 (10.0.0.4)
+Message received: GetReservedBooks:5 from 10.0.0.4 (10.0.0.4)
