@@ -187,7 +187,7 @@ public class SubscriberWindowController extends BaseController implements Initia
     	 int hourOfDay = Integer.parseInt(hour);
     	 
     	 if (hourOfDay < 12 && 7 < hourOfDay) {
-    		 message = "Good Morning, " + currentSubscriber.getSubscriber_name() +  " ☀️";
+    		 message = "Good Morning, " + currentSubscriber.getSubscriber_name() +  " ☀";
     	 }
     	 else if (hourOfDay >= 12 && 18 > hourOfDay) {
     		 message = "Good Afternoon, " + currentSubscriber.getSubscriber_name() + " 🌅";
