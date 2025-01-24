@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
 import logic.ServerTimeDiffController;
 import server.EchoServer;
 //import org.omg.CORBA.Request;
@@ -1144,6 +1146,8 @@ public class ConnectToDb {
             String twoDays = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow())
                     .toLocalDate().plusDays(2).toString(); // Get current date + 2 days
 
+            twoDays = convertDateFormat(twoDays);
+            
             try (PreparedStatement updateStmt = dbConnection.prepareStatement(updateReservationQuery)) {
                 updateStmt.setString(1, twoDays);
                 updateStmt.setInt(2, smallestReserveId);
@@ -1615,7 +1619,20 @@ public class ConnectToDb {
 	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
 	    }
 	}
-	}
+	
+	// Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
+    public static String convertDateFormat(String dateStr) {
+        // Define the input and output date formats
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Parse the original string into a LocalDate object
+        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
+
+        // Format the LocalDate object to the new string format
+        return date.format(outputFormatter);
+    }
+}
 
 		
 
