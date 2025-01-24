@@ -182,7 +182,7 @@ public class MyBooksController extends BaseController implements Initializable {
 		String subID = TXTFview.getText();
 
 		if (subID.isEmpty()) {
-			showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;");
+			showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "You must enter a subscriber ID to find their history." , "-fx-text-fill: red;",3);
 			return;
 		}
 		
@@ -252,10 +252,10 @@ public class MyBooksController extends BaseController implements Initializable {
 										e.printStackTrace();
 									}
                                 } else {
-                                   showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;");
+                                   showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;",3);
                                 }
                             } else {
-                            	showColoredLabelMessageOnGUIAndMakeItDisappearAfter3Seconds(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;");
+                            	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;",3);
                             }
                         }
                     });
