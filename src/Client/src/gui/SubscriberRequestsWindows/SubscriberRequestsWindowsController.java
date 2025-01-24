@@ -116,6 +116,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    	btnAccept.setDisable(false);
     	if (borrowInformationFromBarcode) {
     		try {
 				borrowRequestSetupFromBarcode(borrowedBookInformationFromBarcode[0],
@@ -135,6 +136,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         Clear.setOnAction(event -> {
 			try {
 				Clear();
+				btnAccept.setDisable(false);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -143,6 +145,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         BorrowForSubscriber.setOnAction(event -> {
 			try {
 				BorrowForSubscriber();
+				btnAccept.setDisable(false);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -151,6 +154,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         ReturnForSubscriber.setOnAction(event -> {
 			try {
 				ReturnForSubscriber();
+				btnAccept.setDisable(false);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -159,6 +163,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
         Register.setOnAction(event -> {
 			try {
 				Register();
+				btnAccept.setDisable(false);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -539,9 +544,11 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             if(borrowInformationFromBarcode) {
             	ClientUI.chat.accept("SubmitBorrowRequestBarcode:"+body);
             	waitForServerResponse();
+            	btnAccept.setDisable(true);
             }else {
     			ClientUI.chat.accept("SubmitBorrowRequest:"+body);
     			waitForServerResponse();
+    			btnAccept.setDisable(true);
             }
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
             waitForServerResponse();
@@ -564,6 +571,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
             	waitForServerResponse();
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
+                btnAccept.setDisable(true);
             }
             else
             {	
@@ -580,7 +588,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
             	waitForServerResponse();
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
-			}
+                btnAccept.setDisable(true);
+            }
 		}
 		else if (selectedRequestType == "Registers") {
 			 String SName = TXTF1.getText();
@@ -596,6 +605,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 ClientUI.chat.accept("UpdateHistoryInDB:" + body2 + ",Register Successfully");
 			 waitForServerResponse();
 	         showColoredLabelMessageOnGUI(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;");
+	         btnAccept.setDisable(true);
 		}
 	}
 

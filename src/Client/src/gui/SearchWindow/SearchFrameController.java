@@ -163,21 +163,36 @@ public class SearchFrameController extends BaseController implements Initializab
      * @param event the event triggered by clicking the search button.
      * @throws Exception if an error occurs during the search.
      */
-    public void Search(ActionEvent event) throws Exception {
-        ClientUI.chat.accept("GetBooks:");  // Get the latest books
 
+    public void Search(ActionEvent event) throws Exception {
+        ClientUI.chat.accept("GetBooks:");  // Get the latest books from the server
         waitForServerResponse();
-        // Ensure bookList is not empty
+
         if (ChatClient.bookList != null && !ChatClient.bookList.isEmpty()) {
-            // If all filter fields are empty, show all books
-            if (nameInput.getText().isEmpty() && descriptionInput.getText().isEmpty() && (subjectInput.getValue() == null || subjectInput.getValue().toString().isEmpty())) {
-                // No filtering, show all books
+            // If all filter fields are empty, reload the full table
+            if (nameInput.getText().isEmpty() && descriptionInput.getText().isEmpty() &&
+                    (subjectInput.getValue() == null || subjectInput.getValue().toString().isEmpty())) {
+
+                // Ensure closestReturnDate values are re-applied
+                for (Book book : ChatClient.bookList) {
+                    if (book.getAvailableCopies() > 0) {
+                        book.setClosestReturnDate("Available");
+                    } else if (book.getClosestReturnDate() == null || "Fetching...".equals(book.getClosestReturnDate())) {
+                        ClientUI.chat.accept("FetchClosestReturnDate:" + book.getISBN());
+                        waitForServerResponse();
+                        String currentBookClosestReturnDate = ChatClient.closestReturnDate;
+                        book.setClosestReturnDate(currentBookClosestReturnDate != null ? currentBookClosestReturnDate : "Unavailable");
+                    }
+                }
+
+                // Populate the TableView with all books
                 Platform.runLater(() -> {
-                    tableView.getItems().clear();  // Clear any existing data
-                    tableView.getItems().addAll(ChatClient.bookList);  // Add all books to the table
+                    tableView.getItems().clear();
+                    tableView.getItems().addAll(ChatClient.bookList);
                 });
+
             } else {
-                // Otherwise, filter books based on the input fields
+                // Apply filters to the book list
                 List<Book> filteredBooks = new ArrayList<>();
 
                 for (Book book : ChatClient.bookList) {
@@ -194,20 +209,30 @@ public class SearchFrameController extends BaseController implements Initializab
                     }
 
                     // Check for subject filter from ComboBox
-                    if (subjectInput.getValue() != null && !subjectInput.getValue().toString().isEmpty() && !book.getSubject().toLowerCase().contains(subjectInput.getValue().toString().toLowerCase())) {
+                    if (subjectInput.getValue() != null && !subjectInput.getValue().toString().isEmpty() &&
+                            !book.getSubject().toLowerCase().contains(subjectInput.getValue().toString().toLowerCase())) {
                         matches = false;
                     }
 
                     // If all filters match, add the book to the filtered list
                     if (matches) {
+                    	if(book.getAvailableCopies()>0) {
+                    		book.setClosestReturnDate("Available");
+                    	}
+                    	else if (book.getAvailableCopies() == 0 && (book.getClosestReturnDate() == null || "Fetching...".equals(book.getClosestReturnDate()))) {
+                            ClientUI.chat.accept("FetchClosestReturnDate:" + book.getISBN());
+                            waitForServerResponse();
+                            String currentBookClosestReturnDate = ChatClient.closestReturnDate;
+                            book.setClosestReturnDate(currentBookClosestReturnDate != null ? currentBookClosestReturnDate : "Unavailable");
+                        }
                         filteredBooks.add(book);
                     }
                 }
 
                 // Populate the TableView with the filtered books
                 Platform.runLater(() -> {
-                    tableView.getItems().clear();  // Clear any existing data
-                    tableView.getItems().addAll(filteredBooks);  // Add the filtered books to the table
+                    tableView.getItems().clear();
+                    tableView.getItems().addAll(filteredBooks);
                 });
             }
         } else {

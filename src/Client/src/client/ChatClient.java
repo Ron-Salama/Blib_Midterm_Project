@@ -52,6 +52,7 @@ public class ChatClient extends AbstractClient
   public static List<String> allSubscriberDataForReport = new ArrayList<>();  // Ensures it's initialized
   public static List<String> allFrozenDataForReport = new ArrayList<>();  // Ensures it's initialized
   
+  
   public static boolean isIPValid = false;
   
   public static boolean messageReceivedFromServer = false;
@@ -140,6 +141,8 @@ public static String currentISBN;
 	    	handleFetchedBorrowedBooks(response.substring("FetchedBorrowedBooks:".length()));
 	    } else if (response.startsWith("ClosestReturnDate:")){
 	    	closestReturnDate = response.substring("ClosestReturnDate:".length());
+	        ChatClient.closestReturnDate = closestReturnDate.equals("Unavailable") ? "Unavailable" : closestReturnDate;
+	        awaitResponse = false;
 	    }else if (response.startsWith("FetchedHistory:")){
 	    	processMyHistoryData(response.substring("FetchedHistory:".length()));
 	    }else if (response.startsWith("FetchedRegisterRequests:")){
