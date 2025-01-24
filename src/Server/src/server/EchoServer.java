@@ -229,6 +229,9 @@ public class EchoServer extends AbstractServer {
                 case "FetchAllFrozenInformationForReports":
                 	handleFetchAllFrozenDataForReports(client);
                     break;
+                case "SubmitBorrowRequestBarcode":
+                	handleBorrowfrombarcode(client,body);
+                	break;
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
