@@ -528,10 +528,10 @@ private void handleReservedBooksResponse(String data) {
 	    
 	    // Split the msg so each element contains all of the information for a record one at a time.
 	    String[] records = msg.split(";");
-	    System.out.println("Records count: " + records.length);  // Debugging line
+	    //System.out.println("Records count: " + records.length);  // Debugging line
 
 	    for (String recordData : records) {
-	        System.out.println("Processing record data: " + recordData);  // Debugging line
+	        //System.out.println("Processing record data: " + recordData);  // Debugging line
 	        String[] recordInformation = recordData.split(","); // Split the information of the record
 	        
 	        if (recordInformation.length < 5) {  // Ensure that there's enough data
@@ -554,16 +554,16 @@ private void handleReservedBooksResponse(String data) {
 	            e.printStackTrace();  // Print the stack trace for debugging
 	        }
 	    }
-
+/*
 	    // At this point, we should have the dataList populated
 	    if (dataList.isEmpty()) {
 	        System.out.println("No valid records found.");  // Debugging line
 	    } else {
 	        System.out.println("Successfully added " + dataList.size() + " records.");  // Debugging line
 	    }
-
+*/
 	    // Check if dataList is correctly populated
-	    System.out.println("Data list before clearing: " + dataList);  // Debugging line
+	    //System.out.println("Data list before clearing: " + dataList);  // Debugging line
 
 	    // Clear the previous data
 	    allFrozenDataForReport.clear();  // Clears all elements in the list
@@ -571,7 +571,7 @@ private void handleReservedBooksResponse(String data) {
 	    allFrozenDataForReport = dataList;
 
 	    // Print the updated global list
-	    System.out.println("Updated allFrozenDataForReport: " + allFrozenDataForReport);  // Debugging line
+	    //System.out.println("Updated allFrozenDataForReport: " + allFrozenDataForReport);  // Debugging line
 	}
 
 	private void handleAllSubscriberInformationForReports(String msg) {
@@ -633,7 +633,7 @@ private void handleReservedBooksResponse(String data) {
 	    //It doesnt reahc and do the following commend
 	    allSubscriberDataForReport = subscriberList;
 	    // Print the updated global list
-	    System.out.println("Updated allSubscriberDataForReport: " + allSubscriberDataForReport);  // Debugging line
+	    //System.out.println("Updated allSubscriberDataForReport: " + allSubscriberDataForReport);  // Debugging line
 	}
 
 	private void handleBarcodeFetchBorrowedBookRequest(String data) {

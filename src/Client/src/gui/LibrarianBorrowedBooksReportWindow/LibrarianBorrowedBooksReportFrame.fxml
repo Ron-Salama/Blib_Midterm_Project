@@ -4,7 +4,6 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.chart.ScatterChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -15,7 +14,7 @@
 <AnchorPane prefHeight="518.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianBorrowedBooksReportWindow.LibrarianBorrowedBooksReportController">
     <children>
         <!-- BarChart -->
-        <BarChart fx:id="barChart" layoutX="3.0" layoutY="552.0" prefHeight="371.0" prefWidth="1425.0" stylesheets="@LibrarianSubscriberStatusReportFrame.css">
+        <BarChart fx:id="barChart" layoutX="3.0" layoutY="552.0" prefHeight="371.0" prefWidth="1425.0" stylesheets="@LibrarianBorrowedBooksReportFrame.css">
         
             <xAxis>
                 <CategoryAxis fx:id="barXAxis" label="Categories" />
@@ -24,20 +23,26 @@
                 <NumberAxis fx:id="barYAxis" label="Value" />
             </yAxis>
         </BarChart>
-        <TableView fx:id="bookDataTable" layoutX="50" layoutY="200" prefHeight="300" prefWidth="600">
+        <TableView fx:id="bookDataTable" layoutX="50" layoutY="200" prefHeight="300" prefWidth="706.0">
+
         <columns>
-            <TableColumn fx:id="bookIdColumn" text="Book ID" prefWidth="100" />
-            <TableColumn fx:id="bookNameColumn" text="Book Name" prefWidth="200" />
-            <TableColumn fx:id="timesBorrowedColumn" text="Times Borrowed" prefWidth="100" />
-            <TableColumn fx:id="earlyReturnsColumn" text="Early Returns" prefWidth="100" />
-            <TableColumn fx:id="lateReturnsColumn" text="Late Returns" prefWidth="100" />
-            <TableColumn fx:id="lostColumn" text="Lost" prefWidth="100" />
+            <TableColumn fx:id="bookIdColumn" prefWidth="100" text="Book ID" />
+            <TableColumn fx:id="bookNameColumn" prefWidth="200" text="Book Name" />
+            <TableColumn fx:id="timesBorrowedColumn" prefWidth="100" text="Times Borrowed" />
+            <TableColumn fx:id="earlyReturnsColumn" prefWidth="100" text="Early Returns" />
+            <TableColumn fx:id="lateReturnsColumn" prefWidth="100" text="Late Returns" />
+            <TableColumn fx:id="lostColumn" prefWidth="100" text="Lost" />
         </columns>
     </TableView>
         <!-- Buttons and ComboBox -->
         <Button fx:id="back" layoutX="1006.0" layoutY="20.0" mnemonicParsing="false" onAction="#back" text="Back" />
         <ComboBox fx:id="monthComboBox" layoutX="438.0" layoutY="45.0" prefWidth="150.0" />
-      <Label layoutX="48.0" layoutY="103.0" text="Currently Frozen/Unfrozen Status" />
+      <Label layoutX="48.0" layoutY="103.0" />
       <Label layoutX="513.0" layoutY="543.0" text="Monthly Frozen/Unfrozen Status" />
+      <PieChart fx:id="pieChart" layoutX="789.0" layoutY="164.0" prefHeight="335.0" prefWidth="346.0" />
+      <PieChart fx:id="avgPieChart" layoutX="1165.0" layoutY="299.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="871.0" layoutY="135.0" text="Currently Borrowed/Late Status" />
+      <Label layoutX="1179.0" layoutY="265.0" text="Average Borrow/Late per Month" />
+      
     </children>
 </AnchorPane>
