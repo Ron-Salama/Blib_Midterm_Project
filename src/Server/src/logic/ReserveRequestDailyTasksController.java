@@ -12,216 +12,275 @@ import java.util.Map;
 
 import common.ConnectToDb;
 import gui.baseController.BaseController;
-import ocsf.server.ConnectionToClient;
 import server.EchoServer;
 
+/**
+ * The {@code ReserveRequestDailyTasksController} class handles daily tasks related to
+ * reserved books in the library system. These tasks include:
+ * <ul>
+ *     <li>Deleting expired reservations where the time left to retrieve has passed.</li>
+ *     <li>Notifying subscribers via an output/log message that a reserved book is available 
+ *         and needs to be picked up within a certain time.</li>
+ * </ul>
+ * 
+ * <p>It relies on the {@link EchoServer#taskSchedulerConnection} for database operations
+ * and the {@link ServerTimeDiffController} to compute date/time differences.</p>
+ * 
+ * <p>Typical usage:
+ * <pre>{@code
+ * ReserveRequestDailyTasksController controller = new ReserveRequestDailyTasksController();
+ * controller.reserveRequestsDailyActivity(); // performs the daily tasks
+ * }</pre>
+ * </p>
+ * 
+ * <p>Extends {@link BaseController} to utilize shared methods (e.g. parseBorrowedBook if needed).</p>
+ * 
+ * @author  
+ * @version 1.0
+ * @since 2025-01-01
+ */
 public class ReserveRequestDailyTasksController extends BaseController {
-	ServerTimeDiffController clock = EchoServer.clock;
-	
-	
-	public void reserveRequestsDailyActivity() {
 
-		deleteOldRequests();
-		sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary();
-	}
-	
-	public void deleteOldRequests() {
-	    //Fetch reserved books data
-	    List<String> reservedBooksData = ConnectToDb.fetchAllReservedBooks(EchoServer.taskSchedulerConnection);
+    /**
+     * A reference to the server-side time difference controller, used for date/time operations.
+     */
+    private final ServerTimeDiffController clock = EchoServer.clock;
 
-	    if (reservedBooksData == null || reservedBooksData.isEmpty()) {
-	        System.out.println("No reserved books found.");
-	        return;
-	    }
+    /**
+     * Runs the daily reservation tasks:
+     * <ol>
+     *     <li>{@link #deleteOldRequests()}: remove any reservations past their retrieval date.</li>
+     *     <li>{@link #sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary()}: notify subscribers 
+     *         about books that are available for pickup.</li>
+     * </ol>
+     */
+    public void reserveRequestsDailyActivity() {
+        deleteOldRequests();
+        sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary();
+    }
 
-	    // Store the reservation data in a map (reserve_id -> time_left_to_retrieve)
-	    Map<Integer, String> reserveMap = new HashMap<>();
-	    for (String reservedBook : reservedBooksData) {
-	        // The string format is: reserve_id, subscriber_id, name, reserve_time, time_left_to_retrieve, ISBN
-	        String[] fields = reservedBook.split(",");
-	        int reserveId = Integer.parseInt(fields[0]);
-	        String timeLeftToRetrieve = fields[4];
-	        reserveMap.put(reserveId, timeLeftToRetrieve);
-	    }
+    /**
+     * Deletes reservations that have expired (i.e., those past their "time_left_to_retrieve").
+     * <p>
+     * Specifically:
+     * <ul>
+     *   <li>Fetches all reserved books from {@code reserved_books} table.</li>
+     *   <li>For each reservation, checks how many days remain until the "time_left_to_retrieve".</li>
+     *   <li>If the time difference is 0 or negative, the reservation is removed, and 
+     *       {@code reservedCopiesNum} is decremented for that book's ISBN.</li>
+     * </ul>
+     * </p>
+     */
+    public void deleteOldRequests() {
+        // Fetch data of all reserved books
+        List<String> reservedBooksData = ConnectToDb.fetchAllReservedBooks(EchoServer.taskSchedulerConnection);
 
-	    
-	    // Identify the reservations that need deletion (time difference <= 0 days)
-	    List<Integer> reserveIdsToDelete = new ArrayList<>();
-	    for (Map.Entry<Integer, String> entry : reserveMap.entrySet()) {
-	        int reserveId = entry.getKey();
-	        String timeLeftToRetrieve = entry.getValue();
+        if (reservedBooksData == null || reservedBooksData.isEmpty()) {
+            System.out.println("No reserved books found.");
+            return;
+        }
 
-	        if (!timeLeftToRetrieve.equals("Book is not available yet")) {
-	        	// Calculate the time difference using the server's clock
-	        	long daysDifference = EchoServer.clock.timeDateDifferenceBetweenTwoDates(EchoServer.clock.timeNow(), timeLeftToRetrieve);
-	        	
-	        	if (daysDifference <= 0) {
-	        		// If the time difference is <= 0 days, mark for deletion
-	        		reserveIdsToDelete.add(reserveId);
-	        	}	        	
-	        }
-	    }
-	    // Delete the reservations
-	    if (!reserveIdsToDelete.isEmpty()) {
-	        try (Connection conn = EchoServer.taskSchedulerConnection) {
-	            for (Integer reserveId : reserveIdsToDelete) {
-	                deleteReservation(conn, reserveId);
-	            }
-	            System.out.println("Deleted " + reserveIdsToDelete.size() + " old reservation(s).");
-	        } catch (SQLException e) {
-	            System.err.println("Error deleting reservations: " + e.getMessage());
-	        }
-	    } else {
-	        System.out.println("No reservations need deletion.");
-	    }
-	}
+        // Map reserve_id -> time_left_to_retrieve
+        Map<Integer, String> reserveMap = new HashMap<>();
+        for (String reservedBook : reservedBooksData) {
+            // Format: reserve_id, subscriber_id, name, reserve_time, time_left_to_retrieve, ISBN
+            String[] fields = reservedBook.split(",");
+            int reserveId = Integer.parseInt(fields[0]);
+            String timeLeftToRetrieve = fields[4];
+            reserveMap.put(reserveId, timeLeftToRetrieve);
+        }
 
+        // Identify reservations to delete (time difference <= 0 days)
+        List<Integer> reserveIdsToDelete = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : reserveMap.entrySet()) {
+            int reserveId = entry.getKey();
+            String timeLeftToRetrieve = entry.getValue();
 
-	private void deleteReservation(Connection conn, int reserveId) {
-	    try {
-	        // Step 1: Fetch the ISBN of the book being deleted
-	        String fetchISBNQuery = "SELECT ISBN FROM reserved_books WHERE reserve_id = ?";
-	        String isbn = null;
+            // Ignore "Book is not available yet"
+            if (!timeLeftToRetrieve.equals("Book is not available yet")) {
+                // Compare current time with the time left
+                long daysDifference = clock.timeDateDifferenceBetweenTwoDates(clock.timeNow(), timeLeftToRetrieve);
 
-	        try (PreparedStatement fetchPstmt = conn.prepareStatement(fetchISBNQuery)) {
-	            fetchPstmt.setInt(1, reserveId);
-	            try (ResultSet rs = fetchPstmt.executeQuery()) {
-	                if (rs.next()) {
-	                    isbn = rs.getString("ISBN");
-	                }
-	            }
-	        }
+                if (daysDifference <= 0) {
+                    reserveIdsToDelete.add(reserveId);
+                }
+            }
+        }
 
-	        // If ISBN is null, return because no matching reservation was found
-	        if (isbn == null) {
-	            System.err.println("Reservation with ID " + reserveId + " not found. Skipping deletion.");
-	            return;
-	        }
+        // Delete identified reservations
+        if (!reserveIdsToDelete.isEmpty()) {
+            try (Connection conn = EchoServer.taskSchedulerConnection) {
+                for (Integer reserveId : reserveIdsToDelete) {
+                    deleteReservation(conn, reserveId);
+                }
+                System.out.println("Deleted " + reserveIdsToDelete.size() + " old reservation(s).");
+            } catch (SQLException e) {
+                System.err.println("Error deleting reservations: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No reservations need deletion.");
+        }
+    }
 
-	        // Step 2: Delete the reservation
-	        String deleteQuery = "DELETE FROM reserved_books WHERE reserve_id = ?";
-	        try (PreparedStatement deletePstmt = conn.prepareStatement(deleteQuery)) {
-	            deletePstmt.setInt(1, reserveId);
-	            deletePstmt.executeUpdate();
-	            System.out.println("Reservation with ID " + reserveId + " deleted.");
-	        }
+    /**
+     * Deletes a single reservation record from the {@code reserved_books} table and decrements
+     * the corresponding {@code reservedCopiesNum} field in the {@code books} table.
+     *
+     * @param conn      A valid {@link Connection} to the database.
+     * @param reserveId The unique identifier of the reservation to remove.
+     */
+    private void deleteReservation(Connection conn, int reserveId) {
+        try {
+            // Step 1: Fetch the ISBN of the reservation
+            String fetchISBNQuery = "SELECT ISBN FROM reserved_books WHERE reserve_id = ?";
+            String isbn = null;
 
-	        // Step 3: Decrement the reservedCopiesNum for the corresponding ISBN
-	        String updateCopiesQuery = "UPDATE books SET reservedCopiesNum = reservedCopiesNum - 1 WHERE ISBN = ?";
-	        try (PreparedStatement updatePstmt = conn.prepareStatement(updateCopiesQuery)) {
-	            updatePstmt.setString(1, isbn);
-	            updatePstmt.executeUpdate();
-	            System.out.println("Decremented reservedCopiesNum for book with ISBN " + isbn);
-	        }
+            try (PreparedStatement fetchPstmt = conn.prepareStatement(fetchISBNQuery)) {
+                fetchPstmt.setInt(1, reserveId);
+                try (ResultSet rs = fetchPstmt.executeQuery()) {
+                    if (rs.next()) {
+                        isbn = rs.getString("ISBN");
+                    }
+                }
+            }
 
-	    } catch (SQLException e) {
-	        System.err.println("Error processing reservation deletion for ID " + reserveId + ": " + e.getMessage());
-	    }
-	}
-	
-	public void sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary() {
-	    // 1. Fetch all reservation requests with a status indicating they need to retrieve their books
-	    List<String> reservationRequests = ConnectToDb.fetchAllReservedBooksWhereBookIsAvailable(EchoServer.taskSchedulerConnection);
+            if (isbn == null) {
+                System.err.println("Reservation with ID " + reserveId + " not found. Skipping deletion.");
+                return;
+            }
 
-	    if (reservationRequests == null || reservationRequests.isEmpty()) {
-	        System.out.println("No reservations require retrieval notification.");
-	        return;
-	    }
+            // Step 2: Delete the reservation
+            String deleteQuery = "DELETE FROM reserved_books WHERE reserve_id = ?";
+            try (PreparedStatement deletePstmt = conn.prepareStatement(deleteQuery)) {
+                deletePstmt.setInt(1, reserveId);
+                deletePstmt.executeUpdate();
+                System.out.println("Reservation with ID " + reserveId + " deleted.");
+            }
 
-	    // Map to store subscriberID -> List of reservation data
-	    Map<Integer, List<String>> subscriberReservationsMap = new HashMap<>();
+            // Step 3: Decrement the reservedCopiesNum for the corresponding ISBN
+            String updateCopiesQuery = "UPDATE books SET reservedCopiesNum = reservedCopiesNum - 1 WHERE ISBN = ?";
+            try (PreparedStatement updatePstmt = conn.prepareStatement(updateCopiesQuery)) {
+                updatePstmt.setString(1, isbn);
+                updatePstmt.executeUpdate();
+                System.out.println("Decremented reservedCopiesNum for book with ISBN " + isbn);
+            }
 
-	    for (String request : reservationRequests) {
-	        // Updated reservation data format: reserve_id, subscriber_id, name (book name), reserve_time, time_left_for_retrieval, ISBN
-	        String[] fields = request.split(",");
-	        int subscriberId = Integer.parseInt(fields[1]); // Extract subscriber ID
+        } catch (SQLException e) {
+            System.err.println("Error processing reservation deletion for ID " + reserveId + ": " + e.getMessage());
+        }
+    }
 
-	        // Ensure the map has a list for this subscriber ID
-	        subscriberReservationsMap.putIfAbsent(subscriberId, new ArrayList<>());
+    /**
+     * Notifies subscribers (via log/output) that they have reserved books ready to be picked up.
+     * <p>
+     * The process:
+     * <ul>
+     *   <li>Fetches all "book is available" reservations from the database.</li>
+     *   <li>Groups these reservations by subscriber ID.</li>
+     *   <li>Builds a consolidated message listing each book and how many days remain to retrieve it.</li>
+     *   <li>Logs/prints the message for each subscriber.</li>
+     * </ul>
+     * </p>
+     */
+    public void sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary() {
+        // 1. Fetch all "available" reservations
+        List<String> reservationRequests = ConnectToDb.fetchAllReservedBooksWhereBookIsAvailable(EchoServer.taskSchedulerConnection);
 
-	        // Add the request to the subscriber's list
-	        subscriberReservationsMap.get(subscriberId).add(request);
-	    }
+        if (reservationRequests == null || reservationRequests.isEmpty()) {
+            System.out.println("No reservations require retrieval notification.");
+            return;
+        }
 
-	    // Iterate over each subscriber and their reservations
-	    for (Map.Entry<Integer, List<String>> entry : subscriberReservationsMap.entrySet()) {
-	        int subscriberId = entry.getKey();
-	        List<String> requests = entry.getValue();
+        // subscriberId -> list of reservation data
+        Map<Integer, List<String>> subscriberReservationsMap = new HashMap<>();
 
-	        // Fetch subscriber data using subscriberId
-	        String subscriberData = ConnectToDb.fetchSubscriberData(EchoServer.taskSchedulerConnection, String.valueOf(subscriberId));
+        for (String request : reservationRequests) {
+            // Format: reserve_id, subscriber_id, name(bookName), reserve_time, time_left_to_retrieve, ISBN
+            String[] fields = request.split(",");
+            int subscriberId = Integer.parseInt(fields[1]);
+            subscriberReservationsMap.putIfAbsent(subscriberId, new ArrayList<>());
+            subscriberReservationsMap.get(subscriberId).add(request);
+        }
 
-	        // Parse the subscriber name from the returned string
-	        String subscriberName = parseSubscriberName(subscriberData);
+        // Build & send messages for each subscriber
+        for (Map.Entry<Integer, List<String>> entry : subscriberReservationsMap.entrySet()) {
+            int subscriberId = entry.getKey();
+            List<String> requests = entry.getValue();
 
-	        if (subscriberName.equals("No subscriber found")) {
-	            System.out.println("No subscriber found for ID: " + subscriberId);
-	            continue;
-	        }
+            // Fetch subscriber data
+            String subscriberData = ConnectToDb.fetchSubscriberData(EchoServer.taskSchedulerConnection, String.valueOf(subscriberId));
+            String subscriberName = parseSubscriberName(subscriberData);
+            if ("No subscriber found".equals(subscriberName)) {
+                System.out.println("No subscriber found for ID: " + subscriberId);
+                continue;
+            }
 
-	        // Group reservations by book name
-	        Map<String, List<Integer>> bookReservationsMap = new HashMap<>();
+            // Group reservations by book name
+            Map<String, List<Integer>> bookReservationsMap = new HashMap<>();
 
-	        for (String request : requests) {
-	            String[] fields = request.split(",");
-	            String bookName = fields[2]; // Book name
-	            String timeLeftToRetrieve = fields[4];
+            for (String req : requests) {
+                String[] fields = req.split(",");
+                String bookName = fields[2];
+                String timeLeftToRetrieve = fields[4];
 
-	            // Calculate the time difference using the server's clock
-	            int daysLeftForRetrieval = EchoServer.clock.timeDateDifferenceBetweenTwoDates(EchoServer.clock.timeNow(), timeLeftToRetrieve);
+                int daysLeftForRetrieval = clock.timeDateDifferenceBetweenTwoDates(clock.timeNow(), timeLeftToRetrieve);
 
-	            // Group by book name
-	            bookReservationsMap.putIfAbsent(bookName, new ArrayList<>());
-	            bookReservationsMap.get(bookName).add(daysLeftForRetrieval);
-	        }
+                bookReservationsMap.putIfAbsent(bookName, new ArrayList<>());
+                bookReservationsMap.get(bookName).add(daysLeftForRetrieval);
+            }
 
-	        // Construct the consolidated email message
-	        StringBuilder message = new StringBuilder();
-	        message.append("Dear ").append(subscriberName).append(",\n\n");
-	        message.append("You have the following reservations ready for retrieval:\n");
+            // Construct the consolidated message for this subscriber
+            StringBuilder message = new StringBuilder();
+            message.append("Dear ").append(subscriberName).append(",\n\n");
+            message.append("You have the following reservations ready for retrieval:\n");
 
-	        for (Map.Entry<String, List<Integer>> bookEntry : bookReservationsMap.entrySet()) {
-	            String bookName = bookEntry.getKey();
-	            List<Integer> daysLeftList = bookEntry.getValue();
+            for (Map.Entry<String, List<Integer>> bookEntry : bookReservationsMap.entrySet()) {
+                String bookName = bookEntry.getKey();
+                List<Integer> daysLeftList = bookEntry.getValue();
 
-	            message.append("- ").append(bookName).append(": ");
+                message.append("- ").append(bookName).append(": ");
+                for (int i = 0; i < daysLeftList.size(); i++) {
+                    message.append(daysLeftList.get(i)).append(" day(s) left");
+                    if (i < daysLeftList.size() - 1) {
+                        message.append(", ");
+                    }
+                }
+                message.append("\n");
+            }
 
-	            // Append days left details for each reservation
-	            for (int i = 0; i < daysLeftList.size(); i++) {
-	                message.append(daysLeftList.get(i)).append(" day(s) left");
-	                if (i < daysLeftList.size() - 1) {
-	                    message.append(", ");
-	                }
-	            }
+            message.append("\nPlease retrieve your books before the specified time to avoid cancellation.\n");
 
-	            message.append("\n");
-	        }
+            // Log the message
+            EchoServer.outputInOutputStreamAndLog(message.toString());
+        }
+    }
 
-	        message.append("\nPlease retrieve your books before the specified time to avoid cancellation.\n");
+    /**
+     * Extracts the subscriber's name from a comma-separated string returned by
+     * {@code ConnectToDb.fetchSubscriberData()}.
+     *
+     * <p>
+     * Example input format: 
+     * {@code subscriber_id:123, subscriber_name:John Doe, ..., status:Not Frozen}
+     * </p>
+     *
+     * @param subscriberData The raw subscriber data string to parse.
+     * @return The subscriber's name, or "No subscriber found" if not present or if an error occurred.
+     */
+    private static String parseSubscriberName(String subscriberData) {
+        // Check for errors or missing subscriber
+        if (subscriberData.startsWith("No subscriber found") || subscriberData.startsWith("Error")) {
+            return "No subscriber found";
+        }
 
-	        // Send the email using the existing method (adapted for the full message)
-	        EchoServer.outputInOutputStreamAndLog(message.toString());
-	    }
-	}
+        // Attempt to extract the "subscriber_name" field
+        String[] fields = subscriberData.split(", ");
+        for (String field : fields) {
+            if (field.startsWith("subscriber_name:")) {
+                return field.split(":")[1]; // Return the actual name
+            }
+        }
 
-
-	
-	
-	
-	private static String parseSubscriberName(String subscriberData) {
-	    // Check if there's an error or no subscriber was found
-	    if (subscriberData.startsWith("No subscriber found") || subscriberData.startsWith("Error")) {
-	        return "No subscriber found";
-	    }
-
-	    // Extract the subscriber_name field from the data]
-	    String[] fields = subscriberData.split(", ");
-	    for (String field : fields) {
-	        if (field.startsWith("subscriber_name:")) {
-	            return field.split(":")[1]; // Return the name part
-	        }
-	    }
-
-	    return "No subscriber found"; // Fallback in case the name field is missing
-	}
+        return "No subscriber found";
+    }
 }

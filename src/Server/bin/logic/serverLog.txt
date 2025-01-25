@@ -1,4 +1,9 @@
 Server listening for connections on port 5555
 Connected to the database.
-Extension daily cleanup done.
-Server daily tasks done.
+Message received: IP:10.100.102.6 from 10.100.102.6 (10.100.102.6)
+Client connected.
+Client IP:10.100.102.6
+Client Hostname: 10.100.102.6
+Connection Status: Connected
+Message received: Fetch:1 from 10.100.102.6 (10.100.102.6)
+Message received: RegisterRequest:123,qweqwe aweqwe,054848423,almogra@gmail.com from 10.100.102.6 (10.100.102.6)
