@@ -25,46 +25,86 @@ import ocsf.client.AbstractClient;
  */
 public class ChatClient extends AbstractClient
 {
-	//server sends info from db to client 
+
   // Instance variables **********************************************
   
-  /**
-   * The interface type variable.  It allows the implementation of 
-   * the display method in the client.
-   */
-  ChatIF clientUI; 
-  public static List<BorrowedBook> borrowedBookList = new ArrayList<>(); // List to hold borrowed books
-  public static List<ReservedBook> reservedBookList = new ArrayList<>(); // List to hold borrowed books
-  public static Subscriber s1 = new Subscriber(0, 0, null, null, null, null);
-  public static Librarian l1 = new Librarian(0, null);
-  public static List<Book> bookList = new ArrayList<>(); // List to hold books
-  public static List<String[][]> br = new ArrayList<>(); 
-  public static String[] BorrowedBookInfo;
-  public static List<BorrowedBook> BorrowedBookInfoForReports = new ArrayList<>();
-  public static String[] BorrowedBookInformationForBarcodeScanner;
-  public static ArrayList<String> myHistoryInfo = new ArrayList<String>(); 
-  public static boolean awaitResponse = false;
-  public static boolean alertIndicator = true;
-  public static boolean isBookReservedFlag = false;
-  public static List<Subscriber> allSubscriberData = null;
-  public static List<String> allSubscriberDataForReport = new ArrayList<>();
-  public static List<String> allFrozenDataForReport = new ArrayList<>();  
-  
-  
-  public static boolean isIPValid = false;
-  
-  public static boolean messageReceivedFromServer = false; // Used to simulate a synchronous work.
-  public static String closestReturnDate;
-  public static String extendedReturnDatesFromSubscriber = null;
-  
-  public static ClientTimeDiffController clock = new ClientTimeDiffController();
+	/**
+     * The interface type variable allowing the implementation of 
+     * the display method in the client.
+     */
+    ChatIF clientUI;
 
-  
-  
-  public static boolean isIDInDataBase;
-  // Constructors ****************************************************
-  public static String currentISBN;
-  
+    /** List to hold borrowed books. */
+    public static List<BorrowedBook> borrowedBookList = new ArrayList<>();
+
+    /** List to hold reserved books. */
+    public static List<ReservedBook> reservedBookList = new ArrayList<>();
+
+    /** Subscriber object to manage subscriber data. */
+    public static Subscriber s1 = new Subscriber(0, 0, null, null, null, null);
+
+    /** Librarian object to manage librarian data. */
+    public static Librarian l1 = new Librarian(0, null);
+
+    /** List to hold book data. */
+    public static List<Book> bookList = new ArrayList<>();
+
+    /** List to hold various borrowed book information. */
+    public static List<String[][]> br = new ArrayList<>();
+
+    /** Array to hold borrowed book information. */
+    public static String[] BorrowedBookInfo;
+
+    /** List to store borrowed book information for reports. */
+    public static List<BorrowedBook> BorrowedBookInfoForReports = new ArrayList<>();
+
+    /** Array for storing borrowed book information for barcode scanning. */
+    public static String[] BorrowedBookInformationForBarcodeScanner;
+
+    /** List to store the borrowing history of the client. */
+    public static ArrayList<String> myHistoryInfo = new ArrayList<>();
+
+    /** Indicates whether the client is waiting for a server response. */
+    public static boolean awaitResponse = false;
+
+    /** Flag to control alert display. */
+    public static boolean alertIndicator = true;
+
+    /** Indicates if a book is reserved. */
+    public static boolean isBookReservedFlag = false;
+
+    /** List to store all subscriber data. */
+    public static List<Subscriber> allSubscriberData = null;
+
+    /** List to store subscriber data for reports. */
+    public static List<String> allSubscriberDataForReport = new ArrayList<>();
+
+    /** List to store frozen data for reports. */
+    public static List<String> allFrozenDataForReport = new ArrayList<>();
+
+    /** Indicates if the IP address is valid. */
+    public static boolean isIPValid = false;
+
+    /** Indicates if a message has been received from the server. */
+    public static boolean messageReceivedFromServer = false;
+
+    /** Stores the closest return date of a borrowed book. */
+    public static String closestReturnDate = null;
+
+    /** Stores the extended return dates for a subscriber. */
+    public static String extendedReturnDatesFromSubscriber = null;
+
+    /** Controller for managing client time differences. */
+    public static ClientTimeDiffController clock = new ClientTimeDiffController();
+
+    /** Indicates if the ID exists in the database. */
+    public static boolean isIDInDataBase;
+
+    /** Current ISBN being processed. */
+    public static String currentISBN;
+
+    // Constructors ****************************************************
+
    /**
    * Constructs an instance of the chat client.
    *
@@ -77,7 +117,7 @@ public class ChatClient extends AbstractClient
   	{
   		super(host, port); // Call the superclass constructor
   		this.clientUI = clientUI;
-  		// openConnection();
+  		// openConnection(); // XXX CHECK THIS BEFORE SUBMITTING!
   	}
 
    // Instance methods ************************************************
@@ -164,6 +204,11 @@ public class ChatClient extends AbstractClient
 	    messageReceivedFromServer = true;
 	}
   
+    /**
+     * Handles the response for reserved book status.
+     *
+     * @param data The response data from the server.
+     */
   	private void handleBookReservedResponse(String data) {
 	    switch (data.trim()) {
 	        case "Yes":
@@ -180,7 +225,12 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 
-  private void handleAllBorrowInformation(String data) {
+  	/**
+     * Handles the response for borrowed books.
+     *
+     * @param data The response data containing borrowed book information.
+     */
+  	private void handleAllBorrowInformation(String data) {
 	    // Check if no books were found
 	    if (data.equals("NoBooksFound")) {
 	        System.out.println("No borrowed books found.");
@@ -231,12 +281,18 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 
-		
-  private void handleReturnRequestfailure() {
-	System.out.print("Fetch return request failed");
-	
+  	/**
+  	 * Handles a failure in fetching return requests by logging a message to the console.
+  	 */
+  	private void handleReturnRequestfailure() {
+  		System.out.print("Fetch return request failed");
   	}
 
+  	/**
+  	 * Processes and handles the successful return request response.
+  	 *
+  	 * @param data The return request data received from the server.
+  	 */
 	private void handleReturnRequestSucess(String data) {
 		br.clear(); // Clear the existing list to avoid appending duplicate data
 	
@@ -256,7 +312,11 @@ public class ChatClient extends AbstractClient
 		}
 	}
 		
-	
+	/**
+	 * Handles the response for borrowed books and updates the borrowed book list.
+	 *
+	 * @param data The borrowed books data or an error message received from the server.
+	 */
 	private void handleBorrowedBooksResponse(String data) {
 	    if (data.equals("NoBooksFound")) {
 	        System.out.println("No borrowed books found.");
@@ -281,7 +341,11 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 
-	
+	/**
+	 * Handles the response for reserved books and updates the reserved book list.
+	 *
+	 * @param data The reserved books data or an error message received from the server.
+	 */
 	private void handleReservedBooksResponse(String data) {
 	    if (data.equals("NoBooksFound")) {
 	        System.out.println("No Reserved books found.");
@@ -305,6 +369,11 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 	
+	/**
+	 * Processes and handles the book information received from the server.
+	 *
+	 * @param data The book data string received from the server.
+	 */
 	private void handleBookInfo(String data) {
 	    try {
 	        if (data.equals("NoBooksFound")) {
@@ -326,28 +395,53 @@ public class ChatClient extends AbstractClient
 	    }
 	}
   
+	/**
+	 * Processes subscriber data and updates the subscriber object.
+	 *
+	 * @param response The subscriber data string received from the server.
+	 */
 	private void handleSubscriberData(String response) {
 	    l1.setLibrarian_id(-1); // Reset librarian data
 	    processSubscriberData(response);
 	}
 
+	/**
+	 * Handles the response for librarian data by resetting subscriber data and processing the librarian data.
+	 * 
+	 * @param response The response containing librarian data.
+	 */
 	private void handleLibrarianData(String response) {
 	    s1.setSubscriber_id(-1); // Reset subscriber data
 	    processLibrarianData(response);
 	}
 
+	/**
+	 * Handles the case where a nonexistent ID is provided by resetting librarian and subscriber IDs.
+	 */
 	private void handleNonexistentID() {
 	    l1.setLibrarian_id(-1);
 	    s1.setSubscriber_id(-1);
 	}
+	
+	/**
+	 * Handles the success of subscriber info update by setting the alert indicator to true.
+	 */
 	private void handleUpdateSubInfoSuccess() {
 		alertIndicator = true;
 	}
 	
+	/**
+	 * Handles the failure of subscriber info update by setting the alert indicator to false.
+	 */
 	private void handleUpdateSubInfoFail() {
 		alertIndicator = false;
 	}
 	
+	/**
+	 * Processes the fetched register requests data and populates the list with parsed data.
+	 * 
+	 * @param data The data string containing register requests separated by semicolons.
+	 */
 	private void FetchedRegisterRequests(String data) {
 	    br.clear(); // Clear the existing list to avoid appending duplicate data
 
@@ -368,6 +462,11 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 	
+	/**
+	 * Processes the fetched borrowed books data and populates the list with parsed data.
+	 * 
+	 * @param data The data string containing borrowed books information separated by semicolons.
+	 */
 	private void handleFetchedBorrowedBooks(String data) {
 	    br.clear(); // Clear the existing list to avoid appending duplicate data
 
@@ -388,6 +487,11 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 	
+	/**
+	 * Processes the history data and populates the user's history information list.
+	 * 
+	 * @param msg The message containing history data separated by semicolons.
+	 */
 	private void processMyHistoryData(String msg) {
 	    try {
 	        // Split the message by ';' and store it in a String array
@@ -401,6 +505,11 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 
+	/**
+	 * Handles book data received from the server by parsing or displaying appropriate messages.
+	 * 
+	 * @param data The data string containing book information or error messages.
+	 */
 	private void handleBookData(String data) {
 	    if (data.equals("NoBooksFound")) {
 	        System.out.println("No books found in the database.");
@@ -411,6 +520,11 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 
+	/**
+	 * Parses the book data string and populates the book list.
+	 * 
+	 * @param data The data string containing book information separated by semicolons.
+	 */
 	private void parseBookData(String data) {
 	    try {
 	        String[] bookStrings = data.split(";");
@@ -432,6 +546,11 @@ public class ChatClient extends AbstractClient
 	    }
 	}
   
+	/**
+	 * Handles the client UI message and establishes a connection with the server.
+	 * 
+	 * @param message The message to be sent to the server.
+	 */
 	public void handleMessageFromClientUI(String message) {
         awaitResponse = true;
         try {
@@ -469,6 +588,11 @@ public class ChatClient extends AbstractClient
         }
     }
   
+	/**
+	 * Parses and sets subscriber data.
+	 * 
+	 * @param msg The message containing subscriber data.
+	 */
 	private void processSubscriberData(String msg) {
       try {
           String[] parts = msg.split(",");
@@ -486,27 +610,38 @@ public class ChatClient extends AbstractClient
           s1.setSubscriber_phone_number(phone);
           s1.setSubscriber_email(email);
           s1.setStatus(status);
-      } catch (Exception e) {
-          System.out.println("Error parsing subscriber data: " + e.getMessage());
-          s1.setSubscriber_id(-1); // Mark as not found
-      }
-  }
+      	} catch (Exception e) {
+      		System.out.println("Error parsing subscriber data: " + e.getMessage());
+      		s1.setSubscriber_id(-1); // Mark as not found
+      	}
+	}
 
+	/**
+	 * Processes the librarian data from the given message and updates the {@code l1} object.
+	 *
+	 * @param msg the string containing librarian information in the format "key:value,key:value,..."
+	 */
 	private void processLibrarianData(String msg) {
-      try {
-          String[] parts = msg.split(",");
-          String librarianId = extractValue(parts[0]);
-          String librarianName = extractValue(parts[1]);
-
-          // Set values to the Librarian object
-          l1.setLibrarian_id(Integer.parseInt(librarianId));
-          l1.setLibrarian_name(librarianName);
-      } catch (Exception e) {
-          System.out.println("Error parsing librarian data: " + e.getMessage());
-          l1.setLibrarian_id(-1); // Mark as not found
-      }
-  }
+	  try {
+	      String[] parts = msg.split(",");
+	      String librarianId = extractValue(parts[0]);
+	      String librarianName = extractValue(parts[1]);
 	
+	      // Set values to the Librarian object
+	      l1.setLibrarian_id(Integer.parseInt(librarianId));
+	      l1.setLibrarian_name(librarianName);
+	  } catch (Exception e) {
+	      System.out.println("Error parsing librarian data: " + e.getMessage());
+	      l1.setLibrarian_id(-1); // Mark as not found
+	      }
+	  }
+	
+	/**
+	 * Parses a message containing subscriber information, creates {@code Subscriber} objects, 
+	 * and updates the global list of all subscribers.
+	 *
+	 * @param msg the string containing all subscriber information, separated by ';'
+	 */
 	private void handleAllSubscriberInformation(String msg) {
 		List<Subscriber> subscriberList = new ArrayList<Subscriber>();
 		// Split the msg so each element contains all of the information for a subscriber one at a time.
@@ -526,7 +661,11 @@ public class ChatClient extends AbstractClient
 		allSubscriberData = subscriberList;
 	}
 	
-	
+	/**
+	 * Handles frozen information for reports by parsing the message and formatting the data.
+	 *
+	 * @param msg the string containing frozen records in the format "[record1;record2;...]"
+	 */
 	private void handleAllFrozenInformationForReports(String msg) {
 	    // Check and remove leading '[' if present
 	    if (msg.startsWith("[")) {
@@ -541,14 +680,11 @@ public class ChatClient extends AbstractClient
 	    
 	    // Split the msg so each element contains all of the information for a record one at a time.
 	    String[] records = msg.split(";");
-	    //System.out.println("Records count: " + records.length);  // Debugging line
 
 	    for (String recordData : records) {
-	        //System.out.println("Processing record data: " + recordData);  // Debugging line
 	        String[] recordInformation = recordData.split(","); // Split the information of the record
 	        
 	        if (recordInformation.length < 5) {  // Ensure that there's enough data
-	            System.out.println("Invalid data: " + recordData);  // Debugging line
 	            continue;  // Skip invalid data
 	        }
 	        
@@ -574,6 +710,11 @@ public class ChatClient extends AbstractClient
 	    allFrozenDataForReport = dataList;
 	}
 
+	/**
+	 * Processes all subscriber information for reports by formatting and updating the global list.
+	 *
+	 * @param msg the string containing subscriber data in the format "[subscriber1;subscriber2;...]"
+	 */
 	private void handleAllSubscriberInformationForReports(String msg) {
 	    // Check and remove leading '[' if present
 	    if (msg.startsWith("[")) {
@@ -588,10 +729,8 @@ public class ChatClient extends AbstractClient
 	    
 	    // Split the msg so each element contains all of the information for a subscriber one at a time.
 	    String[] subscribersInformation = msg.split(";");
-	    //System.out.println("Subscribers information count: " + subscribersInformation.length);  // Debugging line
 
 	    for (String subscriberData : subscribersInformation) {
-	        //System.out.println("Processing subscriber data: " + subscriberData);  // Debugging line
 	        String[] subscriberInformation = subscriberData.split(","); // Split the information of the subscriber
 	        
 	        if (subscriberInformation.length < 6) {  // Ensure that there's enough data
@@ -621,29 +760,50 @@ public class ChatClient extends AbstractClient
 	    allSubscriberDataForReport = subscriberList;
 	}
 
+	/**
+	 * Parses the data for a borrowed book request fetched by the barcode scanner.
+	 *
+	 * @param data the string containing book details separated by ':'
+	 */
 	private void handleBarcodeFetchBorrowedBookRequest(String data) {
 	    BorrowedBookInformationForBarcodeScanner = data.split(":"); // Parse the request's information.
 	}
 	
-
+	/**
+	 * Extracts the value part from a key-value pair string (e.g., "key:value").
+	 *
+	 * @param part the string containing the key-value pair
+	 * @return the extracted value, trimmed of whitespace
+	 */
 	private String extractValue(String part) {
       return part.split(":")[1].trim();
-  }
+	}
 	
+	/**
+	 * Handles a failed registration request by updating the state to indicate the ID exists in the database.
+	 */
 	private void handleRegisterRequestFailed() {
 		isIDInDataBase = true;
 	}
 	
+	/**
+	 * Handles a successful registration request by updating the state to indicate the ID does not exist in the database.
+	 */
 	private void handleRegisterRequestSuccess() {
 		isIDInDataBase = false;
 	}
 	
+	/**
+	 * Updates the extended return dates of a subscriber.
+	 *
+	 * @param extendedReturnDatesByUser the string containing the extended return dates
+	 */
 	private void handleExtendedReturnDatesFromSubscriber(String extendedReturnDatesByUser){
 		extendedReturnDatesFromSubscriber = extendedReturnDatesByUser;
 	}
 	
 	/**
-	 * This method terminates the client.
+	 * Terminates the client and closes the connection.
 	 */
 	public void quit()
 	{
