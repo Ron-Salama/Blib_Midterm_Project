@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 /**
- * The {@code ClientTimeDiffController} class provides utilities for working with dates and times,
+ * The {@code ServerTimeDiffController} class provides utilities for working with dates and times,
  * including calculating differences, formatting, and managing deadlines and return dates.
  */
 public class ServerTimeDiffController {
@@ -191,6 +191,12 @@ public class ServerTimeDiffController {
         return localDate.atStartOfDay();
     }
 
+    /**
+     * Converts a date string into a {@code LocalDate} object.
+     *
+     * @param stringToConvert the date string to convert
+     * @return the corresponding {@code LocalDate} object
+     */
     public LocalDate convertStringToLocalDate(String stringToConvert) {
     	return LocalDate.parse(stringToConvert, getDateFormatter());
     }

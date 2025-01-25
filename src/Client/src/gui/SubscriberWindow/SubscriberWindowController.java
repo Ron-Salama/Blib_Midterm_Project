@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import logic.ClientTimeDiffController;
 import logic.Subscriber;
 
-
 /**
  * The SubscriberWindowController class manages the Subscriber Window in the GUI.
  * This window allows users to perform actions such as searching for books, viewing borrowed books,
@@ -72,6 +71,8 @@ public class SubscriberWindowController extends BaseController implements Initia
     
     private String frozenUntil = null; // The date until which the subscriber is frozen. format: dd-MM-yyyy EX: 21-1-1999
     
+    public static Subscriber currentSubscriber; // Used to store the information about the subscriber locally in the class.
+    
     /**
      * Initializes the SubscriberWindowController.
      * This method is called automatically when the FXML file is loaded.
@@ -108,8 +109,6 @@ public class SubscriberWindowController extends BaseController implements Initia
 	    changeMyStatusLabelAccordingToSubscriberStatus();
 	}
 	
-    public static Subscriber currentSubscriber;
-        
     /**
      * Opens the Search window, allowing the user to search for books in the library.
      * 
@@ -138,6 +137,12 @@ public class SubscriberWindowController extends BaseController implements Initia
         		"Main Menu");;
     }
     
+    /**
+     * Opens the My Books window, allowing the user to view the books they have borrowed.
+     * 
+     * @param event the {@link ActionEvent} triggered by clicking the My Books button
+     * @throws Exception if an error occurs while loading the My Books window
+     */
     public void openMyBooksWindow(ActionEvent event) throws Exception {
     	MyBooksController.viewing = false;
     	MyBooksController.librarianViewing = -1;
@@ -147,7 +152,13 @@ public class SubscriberWindowController extends BaseController implements Initia
 	       		"My Books");;
 	}
     
-    
+
+    /**
+     * Opens the My Reservations window, allowing the user to view their reservations.
+     * 
+     * @param event the {@link ActionEvent} triggered by clicking the My Reservations button
+     * @throws Exception if an error occurs while loading the My Reservations window
+     */
     public void openMyReservationsWindow(ActionEvent event) throws Exception {
 		openWindow(event,
 	       		"/gui/MyReservationsWindow/MyReservationsFrame.fxml",
@@ -155,6 +166,12 @@ public class SubscriberWindowController extends BaseController implements Initia
 	       		"My Reservations");;
 	}
     
+    /**
+     * Opens the Borrow window, allowing the user to borrow books from the library.
+     * 
+     * @param event the {@link ActionEvent} triggered by clicking the Borrow button
+     * @throws Exception if an error occurs while loading the Borrow window
+     */
 	public void openBorrowWindow(ActionEvent event) throws Exception {
 		openWindow(event,
 	       		"/gui/BorrowBookWindow/BorrowBookFrame.fxml",
@@ -162,6 +179,12 @@ public class SubscriberWindowController extends BaseController implements Initia
 	       		"Borrow a Book");;
 	}
     
+	/**
+     * Opens the Update Information window, allowing the user to update their information.
+     * 
+     * @param event the {@link ActionEvent} triggered by clicking the Update button
+     * @throws Exception if an error occurs while loading the Update Information window
+     */
 	public void update(ActionEvent event) throws Exception {
         openWindow(event,
         		"/gui/UpdateInfoWindow/UpdateInfoFrame.fxml",
@@ -182,6 +205,11 @@ public class SubscriberWindowController extends BaseController implements Initia
     			"Subscriber View");
     }
 
+    /**
+     * Updates the greeting label based on the time of day (Morning, Afternoon, or Night).
+     * 
+     * This method is called when the Subscriber Window is initialized to display a personalized greeting.
+     */
     private void ChangeWelcomeLabelByTheTimeOfDay() {
     	LocalDateTime time = LocalDateTime.now();
     	String[] timeSplit = time.toString().split("T");
@@ -204,6 +232,11 @@ public class SubscriberWindowController extends BaseController implements Initia
     	 showColoredLabelMessageOnGUI(greetingLabel, message, "-fx-text-fill: black;");
     }
     
+    /**
+     * Updates the status label with the current status of the subscriber (Frozen or Not Frozen).
+     * 
+     * This method checks if the subscriber is frozen and updates the UI accordingly.
+     */
     private void changeMyStatusLabelAccordingToSubscriberStatus() {
     	String frozenStyle = "-fx-text-fill: linear-gradient(to right, #1e90ff, #4682b4); " +
                 "-fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.7), 5, 0.3, 0, 0); " +
@@ -221,6 +254,11 @@ public class SubscriberWindowController extends BaseController implements Initia
     	}
     }
     
+    /**
+     * Updates the label with the frozen until date and the remaining days until the subscriber's account is unfrozen.
+     * 
+     * This method is called when the subscriber is frozen to inform them when they can use the system again.
+     */
     private void changefrozenUntilAndDaysLeftDynamicTextToSubsriberStatus() {
     	String frozenStyle = "-fx-text-fill: linear-gradient(to right, #1e90ff, #4682b4); " +
                 "-fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.7), 5, 0.3, 0, 0); " +
