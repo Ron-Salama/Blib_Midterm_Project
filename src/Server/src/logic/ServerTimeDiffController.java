@@ -191,6 +191,10 @@ public class ServerTimeDiffController {
         return localDate.atStartOfDay();
     }
 
+    public LocalDate convertStringToLocalDate(String stringToConvert) {
+    	return LocalDate.parse(stringToConvert, getDateFormatter());
+    }
+    
     /**
      * Gets the current date formatter.
      *

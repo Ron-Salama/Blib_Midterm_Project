@@ -57,6 +57,10 @@ public class ClientTimeDiffController {
         LocalDateTime sevenDaysFromDeadline = deadLine.minusDays(timeNeededBeforeDeadline);
         return !sevenDaysFromDeadline.isAfter(today);
     }
+    
+    public Boolean hasEnoughTimeBeforeDeadline(LocalDateTime deadLine, int timeNeededBeforeDeadline) {
+    	return hasEnoughTimeBeforeDeadline(deadLine.toString(), timeNeededBeforeDeadline);
+    }
 
     // Return Date Methods
 
@@ -191,6 +195,10 @@ public class ClientTimeDiffController {
         LocalDate localDate = LocalDate.parse(stringToConvert, getDateFormatter());
         return localDate.atStartOfDay();
     }
+    
+    public LocalDate convertStringToLocalDate(String stringToConvert) {
+    	return LocalDate.parse(stringToConvert, getDateFormatter());
+    }
 
     /**
      * Gets the current date formatter.
@@ -220,6 +228,18 @@ public class ClientTimeDiffController {
     public boolean hasMonthPassed(LocalDate startDate, LocalDate endDate) {
         long monthsBetween = ChronoUnit.MONTHS.between(startDate, endDate);
         return monthsBetween >= 1;
+    }
+
+    public boolean hasMonthPassed(String startDateAsString, LocalDate endDate) {
+    	return hasMonthPassed(convertStringToLocalDateTime(startDateAsString).toLocalDate(), endDate);
+    }
+    
+    public boolean hasMonthPassed(LocalDate startDate, String endDateAsString) {
+    	return hasMonthPassed(startDate, convertStringToLocalDateTime(endDateAsString).toLocalDate());
+    }
+    
+    public boolean hasMonthPassed(String startDateAsString, String endDateAsString) {
+    	return hasMonthPassed(convertStringToLocalDateTime(startDateAsString).toLocalDate(), convertStringToLocalDateTime(endDateAsString).toLocalDate());
     }
 
     /**
@@ -330,5 +350,5 @@ public class ClientTimeDiffController {
         
         // Format the LocalDate object to the new string format
         return date.format(outputFormatter);
-}
+    }
 }

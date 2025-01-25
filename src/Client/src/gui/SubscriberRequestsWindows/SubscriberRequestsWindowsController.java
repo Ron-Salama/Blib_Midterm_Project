@@ -385,7 +385,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             } else if ("Borrow For Subscriber".equals(selectedRequestType)) {
                 selectedRequests = borrowRequests;
                 TXTF5.setText(clock.timeNow());
-                datePicker.setValue(clock.convertStringToLocalDateTime(clock.extendReturnDate(clock.timeNow(), 14)).toLocalDate()); 
+                datePicker.setValue(clock.convertStringToLocalDate(clock.extendReturnDate(clock.timeNow(), 14))); 
             	
             } else if ("Return For Subscriber".equals(selectedRequestType)) {
                 selectedRequests = ReturnRequests;
@@ -575,8 +575,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             }
             else
             {	
-            	String Expected_Return=clock.convertStringToLocalDateTime(Btime).plusDays(14).toLocalDate().toString();
-            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(clock.convertDateFormat(Expected_Return), clock.convertDateFormat(clock.convertStringToLocalDateTime(Rtime).toLocalDate().toString()));
+            	String Expected_Return=clock.convertStringToLocalDate(Btime).plusDays(14).toString();
+            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(clock.convertDateFormat(Expected_Return), clock.convertDateFormat(clock.convertStringToLocalDate(Rtime).toString()));
                 if (numOfDaysOfReturn<=0) {
                 	statusOfReturn = "early";
                 	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
@@ -645,7 +645,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
     		TXTF5.setText(borrowDate); // borrow time
     		
     		// Get the return date as a string, convert and set it in the correct field.
-    		LocalDate returnDate = clock.convertStringToLocalDateTime(clock.calculateReturnDate(14)).toLocalDate();
+    		LocalDate returnDate = clock.convertStringToLocalDate(clock.calculateReturnDate(14));
     		datePicker.setValue(returnDate); // return date. 	 
     		datePicker.isDisable();
     	}

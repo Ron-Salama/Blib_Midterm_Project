@@ -128,7 +128,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
                     if (expectedRelease.equals("Unknown") || expectedRelease.isEmpty()) {
                         expectedRelease = "Not Frozen";
                     } else {
-                        expectedRelease = clock.convertDateFormat(clock.convertStringToLocalDateTime(extractFreezeDate(subscriberFields[5])).toLocalDate().plusMonths(1).toString());
+                        expectedRelease = clock.convertDateFormat(clock.convertStringToLocalDate(extractFreezeDate(subscriberFields[5])).plusMonths(1).toString());
                     }
 
                     // Create a new SubscriberData object and add it to the filtered list

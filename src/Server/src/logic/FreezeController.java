@@ -2,15 +2,12 @@ package logic;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import common.ConnectToDb;
 import gui.baseController.BaseController;
 import server.EchoServer;
 
-
- //TODO: imporve log&CMD messages.
 public class FreezeController extends BaseController {
 	ServerTimeDiffController clock = EchoServer.clock;
 	
