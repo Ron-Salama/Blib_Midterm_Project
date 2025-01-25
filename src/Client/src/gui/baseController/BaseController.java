@@ -139,6 +139,14 @@ public abstract class BaseController {
         label.setStyle(color);
     }
     
+    /**
+     * Displays a message in a Label and clears it after a specified delay.
+     *
+     * @param label          The Label where the message will be displayed.
+     * @param message        The message to display.
+     * @param style          The CSS style for the Label.
+     * @param delayInSeconds The delay in seconds before clearing the message.
+     */
     protected void showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(Label label, String message, String style, int delayInSeconds) {
         Platform.runLater(() -> {
             label.setText(message);
@@ -151,6 +159,12 @@ public abstract class BaseController {
         });
     }
     
+    /**
+     * Determines if a subscriber is frozen based on their status.
+     *
+     * @param subscriberStatus The status of the subscriber.
+     * @return true if the subscriber is frozen, false otherwise.
+     */
     protected Boolean isSubsriberFrozen(String subscriberStatus) {
     	if (subscriberStatus.equals("Not Frozen")) {
     		return false;
@@ -158,7 +172,12 @@ public abstract class BaseController {
     	return true;
     }
 
-   private void loadIcon(Stage primaryStage) {
+    /**
+     * Loads the application icon onto the primary stage.
+     *
+     * @param primaryStage The primary stage to load the icon onto.
+     */
+    private void loadIcon(Stage primaryStage) {
         String iconRelativePath = "/assets/BLib_Icon.png"; 
 
         // Load the icon image
@@ -166,13 +185,21 @@ public abstract class BaseController {
         
         // Set the icon for the primary stage.
         primaryStage.getIcons().add(icon);
-   }
+    }
 
-   
+   /**
+    * Introduces a delay in execution for the specified number of milliseconds.
+    *
+    * @param milliSeconds The number of milliseconds to delay.
+    * @throws InterruptedException If the thread is interrupted during the delay.
+    */
    protected void addDelayInMilliseconds(int milliSeconds) throws InterruptedException {
 	   TimeUnit.MILLISECONDS.sleep(milliSeconds);
    }
    
+   /**
+    * Waits for a server response by checking a shared flag.
+    */
    protected void waitForServerResponse() {
 	    while (!ChatClient.messageReceivedFromServer) {
 	        try {

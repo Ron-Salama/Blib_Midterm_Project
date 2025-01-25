@@ -1,8 +1,6 @@
 package gui.BorrowBookWindow;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
@@ -10,7 +8,6 @@ import client.ClientUI;
 import gui.SearchWindow.SearchFrameController;
 import gui.SubscriberWindow.SubscriberWindowController;
 import gui.baseController.BaseController;
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,18 +15,23 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import logic.Subscriber;
 import logic.ClientTimeDiffController;
+import logic.Subscriber;
 
 /**
- * Controller class for the IP Input window of the Library Management Tool.
+ * Controller class for the Borrow Book Window of the Library Management Tool.
  * 
- * <p>This class manages the user interactions for inputting the server IP address,
- * validating it, and navigating to the main menu if the connection is successful.</p>
+ * <p>This class manages the user interactions for borrowing books, including searching for books,
+ * submitting borrow requests, and reserving unavailable books. It provides feedback to users and
+ * communicates with the server to handle book information and requests.</p>
  */
 public class BorrowBookController extends BaseController implements Initializable {
+	
+	
+    // The currently logged-in subscriber.
     Subscriber currentSub = SubscriberWindowController.currentSubscriber;
+    
+    // Controller for managing time differences and calculating dates.
     ClientTimeDiffController clockController = new ClientTimeDiffController();
     
     @FXML
@@ -57,12 +59,27 @@ public class BorrowBookController extends BaseController implements Initializabl
     @FXML
     private Label RequestStatus = null;
 
+    // Stores the book ID entered by the user.
     String bookId = "";
+    
+    // Stores the name of the selected book.
     String bookName = "";
+    
+    // Number of copies of the selected book.
     int copiesNum;
+    
+    // Number of reserved copies of the selected book.
     int reservedCopiesNum;
+    
+    // Status indicating whether the book can be borrowed.
     String borrowStatus = "CAN_BORROW";  // String to hold the borrow status
 
+    /**
+     * Initializes the controller and sets up event handlers.
+     * 
+     * @param url the location used to resolve relative paths for the root object
+     * @param resourceBundle the resources used to localize the root object
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         awaitingTextID.setText("");
@@ -74,6 +91,12 @@ public class BorrowBookController extends BaseController implements Initializabl
         IDtxt.setOnMouseClicked(event -> Clear());
     }
 
+    /**
+     * Starts the Borrow Book Window.
+     * 
+     * @param primaryStage the primary stage for the application
+     * @throws Exception if an error occurs during initialization
+     */
     public void start(Stage primaryStage) throws Exception {
         start(primaryStage, 
               "/gui/BorrowBookWindow/BorrowBookFrame.fxml", 
@@ -81,6 +104,12 @@ public class BorrowBookController extends BaseController implements Initializabl
               "Borrow a Book");
     }
 
+    /**
+     * Handles the submission of a book ID to retrieve book details.
+     * 
+     * @param event the action event triggered by the user
+     * @throws Exception if an error occurs while communicating with the server
+     */
     public void Submit(ActionEvent event) throws Exception {
     	showColoredLabelMessageOnGUI(RequestStatus, "", "-fx-text-fill: black;");
         bookId = IDtxt.getText();
@@ -105,6 +134,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             bookName = ChatClient.BorrowedBookInfo[1];
             copiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[4]);
             reservedCopiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[7]);
+            
             // Update borrow status based on available copies
             if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
                 borrowStatus = "NO_COPIES";
@@ -124,6 +154,12 @@ public class BorrowBookController extends BaseController implements Initializabl
         }
     }
 
+    /**
+     * Submits a borrow request for the selected book.
+     * 
+     * @param event the action event triggered by the user
+     * @throws Exception if an error occurs during the submission process
+     */
     public void Submit_Borrow_Request(ActionEvent event) throws Exception {
         if ("CAN_BORROW".equals(borrowStatus)) {
             // Collect subscriber and book details
@@ -145,6 +181,12 @@ public class BorrowBookController extends BaseController implements Initializabl
         }
     }
 
+    /**
+     * Submits a reservation request for the selected book.
+     * 
+     * @param event the action event triggered by the user
+     * @throws Exception if an error occurs during the reservation process
+     */
     public void Submit_Reserve_Request(ActionEvent event) throws Exception {
         if (reservedCopiesNum == copiesNum) {
             // All copies are reserved
@@ -182,7 +224,10 @@ public class BorrowBookController extends BaseController implements Initializabl
                 "-fx-text-fill: red;");
         }
     }
-
+    
+    /**
+     * Clears the input fields and resets the view.
+     */
     public void Clear() {
         // Clear the text field for the book ID
         IDtxt.clear();
@@ -200,6 +245,12 @@ public class BorrowBookController extends BaseController implements Initializabl
         btnSubmitToLibrarian.setDisable(true);
     }
 
+    /**
+     * Opens the search window for finding books.
+     * 
+     * @param event the action event triggered by the user
+     * @throws Exception if an error occurs while opening the search window
+     */
     public void openSearchWindow(ActionEvent event) throws Exception {
         SearchFrameController.FlagForSearch = "SubscriberBorrower";
         openWindow(event,
@@ -208,6 +259,12 @@ public class BorrowBookController extends BaseController implements Initializabl
                 "Search a Book");
     }
 
+    /**
+     * Navigates back to the Subscriber View.
+     * 
+     * @param event the action event triggered by the user
+     * @throws Exception if an error occurs during navigation
+     */
     public void Back(ActionEvent event) throws Exception {
         openWindow(event,
                 "/gui/SubscriberWindow/SubscriberWindow.fxml",
@@ -215,6 +272,12 @@ public class BorrowBookController extends BaseController implements Initializabl
                 "Subscriber View");
     }
 
+    /**
+     * Navigates to the Main Menu.
+     * 
+     * @param event the action event triggered by the user
+     * @throws Exception if an error occurs during navigation
+     */
     public void Main_Menu(ActionEvent event) throws Exception {
         SearchFrameController.FlagForSearch = "";
         openWindow(event, 
