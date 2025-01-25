@@ -59,6 +59,8 @@ public class UpdateInfoController extends BaseController implements Initializabl
     
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        refreshSubscriberData();
+
     	txtSubscriber_id.setDisable(true);
     	txtSubscriber_name.setDisable(true);
     	
@@ -69,7 +71,15 @@ public class UpdateInfoController extends BaseController implements Initializabl
     	
     }
 
-    
+    private void refreshSubscriberData() {
+    	
+        // Make a request to the server or database to fetch updated subscriber data
+        ClientUI.chat.accept("Fetch:" + currentSub.getSubscriber_id());
+        waitForServerResponse();
+        // server updates the ChatClient with the new currentSub instance
+        currentSub = ChatClient.s1;
+        
+    }
     
     
     public void btnUpdate(ActionEvent event) throws Exception {
