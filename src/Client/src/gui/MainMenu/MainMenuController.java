@@ -1,19 +1,9 @@
 package gui.MainMenu;
 
-import java.io.IOException;
-
-import gui.LoginWindow.LoginController;
-import gui.SearchWindow.SearchFrameController;
-import gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController;
 import gui.baseController.BaseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -24,79 +14,92 @@ import javafx.stage.Stage;
  */
 public class MainMenuController extends BaseController {
 		
-		@FXML
-		private Button btnRegister = null;
+	/** Button to navigate to the registration window */
+	@FXML
+	private Button btnRegister = null;
+	
+	/** Button to navigate to the search window */
+	@FXML
+	private Button btnSearch = null;
+	
+	/** Button to navigate to the login window */
+	@FXML
+	private Button btnLogin = null;
+	
+	/** Button to go back to the previous window */
+	@FXML
+	private Button btnBack = null;
 		
-		@FXML
-		private Button btnSearch = null;
-		@FXML
-		private Button btnLogin = null;
-		@FXML
-		private Button btnBack = null;
-		
-		public void openSearchWindow(ActionEvent event) throws Exception {
-			openWindow(event,
-					"/gui/SearchWindow/SearchFrame.fxml",
-					"/gui/SearchWindow/SearchFrame.css",
-					"Search a Book");
-		}
+	/**
+	 * Opens the search window for the user to search for books.
+	 *
+	 * @param event the event triggered by clicking the search button.
+	 * @throws Exception if an error occurs while opening the search window.
+	 */
+	public void openSearchWindow(ActionEvent event) throws Exception {
+		openWindow(event,
+				"/gui/SearchWindow/SearchFrame.fxml",
+				"/gui/SearchWindow/SearchFrame.css",
+				"Search a Book");
+	}
 
-		public void openLoginWindow(ActionEvent event){
-			openWindow(event,
-					"/gui/LoginWindow/LoginFrame.fxml",
-					"/gui/LoginWindow/LoginFrame.css",
-					"Login");
-		}
-		
-		public void openRegisterWindow(ActionEvent event){
-			openWindow(event,
-					"/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.fxml",
-					"/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.css",
-					"Register");
-		}
-		
-		public void openIPWindow(ActionEvent event) throws Exception {
-			openWindow(event,
-					"/gui/IPInputWindow/IPInputFrame.fxml",
-					"/gui/IPInputWindow/IPInputFrame.css",
-					"IP Input");
-		}
-		
-		public void back(ActionEvent event) throws Exception {
-	        openIPWindow(event);
-		}
-//		private void checkSubscriberResponse(ActionEvent event) {
-//		    if (ChatClient.s1.getSubscriber_id() == -1) {
-//		        System.out.println("Subscriber ID Not Found");
-//		    } else {
-//		        System.out.println("Subscriber ID Found");
-//
-//		        try {
-//		            // Hide the current window
-//		            ((Node) event.getSource()).getScene().getWindow().hide();
-//
-//		            // Load the SubscriberForm window
-//		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberForm.fxml"));
-//		            Pane root = loader.load();
-//
-//		            SubscriberFormController subscriberFormController = loader.getController();
-//		            subscriberFormController.loadSubscriber(ChatClient.s1);
-//
-//		            Stage primaryStage = new Stage();
-//		            Scene scene = new Scene(root);
-//		            scene.getStylesheets().add(getClass().getResource("/gui/SubscriberForm.css").toExternalForm());
-//		            primaryStage.setTitle("Subscriber Management Tool");
-//		            primaryStage.setScene(scene);
-//		            primaryStage.show();
-//		        } catch (IOException e) {
-//		            e.printStackTrace();
-//		        }
-//		    }
-		
-		public void start(Stage primaryStage) throws Exception {
-			start(primaryStage,
-					"/gui/MainMenuController/MainMenuFrame.fxml",
-					"/gui/MainMenuController/MainMenuFrame.css",
-					"Main Menu");	 
-		}
+	/**
+	 * Opens the login window for the user to log in to the system.
+	 *
+	 * @param event the event triggered by clicking the login button.
+	 */
+	public void openLoginWindow(ActionEvent event){
+		openWindow(event,
+				"/gui/LoginWindow/LoginFrame.fxml",
+				"/gui/LoginWindow/LoginFrame.css",
+				"Login");
+	}
+	
+	/**
+	 * Opens the registration window for new users to register.
+	 *
+	 * @param event the event triggered by clicking the register button.
+	 */
+	public void openRegisterWindow(ActionEvent event){
+		openWindow(event,
+				"/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.fxml",
+				"/gui/SubscriberRegisterWindow/SubscriberRegisterWindowFrame.css",
+				"Register");
+	}
+	
+	/**
+	 * Opens the IP input window for entering IP information.
+	 *
+	 * @param event the event triggered by clicking the IP input button.
+	 * @throws Exception if an error occurs while opening the IP input window.
+	 */
+	public void openIPWindow(ActionEvent event) throws Exception {
+		openWindow(event,
+				"/gui/IPInputWindow/IPInputFrame.fxml",
+				"/gui/IPInputWindow/IPInputFrame.css",
+				"IP Input");
+	}
+	
+	/**
+	 * Navigates back to the IP input window.
+	 *
+	 * @param event the event triggered by clicking the back button.
+	 * @throws Exception if an error occurs while navigating to the IP input window.
+	 */
+	public void back(ActionEvent event) throws Exception {
+        openIPWindow(event);
+	}
+	
+	/**
+	 * Starts the Main Menu window.
+	 *
+	 * @param primaryStage the primary stage of the application.
+	 * @throws Exception if an error occurs while starting the stage.
+	 */
+	public void start(Stage primaryStage) throws Exception {
+		start(primaryStage,
+				"/gui/MainMenuController/MainMenuFrame.fxml",
+				"/gui/MainMenuController/MainMenuFrame.css",
+				"Main Menu");	 
+	}
 }

@@ -189,6 +189,10 @@ public class LibrarianController extends BaseController implements Initializable
     	
     	waitForServerResponse();
     	
+    	if (ChatClient.extendedReturnDatesFromSubscriber == null) { // Return in case the variable is in its initial value.
+    		return;
+    	}
+    	
     	if (ChatClient.extendedReturnDatesFromSubscriber.isEmpty()) { // Return in case there's no information to work on.
     		return;
     	}

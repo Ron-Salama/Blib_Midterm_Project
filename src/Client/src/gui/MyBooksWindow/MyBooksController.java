@@ -1,14 +1,12 @@
 package gui.MyBooksWindow;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
 import gui.SubscriberWindow.SubscriberWindowController;
 import gui.baseController.BaseController;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,27 +24,33 @@ import logic.ClientTimeDiffController;
 import logic.Subscriber;
 
 /**
- * Controller for the Search Window in the Library Management Tool.
+ * Controller for the My Books Window in the Library Management Tool.
  * 
- * <p>This class allows users to search for books based on name, description, 
- * and subject filters, and displays the results in a TableView. It also provides 
- * an option to navigate back to the Main Menu.</p>
+ * <p>This class allows users to view their borrowed books, extend borrow dates, return books, 
+ * and view the history of borrowed books. It handles user interactions and communicates with the server.</p>
  */
 public class MyBooksController extends BaseController implements Initializable {
-    public static String FlagForSearch = "";
+    // Flag indicating whether the view is for searching books. 
+	public static String FlagForSearch = "";
     
+	// Label for displaying dynamic messages
     @FXML
 	private Label extensionDynamicLabel;
+    
+    // Label for the window title
     @FXML
 	private Label title;
+    
+    // Label for showing additional information about the view
     @FXML
     private Label LBLview;
     
+    // Button for exiting the window
 	@FXML
     private Button btnExit;
 	
     @FXML
-    private Button btnBackF;
+    private Button btnBack;
     @FXML
     private Button btnView;
     

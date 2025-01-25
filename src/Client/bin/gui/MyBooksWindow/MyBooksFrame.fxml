@@ -23,7 +23,7 @@
             <TableColumn fx:id="tableActions" prefWidth="376.66656494140625" text="Actions" />
         </columns>
       </TableView>
-      <Button id="btnExit" fx:id="btnBackF" layoutX="25.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
+      <Button id="btnExit" fx:id="btnBack" layoutX="25.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
       <Button id="btnExit" fx:id="btnHistory" layoutX="1104.0" layoutY="168.0" mnemonicParsing="false" onAction="#navigateToHistory" prefHeight="38.0" prefWidth="130.0" text="History">
          <font>
             <Font size="17.0" />
