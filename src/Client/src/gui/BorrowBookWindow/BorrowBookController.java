@@ -47,15 +47,15 @@ public class BorrowBookController extends BaseController implements Initializabl
     @FXML
     private Button btnMainMenu = null;
     @FXML
-    private TextField IDtxt;
+    private TextField IDtxt = null;
     @FXML
-    private Label awaitingTextID;
+    private Label awaitingTextID = null;
     @FXML
     private Button btnReserve = null;
     @FXML
-    private Label Book_Description;
+    private Label Book_Description = null;
     @FXML
-    private Label RequestStatus;
+    private Label RequestStatus = null;
 
     String bookId = "";
     String bookName = "";
@@ -70,7 +70,7 @@ public class BorrowBookController extends BaseController implements Initializabl
         
         btnSubmitToLibrarian.setDisable(true); // Disable the borrow request button by default
         
-     // Add an event handler to clear the details when the text field is clicked
+        // Add an event handler to clear the details when the text field is clicked
         IDtxt.setOnMouseClicked(event -> Clear());
     }
 
@@ -89,40 +89,39 @@ public class BorrowBookController extends BaseController implements Initializabl
 
         waitForServerResponse();
 
-            if (ChatClient.BorrowedBookInfo != null) {
-                Book_Description.setText(
-                	"Book Details:\n" +
-                    "Book ID: " + bookId + "\n" +
-                    "Book Name: " + ChatClient.BorrowedBookInfo[1] + "\n" +
-                    "Subject: " + ChatClient.BorrowedBookInfo[2] +"\n" +
-                    "Description: " + ChatClient.BorrowedBookInfo[3] + "\n" +
-                    "Number of Copies: " + ChatClient.BorrowedBookInfo[4] +"\n" +
-                    "Location on Shelf: " + ChatClient.BorrowedBookInfo[5] + "\n" +
-                    "Available Copies Number: " + ChatClient.BorrowedBookInfo[6] + "\n" +
-                    "Reserved Copies Number: " + ChatClient.BorrowedBookInfo[7] + "\n"
-                	
-                );
-                bookName = ChatClient.BorrowedBookInfo[1];
-                copiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[4]);
-                reservedCopiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[7]);
-                // Update borrow status based on available copies
-                if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
-                    borrowStatus = "NO_COPIES";
-                    btnReserve.setVisible(true);
-                    awaitingTextID.setText("There are no more Copies of the book " + bookName + "\nWould you like to Reserve it?");
-                    btnSubmitToLibrarian.setDisable(true); // Disable if no copies
-                } else {
-                    borrowStatus = "CAN_BORROW";
-                    awaitingTextID.setText("");
-                    btnReserve.setVisible(false);
-                    btnSubmitToLibrarian.setDisable(false); // Enable the button if book is available
-                }
+        if (ChatClient.BorrowedBookInfo != null) {
+            Book_Description.setText(
+            	"Book Details:\n" +
+                "Book ID: " + bookId + "\n" +
+                "Book Name: " + ChatClient.BorrowedBookInfo[1] + "\n" +
+                "Subject: " + ChatClient.BorrowedBookInfo[2] +"\n" +
+                "Description: " + ChatClient.BorrowedBookInfo[3] + "\n" +
+                "Number of Copies: " + ChatClient.BorrowedBookInfo[4] +"\n" +
+                "Location on Shelf: " + ChatClient.BorrowedBookInfo[5] + "\n" +
+                "Available Copies Number: " + ChatClient.BorrowedBookInfo[6] + "\n" +
+                "Reserved Copies Number: " + ChatClient.BorrowedBookInfo[7] + "\n"
+            	
+            );
+            bookName = ChatClient.BorrowedBookInfo[1];
+            copiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[4]);
+            reservedCopiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[7]);
+            // Update borrow status based on available copies
+            if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
+                borrowStatus = "NO_COPIES";
+                btnReserve.setVisible(true);
+                awaitingTextID.setText("There are no more Copies of the book " + bookName + "\nWould you like to Reserve it?");
+                btnSubmitToLibrarian.setDisable(true); // Disable if there are no copies
             } else {
-                borrowStatus = "BOOK_NOT_FOUND";
-                Book_Description.setText("No Book Found");
-                btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found
-                
+                borrowStatus = "CAN_BORROW";
+                awaitingTextID.setText("");
+                btnReserve.setVisible(false);
+                btnSubmitToLibrarian.setDisable(false); // Enable the button if book is available
             }
+        } else {
+            borrowStatus = "BOOK_NOT_FOUND";
+            Book_Description.setText("No Book Found");
+            btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found 
+        }
     }
 
     public void Submit_Borrow_Request(ActionEvent event) throws Exception {
@@ -184,8 +183,6 @@ public class BorrowBookController extends BaseController implements Initializabl
         }
     }
 
-    
-    
     public void Clear() {
         // Clear the text field for the book ID
         IDtxt.clear();

@@ -245,9 +245,9 @@ public class MyBooksController extends BaseController implements Initializable {
                                 if (borrowedBook.getTimeLeftToReturn() < 7 && borrowedBook.getTimeLeftToReturn() > 0) {
                                     extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                                     ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-                                    // if the extension isnt from subscribers window
+                                    // if the extension isn't from subscribers window
                                     if(librarianViewing == -1) {
-                                    	librarianMessage=",Extended Successfully by" +" The"+" Subscriber";
+                                    	librarianMessage=",Extended Successfully by" + " The" + " Subscriber";
                                     	 ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
                                     }
                                     ClientUI.chat.accept("UpdateHistoryInDB:" + body + librarianMessage);

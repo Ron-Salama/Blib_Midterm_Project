@@ -317,4 +317,18 @@ public class ClientTimeDiffController {
     	
     	return earliestDate.toString();
     }
+    
+    public String convertDateFormat(String dateStr) 
+    {
+    	
+        // Define the input and output date formats
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        
+      // Parse the original string into a LocalDate object
+        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
+        
+        // Format the LocalDate object to the new string format
+        return date.format(outputFormatter);
+}
 }

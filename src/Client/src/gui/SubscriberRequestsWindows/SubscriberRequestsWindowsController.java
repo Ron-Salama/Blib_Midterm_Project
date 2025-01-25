@@ -530,7 +530,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BName = TXTF3.getText();
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
-            String Rtime =  convertDateFormat("" + datePicker.getValue()); 
+            String Rtime =  clock.convertDateFormat("" + datePicker.getValue()); 
             String body = ""+SName+","+SID+","+BName+","+BID+","+Btime+","+Rtime;
             
             // Check if the subscriber is frozen.
@@ -561,7 +561,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             String BName = TXTF3.getText();
             String BID = TXTF4.getText();
             String Btime = TXTF5.getText();
-            String Rtime = convertDateFormat("" + datePicker.getValue()); 
+            String Rtime = clock.convertDateFormat("" + datePicker.getValue()); 
             String body = "" + SName + "," + SID + "," + BName + "," + BID + "," + Rtime + "," + Btime;
             
             boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
@@ -576,7 +576,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             else
             {	
             	String Expected_Return=clock.convertStringToLocalDateTime(Btime).plusDays(14).toLocalDate().toString();
-            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(convertDateFormat(Expected_Return), convertDateFormat(clock.convertStringToLocalDateTime(Rtime).toLocalDate().toString()));
+            	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(clock.convertDateFormat(Expected_Return), clock.convertDateFormat(clock.convertStringToLocalDateTime(Rtime).toLocalDate().toString()));
                 if (numOfDaysOfReturn<=0) {
                 	statusOfReturn = "early";
                 	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
@@ -608,19 +608,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	         btnAccept.setDisable(true);
 		}
 	}
-
-    // Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
-    public static String convertDateFormat(String dateStr) {
-        // Define the input and output date formats
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        
-        // Parse the original string into a LocalDate object
-        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
-        
-        // Format the LocalDate object to the new string format
-        return date.format(outputFormatter);
-    }
 
     // Method to handle Exit button click
     public void getExitBtn(ActionEvent event) throws Exception {

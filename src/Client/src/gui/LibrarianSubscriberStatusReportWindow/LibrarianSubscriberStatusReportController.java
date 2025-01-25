@@ -128,7 +128,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
                     if (expectedRelease.equals("Unknown") || expectedRelease.isEmpty()) {
                         expectedRelease = "Not Frozen";
                     } else {
-                        expectedRelease = convertDateFormat(clock.convertStringToLocalDateTime(extractFreezeDate(subscriberFields[5])).toLocalDate().plusMonths(1).toString());
+                        expectedRelease = clock.convertDateFormat(clock.convertStringToLocalDateTime(extractFreezeDate(subscriberFields[5])).toLocalDate().plusMonths(1).toString());
                     }
 
                     // Create a new SubscriberData object and add it to the filtered list
@@ -161,7 +161,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         for (String record : frozenData) {
             String[] recordFields = record.split(",");
             if (recordFields.length >= 3) {
-                String idDateByDate = convertDateFormat(recordFields[0]);
+                String idDateByDate = clock.convertDateFormat(recordFields[0]);
                 int frozenCount = Integer.parseInt(recordFields[1]);
                 int notFrozenCount = Integer.parseInt(recordFields[2]);
 
@@ -372,17 +372,4 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
     			"/gui/ReportsWindow/ReportsWindow.css",
     			"Subscriber Status Report");
     }
-    public static String convertDateFormat(String dateStr) 
-    {
-    	
-        // Define the input and output date formats
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        
-      // Parse the original string into a LocalDate object
-        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
-        
-        // Format the LocalDate object to the new string format
-        return date.format(outputFormatter);
-}
 }

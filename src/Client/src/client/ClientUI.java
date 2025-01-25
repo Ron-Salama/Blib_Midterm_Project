@@ -1,8 +1,5 @@
 package client;
 
-import java.net.Inet4Address;
-
-import gui.IPInputWindow.IPInputController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,15 +26,6 @@ public class ClientUI extends Application {
         primaryStage.setTitle("IP Input");
         primaryStage.setScene(scene);
         primaryStage.show();
-        
-        // Retrieve the IP from the system property (if any) or use a default IP
-//        String ip = System.getProperty("server.ip");  // default to localhost if no property is set
-        
-       
-        
-//        // Initialize the client controller with the provided IP and default port
-//        System.out.println(ip);
-//        chat = new ClientController(ip, DEFAULT_PORT);
     }
     
     private void loadIcon(Stage primaryStage) {
