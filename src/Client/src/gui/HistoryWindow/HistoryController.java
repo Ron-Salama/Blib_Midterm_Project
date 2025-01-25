@@ -28,15 +28,15 @@ import logic.Subscriber;
  */
 public class HistoryController extends BaseController implements Initializable {
     @FXML
-    private Button btnBackF;
+    private Button btnBack = null;
     @FXML
-    private Button btnExit;
+    private Button btnExit = null;
     @FXML
     private TableView<String> tableView;
     @FXML
     private TableColumn<String, String> tableDescription;
    
-    private Subscriber currentSubscriber;
+    private Subscriber currentSubscriber = null;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,7 +61,6 @@ public class HistoryController extends BaseController implements Initializable {
     }
     
     public void getExitBtn(ActionEvent event) {
-    	
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",
     			"/gui/MainMenu/MainMenuFrame.css",
@@ -79,9 +78,6 @@ public class HistoryController extends BaseController implements Initializable {
                 ChatClient.myHistoryInfo.clear(); // Clears all elements from the ArrayList
                 
             });
-        } else {
-            System.out.println("No history data to display.");
         }
     }
-
 }

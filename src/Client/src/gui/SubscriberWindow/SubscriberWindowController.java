@@ -91,7 +91,7 @@ public class SubscriberWindowController extends BaseController implements Initia
 	    	status = frozenData[1]; // Make the status easier to manipulate and use.
 	    	
 	    	// Take the date the account was frozen at, add a month and return it as a string.
-	    	frozenUntil = clock.convertStringToLocalDateTime(frozenData[2]).plusMonths(1).toLocalDate().format(clock.getDateFormatter()).toString();
+	    	frozenUntil = clock.convertStringToLocalDate(frozenData[2]).plusMonths(1).format(clock.getDateFormatter()).toString();
 	    	
 	    	btnBorrow.setDisable(true);
             changefrozenUntilAndDaysLeftDynamicTextToSubsriberStatus();

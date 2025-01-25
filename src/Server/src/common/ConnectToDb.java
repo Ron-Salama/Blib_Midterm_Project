@@ -1143,8 +1143,8 @@ public class ConnectToDb {
 
             // Step 2: Update the `time_left_to_retrieve` for the smallest reserve_id
             String updateReservationQuery = "UPDATE reserved_books SET time_left_to_retrieve = ? WHERE reserve_id = ?";
-            String twoDays = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow())
-                    .toLocalDate().plusDays(2).toString(); // Get current date + 2 days
+            String twoDays = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow())
+                    .plusDays(2).toString(); // Get current date + 2 days
 
             twoDays = convertDateFormat(twoDays);
             
@@ -1435,7 +1435,7 @@ public class ConnectToDb {
     
 	public static int FetchYesterdayBorrows(Connection conn) throws SQLException {
 		// Step 1: Yesterday's date in DD/MM/YYYY format
-		String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+		String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
    
         String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Borrowed_Time,'%d-%m-%Y') = STR_TO_DATE(?,'%Y-%m-%d')";
     
@@ -1455,7 +1455,7 @@ public class ConnectToDb {
 	
 	public static void updateAmountOfBorrowedBooksYesterday(Connection conn, int amountOfBooksBorrowedYesterday) throws SQLException {
 	    // Step 1: Get yesterday's date in the proper format
-	    String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+	    String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
 
 	    // Step 2: SQL query to update the number of borrowed books for yesterday
 	    String query = "UPDATE databydate SET BorrowedBooks = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
@@ -1473,7 +1473,7 @@ public class ConnectToDb {
 	}
 	public static void insertCurrentDate(Connection taskSchedulerConnection) throws SQLException {
 	    // Step 1: Get today's date in the proper format (YYYY-MM-DD)
-	    String today = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().toString();  // Gets the current date in YYYY-MM-DD format
+	    String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();  // Gets the current date in YYYY-MM-DD format
 
 	    // Step 2: SQL query to check if the row already exists for today's date
 	    String query1 = "SELECT COUNT(*) FROM databydate WHERE idDataByDate = STR_TO_DATE(?, '%Y-%m-%d')";
@@ -1508,7 +1508,7 @@ public class ConnectToDb {
 
 	public static int FetchYesterdaylates(Connection conn) throws SQLException {
 	    // Step 1: Get yesterday's date in DD/MM/YYYY format
-		  String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+		  String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
 	    // Log the calculated yesterday date to ensure it's correct
 	    System.out.println("Yesterday's Date: " + yesterday);
 
@@ -1536,7 +1536,7 @@ public class ConnectToDb {
 
 	public static void updateAmountOflateBooksYesterday(Connection taskSchedulerConnection, int latebooks) throws SQLException {
 		    // Step 1: Get yesterday's date in the proper format
-		    String yesterday = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().minusDays(1).toString();
+		    String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
 
 		    // Step 2: SQL query to update the number of borrowed books for yesterday
 		    String query = "UPDATE databydate SET Late = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
@@ -1569,7 +1569,7 @@ public class ConnectToDb {
 	}
 	public static void amountfrozen(Connection taskSchedulerConnection, int amountfrozen) throws SQLException {
 		 // Step 1: Get yesterday's date in the proper format
-	    String today = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().toString();
+	    String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();
 
 	    // Step 2: SQL query to update the number of borrowed books for yesterday
 	    String query = "UPDATE databydate SET Frozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
@@ -1603,7 +1603,7 @@ public class ConnectToDb {
 	}
 	public static void amountNotfrozen(Connection taskSchedulerConnection, int amountNotfrozen) throws SQLException {
 		 // Step 1: Get yesterday's date in the proper format
-	    String today = EchoServer.clock.convertStringToLocalDateTime(EchoServer.clock.timeNow()).toLocalDate().toString();
+	    String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();
 
 	    // Step 2: SQL query to update the number of borrowed books for yesterday
 	    String query = "UPDATE databydate SET NotFrozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
