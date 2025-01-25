@@ -23,25 +23,25 @@ import logic.Subscriber;
 
 public class UpdateInfoController extends BaseController implements Initializable {
     @FXML
-    private Label lblSubscriber_id;
+    private Label lblSubscriber_id = null;
     @FXML
-    private Label lblSubscriber_name;
+    private Label lblSubscriber_name = null;
     @FXML
-    private Label lblSubscriber_phoneNumber;
+    private Label lblSubscriber_phoneNumber = null;
     @FXML
-    private Label lblSubscriber_email;
+    private Label lblSubscriber_email = null;
     
     @FXML
-    private Label UpdateStatus;
+    private Label UpdateStatus = null;
 
     @FXML
-    private TextField txtSubscriber_id;
+    private TextField txtSubscriber_id = null;
     @FXML
-    private TextField txtSubscriber_name;
+    private TextField txtSubscriber_name = null;
     @FXML
-    private TextField txtSubscriber_phoneNumber;
+    private TextField txtSubscriber_phoneNumber = null;
     @FXML
-    private TextField txtSubscriber_email;
+    private TextField txtSubscriber_email = null;
 
     @FXML
     private Button btnClose = null;
@@ -62,10 +62,10 @@ public class UpdateInfoController extends BaseController implements Initializabl
     	txtSubscriber_id.setDisable(true);
     	txtSubscriber_name.setDisable(true);
     	
-		 txtSubscriber_id.setText(""+currentSub.getSubscriber_id());
-		 txtSubscriber_name.setText(""+currentSub.getSubscriber_name());
+		 txtSubscriber_id.setText("" + currentSub.getSubscriber_id());
+		 txtSubscriber_name.setText("" + currentSub.getSubscriber_name());
 		 txtSubscriber_email.setText("" + currentSub.getSubscriber_email());
-		 txtSubscriber_phoneNumber.setText(""+currentSub.getSubscriber_phone_number());
+		 txtSubscriber_phoneNumber.setText("" + currentSub.getSubscriber_phone_number());
     	
     }
 
@@ -77,8 +77,20 @@ public class UpdateInfoController extends BaseController implements Initializabl
         String email = txtSubscriber_email.getText();
         String id = txtSubscriber_id.getText();
 
-        String obj = ""+id + "," + phoneNumber + "," + email;
+        String obj = "" + id + "," + phoneNumber + "," + email;
 
+        // Validation check.
+        if (email.isEmpty() && phoneNumber.isEmpty()) {
+        	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(UpdateStatus, "Phone number and Email must be entered.", "-fx-text-fill: red;", 2);
+        	return;
+        } else if (email.isEmpty()) {
+        	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(UpdateStatus, "Email must be entered.", "-fx-text-fill: red;", 2);
+        	return;
+        } else if (phoneNumber.isEmpty()) {
+        	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(UpdateStatus, "Phone number must be entered.", "-fx-text-fill: red;", 2);
+        	return;
+        }
+        
         ClientUI.chat.accept("Update:" + obj);
         
         waitForServerResponse();
