@@ -478,7 +478,7 @@ public class EchoServer extends AbstractServer {
                 boolean isRetrieved = ConnectToDb.insertBorrowBook(dbConnection, body);
 
                 if (isRetrieved) {
-                	ConnectToDb.decreaseNumCopies(dbConnection,bookID);
+                	ConnectToDb.decreaseAvaliabeNumCopies(dbConnection,bookID);
                 	client.sendToClient("Book retrieved Successfully and has been added to your borrowed books list.");
                 	
                    
