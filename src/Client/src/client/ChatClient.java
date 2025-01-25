@@ -39,8 +39,9 @@ public class ChatClient extends AbstractClient
   public static Librarian l1 = new Librarian(0, null);
   public static List<Book> bookList = new ArrayList<>(); // List to hold books
   public static List<String[][]> br = new ArrayList<>(); 
-  public static String[] BorrowedBookInfo = null;
-  public static String[] BorrowedBookInformationForBarcodeScanner = null;
+  public static String[] BorrowedBookInfo;
+  public static List<BorrowedBook> BorrowedBookInfoForReports = new ArrayList<>();
+  public static String[] BorrowedBookInformationForBarcodeScanner;
   public static ArrayList<String> myHistoryInfo = new ArrayList<String>(); 
   public static boolean awaitResponse = false;
   public static boolean alertIndicator = true;
@@ -155,6 +156,8 @@ public class ChatClient extends AbstractClient
 	    	handleExtendedReturnDatesFromSubscriber(response.substring("ExtendedReturnDatesForsSubscriber:".length()));
 	    }else if (response.startsWith("AllSubscriberInformation:")) {
 	    	handleAllSubscriberInformation(response.substring("AllSubscriberInformation:".length()));
+	    }else if (response.startsWith("allBorrowInfo:")) {
+	    	handleAllBorrowInformation(response.substring("allBorrowInfo:".length()));
 	    }
 	    
 	    // release the lock so that the client's window can continue on working.
@@ -177,9 +180,60 @@ public class ChatClient extends AbstractClient
 	    }
 	}
 
-  
-  	private void handleReturnRequestfailure() {
-  		System.out.print("Fetch return request failed");
+  private void handleAllBorrowInformation(String data) {
+	    // Check if no books were found
+	    if (data.equals("NoBooksFound")) {
+	        System.out.println("No borrowed books found.");
+	        ChatClient.BorrowedBookInfoForReports.clear();
+	    } 
+	    // Check if there's an error in fetching data
+	    else if (data.startsWith("Error")) {
+	        System.out.println("Error fetching borrowed books: " + data);
+	    } 
+	    else {
+	        // Remove the "allBorrowInfo:" prefix
+	        String bookData = data.replace("allBorrowInfo:", "");
+
+	        // Split the data into individual book strings
+	        String[] bookStrings = bookData.split(";");
+
+	        // Clear the current borrowed book info
+	        ChatClient.BorrowedBookInfoForReports.clear();
+
+	        // Process each book entry
+	        for (String bookDetails : bookStrings) {
+	            String[] fields = bookDetails.split(","); // Split fields by comma
+
+	            // Ensure there are 6 fields as expected
+	            if (fields.length == 6) {
+	                try {
+	                    int borrowId = Integer.parseInt(fields[0]);
+	                    int subscriberId = Integer.parseInt(fields[1]);
+	                    String name = fields[2];
+	                    String borrowedTime = fields[3];
+	                    String returnTime = fields[4];
+	                    String ISBN = fields[5];
+
+	                    // Calculate the time left to return the book
+	                    int timeLeftToReturn = clock.howMuchTimeLeftToReturnABook(returnTime);
+
+	                    // Add the book information to the report list
+	                    ChatClient.BorrowedBookInfoForReports.add(
+	                        new BorrowedBook(borrowId, subscriberId, name, borrowedTime, returnTime, timeLeftToReturn, ISBN)
+	                    );
+	                } catch (NumberFormatException e) {
+	                    System.err.println("Error parsing book data: " + e.getMessage());
+	                }
+	            } else {
+	                System.err.println("Invalid data format for book: " + bookDetails);
+	            }
+	        }
+	    }
+	}
+
+		
+  private void handleReturnRequestfailure() {
+	System.out.print("Fetch return request failed");
 	
   	}
 

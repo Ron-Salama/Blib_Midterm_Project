@@ -567,7 +567,8 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             boolean lostBook = isLost.isSelected(); //Check if the checkBox isLost is selected
             if (lostBook) 
             {
-            	ClientUI.chat.accept("Handle Lost:"+body);
+            	ClientUI.chat.accept("Handle Lost:" + body);
+            	waitForServerResponse();
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
             	waitForServerResponse();
                 showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
@@ -577,7 +578,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             {	
             	String Expected_Return=clock.convertStringToLocalDate(Btime).plusDays(14).toString();
             	int numOfDaysOfReturn = clock.timeDateDifferenceBetweenTwoDates(clock.convertDateFormat(Expected_Return), clock.convertDateFormat(clock.convertStringToLocalDate(Rtime).toString()));
-                if (numOfDaysOfReturn<=0) {
+                if (numOfDaysOfReturn <= 0) {
                 	statusOfReturn = "early";
                 	numOfDaysOfReturn = Math.abs(numOfDaysOfReturn);
     			}
@@ -585,9 +586,10 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 	statusOfReturn = "late";
     			}
                 ClientUI.chat.accept("Handle return:" + body); 
+                waitForServerResponse();
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
             	waitForServerResponse();
-                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
+                showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;", 7);;
                 btnAccept.setDisable(true);
             }
 		}
@@ -602,21 +604,22 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 String body2 = "" + SName + "," + SID + "," + PhoneNum + "," + Email + "," +date+ "," + ignore2;
 
 			 ClientUI.chat.accept("Handle register:" + body1);
+			 waitForServerResponse();
 			 ClientUI.chat.accept("UpdateHistoryInDB:" + body2 + ",Register Successfully");
 			 waitForServerResponse();
-	         showColoredLabelMessageOnGUI(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;");
+			 showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;", 7);
 	         btnAccept.setDisable(true);
 		}
 	}
 
     // Method to handle Exit button click
     public void getExitBtn(ActionEvent event) throws Exception {
-    	borrowInformationFromBarcode = true;
     	openWindow(event,
     			"/gui/MainMenu/MainMenuFrame.fxml",
     			"/gui/MainMenu/MainMenuFrame.css",
     			"MainMenu");
     }
+    
     public void Back(ActionEvent event) throws Exception {
     	borrowInformationFromBarcode = false;
     	openWindow(event,
