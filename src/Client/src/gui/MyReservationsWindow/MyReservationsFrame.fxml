@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyReservationsWindow.MyReservationsController">
    <children>
@@ -22,14 +23,20 @@
         <columns>
           <!-- Book ID Column -->
           <TableColumn fx:id="tableId" prefWidth="100.0" text="Book ID" />
+          
           <!-- Book Name Column -->
-          <TableColumn fx:id="tableName" prefWidth="330.0" text="Book Name" />
+          <TableColumn fx:id="tableName" prefWidth="250.0" text="Book Name" />
+
           <!-- Reserved Date Column -->
           <TableColumn fx:id="tableReservationDate" prefWidth="200.0" text="Reserved Date" />
-          <!-- Actions Column -->
-          <TableColumn fx:id="actions" prefWidth="320.0" text="Actions" />
+          
+          <!-- Actions Column with Increased Width -->
+          <TableColumn fx:id="actions" prefWidth="400.0" text="Actions" />
         </columns>
       </TableView>
-      <Label fx:id="feedBack" layoutX="450.0" layoutY="50.0" />
+
+      <!-- Feedback Label for Status Updates -->
+      <Label fx:id="feedBack" layoutX="450.0" layoutY="50.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
    </children>
 </AnchorPane>

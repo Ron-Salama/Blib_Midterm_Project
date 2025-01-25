@@ -40,6 +40,9 @@ public class MyReservationsController extends BaseController implements Initiali
 	private Label feedBack;
     
     @FXML
+    private Label statusLabel;
+    
+    @FXML
     private TableView<ReservedBook> tableView;
 
     @FXML
@@ -68,6 +71,13 @@ public class MyReservationsController extends BaseController implements Initiali
     @FXML
     private Button btnRefresh;
     
+    @FXML
+    private Button retrieveButton;
+    
+    
+    @FXML
+    private HBox actionBox;
+    
     public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
     
     int availableCopiesNum;
@@ -80,6 +90,9 @@ public class MyReservationsController extends BaseController implements Initiali
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
         tableReservationDate.setCellValueFactory(new PropertyValueFactory<>("reserveDate")); // Reserve Date column
         actions.setCellValueFactory(new PropertyValueFactory<>("Actions")); // Actions column
+        if (actionBox == null) {
+            System.out.println("actionBox is null. FXML file is not loading correctly.");
+        }
         
 
         currentSub = SubscriberWindowController.currentSubscriber;
@@ -112,7 +125,6 @@ public class MyReservationsController extends BaseController implements Initiali
             
            Platform.runLater(() -> {
                 if (ChatClient.reservedBookList != null && !ChatClient.reservedBookList.isEmpty()) {
-                	//MAYBE ADD HERE TO DELETE RESERVATION TODAY IS 1 DAY MORE THAN THE ACTUAL DATE FOR TIME LEFT TO RETRIEVE
                     tableView.getItems().clear();
                     tableView.getItems().addAll(ChatClient.reservedBookList);
                 } else {
@@ -125,20 +137,22 @@ public class MyReservationsController extends BaseController implements Initiali
     private void setupActionsColumn() {
         actions.setCellFactory(param -> new TableCell<ReservedBook, Void>() {
             private final Button retrieveButton = new Button("Retrieve");
-            private final HBox centeredBox = new HBox(retrieveButton);
-
+            private final Label statusLabel = new Label();
+            private final HBox actionHBox = new HBox(retrieveButton, statusLabel);
+            
             {
-                // Style the button
+                // Style the button and label
                 retrieveButton.setStyle("-fx-font-size: 14px; -fx-padding: 5px;");
-
-                // Center the button inside the HBox
-                centeredBox.setStyle("-fx-alignment: CENTER;");
-                centeredBox.setSpacing(10);
+                statusLabel.setStyle("-fx-font-size: 12px; -fx-padding: 5px;");
+                
+                // Align the button and label
+                actionHBox.setStyle("-fx-alignment: CENTER_LEFT;");
+                actionHBox.setSpacing(10);
 
                 // Button action when clicked
                 retrieveButton.setOnAction(event -> {
                     ReservedBook reservedBook = getTableView().getItems().get(getIndex());
-                    handleRetrieveBook(event, reservedBook); // Handle the "Retrieve" logic
+                    handleRetrieveBook(event, reservedBook);
 
                     // Mark the book as retrieved
                     reservedBook.setRetrieved(true);
@@ -151,22 +165,32 @@ public class MyReservationsController extends BaseController implements Initiali
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null); // No button if the row is empty or has no item
+                    setGraphic(null);
                 } else {
                     ReservedBook reservedBook = (ReservedBook) getTableRow().getItem();
-                    if (!reservedBook.getTimeLeftToRetrieve().equals("Book is not available yet")) {
-                        setGraphic(centeredBox);
-
-                        // Enable or disable the button based on the retrieved status
-                        retrieveButton.setDisable(reservedBook.isRetrieved());
+                    String isAccountFrozen = currentSub.getStatus();
+                                      
+                    // Determine button state and message
+                    if (!(isAccountFrozen.equals(" status:Not Frozen"))) {
+                        retrieveButton.setDisable(true);
+                        statusLabel.setText("Your account is frozen, you can't retrieve the book.");
+                    } else if (reservedBook.getTimeLeftToRetrieve().equals("Book is not available yet")) {
+                        retrieveButton.setDisable(true);
+                        statusLabel.setText("Book is not available yet.");
                     } else {
-                        setGraphic(null); // Hide the button for other statuses
+                        retrieveButton.setDisable(false);
+                        statusLabel.setText("Your book is here!");
                     }
+
+                    setGraphic(actionHBox); // Display the button and label
                 }
             }
         });
     }
+
+
 
 
 
@@ -239,16 +263,7 @@ public class MyReservationsController extends BaseController implements Initiali
     
 
 
-    
-    public void getRefreshBtn(ActionEvent event) {
-    	
-    }
-    
-    
-    
-    
-    
-    
+
     
     /**
      * Handles the Exit button action, navigating back to the Main Menu.
