@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import logic.Subscriber;
 
 /**
  * Controller class for the IP Input window of the Library Management Tool.
@@ -19,20 +18,23 @@ import logic.Subscriber;
  */
 public class IPInputController extends BaseController {
 
-    private IPInputController lipc;
-
+    // Button to exit the application.
     @FXML
     private Button btnExit = null;
 
+    // Button to send the entered IP address for validation.
     @FXML
     private Button btnSend = null;
 
+    // TextField where the user inputs the IP address.
     @FXML
     private TextField IPtxt;
 
+    // Label showing messages related to the connection status.
     @FXML
     private Label awaitingLoginText;
 
+    // Label displaying a welcome message.
     @FXML
     private Label welcomeLabel;
 
@@ -55,7 +57,6 @@ public class IPInputController extends BaseController {
         String ip = getIP();
         if (ip.trim().isEmpty()) {
         	showColoredLabelMessageOnGUI(awaitingLoginText, "You must enter an IP address.", "-fx-text-fill: red;");
-            System.out.println("You must enter an IP address.");
             return;
         }
 
@@ -71,7 +72,6 @@ public class IPInputController extends BaseController {
         } else {
         	String labelMessage = "Connected successfully to IP: " + ip;
         	showColoredLabelMessageOnGUI(awaitingLoginText, labelMessage, "-fx-text-fill: green;");
-            System.out.println(labelMessage);
             
             openMainMenu(event);
         }
@@ -114,14 +114,5 @@ public class IPInputController extends BaseController {
     		System.exit(1);
     	}
         ClientUI.chat.accept("EXIT:");
-    }
-
-    /**
-     * Loads the subscriber data into the current controller.
-     *
-     * @param s1 the {@link Subscriber} object to load.
-     */
-    public void loadSubscriber(Subscriber s1) {
-        this.lipc.loadSubscriber(s1);
     }
 }

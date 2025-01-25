@@ -1,6 +1,5 @@
 package gui.LibrarianBorrowedBooksReportWindow;
 
-import javafx.scene.control.Label;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -22,60 +21,115 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
-import javafx.scene.control.Label;
+
+/**
+ * Controller class for the Librarian Borrowed Books Report window.
+ *
+ * <p>This class manages the interactions within the librarian's borrowed books report window,
+ * including displaying the borrowed books data in charts and tables, filtering books by month,
+ * and showing pie charts with average daily borrowing statistics.</p>
+ */
 public class LibrarianBorrowedBooksReportController extends BaseController {
 
+	// The BarChart for visualizing book statistics (borrowed, early returns, late returns).
     @FXML
     private BarChart<String, Number> barChart;
+    
+    // The X-Axis of the BarChart, representing categories (e.g., book names).
     @FXML
     private CategoryAxis barXAxis;
+    
+    // The Y-Axis of the BarChart, representing numeric values (e.g., counts of events).
     @FXML
     private NumberAxis barYAxis;
+    
+    // A VBox container for holding the PieChart that displays the average data.
     @FXML
-    private VBox avgPieChartContainer; // Add a VBox container in your FXML
+    private VBox avgPieChartContainer;
+    
+    // A ComboBox for filtering the book data based on selected criteria (e.g., book ID or name).
     @FXML
-    private ComboBox<String> bookFilterComboBox; // Add the ComboBox for filtering
+    private ComboBox<String> bookFilterComboBox;
+    
+    // A Label displaying the "Most Borrowed" book statistics.
     @FXML
     private Label MPB;
+    
+    // A Label displaying the "Least Used" book statistics.
     @FXML
     private Label LUB;
+    
+    // A Label displaying the "Early Returns" statistics for books.
     @FXML
     private Label ERB;
+    
+    // A Label displaying the "Least Used" book statistics (alternative).
     @FXML
     private Label LUB1;
+    
+    // A Label displaying the "Early Returns" statistics (alternative).
     @FXML
     private Label ERB1;
+    
+    // A ComboBox for selecting the month to display statistics.
     @FXML
     private ComboBox<String> monthComboBox;
+    
+    // A PieChart for displaying the overall statistics (e.g., distribution of borrowings).
     @FXML
     private PieChart pieChart;
+    
+    // A PieChart displaying the daily average data for the book statistics.
     @FXML
-    private PieChart avgPieChart;  // Add a new PieChart for the daily average data
+    private PieChart avgPieChart;
 
+    // A TableView displaying a list of book data (ID, name, borrowed count, etc.).
     @FXML
     private TableView<BookData> bookDataTable;
+    
+    // A TableColumn displaying the book ID.
     @FXML
     private TableColumn<BookData, String> bookIdColumn;
+    
+    // A TableColumn displaying the book name.
     @FXML
     private TableColumn<BookData, String> bookNameColumn;
+    
+    // A TableColumn displaying the number of times the book has been borrowed.
     @FXML
     private TableColumn<BookData, Integer> timesBorrowedColumn;
+    
+    // A TableColumn displaying the number of early returns for each book.
     @FXML
     private TableColumn<BookData, Integer> earlyReturnsColumn;
+    
+    // A TableColumn displaying the number of late returns for each book.
     @FXML
     private TableColumn<BookData, Integer> lateReturnsColumn;
+    
+    // A TableColumn displaying the number of lost books.
     @FXML
     private TableColumn<BookData, Integer> lostColumn;
+    
+    // A reference to the ClientTimeDiffController for managing time-based operations.
     private ClientTimeDiffController clock = ChatClient.clock;
     
+    // A Map that holds book data, where the key is the book ID and the value is the corresponding BookData object.
     private Map<String, BookData> bookDataMap = new HashMap<>();
 
+    /**
+     * Initializes the UI components for the borrowed books report window,
+     * including setting up the ComboBoxes, TableView, and PieCharts.
+     *
+     * @throws InterruptedException if the initialization process is interrupted.
+     */
     public void initialize() throws InterruptedException {
         // Set up the month ComboBox
         ObservableList<String> months = FXCollections.observableArrayList(
@@ -132,6 +186,13 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
             }
         });
     }
+    
+    /**
+     * Populates the PieChart with the latest borrowed/returned data and
+     * calculates the average borrows and returns per day for the selected month.
+     * 
+     * @throws InterruptedException if an error occurs during the data retrieval.
+     */
     private void populatePieChart() throws InterruptedException {
         // Clear any previous data in the charts
         pieChart.getData().clear();
@@ -217,8 +278,12 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         avgPieChart.layout();
     }
 
-
-
+    /**
+     * Retrieves the latest frozen subscriber record from a list of frozen data.
+     *
+     * @param frozenData A list of frozen subscriber records as strings, where each string contains the date and other relevant details.
+     * @return The latest frozen record as a string, or null if no record is found.
+     */
     private String getLatestRecord(List<String> frozenData) {
         String latestRecord = null;
         LocalDate latestDate = LocalDate.MIN;
@@ -238,7 +303,12 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         }
         return latestRecord;
     }
-
+    
+    /**
+     * Populates the bar chart with borrowed and returned book data filtered by the selected month.
+     *
+     * @throws InterruptedException If the thread is interrupted while waiting for the data or populating the chart.
+     */
     private void populateBarChart() throws InterruptedException {
         // Clear any previous data in the chart
         barChart.getData().clear();
@@ -282,6 +352,11 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         barChart.getData().addAll(borrowedSeries, returnedSeries);
     }
 
+    /**
+     * Populates the book data table with information about borrowed books, including early and late returns, and updates relevant statistics.
+     * 
+     * @throws InterruptedException If the thread is interrupted while fetching data or processing the books.
+     */
     private void populateTable() throws InterruptedException {
         // Clear previous data in the table and the map
         bookDataTable.getItems().clear();
@@ -387,7 +462,6 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
                         longestUnreturnedBeforeToday = borrowedBook;
                     }
                 }
-
             } catch (Exception e) {
                 System.err.println("Error processing borrowed book: " + e.getMessage());
             }
@@ -436,7 +510,12 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         }
     }
 
-
+    /**
+     * Filters the books shown in the book data table based on the selected filter from the combo box.
+     * If no filter is selected or if "All" is chosen, all books are displayed.
+     * 
+     * @throws InterruptedException If the thread is interrupted while fetching or processing data.
+     */
     private void filterBooks() throws InterruptedException {
     	populateTable();
         String selectedFilter = bookFilterComboBox.getValue();
@@ -467,6 +546,13 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         }
         
     }
+    
+    /**
+     * Fetches all frozen subscriber data for reports.
+     * 
+     * @return A list of strings containing the frozen subscriber data.
+     * @throws InterruptedException If the thread is interrupted while fetching data.
+     */
     private List<String> getAllFrozenData() throws InterruptedException {
         List<String> frozenData = new ArrayList<>();
 
@@ -484,6 +570,12 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         return frozenData;
     }
 
+    /**
+     * Navigates back to the previous window in the application.
+     *
+     * @param event The action event triggering the back navigation.
+     * @throws Exception If an error occurs while opening the previous window.
+     */
     public void back(ActionEvent event) throws Exception{
         openWindow(event,
                 "/gui/ReportsWindow/ReportsWindow.fxml",
@@ -491,6 +583,9 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
                 "Subscriber Status Report");
     }
 
+    /**
+     * A class representing the data of a borrowed book, including its ID, name, borrow count, early returns, late returns, and lost status.
+     */
     public class BookData {
         private String bookId;
         private String bookName;
@@ -499,56 +594,111 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         private int lateReturns;
         private int lost;
 
-        // Constructor
+        /**
+         * Constructs a new BookData object with the specified details.
+         * 
+         * @param bookId the unique identifier (ISBN) of the book.
+         * @param bookName the name of the book.
+         * @param timesBorrowed the number of times the book has been borrowed.
+         * @param earlyReturns the number of early returns for the book.
+         * @param lateReturns the number of late returns for the book.
+         */
         public BookData(String bookId, String bookName, int timesBorrowed, int earlyReturns, int lateReturns) {
             this.bookId = bookId;
             this.bookName = bookName;
             this.timesBorrowed = timesBorrowed;
             this.earlyReturns = earlyReturns;
             this.lateReturns = lateReturns;
-            this.lost = lost;
         }
 
-        // Getters and Setters
+        /**
+         * Gets the book's unique identifier (ISBN).
+         * 
+         * @return the book's unique identifier (ISBN).
+         */
         public String getBookId() {
             return bookId;
         }
 
+        /**
+         * Sets the book's unique identifier (ISBN).
+         * 
+         * @param bookId the book's unique identifier (ISBN).
+         */
         public void setBookId(String bookId) {
             this.bookId = bookId;
         }
 
+        /**
+         * Gets the name of the book.
+         * 
+         * @return the name of the book.
+         */
         public String getBookName() {
             return bookName;
         }
 
+        /**
+         * Sets the name of the book.
+         * 
+         * @param bookName the name of the book.
+         */
         public void setBookName(String bookName) {
             this.bookName = bookName;
         }
 
+        /**
+         * Gets the number of times the book has been borrowed.
+         * 
+         * @return the number of times the book has been borrowed.
+         */
         public int getTimesBorrowed() {
             return timesBorrowed;
         }
 
+        /**
+         * Sets the number of times the book has been borrowed.
+         * 
+         * @param timesBorrowed the number of times the book has been borrowed.
+         */
         public void setTimesBorrowed(int timesBorrowed) {
             this.timesBorrowed = timesBorrowed;
         }
 
+        /**
+         * Gets the number of early returns for the book.
+         * 
+         * @return the number of early returns for the book.
+         */
         public int getEarlyReturns() {
             return earlyReturns;
         }
 
+        /**
+         * Sets the number of early returns for the book.
+         * 
+         * @param earlyReturns the number of early returns for the book.
+         */
         public void setEarlyReturns(int earlyReturns) {
             this.earlyReturns = earlyReturns;
         }
 
+        /**
+         * Gets the number of late returns for the book.
+         * 
+         * @return the number of late returns for the book.
+         */
         public int getLateReturns() {
             return lateReturns;
         }
 
+        /**
+         * Sets the number of late returns for the book.
+         * 
+         * @param lateReturns the number of late returns for the book.
+         */
         public void setLateReturns(int lateReturns) {
             this.lateReturns = lateReturns;
         }
     }
-
 }
