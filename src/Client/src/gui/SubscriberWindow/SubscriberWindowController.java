@@ -29,7 +29,7 @@ import logic.Subscriber;
  * the "My Books" and "Borrow" windows.</p>
  */
 public class SubscriberWindowController extends BaseController implements Initializable {
-
+	// Private instance of the clock used for date-time functions.
 	private ClientTimeDiffController clock = new ClientTimeDiffController();
 	
 	/** The button to open the Search window. */
@@ -48,18 +48,23 @@ public class SubscriberWindowController extends BaseController implements Initia
     @FXML
     private Button btnBorrow = null;
     
+    /** The label for greeting the subscriber. */
     @FXML
     private Label greetingLabel = null;
     
+    /** The label for displaying the subscriber's status. */
     @FXML
     private Label myStatusLabel = null;
     
+    /** The label for displaying the frozen until date and days left until unfrozen. */
     @FXML
     private Label frozenUntilAndDaysLeftDynamicText = null;
     
     /** The button to navigate back to the main menu. */
     @FXML
     private Button btnBack = null;
+    
+    /** The button to open the Update Information window. */
     @FXML
     private Button btnUpdate = null;
     
