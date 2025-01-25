@@ -1,15 +1,11 @@
 package gui.MyReservationsWindow;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
 import gui.SubscriberWindow.SubscriberWindowController;
 import gui.baseController.BaseController;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,13 +17,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.util.Duration;
-import logic.BorrowedBook;
 import logic.ClientTimeDiffController;
 import logic.ReservedBook;
 import logic.Subscriber;
-import gui.BorrowBookWindow.BorrowBookController;
-import logic.ClientTimeDiffController;
 
 public class MyReservationsController extends BaseController implements Initializable {
     private MyReservationsController mrc;
@@ -201,10 +193,7 @@ public class MyReservationsController extends BaseController implements Initiali
     
     
     protected void handleRetrieveBook(ActionEvent event, ReservedBook reservedBook) {
-        // Log for debugging
-        System.out.println("Retrieve button clicked for book: " + reservedBook.getName());
-
-        // Step 2: Directly submit the borrow request with the specific reservedBook
+        // Step 1: Directly submit the borrow request with the specific reservedBook
         try {
         	SubmitRetrieve(event, reservedBook);
             // Feedback to the user
@@ -220,7 +209,7 @@ public class MyReservationsController extends BaseController implements Initiali
             e.printStackTrace();
         }
 
-        // Step 3: Update table view to reflect changes
+        // Step 2: Update table view to reflect changes
         tableView.refresh();
     }
 
@@ -242,8 +231,6 @@ public class MyReservationsController extends BaseController implements Initiali
 
         String Retrieve = "" + subscriberName + "," + subscriberId + "," + bookName + "," + bookId + "," + borrowDate + "," + returnDate;
         ClientUI.chat.accept("SubmitRetrieve:" + Retrieve);
-        
-        waitForServerResponse();
         
         // Step 2: Call the method to delete the reservation from the database
         deleteReservationFromDatabase(reservedBook);
