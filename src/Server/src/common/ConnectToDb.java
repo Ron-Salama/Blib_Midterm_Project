@@ -1,10 +1,11 @@
 package common;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.SQLException; 
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,13 +14,27 @@ import java.util.List;
 
 import logic.ServerTimeDiffController;
 import server.EchoServer;
-//import org.omg.CORBA.Request;
 
+/**
+ * This class provides methods to interact with the local "blib" MySQL database.
+ * It includes operations such as fetching data, inserting records, updating records,
+ * and retrieving information for reporting.
+ */
 public class ConnectToDb {
-    // Method to establish a connection to the database
+
+    /**
+     * A shared controller instance used to calculate time differences between the server and various tasks.
+     */
+    public static ServerTimeDiffController clock = new ServerTimeDiffController();
+
+    /**
+     * Establishes a connection to the local "blib" MySQL database.
+     *
+     * @return A {@link Connection} object to the database.
+     * @throws SQLException If the driver is not found or the connection fails.
+     */
     public static Connection getConnection() throws SQLException {
         try {
-            // Load MySQL driver
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             System.out.println("Driver definition succeed");
         } catch (Exception ex) {
@@ -27,163 +42,176 @@ public class ConnectToDb {
             throw new SQLException("Driver loading failed", ex);
         }
 
-        
-        // Return the established connection
-        return DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST&allowPublicKeyRetrieval=true&useSSL=false", "root", "Aa123456");
+        return DriverManager.getConnection(
+                "jdbc:mysql://localhost/blib?serverTimezone=IST&allowPublicKeyRetrieval=true&useSSL=false", 
+                "root", 
+                "Aa123456"
+        );
     }
 
-    public static ServerTimeDiffController clock = new ServerTimeDiffController();
-        public static List<String> fetchReturnDates(Connection dbConnection, String isbn) throws SQLException {
+    /**
+     * Fetches all return dates for a specific book (by ISBN) from the "borrow_table".
+     *
+     * @param dbConnection An open database connection.
+     * @param isbn         The ISBN of the book.
+     * @return A list of all return dates associated with the given ISBN.
+     * @throws SQLException If any SQL error occurs.
+     */
+    public static List<String> fetchReturnDates(Connection dbConnection, String isbn) throws SQLException {
         List<String> returnDates = new ArrayList<>();
         String query = "SELECT return_date FROM borrow_table WHERE isbn = ?";
-        
+
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, isbn);
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                String returnDate = rs.getString("return_date");
-                returnDates.add(returnDate);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    returnDates.add(rs.getString("return_date"));
+                }
             }
         }
-        
         return returnDates;
     }
 
+    /**
+     * Fetches all data from the "subscriber" table.
+     *
+     * @param conn A valid database connection.
+     * @return A list of string records with subscriber data.
+     */
+    public static List<String> fetchAllData(Connection conn) {
+        List<String> result = new ArrayList<>();
+        String query = "SELECT * FROM subscriber";
 
-        // Method to fetch all data from the subscriber table
-        public static List<String> fetchAllData(Connection conn) {
-            List<String> result = new ArrayList<>();
-            String query = "SELECT * FROM subscriber";
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
 
-            try (PreparedStatement pstmt = conn.prepareStatement(query);
-                 ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("subscriber_id");
+                String name = rs.getString("subscriber_name");
+                int detailed = rs.getInt("detailed_subscription_history");
+                String phone = rs.getString("subscriber_phone_number");
+                String email = rs.getString("subscriber_email");
+                String status = rs.getString("status");
 
-                // Process each row in the result set
-                while (rs.next()) {
-                    int id = rs.getInt("subscriber_id");
-                    String name = rs.getString("subscriber_name");
-                    int detailed = rs.getInt("detailed_subscription_history");
-                    String phone = rs.getString("subscriber_phone_number");
-                    String email = rs.getString("subscriber_email");
-                    String status = rs.getString("status");
-                    
-                    String row = "subscriber_id:" + id + ", subscriber_name:" + name +
-                                 ", detailed_subscription_history:" + detailed +
-                                 ", subscriber_phone_number:" + phone +
-                                 ", subscriber_email:" + email +
-                                 ", status:" + status;
+                String row = "subscriber_id:" + id 
+                           + ", subscriber_name:" + name
+                           + ", detailed_subscription_history:" + detailed
+                           + ", subscriber_phone_number:" + phone
+                           + ", subscriber_email:" + email
+                           + ", status:" + status;
 
-                    result.add(row);
-                }
-            } catch (SQLException e) {
-                System.out.println("Error while fetching data: " + e.getMessage());
+                result.add(row);
             }
-
-            return result; // Return all data as a list of strings
+        } catch (SQLException e) {
+            System.out.println("Error while fetching data: " + e.getMessage());
         }
-        
-        public static List<String> fetchAllFrozenDataForReports(Connection conn) {
-            List<String> result = new ArrayList<>();
-            String query = "SELECT * FROM databydate"; // Query updated to fetch from 'databydate' table
+        return result;
+    }
 
-            try (PreparedStatement pstmt = conn.prepareStatement(query);
-                 ResultSet rs = pstmt.executeQuery()) {
+    /**
+     * Fetches all frozen data (for reports) from the "databydate" table.
+     *
+     * @param conn A valid database connection.
+     * @return A list of string data related to frozen/not-frozen subscribers, borrowed books, and late returns.
+     */
+    public static List<String> fetchAllFrozenDataForReports(Connection conn) {
+        List<String> result = new ArrayList<>();
+        String query = "SELECT * FROM databydate";
 
-                StringBuilder fullResult = new StringBuilder();
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
 
-                // Process each row in the result set
-                while (rs.next()) {
-                    Date id = rs.getDate("idDataByDate");  // Fetch idDataByDate
-                    int frozen = rs.getInt("Frozen");    // Fetch Frozen
-                    int notFrozen = rs.getInt("NotFrozen"); // Fetch NotFrozen
-                    int borrowedBooks = rs.getInt("BorrowedBooks"); // Fetch BorrowedBooks
-                    int late = rs.getInt("Late");        // Fetch Late
+            StringBuilder fullResult = new StringBuilder();
+            while (rs.next()) {
+                Date id = rs.getDate("idDataByDate");
+                int frozen = rs.getInt("Frozen");
+                int notFrozen = rs.getInt("NotFrozen");
+                int borrowedBooks = rs.getInt("BorrowedBooks");
+                int late = rs.getInt("Late");
 
-                    // Build the row string and append to the full result
-                    fullResult.append(id).append(",")
-                              .append(frozen).append(",")
-                              .append(notFrozen).append(",")
-                              .append(borrowedBooks).append(",")
-                              .append(late).append(";");
-
-                    // Add a newline for readability (optional)
-                    // fullResult.append("\n"); // Uncomment if you want rows on separate lines
-                }
-
-                // Add the final result to the list
-                result.add(fullResult.toString());
-
-            } catch (SQLException e) {
-                System.out.println("Error while fetching data: " + e.getMessage());
+                fullResult.append(id).append(",")
+                          .append(frozen).append(",")
+                          .append(notFrozen).append(",")
+                          .append(borrowedBooks).append(",")
+                          .append(late).append(";");
             }
-            return result; // Return all data as a list of strings
+            result.add(fullResult.toString());
+        } catch (SQLException e) {
+            System.out.println("Error while fetching data: " + e.getMessage());
         }
+        return result;
+    }
 
+    /**
+     * Fetches all data (for reports) from the "subscriber" table.
+     *
+     * @param conn A valid database connection.
+     * @return A list of formatted string data of all subscribers.
+     */
+    public static List<String> fetchAllDataForReports(Connection conn) {
+        List<String> result = new ArrayList<>();
+        String query = "SELECT * FROM subscriber";
 
-        public static List<String> fetchAllDataForReports(Connection conn) {
-            List<String> result = new ArrayList<>();
-            String query = "SELECT * FROM subscriber";
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
 
-            try (PreparedStatement pstmt = conn.prepareStatement(query);
-                 ResultSet rs = pstmt.executeQuery()) {
+            StringBuilder fullResult = new StringBuilder();
+            while (rs.next()) {
+                int id = rs.getInt("subscriber_id");
+                String name = rs.getString("subscriber_name");
+                int detailed = rs.getInt("detailed_subscription_history");
+                String phone = rs.getString("subscriber_phone_number");
+                String email = rs.getString("subscriber_email");
+                String status = rs.getString("status");
 
-                StringBuilder fullResult = new StringBuilder();
-
-                // Process each row in the result set
-                while (rs.next()) {
-                    int id = rs.getInt("subscriber_id");
-                    String name = rs.getString("subscriber_name");
-                    int detailed = rs.getInt("detailed_subscription_history");
-                    String phone = rs.getString("subscriber_phone_number");
-                    String email = rs.getString("subscriber_email");
-                    String status = rs.getString("status");
-
-                    // Build the row string and append to the full result
-                    fullResult.append(id).append(",")
-                              .append(name).append(",")
-                              .append(detailed).append(",")
-                              .append(phone).append(",")
-                              .append(email).append(",")
-                              .append(status).append(";");
-
-                    // Add a newline for readability (optional)
-                    // fullResult.append("\n"); // Uncomment if you want rows on separate lines
-                }
-
-                // Add the final result to the list
-                result.add(fullResult.toString());
-
-            } catch (SQLException e) {
-                System.out.println("Error while fetching data: " + e.getMessage());
+                fullResult.append(id).append(",")
+                          .append(name).append(",")
+                          .append(detailed).append(",")
+                          .append(phone).append(",")
+                          .append(email).append(",")
+                          .append(status).append(";");
             }
-            return result; // Return all data as a list of strings
+            result.add(fullResult.toString());
+        } catch (SQLException e) {
+            System.out.println("Error while fetching data: " + e.getMessage());
         }
+        return result;
+    }
 
-
-    // Method to return the book by removing it from the borrowed_books table
+    /**
+     * Deletes a borrowed book record from the "borrowed_books" table to simulate returning a book.
+     *
+     * @param dbConnection  A valid database connection.
+     * @param subscriberId  The subscriber's ID who is returning the book.
+     * @param bookID        The book's ISBN being returned.
+     * @return A status message indicating success or failure.
+     */
     public static String returnbook(Connection dbConnection, String subscriberId, String bookID) {
-        String result = "Book return failed"; // Default return status
-
-        // SQL query to delete the book from the borrowed_books table based on subscriber_id and book_name
+        String result = "Book return failed";
         String sql = "DELETE FROM borrowed_books WHERE subscriber_id = ? AND ISBN = ?";
 
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setString(1, subscriberId); // Set the subscriber ID
-            stmt.setString(2, bookID); // Set the book name
-            
+            stmt.setString(1, subscriberId);
+            stmt.setString(2, bookID);
+
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                result = "Book returned successfully"; // Success message
+                result = "Book returned successfully";
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle database exceptions
+            e.printStackTrace();
             result = "Error while returning book";
         }
-
-        return result; // Return the status message
+        return result;
     }
-    // Method to fetch data for a specific subscriber based on their ID
+
+    /**
+     * Fetches subscriber data (full row) based on a subscriber ID.
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @return A string with subscriber information, or "No subscriber found" if no data matches.
+     */
     public static String fetchSubscriberData(Connection conn, String subscriberId) {
         String query = "SELECT * FROM subscriber WHERE subscriber_id = ?";
 
@@ -191,7 +219,6 @@ public class ConnectToDb {
             pstmt.setInt(1, Integer.parseInt(subscriberId));
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                // Check if a record exists
                 if (rs.next()) {
                     int id = rs.getInt("subscriber_id");
                     String name = rs.getString("subscriber_name");
@@ -199,13 +226,13 @@ public class ConnectToDb {
                     String phone = rs.getString("subscriber_phone_number");
                     String email = rs.getString("subscriber_email");
                     String status = rs.getString("status");
-                    
-                    return "subscriber_id:" + id + ", subscriber_name:" + name +
-                            ", detailed_subscription_history:" + detailed +
-                            ", subscriber_phone_number:" + phone +
-                            ", subscriber_email:" + email +
-                            ", status:" + status;
-                    
+
+                    return "subscriber_id:" + id
+                         + ", subscriber_name:" + name
+                         + ", detailed_subscription_history:" + detailed
+                         + ", subscriber_phone_number:" + phone
+                         + ", subscriber_email:" + email
+                         + ", status:" + status;
                 } else {
                     return "No subscriber found";
                 }
@@ -215,6 +242,14 @@ public class ConnectToDb {
             return "Error fetching subscriber data.";
         }
     }
+
+    /**
+     * Fetches librarian data from the "librarian" table based on a librarian ID.
+     *
+     * @param conn        A valid database connection.
+     * @param librarianId The librarian's ID.
+     * @return A string with librarian information, or "No labrarian found" if no data matches.
+     */
     public static String fetchLibrarianData(Connection conn, String librarianId) {
         String query = "SELECT * FROM librarian WHERE librarian_id = ?";
 
@@ -222,13 +257,10 @@ public class ConnectToDb {
             pstmt.setInt(1, Integer.parseInt(librarianId));
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                // Check if a record exists
                 if (rs.next()) {
                     int id = rs.getInt("librarian_id");
                     String name = rs.getString("librarian_name");
-
                     return "librarian_id:" + id + ", librarian_name:" + name;
-
                 } else {
                     return "No labrarian found";
                 }
@@ -238,34 +270,38 @@ public class ConnectToDb {
             return "Error fetching subscriber data.";
         }
     }
-    
-    
+
+    /**
+     * Fetches the detailed subscription history for a particular subscriber.
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @return The subscription history content (as a single string) from the "detailed_subscription_history" table.
+     */
     public static String fetchHistoryData(Connection conn, String subscriberId) {
-    	String historyData = "";
+        String historyData = "";
         String query = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, subscriberId);  // Bind the subscriberId parameter
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                historyData = rs.getString("history");  // Corrected column name to "history"
+            stmt.setString(1, subscriberId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    historyData = rs.getString("history");
+                }
             }
-
         } catch (SQLException e) {
             System.out.println("Error fetching history data: " + e.getMessage());
         }
-
         return historyData;
     }
-    
-    
+
     /**
-     * Registers a new subscriber in the database and inserts their ID into the detailed_subscription_history table.
+     * Registers a new subscriber and optionally creates a new entry in the "detailed_subscription_history" table
+     * if the subscriber is new.
      *
-     * @param conn  Database connection object.
-     * @param body  Comma-separated string: "subscriberName,SubscriberID,PhoneNumber,Email".
-     * @return      "True" if both insertions are successful, "False" otherwise.
+     * @param conn A valid database connection.
+     * @param body A comma-separated string of: "subscriberName,SubscriberID,PhoneNumber,Email"
+     * @return "True" if the insertion is successful, otherwise "False".
      */
     public static String updateSubscriberDB(Connection conn, String body) {
         System.out.println("Starting subscriber registration.");
@@ -337,13 +373,18 @@ public class ConnectToDb {
     }
 
 
- // Delete the text inside extensions_by_subscribers in the librarian table
+
+    /**
+     * Clears the 'extensions_by_subscribers' column in the "librarian" table.
+     *
+     * @param conn A valid database connection.
+     * @return A message indicating the result of the operation.
+     */
     public static String cleanExtensionsBySubscribersInLibrarian(Connection conn) {
         String query = "UPDATE librarian SET extensions_by_subscribers = ''";
-        
+
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             int rowsUpdated = pstmt.executeUpdate();
-            
             if (rowsUpdated > 0) {
                 return "Extension daily cleanup done.";
             } else {
@@ -354,94 +395,107 @@ public class ConnectToDb {
         }
     }
 
-
-
-    
+    /**
+     * Fetches all borrowed books for a given subscriber ID.
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @return A list of borrowed book data as formatted strings.
+     */
     public static List<String> fetchBorrowedBooksBySubscriberId(Connection conn, String subscriberId) {
         String query = "SELECT * FROM blib.borrowed_books WHERE subscriber_id = ?";
-
         List<String> borrowedBooks = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, subscriberId); // Set the subscriber_id parameter
 
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, subscriberId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    // Combine fields into a single delimited string for sending to the client
-                    String bookData = rs.getInt("borrow_id") + "," +
-                    				  rs.getInt("subscriber_id") + "," +
-                                      rs.getString("Name") + "," +
-                                      rs.getString("Borrowed_Time") + "," +
-                                      rs.getString("Return_Time") + "," +
-                                      rs.getString("ISBN");
+                    String bookData = rs.getInt("borrow_id") + ","
+                                    + rs.getInt("subscriber_id") + ","
+                                    + rs.getString("Name") + ","
+                                    + rs.getString("Borrowed_Time") + ","
+                                    + rs.getString("Return_Time") + ","
+                                    + rs.getString("ISBN");
                     borrowedBooks.add(bookData);
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error fetching borrowed books: " + e.getMessage());
         }
-
-        return borrowedBooks; // Return the list of borrowed books
+        return borrowedBooks;
     }
-    
-    
-  
-    
+
+    /**
+     * Fetches all reserved books for a given subscriber ID.
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @return A list of reserved book data as formatted strings.
+     */
     public static List<String> fetchReservedBooksBySubscriberId(Connection conn, String subscriberId) {
         String query = "SELECT * FROM blib.reserved_books WHERE subscriber_id = ?";
-
         List<String> reservedBooks = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, subscriberId); // Set the subscriber_id parameter
 
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, subscriberId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    // Combine fields into a single delimited string for sending to the client
-                    String bookData = rs.getInt("reserve_id") + "," +
-                    				  rs.getInt("subscriber_id") + "," +
-                                      rs.getString("name") + "," +
-                                      rs.getString("reserve_time") + "," +
-                                      rs.getString("time_left_to_retrieve") + "," +
-                                      rs.getString("ISBN");
+                    String bookData = rs.getInt("reserve_id") + ","
+                                    + rs.getInt("subscriber_id") + ","
+                                    + rs.getString("name") + ","
+                                    + rs.getString("reserve_time") + ","
+                                    + rs.getString("time_left_to_retrieve") + ","
+                                    + rs.getString("ISBN");
                     reservedBooks.add(bookData);
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error fetching borrowed books: " + e.getMessage());
         }
+        return reservedBooks;
+    }
 
-        return reservedBooks; // Return the list of reserved books
-    }    
-    
+    /**
+     * Checks if a request exists for a given subscriber in the "requests" table.
+     *
+     * @param dbConnection A valid database connection.
+     * @param RegisterId   The subscriber's ID.
+     * @return True if a request exists, false otherwise.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static boolean checkIfrequestexists(Connection dbConnection, String RegisterId) throws SQLException {
         String query = "SELECT COUNT(*) FROM requests WHERE RequestedById = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, RegisterId);
-            ResultSet rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                return rs.getInt(1) > 0; // If count > 0, the ID exists
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
         }
-        return false; // Default to false if no records are found
+        return false;
     }
 
+    /**
+     * Fetches all books from the "books" table.
+     *
+     * @param conn A valid database connection.
+     * @return A list of string representations of each book (CSV-like format).
+     */
     public static List<String> fetchBooksData(Connection conn) {
-        String query = "SELECT * FROM blib.books"; // Adjust the query as needed
-
-        List<String> booksList = new ArrayList<>(); // Initialize the list to store books as strings
+        String query = "SELECT * FROM blib.books";
+        List<String> booksList = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
 
-            // Check if ResultSet has any rows
-            if (!rs.next()) {
+            if (!rs.isBeforeFirst()) {
+                // No data
                 System.out.println("No data found in books table.");
-                return booksList; // Return empty list if no rows are found
+                return booksList;
             }
-
-            // Loop through the result set and convert each row into a string
-            do {
-                String id = rs.getString("ISBN"); // Treat ISBN as a String
+            while (rs.next()) {
+                String id = rs.getString("ISBN");
                 String name = rs.getString("Name");
                 String subject = rs.getString("Subject");
                 String description = rs.getString("ShortDescription");
@@ -449,69 +503,79 @@ public class ConnectToDb {
                 String location = rs.getString("ShelfLocation");
                 int availableCopies = rs.getInt("AvailableCopiesNum");
                 int reservedCopies = rs.getInt("ReservedCopiesNum");
-                
 
-
-                // Handle potential null values
                 if (id == null) id = "Unknown ID";
                 if (name == null) name = "Unknown";
                 if (subject == null) subject = "N/A";
                 if (description == null) description = "No description available";
                 if (location == null) location = "Unknown location";
 
-
-                // Format the book data into a single string (e.g., CSV format)
                 String bookData = id + "," + name + "," + subject + "," + description + ","
-                                  + copies + "," + location + "," + availableCopies + "," + reservedCopies;
-
-                booksList.add(bookData); // Add the formatted string to the list
-            } while (rs.next());
-
+                                + copies + "," + location + "," + availableCopies + "," + reservedCopies;
+                booksList.add(bookData);
+            }
         } catch (SQLException e) {
-            e.printStackTrace(); // This will show the full exception stack trace
+            e.printStackTrace();
             System.out.println("Error while fetching books data: " + e.getMessage());
-            return null; // Return null in case of an error (or handle this as needed)
+            return null;
         }
-
-        return booksList; // Return the list of books as strings
+        return booksList;
     }
 
-
-    // Check if a subscriber exists based on their ID(PK)
+    /**
+     * Checks if a subscriber exists in the "subscriber" table.
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @return True if the subscriber exists, false otherwise.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static boolean checkSubscriberExists(Connection conn, String subscriberId) throws SQLException {
         String query = "SELECT * FROM subscriber WHERE subscriber_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, Integer.parseInt(subscriberId));
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();  // Returns true if subscriber exists, otherwise false
+                return rs.next();
             }
         }
     }
+
+    /**
+     * Checks if a librarian exists in the "librarian" table.
+     *
+     * @param conn        A valid database connection.
+     * @param librarianId The librarian's ID.
+     * @return True if the librarian exists, false otherwise.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static boolean checkLibrarianExists(Connection conn, String librarianId) throws SQLException {
         String query = "SELECT * FROM librarian WHERE librarian_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, Integer.parseInt(librarianId));
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();  // Returns true if subscriber exists, otherwise false
+                return rs.next();
             }
         }
     }
-    // Update a subscriber's phone and email
+
+    /**
+     * Updates a subscriber's phone and email in the "subscriber" table.
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @param phone        The new phone number.
+     * @param email        The new email address.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static void updateSubscriber(Connection conn, String subscriberId, String phone, String email) throws SQLException {
         String query = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
-
-        // Debug log to check inputs
         System.out.println("Updating subscriber: " + subscriberId + " with phone: " + phone + " and email: " + email);
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, phone);
             pstmt.setString(2, email);
             pstmt.setInt(3, Integer.parseInt(subscriberId));
-
-            // Execute update and check the number of affected rows
             int affectedRows = pstmt.executeUpdate();
-
-            // Debugging: Check if rows were affected
             if (affectedRows > 0) {
                 System.out.println("Update successful: " + affectedRows + " row(s) affected.");
             } else {
@@ -519,16 +583,22 @@ public class ConnectToDb {
             }
         }
     }
-    
+
+    /**
+     * Fetches book information from the "books" table by ISBN.
+     *
+     * @param conn   A valid database connection.
+     * @param bookId The ISBN of the book.
+     * @return A single CSV-like string of book details, or an error/no-book message.
+     */
     public static String fetchBookInfo(Connection conn, String bookId) {
         String query = "SELECT * FROM books WHERE ISBN = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, bookId); // Use setString
-
+            pstmt.setString(1, bookId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    String id = rs.getString("ISBN"); // Get ID as String
+                    String id = rs.getString("ISBN");
                     String name = rs.getString("Name");
                     String subject = rs.getString("Subject");
                     String description = rs.getString("ShortDescription");
@@ -542,8 +612,7 @@ public class ConnectToDb {
                     description = (description == null) ? "No description available" : description;
                     location = (location == null) ? "Unknown location" : location;
 
-                    return String.format(
-                            "%s,%s,%s,%s,%d,%s,%d,%d",
+                    return String.format("%s,%s,%s,%s,%d,%s,%d,%d",
                             id, name, subject, description, copies, location, availableCopies, reservedCopies);
                 } else {
                     return "No book found";
@@ -554,138 +623,130 @@ public class ConnectToDb {
             return "Error fetching book info.";
         }
     }
-    public static void insertRequest(Connection conn, String requestType, String requestedByID, String requestedByName,
-            String bookName, String bookId, String borrowTime, String returnTime, String extendTime)
-            throws SQLException {
 
-    // SQL query to insert a new record into the requests table
-    String query = "INSERT INTO requests (requestType, requestedByID, requestedByName, bookName, bookId, borrowTime, returnTime, extendTime) "
-                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    /**
+     * Inserts a new request record into the "requests" table.
+     *
+     * @param conn           A valid database connection.
+     * @param requestType    The type of the request (Borrow, Return, Extend, etc.).
+     * @param requestedByID  The ID of the subscriber making/requesting the action.
+     * @param requestedByName The name of the subscriber.
+     * @param bookName       The name of the book related to the request.
+     * @param bookId         The ISBN of the book.
+     * @param borrowTime     The borrow time if applicable.
+     * @param returnTime     The return time if applicable.
+     * @param extendTime     The extension time if applicable.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void insertRequest(Connection conn, String requestType, String requestedByID, 
+            String requestedByName, String bookName, String bookId, 
+            String borrowTime, String returnTime, String extendTime) throws SQLException {
 
-    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-        // Set the values for each field in the query
-        pstmt.setString(1, requestType);
-        pstmt.setString(2, requestedByID);
-        pstmt.setString(3, requestedByName);
-        pstmt.setString(4, bookName);
-        pstmt.setString(5, bookId);
-        pstmt.setString(6, (borrowTime != null && !borrowTime.isEmpty()) ? borrowTime : "temp");
-        pstmt.setString(7, (returnTime != null && !returnTime.isEmpty()) ? returnTime : "temp");
-        pstmt.setString(8, (extendTime != null && !extendTime.isEmpty()) ? extendTime : "temp");
-
-        // Execute the insert and get the number of affected rows
-        int affectedRows = pstmt.executeUpdate();
-
-        // Debugging: Check if rows were inserted
-        if (affectedRows > 0) {
-            System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
-        } else {
-            System.out.println("Insert failed: No rows inserted.");
-        }
-    }
-}
-    
-    
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-
-    public static void insertReservedBook(Connection conn, String subscriber_id,
-            String bookName, String reserveTime, String BookId)
-            throws SQLException {
-
-    // SQL query to insert a new record into the reserved_books table without reserveId
-    String query = "INSERT INTO reserved_books (subscriber_id, name, reserve_time, ISBN) "
-                 + "VALUES (?, ?, ?, ?)";
-
-    try (PreparedStatement pstmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-        // Set the values for each field in the query
-        pstmt.setString(1, subscriber_id);
-        pstmt.setString(2, bookName);
-        pstmt.setString(3, reserveTime);
-        pstmt.setString(4, BookId);
-
-        // Execute the insert and get the number of affected rows]
-        int affectedRows = pstmt.executeUpdate();
-
-        // Debugging: Check if rows were inserted
-        if (affectedRows > 0) {
-            // Retrieve the generated reserve_id
-            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int reserveId = generatedKeys.getInt(1); // The generated reserve_id
-                    System.out.println("Insert successful, generated reserveId: " + reserveId);
-                } else {
-                    System.out.println("Insert failed: No generated keys returned.");
-                }
-            }
-        } else {
-            System.out.println("Insert failed: No rows inserted.");
-        }
-    }
-}
-
-    
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    //**********************************************************************************************************
-    public static String fetchBorrowRequest(Connection conn) throws SQLException {
-        StringBuilder result = new StringBuilder();
-
-        // SQL query to fetch Borrow request based on the requestedByID and bookId
-        String query = "SELECT * FROM requests WHERE requestType = 'Borrow For Subscriber'";
+        String query = "INSERT INTO requests (requestType, requestedByID, requestedByName, bookName, bookId, borrowTime, returnTime, extendTime) "
+                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, requestType);
+            pstmt.setString(2, requestedByID);
+            pstmt.setString(3, requestedByName);
+            pstmt.setString(4, bookName);
+            pstmt.setString(5, bookId);
+            pstmt.setString(6, (borrowTime != null && !borrowTime.isEmpty()) ? borrowTime : "temp");
+            pstmt.setString(7, (returnTime != null && !returnTime.isEmpty()) ? returnTime : "temp");
+            pstmt.setString(8, (extendTime != null && !extendTime.isEmpty()) ? extendTime : "temp");
 
-            // Execute the query and get the result set
-            try (ResultSet rs = pstmt.executeQuery()) {
-                // Process each result
-                while (rs.next()) {
-                    // Concatenate the fields with commas
-                    result.append(rs.getString("requestType")).append(",")
-                          .append(rs.getString("requestedByID")).append(",")
-                          .append(rs.getString("requestedByName")).append(",")
-                          .append(rs.getString("bookName")).append(",")
-                          .append(rs.getString("bookId")).append(",")
-                          .append(rs.getString("borrowTime")).append(",")
-                          .append(rs.getString("returnTime")).append(",")
-                          .append(rs.getString("extendTime"));
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
+            } else {
+                System.out.println("Insert failed: No rows inserted.");
+            }
+        }
+    }
 
-                    // Append a semicolon to separate each request
-                    result.append(";");
+    /**
+     * Inserts a new reserved book record into the "reserved_books" table.
+     *
+     * @param conn          A valid database connection.
+     * @param subscriber_id The subscriber ID reserving the book.
+     * @param bookName      The name of the book being reserved.
+     * @param reserveTime   The time the reservation was created.
+     * @param BookId        The ISBN of the book being reserved.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void insertReservedBook(Connection conn, String subscriber_id,
+            String bookName, String reserveTime, String BookId) throws SQLException {
+
+        String query = "INSERT INTO reserved_books (subscriber_id, name, reserve_time, ISBN) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, subscriber_id);
+            pstmt.setString(2, bookName);
+            pstmt.setString(3, reserveTime);
+            pstmt.setString(4, BookId);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int reserveId = generatedKeys.getInt(1);
+                        System.out.println("Insert successful, generated reserveId: " + reserveId);
+                    } else {
+                        System.out.println("Insert failed: No generated keys returned.");
+                    }
                 }
+            } else {
+                System.out.println("Insert failed: No rows inserted.");
+            }
+        }
+    }
+
+    /**
+     * Fetches all "Borrow For Subscriber" requests from the "requests" table.
+     *
+     * @param conn A valid database connection.
+     * @return A semicolon-separated string of all borrow requests.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static String fetchBorrowRequest(Connection conn) throws SQLException {
+        StringBuilder result = new StringBuilder();
+        String query = "SELECT * FROM requests WHERE requestType = 'Borrow For Subscriber'";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                result.append(rs.getString("requestType")).append(",")
+                      .append(rs.getString("requestedByID")).append(",")
+                      .append(rs.getString("requestedByName")).append(",")
+                      .append(rs.getString("bookName")).append(",")
+                      .append(rs.getString("bookId")).append(",")
+                      .append(rs.getString("borrowTime")).append(",")
+                      .append(rs.getString("returnTime")).append(",")
+                      .append(rs.getString("extendTime")).append(";");
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
         }
 
-        // Remove the trailing semicolon if there are any results
         if (result.length() > 0) {
             result.setLength(result.length() - 1);
         }
-
         return result.toString();
     }
-    
+
+    /**
+     * Decrements the "AvailableCopiesNum" by 1 for a specific book in the "books" table.
+     *
+     * @param conn   A valid database connection.
+     * @param bookId The ISBN of the book to update.
+     * @throws SQLException If the book doesn't exist or an SQL error occurs.
+     */
     public static void decreaseAvaliabeNumCopies(Connection conn, String bookId) throws SQLException {
-        // SQL query to decrease NumCopies by 1 for the given bookId
         String query = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ? AND NumCopies > 0";
-
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            // Set the bookId parameter
             pstmt.setString(1, bookId);
-
-            // Execute the update statement
             int affectedRows = pstmt.executeUpdate();
-
-            // If no rows were updated, it means there are no copies left or the bookId does not exist
             if (affectedRows == 0) {
                 System.out.println("No copies available or invalid bookId: " + bookId);
             } else {
@@ -693,30 +754,19 @@ public class ConnectToDb {
             }
         }
     }
-    
-    
-    
-    
-    
-  	 //************************************************************************************
-  	 //************************************************************************************
-  	 //************************************************************************************
-  	 //************************************************************************************
-  	 //************************************************************************************
 
-   	 //@SuppressWarnings("unused")
-	public static void incrementReservedCopiesNum(Connection conn, String bookId) throws SQLException {
-        // SQL query to increment ReservedCopiesNum by 1 for the given bookId
+    /**
+     * Increments the "ReservedCopiesNum" by 1 for a specific book in the "books" table.
+     *
+     * @param conn   A valid database connection.
+     * @param bookId The ISBN of the book to update.
+     * @throws SQLException If the book doesn't exist or an SQL error occurs.
+     */
+    public static void incrementReservedCopiesNum(Connection conn, String bookId) throws SQLException {
         String query = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum + 1 WHERE ISBN = ? AND ReservedCopiesNum >= 0";
-
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            // Set the bookId parameter
             pstmt.setString(1, bookId);
-
-            // Execute the update statement
             int affectedRows = pstmt.executeUpdate();
-
-            // If no rows were updated, it means there are no copies left or the bookId does not exist
             if (affectedRows == 0) {
                 System.out.println("invalid bookId: " + bookId);
             } else {
@@ -724,159 +774,120 @@ public class ConnectToDb {
             }
         }
     }
-   	 
-   	 
-   	 
-   	 //************************************************************************************
-   	 //************************************************************************************
-   	 //************************************************************************************
-   	 //************************************************************************************
-   	 //************************************************************************************
-	
-	
-	//************************************************************************************
- 	 //************************************************************************************
- 	 //************************************************************************************
- 	 //************************************************************************************
- 	 //************************************************************************************
 
-  	 //@SuppressWarnings("unused")
-	public static void decreaseReservedCopiesNum(Connection conn, String bookId) throws SQLException {
-	    // SQL query to decrement ReservedCopiesNum by 1 for the given bookId
-	    String query = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum - 1 WHERE ISBN = ? AND ReservedCopiesNum > 0";
+    /**
+     * Decrements the "ReservedCopiesNum" by 1 for a specific book in the "books" table.
+     *
+     * @param conn   A valid database connection.
+     * @param bookId The ISBN of the book to update.
+     * @throws SQLException If the book doesn't exist or an SQL error occurs.
+     */
+    public static void decreaseReservedCopiesNum(Connection conn, String bookId) throws SQLException {
+        String query = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum - 1 WHERE ISBN = ? AND ReservedCopiesNum > 0";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, bookId);
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                System.out.println("Invalid bookId: " + bookId + " or no reserved copies left.");
+            } else {
+                System.out.println("Successfully decremented ReservedCopiesNum for bookId: " + bookId);
+            }
+        }
+    }
 
-	    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-	        // Set the bookId parameter
-	        pstmt.setString(1, bookId);
-
-	        // Execute the update statement
-	        int affectedRows = pstmt.executeUpdate();
-
-	        // If no rows were updated, it means there are no copies left or the bookId does not exist
-	        if (affectedRows == 0) {
-	            System.out.println("Invalid bookId: " + bookId + " or no reserved copies left.");
-	        } else {
-	            System.out.println("Successfully decremented ReservedCopiesNum for bookId: " + bookId);
-	        }
-	    }
-	}
-  	 
-  	 
-  	 
-  	 //************************************************************************************
-  	 //************************************************************************************
-  	 //************************************************************************************
-  	 //************************************************************************************
-  	 //************************************************************************************
-
+    /**
+     * Fetches all "Return For Subscriber" requests from the "requests" table.
+     *
+     * @param conn A valid database connection.
+     * @return A semicolon-separated string of all return requests.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static String fetchReturnRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
-
-        // SQL query to fetch Return request based on the requestedByID and bookId
         String query = "SELECT * FROM requests WHERE requestType = 'Return For Subscriber'";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            // Execute the query and get the result set
-            try (ResultSet rs = pstmt.executeQuery()) {
-                // Process each result
-                while (rs.next()) {
-                    // Concatenate the fields with commas
-                    result.append(rs.getString("requestType")).append(",")
-                          .append(rs.getString("requestedByID")).append(",")
-                          .append(rs.getString("requestedByName")).append(",")
-                          .append(rs.getString("bookName")).append(",")
-                          .append(rs.getString("bookId")).append(",")
-                          .append(rs.getString("borrowTime")).append(",")
-                          .append(rs.getString("returnTime")).append(",")
-                          .append(rs.getString("extendTime"));
-
-                    // Append a semicolon to separate each request
-                    result.append(";");
-                }
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                result.append(rs.getString("requestType")).append(",")
+                      .append(rs.getString("requestedByID")).append(",")
+                      .append(rs.getString("requestedByName")).append(",")
+                      .append(rs.getString("bookName")).append(",")
+                      .append(rs.getString("bookId")).append(",")
+                      .append(rs.getString("borrowTime")).append(",")
+                      .append(rs.getString("returnTime")).append(",")
+                      .append(rs.getString("extendTime")).append(";");
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
         }
-
-        // Remove the trailing semicolon if there are any results
         if (result.length() > 0) {
             result.setLength(result.length() - 1);
         }
-
         return result.toString();
     }
 
+    /**
+     * Fetches all "Extend For Subscriber" requests from the "requests" table.
+     *
+     * @param conn A valid database connection.
+     * @return A semicolon-separated string of all extend requests.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static String fetchExtendRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
-
-        // SQL query to fetch Extend request based on the requestedByID and bookId
         String query = "SELECT * FROM requests WHERE requestType = 'Extend For Subscriber'";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            // Execute the query and get the result set
-            try (ResultSet rs = pstmt.executeQuery()) {
-                // Process each result
-                while (rs.next()) {
-                    // Concatenate the fields with commas
-                    result.append(rs.getString("requestType")).append(",")
-                          .append(rs.getString("requestedByID")).append(",")
-                          .append(rs.getString("requestedByName")).append(",")
-                          .append(rs.getString("bookName")).append(",")
-                          .append(rs.getString("bookId")).append(",")
-                          .append(rs.getString("borrowTime")).append(",")
-                          .append(rs.getString("returnTime")).append(",")
-                          .append(rs.getString("extendTime"));
-
-                    // Append a semicolon to separate each request
-                    result.append(";");
-                }
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                result.append(rs.getString("requestType")).append(",")
+                      .append(rs.getString("requestedByID")).append(",")
+                      .append(rs.getString("requestedByName")).append(",")
+                      .append(rs.getString("bookName")).append(",")
+                      .append(rs.getString("bookId")).append(",")
+                      .append(rs.getString("borrowTime")).append(",")
+                      .append(rs.getString("returnTime")).append(",")
+                      .append(rs.getString("extendTime")).append(";");
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
         }
-
-        // Remove the trailing semicolon if there are any results
         if (result.length() > 0) {
             result.setLength(result.length() - 1);
         }
-
         return result.toString();
     }
-    
-    
+
+    /**
+     * Inserts a new record into the "borrowed_books" table for a subscriber borrowing a book.
+     *
+     * @param conn A valid database connection.
+     * @param body A comma-separated string containing: SubscriberName, SubscriberID, BookName, ISBN, BorrowTime, ReturnTime.
+     * @return True if the insertion was successful, false otherwise.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static boolean insertBorrowBook(Connection conn, String body) throws SQLException {
-        // Split the body string by commas
         String[] parts = body.split(",");
-        
-        // Assuming the body contains the following values:
-        // SName, SID, BName, ISBN, Btime in the respective order
-        String SName = parts.length > 0 ? parts[0] : "temp"; // Subscriber Name
-        int SID = parts.length > 1 ?   Integer.parseInt(parts[1]) : -1; // Subscriber ID
-        String BName = parts.length > 2 ? parts[2] : "temp"; // Book Name (not used in the query, but included for reference)
-        String ISBN = parts.length > 3 ? parts[3] : "temp"; // Book ISBN
-        String Btime = parts.length > 4 ? parts[4] : "temp"; // Borrow Time
-        String Rtime = parts.length > 4 ? parts[5] : "temp"; // Borrow Time
-        
-        // SQL query to insert a new record into the borrowed_books table
-        String query = "INSERT INTO borrowed_books (ISBN, subscriber_id, Name, Borrowed_Time, Return_Time) "
-                     + "VALUES (?, ?, ?, ?, ?)";
+        String SName = parts.length > 0 ? parts[0] : "temp";
+        int SID = parts.length > 1 ? Integer.parseInt(parts[1]) : -1;
+        String BName = parts.length > 2 ? parts[2] : "temp";
+        String ISBN = parts.length > 3 ? parts[3] : "temp";
+        String Btime = parts.length > 4 ? parts[4] : "temp";
+        // The code indicates indexing for 5 as well:
+        String Rtime = parts.length > 5 ? parts[5] : "temp";
 
+        String query = "INSERT INTO borrowed_books (ISBN, subscriber_id, Name, Borrowed_Time, Return_Time) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            // Set the values for each field in the query
-            pstmt.setString(1, ISBN); // ISBN
-            pstmt.setInt(2, SID); // subscriber_id
-            pstmt.setString(3, BName); // Book Name
-            pstmt.setString(4, Btime); // Borrow Time
-            pstmt.setString(5, Rtime); // Return Time 
+            pstmt.setString(1, ISBN);
+            pstmt.setInt(2, SID);
+            pstmt.setString(3, BName);
+            pstmt.setString(4, Btime);
+            pstmt.setString(5, Rtime);
 
-            // Execute the insert and get the number of affected rows
             int affectedRows = pstmt.executeUpdate();
-
-            // Debugging: Check if rows were inserted
             if (affectedRows > 0) {
                 System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
                 return true;
@@ -886,94 +897,14 @@ public class ConnectToDb {
             }
         }
     }
-    
-   //
 
-    /*
-    public static void updateCopiesOfBook(Connection conn, String body) throws SQLException {
-        // Split the 'body' string to extract necessary information
-        String[] details = body.split(","); // assuming ',' is the delimiter
-
-        // Extract the bookId (ISBN) from the array
-        String bookId = details[3].trim(); // The bookId is at index 3 in this case
-        String checkSql = "SELECT AvailableCopiesNum FROM books WHERE ISBN = ?";
-        String updateSql = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ?";
-
-        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
-            // Check if the book exists and has more than 0 copies
-            checkStmt.setString(1, bookId);
-            try (ResultSet rs = checkStmt.executeQuery()) {
-                if (rs.next()) {
-                    int AvailableCopiesNum = rs.getInt("AvailableCopiesNum");
-                    if (AvailableCopiesNum > 0) {
-                        // Proceed to update NumCopies
-                        try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
-                            updateStmt.setString(1, bookId);
-                            int rowsAffected = updateStmt.executeUpdate();
-                            if (rowsAffected > 0) {
-                                System.out.println("Number of AvailableCopies for the book with ISBN " + bookId + " updated successfully.");
-                            } else {
-                                System.out.println("Failed to update the number of AvailableCopies for the book.");
-                            }
-                        }
-                    } else {
-                        throw new SQLException("The number of available copies for the book with ISBN " + bookId + " is already 0.");
-                    }
-                } else {
-                    throw new SQLException("Book with ISBN " + bookId + " not found.");
-                }
-            }
-        } catch (SQLException e) {
-            // Handle exception
-            System.err.println("Error updating number of available copies: " + e.getMessage());
-            throw e;
-        }
-        
-        
-        /*
-        // Prepare the history message to be appended
-        String checkSql1 = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
-        String updateHistorySql = "UPDATE detailed_subscription_history SET history = ? WHERE detailed_subscription_history = ?";
-
-        try (PreparedStatement checkStmt1 = conn.prepareStatement(checkSql1)) {
-            checkStmt1.setString(1, details[1].trim()); // details[1] is subscriberId
-            try (ResultSet rs1 = checkStmt1.executeQuery()) {
-                if (rs1.next()) {
-                    // The subscriber exists, proceed to append to their history
-                    String existingHistory = rs1.getString("history");
-                    if (existingHistory == null) {
-                        existingHistory = ""; // Ensure we have an empty string if no history exists
-                    }
-
-                    String myHistoryMessage = details[4] + "," + details[3] + "," + details[2] + "," + "Borrowed successfully";
-                    String newHistory = existingHistory + myHistoryMessage + ";"; // Always append a semicolon to the new message
-
-
-                    // Update history by appending the new message
-                    try (PreparedStatement updateHistoryStmt = conn.prepareStatement(updateHistorySql)) {
-                        updateHistoryStmt.setString(1, newHistory); // Set the new history with appended message
-                        updateHistoryStmt.setString(2, details[1].trim()); // subscriber_id
-
-                        // Execute update
-                        int rowsAffectedHistory = updateHistoryStmt.executeUpdate();
-                        if (rowsAffectedHistory > 0) {
-                            System.out.println("History updated successfully for subscriber with ID " + details[1].trim());
-                        } else {
-                            System.out.println("Failed to update history for subscriber with ID " + details[1].trim());
-                        }
-                    }
-                } else {
-                    throw new SQLException("Subscriber with ID " + details[1].trim() + " not found in history.");
-                }
-            }
-        } catch (SQLException e) {
-            // Handle exception for history update
-            System.err.println("Error updating history: " + e.getMessage());
-            throw e;
-        }*/
-
-
-    
+    /**
+     * Appends a new history record into the "detailed_subscription_history" table for a specific subscriber.
+     *
+     * @param conn A valid database connection.
+     * @param body A comma-separated string expected to contain multiple fields for the history entry.
+     * @throws SQLException If any SQL operation fails.
+     */
     public static void updateHistoryInDB(Connection conn, String body) throws SQLException {
         System.out.println("Updating history with body: " + body);
         String[] details = body.split(",");
@@ -982,29 +913,30 @@ public class ConnectToDb {
         String checkSql = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
         String insertSql = "INSERT INTO detailed_subscription_history (detailed_subscription_history, history) VALUES (?, ?)";
         String updateHistorySql = "UPDATE detailed_subscription_history SET history = ? WHERE detailed_subscription_history = ?";
-        String sqlMessage = details[6].trim();
 
+        String sqlMessage = details[6].trim(); // The text message to record in history
         try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
-            checkStmt.setString(1, details[1].trim());  // Subscriber ID
+            checkStmt.setString(1, details[1].trim());
             System.out.println("Checking history for subscriber ID: " + details[1].trim());
 
             try (ResultSet rs = checkStmt.executeQuery()) {
-                String historyMessage = details[4] + "," + details[3] + "," + details[2] + "," + sqlMessage + ";";
-
+                String historyMessage = details[4] + "," 
+                                      + details[3] + "," 
+                                      + details[2] + "," 
+                                      + sqlMessage + ";";
                 if (rs.next()) {
-                    // Subscriber exists → Update history
+                    // Update existing history
                     String existingHistory = rs.getString("history");
                     if (existingHistory == null) {
                         existingHistory = "";
                     }
                     String newHistory = existingHistory + historyMessage;
-                    System.out.println("Updating history: " + newHistory);
 
+                    System.out.println("Updating history: " + newHistory);
                     try (PreparedStatement updateStmt = conn.prepareStatement(updateHistorySql)) {
                         updateStmt.setString(1, newHistory);
                         updateStmt.setString(2, details[1].trim());
                         int rowsAffected = updateStmt.executeUpdate();
-
                         if (rowsAffected > 0) {
                             System.out.println("History updated successfully for subscriber with ID " + details[1].trim());
                         } else {
@@ -1012,13 +944,12 @@ public class ConnectToDb {
                         }
                     }
                 } else {
-                    // Subscriber does not exist → Insert new subscriber
+                    // Subscriber not found in history, insert new
                     System.out.println("Subscriber not found. Inserting new subscriber with ID: " + details[1].trim());
                     try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
                         insertStmt.setString(1, details[1].trim());
                         insertStmt.setString(2, historyMessage);
                         int rowsInserted = insertStmt.executeUpdate();
-
                         if (rowsInserted > 0) {
                             System.out.println("New subscriber inserted and history updated for ID " + details[1].trim());
                         } else {
@@ -1033,53 +964,53 @@ public class ConnectToDb {
         }
     }
 
-
-
-    
-    
-    
+    /**
+     * Fetches all "Request For Register" requests from the "requests" table.
+     *
+     * @param conn A valid database connection.
+     * @return A semicolon-separated string of all "register" requests.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static String fetchRegisterRequest(Connection conn) throws SQLException {
         StringBuilder result = new StringBuilder();
-
-        // SQL query to fetch Register request based on the requestedByID and bookId
         String query = "SELECT * FROM requests WHERE requestType = 'Request For Register'";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            // Execute the query and get the result set
-            try (ResultSet rs = pstmt.executeQuery()) {
-                // Process each result
-                while (rs.next()) {
-                    // Concatenate the fields with commas
-                    result.append(rs.getString("requestType")).append(",")
-                          .append(rs.getString("requestedByID")).append(",")
-                          .append(rs.getString("requestedByName")).append(",")
-                          .append(rs.getString("bookName")).append(",")
-                          .append(rs.getString("bookId")).append(",")
-                          .append(rs.getString("borrowTime")).append(",")
-                          .append(rs.getString("returnTime")).append(",")
-                          .append(rs.getString("extendTime"));
-
-                    // Append a semicolon to separate each request
-                    result.append(";");
-                }
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                result.append(rs.getString("requestType")).append(",")
+                      .append(rs.getString("requestedByID")).append(",")
+                      .append(rs.getString("requestedByName")).append(",")
+                      .append(rs.getString("bookName")).append(",")
+                      .append(rs.getString("bookId")).append(",")
+                      .append(rs.getString("borrowTime")).append(",")
+                      .append(rs.getString("returnTime")).append(",")
+                      .append(rs.getString("extendTime")).append(";");
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
         }
-
-        // Remove the trailing semicolon if there are any results
         if (result.length() > 0) {
             result.setLength(result.length() - 1);
         }
-
         return result.toString();
     }
+
+    /**
+     * Deletes a specific request from the "requests" table.
+     *
+     * @param dbConnection A valid database connection.
+     * @param requestType  The type of request (Borrow, Return, etc.).
+     * @param subscriberId The subscriber's ID who made the request.
+     * @param bookID       The ID/ISBN of the related book.
+     * @return True if a request was deleted, false otherwise.
+     */
     public static boolean deleteRequest(Connection dbConnection, String requestType, String subscriberId, String bookID) {
         System.out.println("delete request: Type: " + requestType + ", Subscriber id: " + subscriberId + ", book id: " + bookID);
-        try (PreparedStatement stmt = dbConnection.prepareStatement(
-                "DELETE FROM requests WHERE requestType = ? AND requestedByID = ? AND bookId = ?")) {
+        String query = "DELETE FROM requests WHERE requestType = ? AND requestedByID = ? AND bookId = ?";
+
+        try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, requestType);
             stmt.setString(2, subscriberId);
             stmt.setString(3, bookID);
@@ -1089,10 +1020,18 @@ public class ConnectToDb {
             return false;
         }
     }
+
+    /**
+     * Deletes a "Request For Register" request from the "requests" table.
+     *
+     * @param dbConnection A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @return True if the request was deleted, false otherwise.
+     */
     public static boolean deleteRegisterRequest(Connection dbConnection, String subscriberId) {
         System.out.println("delete register request for Subscriber id:" + subscriberId);
-        try (PreparedStatement stmt = dbConnection.prepareStatement(
-                "DELETE FROM requests WHERE requestType = 'Request For Register' AND requestedByID = ?")) {
+        String query = "DELETE FROM requests WHERE requestType = 'Request For Register' AND requestedByID = ?";
+        try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, subscriberId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -1100,10 +1039,19 @@ public class ConnectToDb {
             return false;
         }
     }
+
+    /**
+     * Increments the "AvailableCopiesNum" of a book by 1 in the "books" table.
+     *
+     * @param dbConnection A valid database connection.
+     * @param bookID       The ISBN of the book.
+     * @return True if successfully updated, false otherwise.
+     */
     public static boolean incrementBookCount(Connection dbConnection, String bookID) {
-    	System.out.println("book id for increment"+bookID);
-        try (PreparedStatement stmt = dbConnection.prepareStatement(
-                "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum + 1 WHERE ISBN = ?")) {
+        System.out.println("book id for increment" + bookID);
+        String query = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum + 1 WHERE ISBN = ?";
+
+        try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, bookID);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -1111,21 +1059,20 @@ public class ConnectToDb {
             return false;
         }
     }
-    
-    
-    
-    
-    
-    //************************************************************************
-    //************************************************************************
-    //************************************************************************
-    //************************************************************************
+
+    /**
+     * Updates the first reservation entry for a specific book from "Book is not available yet" to a valid 2-day retrieval window.
+     *
+     * @param dbConnection A valid database connection.
+     * @param bookID       The ISBN of the book.
+     * @return True if the update was successful, false otherwise.
+     */
     public static boolean updateFirstReservation(Connection dbConnection, String bookID) {
         System.out.println("Book ID to update first reservation: " + bookID);
 
         try {
-            // Step 1: Find the smallest reserve_id with "Book is not available yet"
-            String fetchReservationQuery = "SELECT reserve_id FROM reserved_books WHERE ISBN = ? AND time_left_to_retrieve = 'Book is not available yet' ORDER BY reserve_id ASC LIMIT 1";
+            String fetchReservationQuery = 
+                "SELECT reserve_id FROM reserved_books WHERE ISBN = ? AND time_left_to_retrieve = 'Book is not available yet' ORDER BY reserve_id ASC LIMIT 1";
             int smallestReserveId = -1;
 
             try (PreparedStatement fetchStmt = dbConnection.prepareStatement(fetchReservationQuery)) {
@@ -1134,20 +1081,17 @@ public class ConnectToDb {
                     if (rs.next()) {
                         smallestReserveId = rs.getInt("reserve_id");
                     } else {
-                        // No reservations found with "Book is not available yet"
                         System.out.println("No reservations with 'Book is not available yet' found for book with ISBN: " + bookID);
                         return false;
                     }
                 }
             }
 
-            // Step 2: Update the `time_left_to_retrieve` for the smallest reserve_id
             String updateReservationQuery = "UPDATE reserved_books SET time_left_to_retrieve = ? WHERE reserve_id = ?";
             String twoDays = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow())
-                    .plusDays(2).toString(); // Get current date + 2 days
-
+                                            .plusDays(2).toString();
             twoDays = convertDateFormat(twoDays);
-            
+
             try (PreparedStatement updateStmt = dbConnection.prepareStatement(updateReservationQuery)) {
                 updateStmt.setString(1, twoDays);
                 updateStmt.setInt(2, smallestReserveId);
@@ -1161,51 +1105,47 @@ public class ConnectToDb {
                     return false;
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-
-    //************************************************************************
-    //************************************************************************
-    //************************************************************************
-    //************************************************************************
+    /**
+     * Checks if a book is reserved by querying "ReservedCopiesNum" in the "books" table.
+     *
+     * @param dbConnection A valid database connection.
+     * @param ISBN         The ISBN of the book.
+     * @return True if the number of reserved copies is greater than 0, false otherwise.
+     */
     public static boolean isBookReserved(Connection dbConnection, String ISBN) {
         String query = "SELECT ReservedCopiesNum FROM books WHERE ISBN = ?";
-        
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
-            preparedStatement.setString(1, ISBN); // Use setString for String type
-            
+            preparedStatement.setString(1, ISBN);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     int reservedCopies = resultSet.getInt("ReservedCopiesNum");
-                    return reservedCopies > 0; // Return true if ReservedCopiesNum > 0
-                } else {
-                    // Book not found in the database
-                    return false;
+                    return reservedCopies > 0;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle exception appropriately, e.g., log it or rethrow it
-            return false;
         }
+        return false;
     }
 
-    
-    public static void updateReturnDateAfterExtension(int borrowId,String extendedReturnDate, Connection con) {
-        // SQL query to update the return date for a specific borrowed book
+    /**
+     * Updates the return date of a borrowed book after an extension is approved.
+     *
+     * @param borrowId          The ID of the borrowed book record.
+     * @param extendedReturnDate The new return date to be set.
+     * @param con               A valid database connection.
+     */
+    public static void updateReturnDateAfterExtension(int borrowId, String extendedReturnDate, Connection con) {
         String query = "UPDATE borrowed_books SET Return_Time = ? WHERE borrow_id = ?";
-
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
-            // Set the query parameters
-            preparedStatement.setString(1, extendedReturnDate); // New return date
-            preparedStatement.setInt(2, borrowId); // Borrow ID of the book
-            
-            // Execute the update
+            preparedStatement.setString(1, extendedReturnDate);
+            preparedStatement.setInt(2, borrowId);
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Return date updated successfully for Borrow ID: " + borrowId);
@@ -1218,144 +1158,162 @@ public class ConnectToDb {
         }
     }
 
-
+    /**
+     * Fetches all borrowed books from the "borrowed_books" table. This is intended for a task scheduler operation.
+     *
+     * @param conn A valid database connection.
+     * @return A list of borrowed book data as formatted strings.
+     */
     public static List<String> fetchBorrowedBooksForTaskScheduler(Connection conn) {
         String query = "SELECT * FROM blib.borrowed_books";
-
         List<String> borrowedBooks = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    // Combine fields into a single delimited string for sending to the client
-                    String bookData = rs.getInt("borrow_id") + "," +
-                    				  rs.getInt("subscriber_id") + "," +
-                                      rs.getString("Name") + "," +
-                                      rs.getString("Borrowed_Time") + "," +
-                                      rs.getString("Return_Time") + "," +
-                                      rs.getString("ISBN");
-                    borrowedBooks.add(bookData);
-                }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String bookData = rs.getInt("borrow_id") + ","
+                                + rs.getInt("subscriber_id") + ","
+                                + rs.getString("Name") + ","
+                                + rs.getString("Borrowed_Time") + ","
+                                + rs.getString("Return_Time") + ","
+                                + rs.getString("ISBN");
+                borrowedBooks.add(bookData);
             }
         } catch (SQLException e) {
             System.err.println("Error fetching borrowed books: " + e.getMessage());
         }
-        return borrowedBooks; // Return the list of borrowed books
+        return borrowedBooks;
     }
-    
+
+    /**
+     * Freezes a subscriber by updating the "status" field in the "subscriber" table to "Frozen at:<current time>".
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberID The subscriber's ID to freeze.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static void freezeSubscriber(Connection conn, int subscriberID) throws SQLException {
-    	// Update a subscriber's phone and email
-    	String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
-
-    	String status = "Frozen at:" + EchoServer.clock.timeNow();
-
+        String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
+        String status = "Frozen at:" + EchoServer.clock.timeNow();
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-        	pstmt.setString(1, status); // Update SQL statement.
-        	pstmt.setInt(2, subscriberID);
-            pstmt.executeUpdate(); // Run the statement.
+            pstmt.setString(1, status);
+            pstmt.setInt(2, subscriberID);
+            pstmt.executeUpdate();
         }
     }
-    
-    public static void unfreezeSubscriber(Connection conn, int subscriberID) throws SQLException {
-    	// Update a subscriber's phone and email
-    	String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
 
-    	String status = "Not Frozen";
-    	// Debug log to check inputs
+    /**
+     * Unfreezes a subscriber by updating the "status" field in the "subscriber" table to "Not Frozen".
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberID The subscriber's ID to unfreeze.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void unfreezeSubscriber(Connection conn, int subscriberID) throws SQLException {
+        String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
+        String status = "Not Frozen";
         System.out.println("Updating subscriber: " + subscriberID + " with status: " + status);
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-        	pstmt.setString(1, status); // Update SQL statement.
-        	pstmt.setInt(2, subscriberID);
-            pstmt.executeUpdate(); // Run the statement.
+            pstmt.setString(1, status);
+            pstmt.setInt(2, subscriberID);
+            pstmt.executeUpdate();
         }
     }
-    
 
+    /**
+     * Fetches a specific "Borrow For Subscriber" request from the "requests" table given a borrowed book ID.
+     *
+     * @param conn           A valid database connection.
+     * @param borrowedBookID The book ID used in the request.
+     * @return A comma-separated string with the request details.
+     */
     public static String fetchBorrowRequestGivenBorrowedBookID(Connection conn, String borrowedBookID) {
         String query = "SELECT * FROM requests WHERE bookId = ? AND requestType = 'Borrow For Subscriber'";
-
         StringBuilder bookInfo = new StringBuilder();
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, borrowedBookID.trim());
-
             try (ResultSet rs = pstmt.executeQuery()) {
-
                 while (rs.next()) {
-                        // If this is the first row, add book information
-                        String bookData = rs.getString("bookId") + "," +
-                        				  rs.getString("bookName") + "," +
-                        				  rs.getString("requestedByID") + "," +
-                        				  rs.getString("requestedByName") + "," +
-                                          rs.getString("borrowTime") + "," +
-                                          rs.getString("returnTime");
-                        bookInfo.append(bookData);
-                        break;
-                    }
+                    String bookData = rs.getString("bookId") + ","
+                                    + rs.getString("bookName") + ","
+                                    + rs.getString("requestedByID") + ","
+                                    + rs.getString("requestedByName") + ","
+                                    + rs.getString("borrowTime") + ","
+                                    + rs.getString("returnTime");
+                    bookInfo.append(bookData);
+                    break; // Only fetch the first matching request
+                }
             }
         } catch (SQLException e) {
             System.err.println("Error fetching borrow requests: " + e.getMessage());
             e.printStackTrace();
         }
-
         return bookInfo.toString();
     }
-    
+
+    /**
+     * Fetches all reserved books that are currently available (i.e., "time_left_to_retrieve" != "Book is not available yet").
+     *
+     * @param conn A valid database connection.
+     * @return A list of reserved book data as formatted strings.
+     */
     public static List<String> fetchAllReservedBooksWhereBookIsAvailable(Connection conn) {
         String query = "SELECT * FROM blib.reserved_books WHERE time_left_to_retrieve != 'Book is not available yet'";
-
         List<String> reservedBooks = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    // Combine fields into a single delimited string for sending to the client
-                    String bookData = rs.getInt("reserve_id") + "," +
-                                      rs.getInt("subscriber_id") + "," +
-                                      rs.getString("name") + "," +
-                                      rs.getString("reserve_time") + "," +
-                                      rs.getString("time_left_to_retrieve") + "," +
-                                      rs.getString("ISBN");
-                    reservedBooks.add(bookData);
-                }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String bookData = rs.getInt("reserve_id") + ","
+                                + rs.getInt("subscriber_id") + ","
+                                + rs.getString("name") + ","
+                                + rs.getString("reserve_time") + ","
+                                + rs.getString("time_left_to_retrieve") + ","
+                                + rs.getString("ISBN");
+                reservedBooks.add(bookData);
             }
         } catch (SQLException e) {
             System.err.println("Error fetching reserved books: " + e.getMessage());
         }
-
-        return reservedBooks; // Return the list of reserved books
+        return reservedBooks;
     }
 
-    
+    /**
+     * Fetches the closest return date for a given ISBN from the "borrowed_books" table.
+     *
+     * @param dbConnection A valid database connection.
+     * @param isbn         The ISBN of the book.
+     * @return The closest return date as a string, or null if not found.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static String fetchClosestReturnDate(Connection dbConnection, String isbn) throws SQLException {
-        String query = "SELECT MIN(Return_Time) AS ClosestReturnDate " +
-                       "FROM borrowed_books " +
-                       "WHERE ISBN = ? AND Return_Time IS NOT NULL";
-
+        String query = "SELECT MIN(Return_Time) AS ClosestReturnDate FROM borrowed_books WHERE ISBN = ? AND Return_Time IS NOT NULL";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, isbn);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getString("ClosestReturnDate");
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("ClosestReturnDate");
+                }
             }
         }
-
-        return null; // If no records are found
+        return null;
     }
 
-
+    /**
+     * Decrements the total "NumCopies" of a book by 1 in the "books" table.
+     *
+     * @param conn   A valid database connection.
+     * @param bookId The ISBN of the book.
+     * @return True if successfully decremented, false otherwise.
+     * @throws SQLException If no copies are available or the book doesn't exist.
+     */
     public static boolean decreaseNumCopies(Connection conn, String bookId) throws SQLException {
-        // SQL query to decrease NumCopies by 1 for the given bookId
         String query = "UPDATE books SET NumCopies = NumCopies - 1 WHERE ISBN = ?";
-
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            // Set the bookId parameter
             pstmt.setString(1, bookId);
-
-            // Execute the update statement
             int affectedRows = pstmt.executeUpdate();
-
-            // If no rows were updated, it means there are no copies left or the bookId does not exist
             if (affectedRows == 0) {
                 System.out.println("No copies available or invalid bookId: " + bookId);
                 return false;
@@ -1365,31 +1323,41 @@ public class ConnectToDb {
             }
         }
     }
-    
+
+    /**
+     * Fetches all reserved books from the "reserved_books" table.
+     *
+     * @param conn A valid database connection.
+     * @return A list of reserved book data as formatted strings.
+     */
     public static List<String> fetchAllReservedBooks(Connection conn) {
         String query = "SELECT * FROM blib.reserved_books";
-
         List<String> reservedBooks = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    // Combine fields into a single delimited string for sending to the client
-                    String bookData = rs.getInt("reserve_id") + "," +
-                                      rs.getInt("subscriber_id") + "," +
-                                      rs.getString("name") + "," +
-                                      rs.getString("reserve_time") + "," +
-                                      rs.getString("time_left_to_retrieve") + "," +
-                                      rs.getString("ISBN");
-                    reservedBooks.add(bookData);
-                }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String bookData = rs.getInt("reserve_id") + ","
+                                + rs.getInt("subscriber_id") + ","
+                                + rs.getString("name") + ","
+                                + rs.getString("reserve_time") + ","
+                                + rs.getString("time_left_to_retrieve") + ","
+                                + rs.getString("ISBN");
+                reservedBooks.add(bookData);
             }
         } catch (SQLException e) {
             System.err.println("Error fetching reserved books: " + e.getMessage());
         }
-
-        return reservedBooks; // Return the list of reserved books
+        return reservedBooks;
     }
-    
+
+    /**
+     * Appends data to the "extensions_by_subscribers" field in the "librarian" table.
+     *
+     * @param conn A valid database connection.
+     * @param data The data to be appended.
+     * @throws SQLException If an SQL error occurs.
+     */
     public static void updateExtensionApprovedBySubscriber(Connection conn, String data) throws SQLException {
         String currentData = "";
         String fetchQuery = "SELECT extensions_by_subscribers FROM blib.librarian";
@@ -1397,242 +1365,248 @@ public class ConnectToDb {
 
         try (PreparedStatement fetchStmt = conn.prepareStatement(fetchQuery);
              ResultSet rs = fetchStmt.executeQuery()) {
-
             if (rs.next()) {
                 currentData = rs.getString("extensions_by_subscribers");
             }
         }
 
         String updatedData = currentData + data;
-
         try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
             updateStmt.setString(1, updatedData);
             updateStmt.executeUpdate();
         }
-    } 
-    
+    }
+
     /**
-     * Pulls the first entry from the 'extensions_by_subscribers' field in the 'blib.librarian' table.
+     * Pulls the first entry (full string) from the "extensions_by_subscribers" field in the "librarian" table.
      *
-     * @param conn The database connection object.
-     * @return The first result as a string, or a message if no data is found.
-     * @throws SQLException If an SQL error occurs during the operation.
+     * @param conn A valid database connection.
+     * @return The data from the first row, or a message if no data is found.
+     * @throws SQLException If an SQL error occurs.
      */
     public static String pullNewExtendedReturnDates(Connection conn) throws SQLException {
         String query = "SELECT extensions_by_subscribers FROM librarian LIMIT 1";
-
-        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
             if (rs.next()) {
-                // Fetch the first result and return it directly.
                 return rs.getString("extensions_by_subscribers");
             }
         } catch (SQLException e) {
             throw new SQLException("Error while fetching data: " + e.getMessage(), e);
         }
-
         return "No data found in the 'extensions_by_subscribers' field.";
     }
-    
-	public static int FetchYesterdayBorrows(Connection conn) throws SQLException {
-		// Step 1: Yesterday's date in DD/MM/YYYY format
-		String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
-   
+
+    /**
+     * Fetches the number of books borrowed yesterday from the "borrowed_books" table.
+     *
+     * @param conn A valid database connection.
+     * @return The count of borrowed books that started yesterday, or -1 if none are found.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static int FetchYesterdayBorrows(Connection conn) throws SQLException {
+        String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
         String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Borrowed_Time,'%d-%m-%Y') = STR_TO_DATE(?,'%Y-%m-%d')";
-    
-	    try (PreparedStatement stmt = conn.prepareStatement(query);){
-	    	// Set the parameter with the formatted date
-	    	stmt.setString(1, yesterday);
-	    	// Execute the query
-	    	ResultSet rs = stmt.executeQuery();
-	    	if (rs.next()) {
-	    		return rs.getInt(1);
-	    	}
-	    } catch (SQLException e) {
-	    	throw new SQLException("Error while fetching data: " + e.getMessage(), e);
-			}
-		return -1;
-		}
-	
-	public static void updateAmountOfBorrowedBooksYesterday(Connection conn, int amountOfBooksBorrowedYesterday) throws SQLException {
-	    // Step 1: Get yesterday's date in the proper format
-	    String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
 
-	    // Step 2: SQL query to update the number of borrowed books for yesterday
-	    String query = "UPDATE databydate SET BorrowedBooks = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, yesterday);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+        }
+        return -1;
+    }
 
-	    try (PreparedStatement stmt = conn.prepareStatement(query)) {
-	        // Step 3: Set the parameters for the query
-	        stmt.setInt(1, amountOfBooksBorrowedYesterday); // Set the amount of books borrowed
-	        stmt.setString(2, yesterday);                  // Set the formatted date
+    /**
+     * Updates the "BorrowedBooks" field in the "databydate" table for yesterday's date.
+     *
+     * @param conn                         A valid database connection.
+     * @param amountOfBooksBorrowedYesterday The number of books borrowed yesterday.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void updateAmountOfBorrowedBooksYesterday(Connection conn, int amountOfBooksBorrowedYesterday) throws SQLException {
+        String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
+        String query = "UPDATE databydate SET BorrowedBooks = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
 
-	        // Step 4: Execute the update statement
-	        stmt.executeUpdate();
-	    } catch (SQLException e) {
-	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
-	    }
-	}
-	public static void insertCurrentDate(Connection taskSchedulerConnection) throws SQLException {
-	    // Step 1: Get today's date in the proper format (YYYY-MM-DD)
-	    String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();  // Gets the current date in YYYY-MM-DD format
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, amountOfBooksBorrowedYesterday);
+            stmt.setString(2, yesterday);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error while updating data: " + e.getMessage(), e);
+        }
+    }
 
-	    // Step 2: SQL query to check if the row already exists for today's date
-	    String query1 = "SELECT COUNT(*) FROM databydate WHERE idDataByDate = STR_TO_DATE(?, '%Y-%m-%d')";
-	    
-	    try (PreparedStatement stmt1 = taskSchedulerConnection.prepareStatement(query1)) {
-	        stmt1.setString(1, today);  // Set today's date
+    /**
+     * Inserts a row for today's date into the "databydate" table if it does not already exist.
+     *
+     * @param taskSchedulerConnection A valid database connection.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void insertCurrentDate(Connection taskSchedulerConnection) throws SQLException {
+        String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();
+        String query1 = "SELECT COUNT(*) FROM databydate WHERE idDataByDate = STR_TO_DATE(?, '%Y-%m-%d')";
 
-	        try (ResultSet rs = stmt1.executeQuery()) {  // Use executeQuery() to get the result
-	            if (rs.next()) {
-	                int count = rs.getInt(1);
-	                if (count > 0) {
-	                    // If count is greater than 0, the row exists, so no need to insert
-	                    return;  
-	                }
-	            }
-	        }
-	        // Step 3: SQL query to insert a new row with today's date
-	        String query2 = "INSERT INTO databydate (idDataByDate, NotFrozen, Frozen, BorrowedBooks, Late) "
-	                + "VALUES (STR_TO_DATE(?, '%Y-%m-%d'), 0, 0, null, null)";  // Default values for other fields
+        try (PreparedStatement stmt1 = taskSchedulerConnection.prepareStatement(query1)) {
+            stmt1.setString(1, today);
+            try (ResultSet rs = stmt1.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    if (count > 0) {
+                        return; // Row already exists
+                    }
+                }
+            }
+            String query2 = "INSERT INTO databydate (idDataByDate, NotFrozen, Frozen, BorrowedBooks, Late) "
+                          + "VALUES (STR_TO_DATE(?, '%Y-%m-%d'), 0, 0, null, null)";
+            try (PreparedStatement stmt2 = taskSchedulerConnection.prepareStatement(query2)) {
+                stmt2.setString(1, today);
+                stmt2.executeUpdate();
+            } catch (SQLException e) {
+                throw new SQLException("Error while inserting data: " + e.getMessage(), e);
+            }
+        }
+    }
 
-	 try (PreparedStatement stmt2 = taskSchedulerConnection.prepareStatement(query2)) {
-	     // Set the date parameter for idDataByDate
-	     stmt2.setString(1, today);  // 'today' should be a string in the format YYYY-MM-DD
-	     
-	     // Execute the insert statement
-	     stmt2.executeUpdate();
-	 } catch (SQLException e) {
-	     throw new SQLException("Error while inserting data: " + e.getMessage(), e);
-	 }
-	 }
-	}
+    /**
+     * Fetches the number of late books as of yesterday (i.e., books that should have been returned by yesterday).
+     *
+     * @param conn A valid database connection.
+     * @return The count of overdue books, or -1 in case of an error.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static int FetchYesterdaylates(Connection conn) throws SQLException {
+        String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
+        System.out.println("Yesterday's Date: " + yesterday);
+        String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Return_Time, '%d-%m-%Y') < STR_TO_DATE(?, '%Y-%m-%d')";
 
-	public static int FetchYesterdaylates(Connection conn) throws SQLException {
-	    // Step 1: Get yesterday's date in DD/MM/YYYY format
-		  String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
-	    // Log the calculated yesterday date to ensure it's correct
-	    System.out.println("Yesterday's Date: " + yesterday);
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, yesterday);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+        }
+        return -1;
+    }
 
-	    // SQL query to count how many books should have been returned by yesterday but haven't
-	    String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Return_Time, '%d-%m-%Y') < STR_TO_DATE(?, '%Y-%m-%d')";
+    /**
+     * Updates the "Late" field in the "databydate" table for yesterday's date.
+     *
+     * @param taskSchedulerConnection A valid database connection.
+     * @param latebooks              The number of books that became late yesterday.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void updateAmountOflateBooksYesterday(Connection taskSchedulerConnection, int latebooks) throws SQLException {
+        String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
+        String query = "UPDATE databydate SET Late = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(query)) {
-	        // Set the parameter with the formatted yesterday's date (DD/MM/YYYY)
-	        stmt.setString(1, yesterday);
-	        
-	        // Execute the query
-	        ResultSet rs = stmt.executeQuery();
-	        
-	        // Log the result to ensure it's being retrieved correctly
-	        if (rs.next()) {
-	            int count = rs.getInt(1);
-	            return count;  // Return the count of books
-	        }
-	    } catch (SQLException e) {
-	        throw new SQLException("Error while fetching data: " + e.getMessage(), e);
-	    }
-	    
-	    return -1;  // In case of error or no records found
-	}
+        try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
+            stmt.setInt(1, latebooks);
+            stmt.setString(2, yesterday);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error while updating data: " + e.getMessage(), e);
+        }
+    }
 
-	public static void updateAmountOflateBooksYesterday(Connection taskSchedulerConnection, int latebooks) throws SQLException {
-		    // Step 1: Get yesterday's date in the proper format
-		    String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
+    /**
+     * Fetches the number of currently frozen subscribers.
+     *
+     * @param taskSchedulerConnection A valid database connection.
+     * @return The number of subscribers whose status is not "Not Frozen".
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static int FetchAmountFrozen(Connection taskSchedulerConnection) throws SQLException {
+        String query = "SELECT COUNT(*) FROM subscriber WHERE status != 'Not Frozen'";
+        try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+        }
+        return 0;
+    }
 
-		    // Step 2: SQL query to update the number of borrowed books for yesterday
-		    String query = "UPDATE databydate SET Late = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
+    /**
+     * Updates today's date record in "databydate" with the number of frozen subscribers.
+     *
+     * @param taskSchedulerConnection A valid database connection.
+     * @param amountfrozen           The current number of frozen subscribers.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void amountfrozen(Connection taskSchedulerConnection, int amountfrozen) throws SQLException {
+        String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();
+        String query = "UPDATE databydate SET Frozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
 
-		    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
-		        // Step 3: Set the parameters for the query
-		        stmt.setInt(1, latebooks); // Set the amount of books borrowed
-		        stmt.setString(2, yesterday);                  // Set the formatted date
+        try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
+            stmt.setInt(1, amountfrozen);
+            stmt.setString(2, today);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error while updating data: " + e.getMessage(), e);
+        }
+    }
 
-		        // Step 4: Execute the update statement
-		        stmt.executeUpdate();
-		    } catch (SQLException e) {
-		        throw new SQLException("Error while updating data: " + e.getMessage(), e);
-		    }
-		}
-	public static int FetchAmountFrozen(Connection taskSchedulerConnection) throws SQLException {
-	    // SQL query to count how many subscribers have a status different from 'Not Frozen'
-	    String query = "SELECT COUNT(*) FROM subscriber WHERE status != 'Not Frozen'";
+    /**
+     * Fetches the number of subscribers who are currently not frozen.
+     *
+     * @param taskSchedulerConnection A valid database connection.
+     * @return The number of subscribers whose status is exactly "Not Frozen".
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static int FetchAmountNotFrozen(Connection taskSchedulerConnection) throws SQLException {
+        String query = "SELECT COUNT(*) FROM subscriber WHERE status = 'Not Frozen'";
+        try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error while fetching data: " + e.getMessage(), e);
+        }
+        return 0;
+    }
 
-	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query);
-	         ResultSet rs = stmt.executeQuery()) {
-	        if (rs.next()) {
-	            return rs.getInt(1); // Return the count of rows
-	        }
-	    } catch (SQLException e) {
-	        throw new SQLException("Error while fetching data: " + e.getMessage(), e);
-	    }
+    /**
+     * Updates today's date record in "databydate" with the number of not-frozen subscribers.
+     *
+     * @param taskSchedulerConnection A valid database connection.
+     * @param amountNotfrozen         The number of not-frozen subscribers.
+     * @throws SQLException If an SQL error occurs.
+     */
+    public static void amountNotfrozen(Connection taskSchedulerConnection, int amountNotfrozen) throws SQLException {
+        String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();
+        String query = "UPDATE databydate SET NotFrozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
 
-	    return 0; // Return 0 if no data is found or in case of error
-	}
-	public static void amountfrozen(Connection taskSchedulerConnection, int amountfrozen) throws SQLException {
-		 // Step 1: Get yesterday's date in the proper format
-	    String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();
+        try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
+            stmt.setInt(1, amountNotfrozen);
+            stmt.setString(2, today);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error while updating data: " + e.getMessage(), e);
+        }
+    }
 
-	    // Step 2: SQL query to update the number of borrowed books for yesterday
-	    String query = "UPDATE databydate SET Frozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
-
-	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
-	        // Step 3: Set the parameters for the query
-	        stmt.setInt(1, amountfrozen); // Set the amount of books borrowed
-	        stmt.setString(2, today);                  // Set the formatted date
-
-	        // Step 4: Execute the update statement
-	        stmt.executeUpdate();
-	    } catch (SQLException e) {
-	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
-	    }
-	}
-	
-	public static int FetchAmountNotFrozen(Connection taskSchedulerConnection) throws SQLException {
-	    // SQL query to count how many subscribers have a status different from 'Not Frozen'
-	    String query = "SELECT COUNT(*) FROM subscriber WHERE status = 'Not Frozen'";
-
-	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query);
-	         ResultSet rs = stmt.executeQuery()) {
-	        if (rs.next()) {
-	            return rs.getInt(1); // Return the count of rows
-	        }
-	    } catch (SQLException e) {
-	        throw new SQLException("Error while fetching data: " + e.getMessage(), e);
-	    }
-
-	    return 0; // Return 0 if no data is found or in case of error
-	}
-	public static void amountNotfrozen(Connection taskSchedulerConnection, int amountNotfrozen) throws SQLException {
-		 // Step 1: Get yesterday's date in the proper format
-	    String today = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).toString();
-
-	    // Step 2: SQL query to update the number of borrowed books for yesterday
-	    String query = "UPDATE databydate SET NotFrozen = ? WHERE idDataByDate = STR_TO_DATE(?,'%Y-%m-%d')";
-
-	    try (PreparedStatement stmt = taskSchedulerConnection.prepareStatement(query)) {
-	        // Step 3: Set the parameters for the query
-	        stmt.setInt(1, amountNotfrozen); // Set the amount of books borrowed
-	        stmt.setString(2, today);                  // Set the formatted date
-
-	        // Step 4: Execute the update statement
-	        stmt.executeUpdate();
-	    } catch (SQLException e) {
-	        throw new SQLException("Error while updating data: " + e.getMessage(), e);
-	    }
-	}
-	
-	// Method to convert date string from "yyyy-MM-dd" to "dd-MM-yyyy"
+    /**
+     * Converts a date string from "yyyy-MM-dd" to "dd-MM-yyyy" format.
+     *
+     * @param dateStr The date string in "yyyy-MM-dd" format.
+     * @return The reformatted date string in "dd-MM-yyyy" format.
+     */
     public static String convertDateFormat(String dateStr) {
-        // Define the input and output date formats
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Parse the original string into a LocalDate object
         LocalDate date = LocalDate.parse(dateStr, inputFormatter);
-
-        // Format the LocalDate object to the new string format
         return date.format(outputFormatter);
     }
 }
-
-		
-
