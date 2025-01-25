@@ -34,28 +34,47 @@ public class BorrowBookController extends BaseController implements Initializabl
     // Controller for managing time differences and calculating dates.
     ClientTimeDiffController clockController = new ClientTimeDiffController();
     
+    /** Exit button to close the application. */
     @FXML
     private Button btnExit = null;
 
+    /** Submit button to fetch book details based on the inputted ID. */
     @FXML
     private Button btnSubmit = null;
 
+    /** Back button to navigate to the previous screen. */
     @FXML
     private Button btnBack = null;
+
+    /** Search button to open the search window. */
     @FXML
     private Button btnSearch = null;
+
+    /** Submit button to send the borrow request to the librarian. */
     @FXML
     private Button btnSubmitToLibrarian = null;
+
+    /** Main menu button to return to the main menu. */
     @FXML
     private Button btnMainMenu = null;
+
+    /** Text field for entering the book ID. */
     @FXML
     private TextField IDtxt = null;
+
+    /** Label to display messages or prompts related to the book ID. */
     @FXML
     private Label awaitingTextID = null;
+
+    /** Reserve button to reserve a book when no copies are available. */
     @FXML
     private Button btnReserve = null;
+
+    /** Label to display the book's description and details. */
     @FXML
     private Label Book_Description = null;
+
+    /** Label to display the status of the borrow or reservation request. */
     @FXML
     private Label RequestStatus = null;
 
