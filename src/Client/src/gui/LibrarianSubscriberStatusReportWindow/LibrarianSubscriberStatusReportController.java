@@ -1,16 +1,13 @@
 package gui.LibrarianSubscriberStatusReportWindow;
 
-import java.awt.Button;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import client.ChatClient;
 import client.ClientUI;
 import gui.baseController.BaseController;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,51 +22,80 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import logic.ClientTimeDiffController;
 import logic.SubscriberData;
-
+/**
+ * Controller class for managing the Librarian Subscriber Status Report window.
+ * This class handles the functionality of displaying subscriber data and statistics,
+ * including frozen status, expected release dates, and visualizing the data with charts.
+ */
 public class LibrarianSubscriberStatusReportController extends BaseController {
+	
+	// TableView to display subscriber data 
 	@FXML
-	private TableView<SubscriberData> subscriberTable;
+	private TableView<SubscriberData> subscriberTable; 
 
+	// TableColumn for displaying Subscriber ID
 	@FXML
 	private TableColumn<SubscriberData, String> colSubscriberId;
 
+	// TableColumn for displaying Subscriber Name
 	@FXML
 	private TableColumn<SubscriberData, String> colSubscriberName;
 
+	// TableColumn for displaying the Frozen At date
 	@FXML
 	private TableColumn<SubscriberData, String> colFrozenAt;
 
+	// TableColumn for displaying the Expected Release date 
 	@FXML
 	private TableColumn<SubscriberData, String> colExpectedRelease;
+	
+	// Scatter chart for visualizing frozen subscriber data 
     @FXML
     private ScatterChart<String, String> scatterChart;
 
+    // X-axis for the scatter chart
     @FXML
     private CategoryAxis xAxis;
 
+    // Y-axis for the scatter chart
     @FXML
     private CategoryAxis yAxis;
 
+    // Pie chart for displaying the proportion of frozen and unfrozen subscribers 
     @FXML
     private PieChart pieChartFrozen;
+   
+    // Bar chart for displaying frozen and not frozen data statistics 
     @FXML
     private BarChart barChart;
+   
+    // X-axis for the bar chart
     @FXML
     private CategoryAxis barXAxis;
+    
+    //  Y-axis for the bar chart
     @FXML
     private NumberAxis barYAxis;
 
-    
+    // ComboBox for selecting the month
     @FXML
     private ComboBox<String> comboMonths;
 
+    // The year to be displayed in reports
     private int year = 2025;
+    
+    // The current month selected for reporting
     private Month month = Month.JANUARY;
+    
+    // The controller for time-related functionalities
     private ClientTimeDiffController clock = ChatClient.clock;
+    
+    /**
+     * Initializes the components of the Librarian Subscriber Status Report window,
+     * including setting up table columns, ComboBox for month selection, and populating charts.
+     */
     @FXML
     public void initialize() throws InterruptedException {
         scatterChart.setVisible(false);
@@ -110,7 +136,10 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         updateChartForMonth();
     }
 
-
+    /**
+     * Filters and updates the subscriber table based on the selected month.
+     * @param allSubscribers List of all subscribers to be filtered.
+     */
     private void filterAndUpdateTable(List<String> allSubscribers) {
         // Filter the subscriber data for the selected month
         ObservableList<SubscriberData> filteredData = FXCollections.observableArrayList();
@@ -141,9 +170,10 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         subscriberTable.setItems(filteredData);
     }
 
-
-    	
-   
+    /**
+     * Populates the bar chart with frozen and not frozen subscriber data.
+     * @throws InterruptedException if the data fetch is interrupted.
+     */
     private void populateBarChart() throws InterruptedException {
         // Clear previous data
         barChart.getData().clear();
@@ -177,6 +207,12 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         barChart.getData().addAll(frozenSeries, notFrozenSeries);
         
     }
+    
+    /**
+     * Checks if the data belongs to the selected month.
+     * @param dateStr the date string to be checked.
+     * @return true if the data is for the selected month.
+     */
     private boolean isDataForSelectedMonth(String dateStr) {
         // Split the date string into day, month, and year
         String[] dateParts = dateStr.split("-");
@@ -186,6 +222,11 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         return month == this.month.getValue();
     }
 
+    /**
+     * Requests frozen subscriber data from the server.
+     * @return a list of frozen data records.
+     * @throws InterruptedException if the request is interrupted.
+     */
     private List<String> getAllFrozenData() throws InterruptedException {
         List<String> frozenData = new ArrayList<>();
 
@@ -202,8 +243,10 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         return frozenData;
     }
 
+    /**
+     * Initializes the chart axes.
+     */
     private void initializeChart() {
-    	
         xAxis.setLabel("Freeze Date");
         yAxis.setLabel("Frozen Subscriber");
         yAxis.setAutoRanging(true);
@@ -211,11 +254,20 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
 
     }
 
+    /**
+     * Sets the month for report and updates the chart accordingly.
+     * @param month the month to be set.
+     * @throws InterruptedException if the month setting is interrupted.
+     */
     public void setMonth(Month month) throws InterruptedException {
         this.month = month;
         updateChartForMonth();
     }
 
+    /**
+     * Updates the chart for the selected month.
+     * @throws InterruptedException if the chart update is interrupted.
+     */
     private void updateChartForMonth() throws InterruptedException {
         // Clear the existing chart data
         scatterChart.getData().clear();
@@ -245,6 +297,10 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
     	updateChartForMonth();
     }
     
+    /**
+     * Gets a list of all subscribers.
+     * @return a list of all subscriber data.
+     */
     private List<String> getAllSubscribers() throws InterruptedException {
         List<String> subscribers = new ArrayList<>();
 
@@ -297,8 +353,11 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         return frozenAccountsSeries;
     }
 
+    /**
+     * Updates the PieChart with frozen and unfrozen subscriber data for the selected month.
+     * @param allSubscribers the list of all subscribers.
+     */
     private void updatePieChart(List<String> allSubscribers) {
-        int totalSubscribers = allSubscribers.size();
         int frozenCount = 0;
         int unfrozenCount = 0;
 
@@ -329,13 +388,21 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         addPieChartLabels(unfrozenData, unfrozenCount);
     }
 
+    /**
+     * Adds custom labels to the PieChart.
+     * @param data the data for the PieChart slice.
+     * @param count the count of subscribers for the slice.
+     */
     private void addPieChartLabels(PieChart.Data data, int count) {
         // Set custom label with the number count
         data.setName(data.getName() + "\n" + count); // Adds the count below the label
     }
 
-
-
+    /**
+     * Extracts the freeze date from the status string.
+     * @param status the status string containing the freeze date.
+     * @return the extracted freeze date.
+     */
     private String extractFreezeDate(String status) {
         if (status != null && status.contains("Frozen at:")) {
             return status.split("Frozen at:")[1].trim();  // Extract the date (e.g., "05-01-2025")
@@ -343,6 +410,11 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         return "Unknown";
     }
 
+    /**
+     * Checks if the subscriber was frozen in the selected month.
+     * @param freezeDate the freeze date of the subscriber.
+     * @return true if the subscriber was frozen in the selected month.
+     */
     private boolean isFrozenInSelectedMonth(String freezeDate) {
         if (freezeDate.equals("Unknown")) return false;
 
@@ -353,6 +425,13 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         return month == this.month.getValue();
     }
 
+    /**
+     * Converts a freeze date string in the format "dd-MM-yyyy" to a LocalDate object.
+     * If the freeze date is "Unknown", it returns LocalDate.MAX as a placeholder.
+     * 
+     * @param freezeDate the freeze date in "dd-MM-yyyy" format or "Unknown".
+     * @return a LocalDate object representing the freeze date, or LocalDate.MAX if the date is "Unknown".
+     */
     private LocalDate convertToLocalDate(String freezeDate) {
         if (freezeDate.equals("Unknown")) {
             return LocalDate.MAX;
@@ -366,6 +445,13 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         return LocalDate.of(year, month, day);
     }
     
+    /**
+     * Handles the action when the back button is clicked. It opens the ReportsWindow.fxml 
+     * and applies the associated CSS stylesheet for the ReportsWindow.
+     * 
+     * @param event the ActionEvent triggered by the back button click.
+     * @throws Exception if there is an error in loading the window.
+     */
     public void back(ActionEvent event) throws Exception{
     	openWindow(event,
     			"/gui/ReportsWindow/ReportsWindow.fxml",

@@ -3,36 +3,34 @@ package gui.LoginWindow;
 import client.ChatClient;
 import client.ClientUI;
 import gui.baseController.BaseController;
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import logic.Subscriber;
 
 /**
  * Controller for the Library Frame window in the Library Management Tool.
  * 
  * <p>This class handles user interactions for entering a Librarian or Subscriber ID,
  * validating the ID, and navigating to the appropriate window based on the role.</p>
- *
- * @since 1.0
  */
 public class LoginController extends BaseController {
 
-    private LoginController lfc;
-
+	/** Button to exit the login window */
     @FXML
     private Button btnExit = null;
 
+    /** Button to send the entered ID to the server */
     @FXML
     private Button btnSend = null;
 
+    /** Text field for the user to enter their Librarian or Subscriber ID */
     @FXML
     private TextField idtxt;
 
+    /** Label to display messages to the user during the login process */
     @FXML
     private Label awaitingLoginText;
 
@@ -66,12 +64,10 @@ public class LoginController extends BaseController {
 
         if ((ChatClient.l1.getLibrarian_id() == -1) && (ChatClient.s1.getSubscriber_id() == -1)) {
         	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(awaitingLoginText, "No user found.", "-fx-text-fill: red;", 3);
-        	return; // No use found therefore there's no need to continue.
+        	return; // No user found therefore there's no need to continue.
         }
         
         handleResponse(event);
-        
-        
     }
 
     /**
@@ -133,6 +129,13 @@ public class LoginController extends BaseController {
                    "/gui/SubscriberWindow/SubscriberWindow.css", 
                    "Subsriber View");
     }
+    
+    /**
+     * Navigates to the Librarian window if a valid Librarian ID is provided.
+     *
+     * @param event the event triggered by identifying a valid Librarian.
+     * @throws Exception if an error occurs while navigating to the Librarian window.
+     */
     private void navigateToLibrarianWindow(ActionEvent event) throws Exception {
         openWindow(event, 
                    "/gui/LibrarianWindow/LibrarianFrame.fxml", 
