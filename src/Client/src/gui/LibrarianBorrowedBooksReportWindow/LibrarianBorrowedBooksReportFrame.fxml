@@ -10,8 +10,9 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 
-<AnchorPane prefHeight="518.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianBorrowedBooksReportWindow.LibrarianBorrowedBooksReportController">
+<AnchorPane prefHeight="923.0" prefWidth="1735.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianBorrowedBooksReportWindow.LibrarianBorrowedBooksReportController">
     <children>
         <!-- BarChart -->
         <BarChart fx:id="barChart" layoutX="3.0" layoutY="552.0" prefHeight="371.0" prefWidth="1425.0" stylesheets="@LibrarianBorrowedBooksReportFrame.css">
@@ -23,7 +24,7 @@
                 <NumberAxis fx:id="barYAxis" label="Value" />
             </yAxis>
         </BarChart>
-        <TableView fx:id="bookDataTable" layoutX="50" layoutY="200" prefHeight="300" prefWidth="706.0">
+        <TableView fx:id="bookDataTable" layoutX="42.0" layoutY="119.0" prefHeight="300.0" prefWidth="603.0">
 
         <columns>
             <TableColumn fx:id="bookIdColumn" prefWidth="100" text="Book ID" />
@@ -31,18 +32,31 @@
             <TableColumn fx:id="timesBorrowedColumn" prefWidth="100" text="Times Borrowed" />
             <TableColumn fx:id="earlyReturnsColumn" prefWidth="100" text="Early Returns" />
             <TableColumn fx:id="lateReturnsColumn" prefWidth="100" text="Late Returns" />
-            <TableColumn fx:id="lostColumn" prefWidth="100" text="Lost" />
         </columns>
     </TableView>
         <!-- Buttons and ComboBox -->
         <Button fx:id="back" layoutX="1006.0" layoutY="20.0" mnemonicParsing="false" onAction="#back" text="Back" />
-        <ComboBox fx:id="monthComboBox" layoutX="438.0" layoutY="45.0" prefWidth="150.0" />
+        <ComboBox fx:id="monthComboBox" layoutX="60.0" layoutY="508.0" prefWidth="150.0" />
       <Label layoutX="48.0" layoutY="103.0" />
       <Label layoutX="513.0" layoutY="543.0" text="Monthly Frozen/Unfrozen Status" />
-      <PieChart fx:id="pieChart" layoutX="789.0" layoutY="164.0" prefHeight="335.0" prefWidth="346.0" />
-      <PieChart fx:id="avgPieChart" layoutX="1165.0" layoutY="299.0" prefHeight="200.0" prefWidth="200.0" />
-      <Label layoutX="871.0" layoutY="135.0" text="Currently Borrowed/Late Status" />
-      <Label layoutX="1179.0" layoutY="265.0" text="Average Borrow/Late per Month" />
+      <PieChart fx:id="pieChart" layoutX="1364.0" layoutY="108.0" prefHeight="335.0" prefWidth="346.0" />
+      <PieChart fx:id="avgPieChart" layoutX="1465.0" layoutY="624.0" prefHeight="239.0" prefWidth="231.0" />
+      <Label layoutX="1454.0" layoutY="83.0" text="Today's Borrowed/Late Status" />
+      <Label layoutX="1501.0" layoutY="591.0" text="Average Borrow/Late per Month" />
+      <ComboBox fx:id="bookFilterComboBox" layoutX="42.0" layoutY="83.0" prefHeight="25.0" prefWidth="217.0" />
+      <Label layoutX="344.0" layoutY="87.0" text="Today's Books Status" />
+      <Line endX="1743.9595947265625" endY="470.83331298828125" startY="470.8333435058594" />
+      <Label layoutX="728.0" layoutY="120.0" text="Most Popular Books:" />
+      <Label layoutX="728.0" layoutY="214.0" text="Longest Book To Be Returned:" />
+      <Label layoutX="726.0" layoutY="267.0" text="Closest Book To Be Returned:" />
+      <Label fx:id="MPB" layoutX="882.0" layoutY="120.0" text="Most Popular Books:" />
+      <Label fx:id="LUB" layoutX="903.0" layoutY="214.0" text="Longest Unreturned Books:" />
+      <Label fx:id="ERB" layoutX="903.0" layoutY="267.0" text="Earliest Returned Books:" />
+      <Label layoutX="724.0" layoutY="323.0" text="Longest Unreturned Books:" />
+      <Label layoutX="728.0" layoutY="380.0" text="Shortest Time Of Unreturned Books:" />
+      <Label fx:id="LUB1" layoutX="878.0" layoutY="323.0" text="Longest Unreturned Books:" />
+      <Label fx:id="ERB1" layoutX="935.0" layoutY="380.0" text="Earliest Returned Books:" />
+
       
     </children>
 </AnchorPane>

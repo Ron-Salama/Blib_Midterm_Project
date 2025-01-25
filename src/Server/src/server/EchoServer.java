@@ -232,6 +232,10 @@ public class EchoServer extends AbstractServer {
                 case "SubmitBorrowRequestBarcode":
                 	handleBorrowfrombarcode(client,body);
                 	break;
+                case "GetAllBorrowedBooksInfo":
+                	GetAllBorrowedBooksInfoCase(client,body);
+                	break;
+                	
                 default: // Handle unknown commands
                     client.sendToClient("Unknown command.");
                     break;
@@ -302,6 +306,15 @@ public class EchoServer extends AbstractServer {
         	  client.sendToClient("Successfully decreased NumCopies for bookId: " + bookid);
           }
           client.sendToClient(ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid));
+	}
+	private void GetAllBorrowedBooksInfoCase(ConnectionToClient client, String body) throws IOException, SQLException {
+	    List<String> allInfo = ConnectToDb.fetchBorrowedBooksForTaskScheduler(dbConnection);
+	    
+	    // Join the list of book data into a single string with semicolon as delimiter
+	    String allInfoString = String.join(";", allInfo);
+	    
+	    // Send the data to the client
+	    client.sendToClient("allBorrowInfo:" + allInfoString);
 	}
 
 
