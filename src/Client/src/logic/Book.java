@@ -33,6 +33,7 @@ public class Book {
 
     /** The location of the book in the library. */
     private String closestReturnDate;
+    
     /**
      * Constructs a new Book with the specified details.
      * 
@@ -108,23 +109,42 @@ public class Book {
         return location;
     }
     
-    
+    /**
+     * Gets the number of available copies of the book.
+     * 
+     * @return the number of available copies
+     */
     public int getAvailableCopies() {
 		return availableCopies;
 	}
     
-    
+    /**
+     * Gets the number of reserved copies of the book.
+     * 
+     * @return the number of reserved copies
+     */
     public int getReservedCopies() {
 		return reservedCopies;
 	}
     
+    /**
+     * Sets the closest return date for a reserved copy.
+     * 
+     * @param returnDate the return date for a reserved copy
+     */
     public void setClosestReturnDate(String returnDate) {
     	closestReturnDate = returnDate;
     }
     
+    /**
+     * Gets the closest return date for a reserved copy.
+     * 
+     * @return the closest return date
+     */
     public String getClosestReturnDate() {
     	return closestReturnDate;
     }
+    
     /**
      * Returns a string representation of the book, which includes all its details.
      * 
@@ -134,8 +154,4 @@ public class Book {
     public String toString() {
         return "Book{isbn=" + ISBN + ", name='" + name + "', description='" + description + "', subject='" + subject + "', Copies=" + copies + ", location='" + location + "', availableCopies=" + availableCopies + ", reservedCopies=" + reservedCopies + "}";
     }
-
-
-
-	
 }

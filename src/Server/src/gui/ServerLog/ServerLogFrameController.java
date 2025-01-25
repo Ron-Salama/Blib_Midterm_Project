@@ -24,20 +24,30 @@ import javafx.scene.control.TextArea;
 
 /**
  * Controller class for the message log window. Displays a dynamic log of messages received by the server.
+ * <p>This class monitors the server log file for updates and displays new log entries in a TextArea.
+ * It also shows the server's IP address on the GUI.</p>
  */
 public class ServerLogFrameController extends BaseController implements Initializable {
-
+	/** The TextArea where the log entries are displayed. */
     @FXML
     private TextArea logTextArea;
 
+    /** The Label displaying the server's IP address. */
     @FXML 
     private Label serverIPDynamicText;
     
+    /** The path to the server log file. */
     private static final String LOG_FILE_PATH = "src/logic/serverLog.txt";
 
     // File pointer to track the last read position
     private long filePointer = 0;
 
+    /**
+     * Initializes the controller by starting the log file watcher and displaying the server's IP address.
+     * 
+     * @param location the location used to resolve relative paths for the root object, or null if the location is not known
+     * @param resources the resources used to localize the root object, or null if no localization is needed
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         startFileWatcher(); // Start monitoring the log file for updates
@@ -51,6 +61,8 @@ public class ServerLogFrameController extends BaseController implements Initiali
 
     /**
      * Starts a file watcher to monitor the log file for updates and dynamically update the TextArea.
+     * <p>The file watcher runs in a separate thread to detect modifications to the log file and 
+     * appends new log entries to the TextArea in the JavaFX Application thread.</p>
      */
     private void startFileWatcher() {
         Thread fileWatcherThread = new Thread(() -> {
@@ -84,6 +96,8 @@ public class ServerLogFrameController extends BaseController implements Initiali
 
     /**
      * Appends only the new log entries from the log file to the TextArea.
+     * <p>This method reads the new content from the log file starting from the last known position
+     * and appends it to the TextArea in the JavaFX Application thread.</p>
      */
     private void appendNewLogEntries() {
         try (RandomAccessFile reader = new RandomAccessFile(LOG_FILE_PATH, "r")) {
