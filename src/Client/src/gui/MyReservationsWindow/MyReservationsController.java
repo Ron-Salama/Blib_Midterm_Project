@@ -1,4 +1,5 @@
 package gui.MyReservationsWindow;
+
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.time.LocalDateTime;
@@ -27,17 +28,16 @@ import logic.ClientTimeDiffController;
 import logic.ReservedBook;
 import logic.Subscriber;
 import gui.BorrowBookWindow.BorrowBookController;
-import logic.ClientTimeDiffController;
 
 public class MyReservationsController extends BaseController implements Initializable {
     private MyReservationsController mrc;
     ClientTimeDiffController clockController = new ClientTimeDiffController();
     
     @FXML
-	private Label title;
+    private Label title;
     
     @FXML
-	private Label feedBack;
+    private Label feedBack;
     
     @FXML
     private Label statusLabel;
@@ -54,17 +54,15 @@ public class MyReservationsController extends BaseController implements Initiali
     @FXML
     private TableColumn<ReservedBook, String> tableReservationDate;
 
-    
     @FXML
     private TableColumn<ReservedBook, Void> actions;
     
     @FXML
     private Button btnCancelReservation;
-
-
+    
     @FXML
     private Button btnExit;
-	
+    
     @FXML
     private Button btnBack;
     
@@ -73,7 +71,6 @@ public class MyReservationsController extends BaseController implements Initiali
     
     @FXML
     private Button retrieveButton;
-    
     
     @FXML
     private HBox actionBox;
@@ -84,7 +81,6 @@ public class MyReservationsController extends BaseController implements Initiali
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    	
         // Initialize TableView columns
         tableId.setCellValueFactory(new PropertyValueFactory<>("ISBN")); // ISBN column
         tableName.setCellValueFactory(new PropertyValueFactory<>("name")); // Name column
@@ -93,47 +89,34 @@ public class MyReservationsController extends BaseController implements Initiali
         if (actionBox == null) {
             System.out.println("actionBox is null. FXML file is not loading correctly.");
         }
-        
 
         currentSub = SubscriberWindowController.currentSubscriber;
         title.setText("My Reservations");
-
-        
-        
         loadBooks();
-        
-        
-        
-        
         setupActionsColumn();
-        
         
         tableView.getItems().clear();
         try {
-			addDelayInMilliseconds(1000); // one second delay.
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
+            addDelayInMilliseconds(1000); // one second delay.
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadBooks() {
-//        new Thread(() -> {
-            ClientUI.chat.accept("GetReservedBooks:" + currentSub.getSubscriber_id());
-            
-            waitForServerResponse();
-            
-           Platform.runLater(() -> {
-                if (ChatClient.reservedBookList != null && !ChatClient.reservedBookList.isEmpty()) {
-                    tableView.getItems().clear();
-                    tableView.getItems().addAll(ChatClient.reservedBookList);
-                } else {
-                    System.out.println("No reserved books to display.");
-                }
-            });
-        }
+        ClientUI.chat.accept("GetReservedBooks:" + currentSub.getSubscriber_id());
+        waitForServerResponse();
+        
+        Platform.runLater(() -> {
+            if (ChatClient.reservedBookList != null && !ChatClient.reservedBookList.isEmpty()) {
+                tableView.getItems().clear();
+                tableView.getItems().addAll(ChatClient.reservedBookList);
+            } else {
+                System.out.println("No reserved books to display.");
+            }
+        });
+    }
 
-    
     private void setupActionsColumn() {
         actions.setCellFactory(param -> new TableCell<ReservedBook, Void>() {
             private final Button retrieveButton = new Button("Retrieve");
@@ -159,6 +142,9 @@ public class MyReservationsController extends BaseController implements Initiali
 
                     // Refresh the table view to reflect the updated state
                     getTableView().refresh();
+                    
+                    // Disable the button after clicking
+                    retrieveButton.setDisable(true);  // Disable the button after the first click
                 });
             }
 
@@ -167,11 +153,11 @@ public class MyReservationsController extends BaseController implements Initiali
                 super.updateItem(item, empty);
 
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null);
+                    setGraphic(null); // No button if the row is empty or has no item
                 } else {
                     ReservedBook reservedBook = (ReservedBook) getTableRow().getItem();
                     String isAccountFrozen = currentSub.getStatus();
-                                      
+                    
                     // Determine button state and message
                     if (!(isAccountFrozen.equals(" status:Not Frozen"))) {
                         retrieveButton.setDisable(true);
@@ -180,8 +166,14 @@ public class MyReservationsController extends BaseController implements Initiali
                         retrieveButton.setDisable(true);
                         statusLabel.setText("Book is not available yet.");
                     } else {
-                        retrieveButton.setDisable(false);
-                        statusLabel.setText("Your book is here!");
+                        // Disable button if it's already retrieved or marked as such
+                        if (reservedBook.isRetrieved()) {
+                            retrieveButton.setDisable(true);
+                            statusLabel.setText("You already retrieved this book.");
+                        } else {
+                            retrieveButton.setDisable(false);
+                            statusLabel.setText("Your book is here!");
+                        }
                     }
 
                     setGraphic(actionHBox); // Display the button and label
@@ -190,23 +182,11 @@ public class MyReservationsController extends BaseController implements Initiali
         });
     }
 
-
-
-
-
-
-
-
-    
-    
-    
     protected void handleRetrieveBook(ActionEvent event, ReservedBook reservedBook) {
-        // Log for debugging
-        System.out.println("Retrieve button clicked for book: " + reservedBook.getName());
 
-        // Step 2: Directly submit the borrow request with the specific reservedBook
+        // Step 1: Directly submit the borrow request with the specific reservedBook
         try {
-        	SubmitRetrieve(event, reservedBook);
+            SubmitRetrieve(event, reservedBook);
             // Feedback to the user
             showColoredLabelMessageOnGUI(feedBack, "Book Retrieve success! Your book list has been updated with your new book addition :)", "-fx-text-fill: green;");
             
@@ -220,15 +200,10 @@ public class MyReservationsController extends BaseController implements Initiali
             e.printStackTrace();
         }
 
-        // Step 3: Update table view to reflect changes
+        // Step 2: Update table view to reflect changes
         tableView.refresh();
     }
 
-
-
-
-    
-    
     public void SubmitRetrieve(ActionEvent event, ReservedBook reservedBook) throws Exception {
         // Collect subscriber and book details from the passed reservedBook
         String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
@@ -243,16 +218,14 @@ public class MyReservationsController extends BaseController implements Initiali
         String Retrieve = "" + subscriberName + "," + subscriberId + "," + bookName + "," + bookId + "," + borrowDate + "," + returnDate;
         ClientUI.chat.accept("SubmitRetrieve:" + Retrieve);
         
-        waitForServerResponse();
-        
         // Step 2: Call the method to delete the reservation from the database
         deleteReservationFromDatabase(reservedBook);
     }
 
     private void deleteReservationFromDatabase(ReservedBook reservedBook) {
-    	// Collect subscriber and book details from the passed reservedBook
+        // Collect subscriber and book details from the passed reservedBook
         String subscriberId = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
-    	// Use the details from the reservedBook
+        // Use the details from the reservedBook
         String bookId = reservedBook.getISBN();
         
         String reserveSuccess = subscriberId + "," + bookId;
@@ -260,40 +233,27 @@ public class MyReservationsController extends BaseController implements Initiali
         waitForServerResponse();
     }
 
-    
-
-
-
-    
     /**
      * Handles the Exit button action, navigating back to the Main Menu.
      *
      * @param event the event triggered by clicking the exit button.
      */
     public void getExitBtn(ActionEvent event) {
-    	openWindow(event,
-    			"/gui/MainMenu/MainMenuFrame.fxml",
-    			"/gui/MainMenu/MainMenuFrame.css",
-    			"MainMenu");
+        openWindow(event,
+                "/gui/MainMenu/MainMenuFrame.fxml",
+                "/gui/MainMenu/MainMenuFrame.css",
+                "MainMenu");
     }
-    
-    
-    
-    
-    
-    
+
     /**
      * Handles the back button action, navigating back to the previous window.
      *
      * @param event the event triggered by clicking the back button.
      */
     public void getBackBtn(ActionEvent event) throws Exception {
-    	openWindow(event,
-    			"/gui/SubscriberWindow/SubscriberWindow.fxml",
-    			"/gui/SubscriberWindow/SubscriberWindow.css",
-    			"Subscriber View");
-	}
-    
-    
-    
+        openWindow(event,
+                "/gui/SubscriberWindow/SubscriberWindow.fxml",
+                "/gui/SubscriberWindow/SubscriberWindow.css",
+                "Subscriber View");
+    }
 }
