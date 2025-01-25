@@ -537,7 +537,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             ClientUI.chat.accept("Fetch:" + SID); // Send the subscriber ID to the server so we can check if that subscriber is frozen.
             waitForServerResponse();
             if (ChatClient.s1.getStatus().split(":")[1].equals("Frozen at")) {
-            	showColoredLabelMessageOnGUI(feedbackLabel, "The subscriber " + ChatClient.s1.getSubscriber_name() + " is currently frozen and can't borrow books.", "-fx-text-fill: blue;");
+            	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "The subscriber " + ChatClient.s1.getSubscriber_name() + " is currently frozen and can't borrow books.", "-fx-text-fill: blue;", 3);
             	return;
             }
             
@@ -552,7 +552,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             }
             ClientUI.chat.accept("UpdateHistoryInDB:"+body+",Borrowed Successfully");
             waitForServerResponse();
-            showColoredLabelMessageOnGUI(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;");
+            showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "Borrow request accepted successfully!", "-fx-text-fill: green;", 3);
 		}
 		else if (selectedRequestType=="Return For Subscriber"){
 			String statusOfReturn = "";
@@ -570,7 +570,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
             	ClientUI.chat.accept("Handle Lost:"+body);
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Lost");
             	waitForServerResponse();
-                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;");
+                showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "Return request accepted successfully! (Book marked as lost)", "-fx-text-fill: green;", 3);
                 btnAccept.setDisable(true);
             }
             else
@@ -587,7 +587,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 ClientUI.chat.accept("Handle return:" + body); 
             	ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Return Successfully " + numOfDaysOfReturn + " days " + statusOfReturn);
             	waitForServerResponse();
-                showColoredLabelMessageOnGUI(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;");
+                showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "Return request accepted successfully! (" + statusOfReturn + ")", "-fx-text-fill: green;", 3);
                 btnAccept.setDisable(true);
             }
 		}
@@ -604,7 +604,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 			 ClientUI.chat.accept("Handle register:" + body1);
 			 ClientUI.chat.accept("UpdateHistoryInDB:" + body2 + ",Register Successfully");
 			 waitForServerResponse();
-	         showColoredLabelMessageOnGUI(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;");
+	         showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "Registration request accepted successfully!", "-fx-text-fill: green;", 3);
 	         btnAccept.setDisable(true);
 		}
 	}
@@ -738,14 +738,14 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
                 break;
 
             default:
-                showColoredLabelMessageOnGUI(feedbackLabel, "Unknown request type.", "-fx-text-fill: red;");
+                showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, "Unknown request type.", "-fx-text-fill: red;", 3);
                 return false;
         }
 
         if (!allFieldsFilled) {
             // Remove the trailing comma and space
             missingFields.setLength(missingFields.length() - 2);
-            showColoredLabelMessageOnGUI(feedbackLabel, missingFields.toString(), "-fx-text-fill: red;");
+            showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(feedbackLabel, missingFields.toString(), "-fx-text-fill: red;", 10);
         }
 
         return allFieldsFilled;
