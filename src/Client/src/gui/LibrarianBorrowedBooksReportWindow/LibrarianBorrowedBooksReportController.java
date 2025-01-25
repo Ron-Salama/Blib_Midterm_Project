@@ -289,7 +289,8 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
 
         // Request the borrowed books information
         ClientUI.chat.accept("GetAllBorrowedBooksInfo:");
-        addDelayInMilliseconds(300);
+
+        waitForServerResponse();
 
         // Fetch the borrowed book information from ChatClient.BorrowedBookInfoForReports
         List<BorrowedBook> borrowedBooks = ChatClient.BorrowedBookInfoForReports;
