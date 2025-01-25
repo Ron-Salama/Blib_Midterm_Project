@@ -1,22 +1,32 @@
-/* General root styling */
+/* General background and padding for the AnchorPane */
 .root {
-    -fx-background-color: #f4f4f9; /* Light background color */
+    -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
+    -fx-padding: 30px;  /* Padding around the edges */
 }
 
-/* Styling for Buttons */
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
+}
+
+/* General styling for all buttons */
 .button {
-    -fx-font-size: 14px;
-    -fx-background-color: #007bff; /* Blue background for buttons */
-    -fx-text-fill: #ffffff; /* White text color */
-    -fx-padding: 8 16 8 16; /* Padding for a better button size */
-    -fx-border-radius: 20; /* Rounded corners for buttons */
-    -fx-font-weight: bold; /* Bold font for buttons */
-    -fx-cursor: hand; /* Change cursor to hand pointer */
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
-/* Hover effect for Buttons */
 .button:hover {
-    -fx-background-color: #0056b3; /* Darker blue when hovered */
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
 /* Label styling */
@@ -34,18 +44,18 @@
     -fx-border-radius: 5; /* Slightly rounded corners */
     -fx-border-color: #cccccc; /* Light grey border */
     -fx-padding: 5 10; /* Padding inside text fields */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); /* Outline effect */
 }
 
 /* Focused Text Field styling (when user clicks on it) */
 .text-field:focused {
     -fx-border-color: #007bff; /* Blue border when focused */
+    -fx-effect: dropshadow(gaussian, #007bff, 5, 0.3, 0, 1); /* Blue outline on focus */
 }
 
-/* Text Styling */
-.text {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold; /* Bold font for titles */
-    -fx-fill: #333333; /* Dark color for text */
+/* Focused Text Field styling (when user clicks on it) */
+.text-field:focused {
+    -fx-border-color: #007bff; /* Blue border when focused */
 }
 
 /* Specific adjustments for Labels and Fields in Update Info Form */
@@ -60,9 +70,17 @@
     -fx-border-color: #dddddd; /* Subtle border for text fields */
 }
 
-#btnReturnToMainMenu, #btnUpdate {
+/* Specific Button Sizes and Hover Effects (applied only to layout positions) */
+
+/* Larger button (Return to Main Menu) */
+#btnReturnToMainMenu {
     -fx-font-size: 16px;
-    -fx-font-weight: bold;
+}
+
+/* Update Button */
+#btnUpdate {
+    -fx-pref-height: 77px;  /* Set specific height for the button */
+    -fx-pref-width: 146px;  /* Set specific width for the button */
     -fx-background-color: #28a745; /* Green background for back and update buttons */
     -fx-text-fill: #ffffff; /* White text for contrast */
     -fx-border-radius: 8; /* Rounded corners */

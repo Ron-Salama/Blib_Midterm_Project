@@ -1,4 +1,2 @@
 Server listening for connections on port 5555
 Connected to the database.
-Extension daily cleanup done.
-Server daily tasks done.

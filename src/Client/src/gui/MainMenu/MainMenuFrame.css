@@ -4,54 +4,52 @@
     -fx-padding: 30px;  /* Padding around the edges */
 }
 
-/* Button Styling */
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
+}
+
+/* General styling for all buttons */
 .button {
-    -fx-background-color: #4e91f5;  /* Blue background for the buttons */
-    -fx-text-fill: white;  /* White text color */
-    -fx-font-size: 16px;  /* Default button font size */
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
-    -fx-padding: 10px 20px;  /* Padding inside the buttons */
-    -fx-border-radius: 5px;  /* Rounded corners for the buttons */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
 .button:hover {
-    -fx-background-color: #3577d4;  /* Darker blue background on hover */
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
+
+/* Specific Button Sizes and Hover Effects (applied only to layout positions) */
 
 /* Larger button (Login) */
 #btnLogin {
-    -fx-background-color: #4e91f5;  /* Blue background */
     -fx-pref-height: 77px;  /* Set specific height for the button */
     -fx-pref-width: 146px;  /* Set specific width for the button */
-    -fx-font-size: 32px;  /* Larger font size for login button */
-    -fx-font-weight: bold;
 }
 
-#btnLogin:hover {
-    -fx-background-color: #3577d4;  /* Darker blue background on hover */
+#btnRegister {
+	-fx-pref-height: 77px;  /* Set specific height for the button */
+    -fx-pref-width: 146px;  /* Set specific width for the button */
 }
 
-/* Exit and Register Buttons */
+/* Exit and Register Buttons (Search and Exit have red color) */
 #btnExit, #btnSearch {
-    -fx-background-color: #e74c3c;  /* Red background for exit and register buttons */
     -fx-font-size: 16px;  /* Font size for these buttons */
-}
-
-#btnExit:hover, #btnSearch:hover {
-    -fx-background-color: #c0392b;  /* Darker red background on hover */
 }
 
 /* Back Button */
 #btnBack {
-    -fx-background-color: #2ecc71;  /* Green background for back button */
     -fx-font-size: 16px;  /* Font size for the back button */
-    -fx-font-weight: bold;
-}
-
-#btnBack:hover {
-    -fx-background-color: #27ae60;  /* Darker green background on hover */
 }
 
 /* Spacing between buttons */
