@@ -75,8 +75,6 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
             
         }
 
-        waitForServerResponse();
-
         // Now check if the ID is in the database
         if (ChatClient.isIDInDataBase) {
             String labelMessage = "The user ID, " + id + ", is already taken";

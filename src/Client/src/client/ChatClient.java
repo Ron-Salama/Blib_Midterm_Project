@@ -102,22 +102,21 @@ public class ChatClient extends AbstractClient
 	    	isIPValid = true;
 	    } else if (response.startsWith("Could not connect to the server.")) {
 	 	        isIPValid = false;
-	    }else if (response.startsWith("BorrowedBooks:")) {
+	    } else if (response.startsWith("BorrowedBooks:")) {
 	        handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
 	    } else if (response.startsWith("subscriber_id:")) {
 	        handleSubscriberData(response);
-	    }
-	    else if (response.startsWith("BookReserved:")) {
+	    } else if (response.startsWith("BookReserved:")) {
 	        handleBookReservedResponse(response.substring("BookReserved:".length()));
-	    }else if (response.startsWith("BorrowedBooks:")) {
+	    } else if (response.startsWith("BorrowedBooks:")) {
             handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
-	    }else if (response.startsWith("ReservedBooks:")) {
+	    } else if (response.startsWith("ReservedBooks:")) {
             handleReservedBooksResponse(response.substring("ReservedBooks:".length()));
-        }else if (response.startsWith("librarian_id:")) {
+        } else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
-	    }else if (response.startsWith("Subscriber updated successfully.")) {
+	    } else if (response.startsWith("Subscriber updated successfully.")) {
 	    	handleUpdateSubInfoSuccess();
-	    }else if (response.startsWith("Subscriber ID does not exist.")) {
+	    } else if (response.startsWith("Subscriber ID does not exist.")) {
 	    	handleUpdateSubInfoFail();
 	    } else if (response.equals("Librarian ID does not exist.") ||
 	 		   	response.equals("ID does not exist.")) {
