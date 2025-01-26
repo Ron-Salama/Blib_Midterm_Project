@@ -231,6 +231,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             String reservation = "" + subscriberId + "," + bookName + "," + reserveDate + ","  + bookId;
             
             ClientUI.chat.accept("Reserve:" + reservation);
+            waitForServerResponse();
             ClientUI.chat.accept("UpdateHistoryInDB:" + body + ",Reserved Successfully");
             waitForServerResponse();
             
