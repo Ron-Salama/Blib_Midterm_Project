@@ -25,7 +25,7 @@
       <Label ellipsisString="Enter Server IP:" layoutX="148.0" layoutY="244.0" text="Enter Server IP:" />
 
       <!-- TextField for IP input -->
-      <TextField fx:id="IPtxt" layoutX="148.0" layoutY="263.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
+      <TextField fx:id="IPtxt" layoutX="148.0" layoutY="263.0" prefHeight="28.0" prefWidth="159.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
 
       <!-- Awaiting Login Text -->
       <Label fx:id="awaitingLoginText" alignment="CENTER" layoutX="94.0" layoutY="307.0" prefHeight="20.0" prefWidth="302.0" textFill="RED">
