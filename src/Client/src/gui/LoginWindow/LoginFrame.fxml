@@ -16,7 +16,7 @@
             <Font size="14.0" />
          </font></Label>
       <TextField fx:id="idtxt" layoutX="195.0" layoutY="139.0" promptText="123465" />
-      <Label fx:id="awaitingLoginText" layoutX="109.0" layoutY="137.0" textFill="#4dc03e">
+      <Label fx:id="awaitingLoginText" layoutX="263.0" layoutY="109.0" textFill="#4dc03e">
          <font>
             <Font size="20.0" />
          </font>
