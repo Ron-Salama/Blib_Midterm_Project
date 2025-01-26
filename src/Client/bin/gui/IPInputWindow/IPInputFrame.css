@@ -6,12 +6,6 @@
     -fx-padding: 30px;  /* Padding around the edges */
 }
 
-/* Font setup for Rubik Bold */
-@font-face {
-    font-family: 'Rubik Bold';
-    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
-}
-
 /* Styling for the "Welcome to Blib system" label */
 #welcomeLabel {
     -fx-background-color: #4e91f5;  /* Blue background */

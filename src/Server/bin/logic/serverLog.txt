@@ -1,9 +1,44 @@
 Server listening for connections on port 5555
 Connected to the database.
-Message received: IP:10.100.102.6 from 10.100.102.6 (10.100.102.6)
+Dear Gary_Snail,
+You need to return the following books tomorrow:
+- 1984
+We are looking forward to your visit.
+See you soon!
+Extension daily cleanup done.
+Server daily tasks done.
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
 Client connected.
-Client IP:10.100.102.6
-Client Hostname: 10.100.102.6
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
 Connection Status: Connected
-Message received: Fetch:1 from 10.100.102.6 (10.100.102.6)
-Message received: RegisterRequest:123,qweqwe aweqwe,054848423,almogra@gmail.com from 10.100.102.6 (10.100.102.6)
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: EXIT: from 10.0.0.8 (10.0.0.8)
+Client disconnected.
+Client IP: 10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Disconnected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetReservedBooks:8 from 10.0.0.8 (10.0.0.8)
+Message received: GetBooks: from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0077 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0122 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0166 from 10.0.0.8 (10.0.0.8)
+Message received: GetBooks: from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0077 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0122 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0166 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBooks: from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0077 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0111 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0122 from 10.0.0.8 (10.0.0.8)
+Message received: FetchClosestReturnDate:0166 from 10.0.0.8 (10.0.0.8)

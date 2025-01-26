@@ -4,11 +4,6 @@ AnchorPane {
     -fx-padding: 30px; /* Padding around the edges */
 }
 
-/* Font setup for Rubik Bold */
-@font-face {
-    font-family: 'Rubik Bold';
-    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
-}
 
 /* Text and Titles */
 .text {

@@ -13,7 +13,7 @@
       <Button id="btnBack" fx:id="btnBack" layoutX="8.0" layoutY="11.0" mnemonicParsing="false" onAction="#getBackBtn" text="← Back" />
       <Label layoutX="179.0" layoutY="109.0" text="Book ID" />
       <TextField fx:id="borrowedBookIDtxt" layoutX="179.0" layoutY="136.0" promptText="EX: 0011" />
-      <Label id="headerText" alignment="CENTER" layoutX="94.0" layoutY="1.0" prefHeight="50.0" prefWidth="334.0" text="Scan Barcode" textAlignment="CENTER">
+      <Label id="headerText" alignment="CENTER" layoutX="93.0" layoutY="4.0" prefHeight="50.0" prefWidth="334.0" text="Scan Barcode" textAlignment="CENTER">
          <font>
             <Font size="39.0" />
          </font>
@@ -23,6 +23,6 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Line endX="176.19998168945312" endY="7.62939453125E-6" layoutX="222.0" layoutY="66.0" startX="-100.0" />
+      <Line endX="176.19998168945312" endY="7.62939453125E-6" layoutX="222.0" layoutY="54.0" startX="-100.0" />
    </children>
 </AnchorPane>
