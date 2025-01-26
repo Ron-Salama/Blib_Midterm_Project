@@ -348,6 +348,13 @@ public class EchoServer extends AbstractServer {
                 String returnDate = requestDetails[5];
                 String requestType = "Borrow For Subscriber";
 
+                boolean alreadyborrowed = ConnectToDb.bookalreadyborrowed(dbConnection, subscriberId, bookID);
+                // Insert the request
+                if(alreadyborrowed) {
+                	client.sendToClient("Book already borrowed");
+                	return;
+                }
+                //if the book isnt borrowed already
                 // Step 1: Process the actual borrowing logic
                 boolean isBorrowed = ConnectToDb.insertBorrowBook(dbConnection, body);
 
@@ -907,18 +914,23 @@ public class EchoServer extends AbstractServer {
         if (borrowParts.length == 6) {
             String subscriberId = borrowParts[0].trim();
             String subscriberName = borrowParts[1].trim();
-            String bookBorrowId = borrowParts[2].trim();
+            String bookId = borrowParts[2].trim();
             String bookName = borrowParts[3].trim();
             String borrowDate = borrowParts[4].trim();
             String returnDate = borrowParts[5].trim();
 
             try {
                 String extendTime = "";
+                boolean alreadyborrowed = ConnectToDb.bookalreadyborrowed(dbConnection, subscriberId, bookId);
                 // Insert the request
+                if(alreadyborrowed) {
+                	client.sendToClient("Book already borrowed");
+                	return;
+                }
                 ConnectToDb.insertRequest(dbConnection, "Borrow For Subscriber", subscriberId, subscriberName,
-                        bookName, bookBorrowId, borrowDate, returnDate, extendTime);
+                        bookName, bookId, borrowDate, returnDate, extendTime);
                 // Decrease available copies
-                ConnectToDb.decreaseAvaliabeNumCopies(dbConnection, bookBorrowId);
+                ConnectToDb.decreaseAvaliabeNumCopies(dbConnection, bookId);
             } catch (Exception e) {
                 client.sendToClient("An error occurred while processing the borrow request: " + e.getMessage());
                 e.printStackTrace();

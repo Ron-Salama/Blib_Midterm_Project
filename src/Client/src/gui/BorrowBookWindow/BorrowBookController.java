@@ -190,7 +190,12 @@ public class BorrowBookController extends BaseController implements Initializabl
             
             String borrowRequest = "" + subscriberId + "," + subscriberName + "," + bookId + "," + bookName + "," + borrowDate + "," + returnDate;
             ClientUI.chat.accept("BorrowRequest:" + borrowRequest);
-            
+            waitForServerResponse();
+            if(ChatClient.alreadyborrowed) {
+            	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(RequestStatus, "Book already borrowed", "-fx-text-fill: red;", 4);
+            	ChatClient.alreadyborrowed=false;
+            	return;
+            }
             // Feedback to the user
             showColoredLabelMessageOnGUI(RequestStatus, "Borrow request submitted successfully!\nAwaiting Librarian approval", "-fx-text-fill: green;");
             btnSubmitToLibrarian.setDisable(true); // Optionally disable the button after submitting

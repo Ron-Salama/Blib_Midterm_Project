@@ -33,7 +33,7 @@ public class ChatClient extends AbstractClient
      * the display method in the client.
      */
     ChatIF clientUI;
-
+    public static boolean alreadyborrowed =false;
     /** List to hold borrowed books. */
     public static List<BorrowedBook> borrowedBookList = new ArrayList<>();
 
@@ -198,6 +198,9 @@ public class ChatClient extends AbstractClient
 	    	handleAllSubscriberInformation(response.substring("AllSubscriberInformation:".length()));
 	    }else if (response.startsWith("allBorrowInfo:")) {
 	    	handleAllBorrowInformation(response.substring("allBorrowInfo:".length()));
+	    } else if(response.equals("Book already borrowed")){
+	    	alreadyborrowed = true;
+	    	System.out.println(alreadyborrowed);
 	    }
 	    
 	    // release the lock so that the client's window can continue on working.

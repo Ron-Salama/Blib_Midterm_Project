@@ -1609,4 +1609,30 @@ public class ConnectToDb {
         LocalDate date = LocalDate.parse(dateStr, inputFormatter);
         return date.format(outputFormatter);
     }
+    
+    public static boolean bookalreadyborrowed(Connection dbConnection, String subscriberId, String bookId) {
+        String query = "SELECT COUNT(*) FROM borrowed_books WHERE subscriber_id = ? AND ISBN = ?";
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            // Set the parameters for the prepared statement
+            preparedStatement.setString(1, subscriberId);
+            preparedStatement.setString(2, bookId);
+
+            // Execute the query
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Check if count is greater than 0 (the book already reserved)
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("An error occurred while checking the borrowed books: " + e.getMessage());
+        }
+
+        // If an exception occurs or no result is found, return false by default
+        return false;
+    }
+
 }
+
