@@ -90,8 +90,27 @@ public class ReserveRequestDailyTasksController extends BaseController {
             reserveMap.put(reserveId, timeLeftToRetrieve);
         }
 
-        // Identify reservations to delete (time difference <= 0 days)
+        // Identify reservations to delete (time difference <= 0 days) or (book copies is equal to 0, book is not available at all in the library)
         List<Integer> reserveIdsToDelete = new ArrayList<>();
+        for (String reservedBook : reservedBooksData) {
+        	String[] fields = reservedBook.split(",");
+            int reserveId = Integer.parseInt(fields[0]);
+            String bookId = fields[5];
+            String bookInfo = ConnectToDb.fetchBookInfo(EchoServer.taskSchedulerConnection, bookId);
+            // If book info is returned successfully
+            if (!bookInfo.equals("No book found") && !bookInfo.equals("Error fetching book info.")) {
+                // Parse the book info to get the number of copies
+                String[] bookDetails = bookInfo.split(",");
+                int numCopies = Integer.parseInt(bookDetails[4]); // 5th column in the CSV-like string is NumCopies
+
+                // If the number of copies is 0, add the reserveId to the delete list
+                if (numCopies == 0) {
+                    reserveIdsToDelete.add(reserveId);
+                }
+            }
+            
+            
+        }
         for (Map.Entry<Integer, String> entry : reserveMap.entrySet()) {
             int reserveId = entry.getKey();
             String timeLeftToRetrieve = entry.getValue();
@@ -103,6 +122,10 @@ public class ReserveRequestDailyTasksController extends BaseController {
 
                 if (daysDifference <= 0) {
                     reserveIdsToDelete.add(reserveId);
+                    
+                    
+                    
+                    
                 }
             }
         }

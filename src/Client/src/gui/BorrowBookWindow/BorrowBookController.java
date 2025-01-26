@@ -34,6 +34,9 @@ public class BorrowBookController extends BaseController implements Initializabl
     // Controller for managing time differences and calculating dates.
     ClientTimeDiffController clockController = new ClientTimeDiffController();
     
+    
+    public static String result = "";
+    
     /** Exit button to close the application. */
     @FXML
     private Button btnExit = null;
@@ -177,7 +180,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             Book_Description.setText("No Book Found");
             btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found 
         }
-        if( reservedCopiesNum >= availables ) {
+        if( reservedCopiesNum > availables ) {
         	 awaitingTextID.setText("There are reserves for the  " + bookName + "\nSorry");
         	btnSubmitToLibrarian.setDisable(true);
         }
@@ -222,10 +225,58 @@ public class BorrowBookController extends BaseController implements Initializabl
      * @throws Exception if an error occurs during the reservation process
      */
     public void Submit_Reserve_Request(ActionEvent event) throws Exception {
-        if (reservedCopiesNum == copiesNum) {
+     	result = "";
+    	String subscriberId1 = "" + SubscriberWindowController.currentSubscriber.getSubscriber_id();
+    	
+    	
+    	// Check if subscriber already has a borrow request in-progress
+    	String checkAlreadyRequested = "AlreadyRequestedCheck:" + subscriberId1 + "," + bookId;
+    	ClientUI.chat.accept(checkAlreadyRequested);
+    	
+    	waitForServerResponse(); // Wait for server response
+    	
+    	if (result.equals("AlreadyRequested")) {
+            // Subscriber already has a reservation for this book
+            showColoredLabelMessageOnGUI(RequestStatus, 
+                "You already have a borrow request\nin progress, wait until you get an\nanswer from the librarian.\nYou can't reserve a copy!", 
+                "-fx-text-fill: red;");
+            return;
+    	}
+    	
+    	result = "";
+    	// Check if the subscriber already has the book
+    	String checkAlreadyBorrowed = "AlreadyBorrowedCheck:" + subscriberId1 + "," + bookId;
+    	ClientUI.chat.accept(checkAlreadyBorrowed);
+    	
+    	waitForServerResponse(); // Wait for server response
+    	
+    	if (result.equals("AlreadyBorrowed")) {
+            // Subscriber already has a reservation for this book
+            showColoredLabelMessageOnGUI(RequestStatus, 
+                "You already borrowed and \nhave this book.\nYou can't reserve a copy!", 
+                "-fx-text-fill: red;");
+            return;
+    	}
+ 
+    	result = "";
+    	// Check if the subscriber already has a reservation for this book
+        String checkReservationRequest = "ExistingReservationCheck:" + subscriberId1 + "," + bookId;
+        ClientUI.chat.accept(checkReservationRequest);
+
+        waitForServerResponse(); // Wait for server response
+
+        if (result.equals("AlreadyReserved")) {
+            // Subscriber already has a reservation for this book
+            showColoredLabelMessageOnGUI(RequestStatus, 
+                "You already have a reservation\non this book.\nYou can't reserve another copy!", 
+                "-fx-text-fill: red;");
+            return;
+        }
+        result = "";
+        if (reservedCopiesNum >= copiesNum) {
             // All copies are reserved
             showColoredLabelMessageOnGUI(RequestStatus, 
-                "All the current copies of the book are reserved.\nPlease try to reserve at a later time when a copy is\navailable to be reserved.", 
+                "All the current copies of the \nbook are reserved.\nPlease try to reserve at a\n later time when a copy is\navailable to be reserved.", 
                 "-fx-text-fill: red;");
         } else if ("NO_COPIES".equals(borrowStatus)) {
             // Proceed with reservation logic
@@ -258,6 +309,7 @@ public class BorrowBookController extends BaseController implements Initializabl
                 "Book is available, no need to reserve.", 
                 "-fx-text-fill: red;");
         }
+       
     }
     
     /**

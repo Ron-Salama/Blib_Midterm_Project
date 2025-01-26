@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.ChatIF;
+import gui.BorrowBookWindow.BorrowBookController;
 import javafx.application.Platform;
 import logic.Book;
 import logic.BorrowedBook;
@@ -153,6 +154,18 @@ public class ChatClient extends AbstractClient
             handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
 	    } else if (response.startsWith("ReservedBooks:")) {
             handleReservedBooksResponse(response.substring("ReservedBooks:".length()));
+            //******************************************************
+            
+            
+            
+	    } else if (response.startsWith("AlreadyReserved")) {
+	        handleAlreadyReservedResponse();
+	    } else if (response.startsWith("NotReserved")) {
+	        handleNotReservedResponse();
+	    	
+	    	
+	    	
+	    	//******************************************************
         } else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
 	    } else if (response.startsWith("Subscriber updated successfully.")) {
@@ -201,13 +214,45 @@ public class ChatClient extends AbstractClient
 	    } else if(response.equals("Book already borrowed")){
 	    	alreadyborrowed = true;
 	    	System.out.println(alreadyborrowed);
-	    }
+	    } else if(response.equals("AlreadyBorrowed")){
+	    	handleAlreadyBorrowedResponse();
+	    } else if(response.equals("NotBorrowed")){
+	    	handleNotBorrowedResponse();
+	    } else if(response.equals("AlreadyRequested")){
+	    	handleAlreadyRequestedResponse(); 	    
+	    }else if(response.equals("NotRequested")){
+	    	handleNotRequestedResponse(); 
 	    
+	    }
 	    // release the lock so that the client's window can continue on working.
 	    messageReceivedFromServer = true;
 	}
   
-    /**
+  	
+  	private void handleAlreadyRequestedResponse() {
+    	BorrowBookController.result = "AlreadyRequested";
+}
+  	
+  	private void handleNotRequestedResponse() {
+    	BorrowBookController.result = "NotRequested";
+}
+
+	private void handleAlreadyBorrowedResponse() {
+		BorrowBookController.result = "AlreadyBorrowed";
+}
+	private void handleNotBorrowedResponse() {
+    	BorrowBookController.result = "NotBorrowed";
+}
+	
+    private void handleNotReservedResponse() {
+    	BorrowBookController.result = "NotReserved";
+}
+
+	private void handleAlreadyReservedResponse() {
+		BorrowBookController.result = "AlreadyReserved";
+}
+
+	/**
      * Handles the response for reserved book status.
      *
      * @param data The response data from the server.

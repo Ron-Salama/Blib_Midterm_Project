@@ -208,7 +208,16 @@ public class EchoServer extends AbstractServer {
                     handleReserveSuccessCase(client, body);
                     break;
                 //***************************************************
-
+                case "ExistingReservationCheck":
+                    handleExistingReservationCheck(client, body);
+                    break;
+                case "AlreadyBorrowedCheck":
+                    handleAlreadyBorrowedCheck(client, body);
+                    break;
+                case "AlreadyRequestedCheck":
+                    handleAlreadyRequestedCheck(client, body);
+                    break;
+                //***************************************************
                 case "FetchBorrowRequest":
                     handleFetchBorrowRequestCase(client, body);
                     break;
@@ -321,11 +330,122 @@ public class EchoServer extends AbstractServer {
         }
     }
 
-    // --------------------------------------------------------------
+   
+
+	// --------------------------------------------------------------
     //             SPECIFIC REQUEST HANDLERS
     // --------------------------------------------------------------
+    
+    
+    
+    
+    private void handleAlreadyRequestedCheck(ConnectionToClient client, String body) {
+    	// Parse the body to extract subscriber ID and book ID
+   	 	String[] parts = body.split(",");
+        String subscriberId = parts[0];
+        String bookId = parts[1];
+        
+        try {
+            // Fetch the reserved books for the given subscriber ID
+            List<String> requestedBooks = ConnectToDb.fetchBorrowRequestsBySubscriberId(dbConnection, subscriberId);
+            boolean alreadyRequested = false;
 
-    /**
+            // Check if the subscriber has already reserved the book
+            for (String bookData : requestedBooks) {
+                String[] fields = bookData.split(",");
+                if (fields[4].equals(bookId)) { // Compare book IDs
+                	alreadyRequested = true;
+                    break;
+                }
+            }
+
+            // Send the appropriate response back to the client
+            if (alreadyRequested) {
+                client.sendToClient("AlreadyRequested");
+            } else {
+                client.sendToClient("NotRequested");
+            }
+        } catch (Exception e) {
+            System.err.println("Error in handleExistingReservationCheck: " + e.getMessage());
+            try {
+                client.sendToClient("Error: Unable to process reservation check.");
+            } catch (IOException ioException) {
+                System.err.println("Failed to send error message to client: " + ioException.getMessage());
+            }
+        }
+		
+	}
+
+	private void handleAlreadyBorrowedCheck(ConnectionToClient client, String body) {
+    	// Parse the body to extract subscriber ID and book ID
+    	 String[] parts = body.split(",");
+         String subscriberId = parts[0];
+         String bookId = parts[1];
+         
+         boolean alreadyborrowed = ConnectToDb.bookalreadyborrowed(dbConnection, subscriberId, bookId);
+         // Insert the request
+         if(alreadyborrowed) {
+         	try {
+				client.sendToClient("AlreadyBorrowed");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+         	
+         	return;
+         }
+         
+         else {
+        	 try {
+ 				client.sendToClient("NotBorrowed");
+ 			} catch (IOException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 			}
+        	 return;
+         }
+         
+         
+	}
+
+    private void handleExistingReservationCheck(ConnectionToClient client, String body) {
+        // Parse the body to extract subscriber ID and book ID
+        String[] parts = body.split(",");
+        String subscriberId = parts[0];
+        String bookId = parts[1];
+
+        try {
+            // Fetch the reserved books for the given subscriber ID
+            List<String> reservedBooks = ConnectToDb.fetchReservedBooksBySubscriberId(dbConnection, subscriberId);
+            boolean alreadyReserved = false;
+
+            // Check if the subscriber has already reserved the book
+            for (String bookData : reservedBooks) {
+                String[] fields = bookData.split(",");
+                if (fields[5].equals(bookId)) { // Compare book IDs
+                    alreadyReserved = true;
+                    break;
+                }
+            }
+
+            // Send the appropriate response back to the client
+            if (alreadyReserved) {
+                client.sendToClient("AlreadyReserved");
+            } else {
+                client.sendToClient("NotReserved");
+            }
+        } catch (Exception e) {
+            System.err.println("Error in handleExistingReservationCheck: " + e.getMessage());
+            try {
+                client.sendToClient("Error: Unable to process reservation check.");
+            } catch (IOException ioException) {
+                System.err.println("Failed to send error message to client: " + ioException.getMessage());
+            }
+        }
+    }
+
+
+	/**
      * Handles a request to borrow a book using a barcode scanner.
      * <p>
      * Expected message format: <br>
