@@ -9,16 +9,16 @@
 
 <AnchorPane prefHeight="488.0" prefWidth="451.0" stylesheets="@LoginFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginWindow.LoginController">
    <children>
-      <Button id="btnSubscriberInfo" fx:id="btnSend" layoutX="168.0" layoutY="257.0" mnemonicParsing="false" onAction="#Send" prefHeight="50.0" prefWidth="115.0" text="Send">
+      <Button id="btnSubscriberInfo" fx:id="btnSend" layoutX="144.0" layoutY="254.0" mnemonicParsing="false" onAction="#Send" prefHeight="50.0" prefWidth="176.0" text="Send">
          <font>
             <Font size="24.0" />
          </font></Button>
       <Button id="btnExit" fx:id="btnExit" layoutY="2.0" mnemonicParsing="false" onAction="#getExitBtn" text="← Back" />
-      <Label layoutX="144.0" layoutY="182.0" prefHeight="20.0" prefWidth="24.0" styleClass="small-text" text="ID">
+      <Label layoutX="144.0" layoutY="185.0" prefHeight="20.0" prefWidth="24.0" styleClass="small-text" text="ID">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <TextField fx:id="idtxt" layoutX="146.0" layoutY="202.0" promptText="123465" />
+      <TextField fx:id="idtxt" layoutX="144.0" layoutY="210.0" promptText="123465" />
       <Label fx:id="awaitingLoginText" layoutX="263.0" layoutY="109.0" textFill="#4dc03e">
          <font>
             <Font size="20.0" />
