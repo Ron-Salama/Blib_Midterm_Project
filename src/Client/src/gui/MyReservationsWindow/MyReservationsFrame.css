@@ -1,7 +1,13 @@
 /* General styling for the entire window */
 AnchorPane {
     -fx-background-color: #f4f4f9;  /* Light background */
-    -fx-padding: 10px;
+    -fx-padding: 30px;  /* Padding around the edges */
+}
+
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
 }
 
 /* TableView Styling */
@@ -16,7 +22,7 @@ AnchorPane {
 }
 
 #reservationTable .table-column {
-    -fx-font-family: "Arial";
+    -fx-font-family: 'Rubik Bold';  /* Updated font family to match the first CSS */
     -fx-font-size: 14px;
     -fx-text-fill: #333333;
     -fx-alignment: CENTER;
@@ -24,56 +30,32 @@ AnchorPane {
 
 /* Button Styling */
 .button {
-    -fx-background-color: #4e91f5;  /* Blue background for buttons */
-    -fx-text-fill: white;  /* White text for contrast */
-    -fx-font-size: 14px;  /* Font size for buttons */
-    -fx-font-weight: bold;
-    -fx-border-radius: 5px;  /* Rounded corners */
-    -fx-cursor: hand;  /* Hand cursor for clickable buttons */
-    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Subtle drop shadow */
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
+}
+
+.button:hover {
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
 #btnBack, #btnExit {
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
-#btnBack {
-    -fx-background-color: #e74c3c;  /* Red background for back button */
-    -fx-text-fill: white;
-}
 
-#btnBack:hover {
-    -fx-background-color: #c0392b;  /* Darker red when hovered */
-}
+
 
 #btnBack:pressed {
     -fx-background-color: #b03a2e;  /* Even darker red on press */
 }
 
-#btnExit {
-    -fx-background-color: #e74c3c;  /* Red background for exit button */
-    -fx-text-fill: white;  /* White text for contrast */
-}
-
-#btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red on hover */
-}
-
-#btnExit:pressed {
-    -fx-background-color: #b03a2e;  /* Darker red on press */
-}
-
-/* Label Styling */
-Label {
-    -fx-font-family: "Arial";
-    -fx-font-size: 14px;
-    -fx-text-fill: #333333;
-}
-
-/* Title Label Styling */
-#title {
-    -fx-font-size: 20px;  /* Larger font size for titles */
-    -fx-font-weight: bold;
-    -fx-text-fill: #444444;  /* Slightly lighter gray for title text */
-}

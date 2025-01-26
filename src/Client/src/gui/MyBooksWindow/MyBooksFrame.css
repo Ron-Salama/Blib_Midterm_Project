@@ -1,110 +1,134 @@
 /* General background and padding for the AnchorPane */
-.root {
-    -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
+AnchorPane {
+    -fx-background-color: #f4f4f9; /* Light background for the whole screen */
+    -fx-padding: 30px; /* Padding around the edges */
+}
+
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
 }
 
 /* Text and Titles */
 .text {
-    -fx-fill: #333333;  /* Dark text color for visibility */
+    -fx-fill: #333333; /* Dark text color for visibility */
     -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
 
-/* Search Section */
-#nameInput, #descriptionInput, #subjectInput {
-    -fx-font-size: 14px;  /* Font size for inputs */
-    -fx-background-color: #ffffff;  /* White background for input fields */
-    -fx-border-color: #cccccc;  /* Light border color */
-    -fx-border-radius: 5px;  /* Rounded corners */
-    -fx-border-width: 1px;
+/* Search Section Inputs */
+#nameInput, #descriptionInput, #subjectInput, #IDtxt {
+    -fx-font-size: 14px; /* Font size for inputs */
+    -fx-background-color: #ffffff; /* White background for input fields */
+    -fx-border-color: #cccccc; /* Light border color */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-padding: 5px 10px; /* Inner padding */
+    -fx-prompt-text-fill: #888888; /* Placeholder text color */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); /* Subtle shadow effect */
 }
 
-#nameInput:focused, #descriptionInput:focused, #subjectInput:focused {
-    -fx-border-color: #4e91f5;  /* Focused input border becomes blue */
-    -fx-background-color: #f4f4f9;  /* Slightly different background on focus */
+#nameInput:focused, #descriptionInput:focused, #subjectInput:focused, #IDtxt:focused {
+    -fx-border-color: #007bff; /* Blue border when focused */
+    -fx-background-color: #e6f7ff; /* Light blue background when focused */
 }
 
 /* Labels */
-.label {
+.label, Label {
     -fx-font-size: 14px;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #333333; /* Dark text color for labels */
+    -fx-font-weight: normal; /* Regular font weight */
+    -fx-padding: 5px 0; /* Padding for spacing */
 }
 
-/* Button Styling */
-.button {
-    -fx-background-color: #4e91f5;  /* Blue background for buttons */
-    -fx-text-fill: white;  /* White text color */
-    -fx-font-size: 14px;  /* Font size for buttons */
-    -fx-font-weight: bold;
-    -fx-border-radius: 5px;  /* Rounded corners */
+/* Styling for the Book Description Label */
+#Book_Description {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555; /* Light gray for subtitles */
+    -fx-font-weight: bold; /* Bold subtitle text */
+}
+
+/* General styling for all buttons */
+.Button {
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    
+    -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px;  /* Rounded corners for button background */
+    -fx-border-radius: 20px;  /* Consistent border radius */
+    -fx-padding: 5px 15px;  /* Padding for better shape */
+    
 }
 
-.button:hover {
-    -fx-background-color: #3577d4;  /* Darker blue background on hover */
+/* Hover effect for all buttons */
+.Button:hover {
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
-/* Exit Button */
+/* Exit Button Styling */
 #btnExit {
-    -fx-background-color: #e74c3c;  /* Red background */
+    -fx-font-size: 16px;  /* Font size specific to Exit button */
+    
 }
 
-#btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red background on hover */
+
+
+/* Header Label */
+#header {
+    -fx-font-size: 34px;  /* Larger font size for header */
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;  /* Dark text color */
 }
 
-/* Search Button */
-#btnSearchBooks {
-    -fx-background-color: #f2fc71;  /* Green background for search button */
-    -fx-pref-height: 46px;
-    -fx-pref-width: 109px;
+/* Extension Label for dynamic titles */
+#extensionDynamicLabel {
+    -fx-font-size: 34px;  /* Match header size for consistency */
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;  /* Slightly lighter text color */
 }
 
-#btnSearchBooks:hover {
-    -fx-background-color: #fcf501;  /* Darker green background on hover */
+/* Styling for Title Elements */
+#Book_Description{
+    -fx-font-size: 34px; /* Larger font for titles */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-text-fill: #000000; /* Dark text */
 }
 
 /* TableView Styling */
 .table-view {
-    -fx-font-size: 14px;  /* Set font size for table */
-    -fx-background-color: #ffffff;  /* White background for the table */
-    -fx-border-color: #cccccc;  /* Light border around the table */
-    -fx-border-radius: 5px;  /* Rounded corners */
+    -fx-font-size: 14px; /* Set font size for table */
+    -fx-background-color: #ffffff; /* White background for the table */
+    -fx-border-color: #cccccc; /* Light border around the table */
+    -fx-border-radius: 5px; /* Rounded corners */
 }
 
 .table-column {
-    -fx-font-weight: bold;  /* Make column headers bold */
+    -fx-font-weight: bold; /* Make column headers bold */
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #4e91f5;  /* Blue background for table headers */
+    -fx-background-color: #4e91f5; /* Blue background for table headers */
 }
 
 .table-view .table-row-cell:even {
-    -fx-background-color: #f9f9f9;  /* Light gray for even rows */
+    -fx-background-color: #f9f9f9; /* Light gray for even rows */
 }
 
 .table-view .table-row-cell:odd {
-    -fx-background-color: #ffffff;  /* White for odd rows */
+    -fx-background-color: #ffffff; /* White for odd rows */
 }
 
 /* Line between Search Fields and Results */
 #line {
-    -fx-stroke: #4e91f5;  /* Blue line between search section and results */
+    -fx-stroke: #4e91f5; /* Blue line between search section and results */
     -fx-stroke-width: 2px;
 }
 
-/* Text for Result Section */
-#tableView {
-    -fx-background-color: #ffffff;  /* White background for table */
-    -fx-border-radius: 5px;  /* Rounded corners */
-    -fx-border-color: #cccccc;  /* Light border around the table */
-    -fx-border-width: 1px;
-}
-
-/* Styling for the TextField when focused */
-#nameInput:focused, #descriptionInput:focused, #subjectInput:focused {
-    -fx-background-color: #e6f7ff;  /* Light blue background when focused */
-    -fx-border-color: #007acc;  /* Blue border when focused */
+/* Overall layout margins */
+AnchorPane > * {
+    -fx-padding: 10px;
 }

@@ -53,7 +53,7 @@
       </Button>
       <Rectangle fx:id="roundedSquare21" arcHeight="20" arcWidth="20" fill="WHITE" height="57.0" layoutX="46.0" layoutY="433.0" width="64.0" />
 
-      <Button id="btnBack" fx:id="btnBack" ellipsisString="←" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="35.0" prefWidth="90.0" text="← back" textFill="WHITE">
+      <Button id="btnBack" fx:id="btnBack" ellipsisString="←" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="35.0" prefWidth="90.0" text="Logout" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

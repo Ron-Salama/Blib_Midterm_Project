@@ -1,69 +1,84 @@
 /* BorrowBookFrame.css */
 
-/* Styling for the AnchorPane */
+/* General background and padding for the AnchorPane */
 AnchorPane {
-    -fx-background-color: #f4f4f4; /* Light background color */
+    -fx-background-color: #f4f4f9; /* Light background for the whole screen */
+    -fx-padding: 30px; /* Padding around the edges */
 }
 
-/* Styling for Labels */
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
+}
+
+/* General styling for Labels */
 Label {
     -fx-font-size: 14px;
-    -fx-text-fill: #333333; /* Dark text color */
-    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Dark text color for labels */
+    -fx-font-weight: normal; /* Regular font weight */
+    -fx-padding: 5px 0; /* Padding for spacing */
 }
 
-/* Styling for the Book ID Label */
+/* Styling for the Book Description Label */
 #Book_Description {
     -fx-font-size: 12px;
-    -fx-text-fill: #555555;
+    -fx-text-fill: #555555; /* Light gray for subtitles */
+    -fx-font-weight: bold; /* Bold subtitle text */
 }
 
-/* Styling for the TextField */
+/* Styling for TextField */
 #IDtxt {
     -fx-font-size: 14px;
-    -fx-border-radius: 5px;
-    -fx-background-color: #ffffff;
-    -fx-border-color: #cccccc;
-    -fx-prompt-text-fill: #888888;
+    -fx-background-color: #ffffff; /* White background for text fields */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-border-color: #cccccc; /* Light gray border */
+    -fx-prompt-text-fill: #888888; /* Placeholder text color */
+    -fx-padding: 5px 10px; /* Inner padding */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); /* Subtle shadow effect */
 }
-
+#header{
+	-fx-font-size: 34px;
+}
 /* Styling for Buttons */
 Button {
-    -fx-font-size: 12px;
-    -fx-background-color: #4CAF50; /* Green button */
-    -fx-text-fill: white;
-    -fx-border-radius: 5px;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0.5, 1, 1);
+    -fx-background-color: #171717; /* Dark background for the button */
+    -fx-text-fill: #DE8F5F; /* Yellow text color */
+    -fx-font-size: 16px; /* Button font size */
+    -fx-font-family: 'Rubik Bold'; /* Use Rubik Bold font */
+    -fx-font-weight: bold; /* Bold button text */
+    -fx-cursor: hand; /* Pointer cursor on hover */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Smooth rounded corners */
+    -fx-border-radius: 20px; /* Consistent border radius */
+    -fx-padding: 5px 15px; /* Adjusted padding for better sizing */
 }
 
-/* Specific Button IDs */
-#btnSubmit, #btnSubmitToLibrarian {
-    -fx-background-color: #008CBA; /* Blue button for submission */
-}
-
-#btnBack {
-    -fx-background-color: #f44336; /* Red button for back */
-}
-
-#btnSearch {
-    -fx-background-color: #FFC107; /* Yellow button for search */
-}
-
-#btnMainMenu {
-    -fx-background-color: #9C27B0; /* Purple button for main menu */
-}
-
-/* Button Hover Effects */
+/* Hover effect for all Buttons */
 Button:hover {
-    -fx-opacity: 0.8;
+    -fx-background-color: #DE8F5F; /* Yellow background on hover */
+    -fx-text-fill: #171717; /* Dark text on hover */
 }
 
-/* Styling for the Title */
-#Book_Description, #btnMainMenu, #btnExit {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2d2d2d;
+/* Specific styling for Back Button */
+#btnBack {
+    -fx-font-size: 16px; 
+}
+
+
+
+
+
+
+
+
+
+
+/* Styling for Title Elements */
+#Book_Description{
+    -fx-font-size: 20px; /* Larger font for titles */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-text-fill: #000000; /* Dark text */
 }
 
 /* Overall layout margins */
