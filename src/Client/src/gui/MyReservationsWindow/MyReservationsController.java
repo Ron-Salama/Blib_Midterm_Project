@@ -325,7 +325,6 @@ public class MyReservationsController extends BaseController implements Initiali
         String retrieveMsg = subscriberName + "," + subscriberId + "," + bookName + "," + bookId + "," + borrowDate + "," + returnDate;
         ClientUI.chat.accept("SubmitRetrieve:" + retrieveMsg);
 
-        waitForServerResponse();
         // After successful retrieve, remove the reservation record
         deleteReservationFromDatabase(reservedBook);
     }
