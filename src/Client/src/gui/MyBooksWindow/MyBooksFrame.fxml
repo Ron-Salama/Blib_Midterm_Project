@@ -12,7 +12,7 @@
 <AnchorPane prefHeight="533.0" prefWidth="659.0" stylesheets="@MyBooksFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyBooksWindow.MyBooksController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="1153.0" layoutY="22.0" mnemonicParsing="false" onAction="#getExitBtn" styleClass="Button" text="Logout" />
-      <Line endX="206.66668701171875" endY="25.517597198486328" layoutX="320.0" layoutY="21.0" startX="427.33331298828125" startY="25.517597198486328" />
+      <Line endX="206.66668701171875" endY="25.517597198486328" layoutX="305.0" layoutY="11.0" startX="427.33331298828125" startY="25.517597198486328" />
       <TableView fx:id="tableView" layoutY="219.0" prefHeight="314.0" prefWidth="1245.0">
         <columns>
           <TableColumn fx:id="tableID" prefWidth="98.39999198913574" text="Book ID" />
@@ -32,10 +32,10 @@
       <Label id="extensionDynamicLabel" fx:id="extensionDynamicLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="394.0" layoutY="81.0" prefHeight="71.0" prefWidth="850.0" />
       <Label id="extensionDynamicLabel" fx:id="title" layoutX="584.0" layoutY="-1.0" prefHeight="38.0" prefWidth="505.0" styleClass="text" text="My books">
          <font>
-            <Font size="31.0" />
+            <Font size="46.0" />
          </font></Label>
-      <TextField fx:id="TXTFview" layoutX="213.0" layoutY="88.0" />
-      <Label fx:id="LBLview" layoutX="213.0" layoutY="51.0" text="Subscriber ID" />
-      <Button fx:id="btnView" layoutX="260.0" layoutY="133.0" mnemonicParsing="false" onAction="#updateView" styleClass="Button" text="View" />
+      <TextField fx:id="TXTFview" layoutX="25.0" layoutY="152.0" />
+      <Label fx:id="LBLview" layoutX="25.0" layoutY="115.0" text="Subscriber ID" />
+      <Button fx:id="btnView" layoutX="192.0" layoutY="150.0" mnemonicParsing="false" onAction="#updateView" styleClass="Button" text="View" />
    </children>
 </AnchorPane>

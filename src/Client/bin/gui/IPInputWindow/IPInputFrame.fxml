@@ -28,7 +28,7 @@
       <TextField fx:id="IPtxt" layoutX="166.0" layoutY="187.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
 
       <!-- Awaiting Login Text -->
-      <Label fx:id="awaitingLoginText" alignment="CENTER" layoutX="67.0" layoutY="120.0" prefHeight="20.0" prefWidth="302.0" textFill="RED">
+      <Label fx:id="awaitingLoginText" alignment="CENTER" layoutX="94.0" layoutY="307.0" prefHeight="20.0" prefWidth="302.0" textFill="RED">
          <font>
             <Font size="20.0" />
          </font>

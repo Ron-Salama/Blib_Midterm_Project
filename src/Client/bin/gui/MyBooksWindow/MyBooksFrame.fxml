@@ -34,8 +34,8 @@
          <font>
             <Font size="31.0" />
          </font></Label>
-      <TextField fx:id="TXTFview" layoutX="213.0" layoutY="88.0" />
-      <Label fx:id="LBLview" layoutX="213.0" layoutY="51.0" text="Subscriber ID" />
-      <Button fx:id="btnView" layoutX="260.0" layoutY="133.0" mnemonicParsing="false" onAction="#updateView" styleClass="Button" text="View" />
+      <TextField fx:id="TXTFview" layoutX="25.0" layoutY="152.0" />
+      <Label fx:id="LBLview" layoutX="25.0" layoutY="115.0" text="Subscriber ID" />
+      <Button fx:id="btnView" layoutX="192.0" layoutY="150.0" mnemonicParsing="false" onAction="#updateView" styleClass="Button" text="View" />
    </children>
 </AnchorPane>
