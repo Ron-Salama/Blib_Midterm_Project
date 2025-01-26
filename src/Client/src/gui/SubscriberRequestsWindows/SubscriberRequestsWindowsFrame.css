@@ -3,21 +3,30 @@
     -fx-background-color: #f5f5f5; /* Light grey background */
 }
 
-/* General Button Styles */
+
+/* General styling for all buttons */
 .button {
-    -fx-font-size: 12px;
-    -fx-background-color: #3498db; /* Soft blue background */
-    -fx-text-fill: white; /* White text color */
-    -fx-padding: 8 15 8 15;
-    -fx-border-radius: 20; /* Rounded corners */
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.0, 2, 2);
-    -fx-transition: background-color 0.3s ease; /* Smooth color transition */
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
-/* Button Hover Effect */
 .button:hover {
-    -fx-background-color: #2980b9; /* Darker blue on hover */
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
+}
+
+/* Button Selected State (Click Effect) */
+.button:pressed {
+    -fx-background-color: #2ecc71;  /* Green color when button is clicked/selected */
+    -fx-text-fill: white;  /* White text color when clicked */
 }
 
 /* ComboBox Styles */
@@ -80,50 +89,19 @@
 
 /* Button (Back and Exit) Specific Styles */
 #btnExit, #btnBack {
-    -fx-background-color: #e74c3c; /* Red background */
-    -fx-text-fill: white;
-    -fx-font-size: 12px;
+    -fx-font-size: 16px;
 }
 
-#btnExit:hover, #btnBack:hover {
-    -fx-background-color: #c0392b; /* Darker red on hover */
-}
 
-/* Submit Button Specific Styles */
-#btnAccept {
-    -fx-background-color: #2ecc71; /* Green background */
-    -fx-text-fill: white;
-    -fx-font-size: 12px;
-}
 
 #btnAccept:hover {
     -fx-background-color: #27ae60; /* Darker green on hover */
-}
-
-/* Scan Barcode Button */
-#ScanBarcode {
-    -fx-background-color: #f39c12; /* Yellow-orange background */
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 8 18 8 18;
-    -fx-border-radius: 10;
 }
 
-/* Scan Barcode Button Hover */
-#ScanBarcode:hover {
-    -fx-background-color: #e67e22; /* Darker orange on hover */
-}
 
-/* Back Button */
-#btnBack {
-    -fx-background-color: #34495e; /* Dark grey background */
-    -fx-text-fill: white;
-    -fx-font-size: 12px;
-}
 
-#btnBack:hover {
-    -fx-background-color: #2c3e50; /* Slightly darker grey */
-}
+
 
 /* Input Fields and Labels Spacing */
 .Label, .TextField, .ComboBox, .DatePicker, .ToggleButton {

@@ -1,13 +1,18 @@
 /* General styling for the root layout */
 .root {
-    -fx-background-color: linear-gradient(to bottom, #e8f1f2, #cde7f0); /* Light blue gradient */
-    -fx-padding: 30px; /* Spacious padding for comfortable layout */
+    -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
+    -fx-padding: 30px; /* Padding around the edges */
+}
+
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
 }
 
 /* Title styling for greeting label */
-/* Title styling for greeting label */
 #greetingLabel {
-    -fx-font-size: 29px;
+    -fx-font-size: 34px;
     -fx-font-weight: bold;
     -fx-text-fill: black; /* Set the text color to black */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 2, 2); /* Subtle shadow for depth */
@@ -16,65 +21,124 @@
 
 /* General button styling */
 .button {
-    -fx-text-fill: white; /* White text for all buttons */
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-border-radius: 10px; /* Rounded corners */
-    -fx-padding: 8px 15px; /* Comfortable padding */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 2); /* Shadow for depth */
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
+
+.button:hover {
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
+}
+
+/* Specific Button Sizes and Hover Effects */
 
 /* View Borrow Dates button */
 #btnBorrowDates {
-    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); /* Green gradient */
-    -fx-border-color: #388e3c; /* Border matches bottom color */
-    -fx-border-width: 2px;
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
 #btnBorrowDates:hover {
-    -fx-background-color: linear-gradient(to bottom, #388e3c, #4caf50); /* Reverse gradient on hover */
-    -fx-border-color: #4caf50;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
 /* View Subscribers' Statuses button */
 #btnSubscriberStatus {
-    -fx-background-color: linear-gradient(to bottom, #ff9800, #f57c00); /* Orange gradient */
-    -fx-border-color: #f57c00;
-    -fx-border-width: 2px;
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
 #btnSubscriberStatus:hover {
-    -fx-background-color: linear-gradient(to bottom, #f57c00, #ff9800); /* Reverse gradient on hover */
-    -fx-border-color: #ff9800;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
 /* Return to Main Menu button */
 #btnReturnToMainMenu {
-    -fx-background-color: linear-gradient(to bottom, #607d8b, #455a64); /* Gray-blue gradient */
-    -fx-border-color: #455a64;
-    -fx-border-width: 2px;
-    -fx-font-size: 14px;
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 16px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
 #btnReturnToMainMenu:hover {
-    -fx-background-color: linear-gradient(to bottom, #455a64, #607d8b); /* Reverse gradient on hover */
-    -fx-border-color: #607d8b;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
 /* Back button */
 #btnBack {
-    -fx-background-color: linear-gradient(to bottom, #95a5a6, #7f8c8d); /* Neutral gray gradient */
-    -fx-border-color: #7f8c8d;
-    -fx-border-width: 2px;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 16px;
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
 #btnBack:hover {
-    -fx-background-color: linear-gradient(to bottom, #7f8c8d, #95a5a6); /* Reverse gradient */
-    -fx-border-color: #95a5a6;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
+}
+
+/* Button size for login and register */
+#btnLogin, #btnRegister {
+    -fx-pref-height: 77px;  /* Set specific height for the button */
+    -fx-pref-width: 146px;  /* Set specific width for the button */
+}
+
+/* Adjust button alignment and positioning */
+#btnSearch {
+    -fx-layout-x: 332.0;
+    -fx-layout-y: 325.0;
+}
+
+#btnExit {
+    -fx-layout-x: 165.0;
+    -fx-layout-y: 325.0;
+}
+
+#btnLogin {
+    -fx-layout-x: 185.0;
+    -fx-layout-y: 172.0;
+}
+
+#btnBack {
+    -fx-layout-x: 1.0;
+    -fx-layout-y: 1.0;
 }

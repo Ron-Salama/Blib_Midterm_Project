@@ -6,17 +6,17 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="458.0" prefWidth="652.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReportsWindow.ReportsWindowController">
+<AnchorPane prefHeight="492.0" prefWidth="853.0" stylesheets="@ReportsWindow.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReportsWindow.ReportsWindowController">
    <children>
    
-      <Button id="btnBorrowDates" fx:id="btnBorrowDates" alignment="CENTER" layoutX="439.0" layoutY="249.0" mnemonicParsing="false" prefHeight="112.0" onAction="#openBorrowedBooksReport" prefWidth="308.0" text="View Borrow Dates Report" />
-      <Button id="btnSubscriberStatus" fx:id="btnSubscriberStatus" alignment="CENTER" layoutX="71.0" layoutY="249.0" mnemonicParsing="false" onAction="#openSubscriberStatusReport" prefHeight="112.0" prefWidth="308.0" text="View Subscribers' Statuses Report" />
-      <Button id="btnReturnToMainMenu" fx:id="btnReturnToMainMenu" ellipsisString="Return to Main Menu" layoutX="593.0" layoutY="1.0" mnemonicParsing="false" onAction="#navigateToMainMenu" prefHeight="25.0" prefWidth="184.0" text="Return to Main Menu" />
-      <Button id="btnBack" fx:id="btnBack" ellipsisString="Back" layoutY="1.0" mnemonicParsing="false" onAction="#getBackBtn" prefHeight="16.0" prefWidth="41.0" text="Back" />
-      <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="33.0" layoutY="75.0" prefHeight="112.0" prefWidth="734.0" text="Reports:" wrapText="true">
+      <Button id="btnBorrowDates" fx:id="btnBorrowDates" alignment="CENTER" layoutX="218.0" layoutY="320.0" mnemonicParsing="false" onAction="#openBorrowedBooksReport" prefHeight="112.0" prefWidth="466.0" text="View Borrow Dates Report" />
+      <Button id="btnSubscriberStatus" fx:id="btnSubscriberStatus" alignment="CENTER" layoutX="218.0" layoutY="153.0" mnemonicParsing="false" onAction="#openSubscriberStatusReport" prefHeight="112.0" prefWidth="466.0" text="View Subscribers Statuses Report" />
+      <Button id="btnReturnToMainMenu" fx:id="btnReturnToMainMenu" ellipsisString="Return to Main Menu" layoutX="757.0" layoutY="13.0" mnemonicParsing="false" onAction="#navigateToMainMenu" prefHeight="25.0" prefWidth="69.0" text="Logout" />
+      <Button id="btnBack" fx:id="btnBack" ellipsisString="Back" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#getBackBtn" prefHeight="36.0" prefWidth="96.0" text="← Back" />
+      <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="84.0" layoutY="-25.0" prefHeight="112.0" prefWidth="734.0" text="Reports" wrapText="true">
          <font>
             <Font size="29.0" />
          </font></Label>
-      <Line endX="100.0" layoutX="400.0" layoutY="151.0" startX="-100.0" />
+      <Line endX="128.00006103515625" endY="-1.52587890625E-5" layoutX="437.0" layoutY="60.0" startX="-100.0" />
    </children>
 </AnchorPane>

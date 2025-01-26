@@ -1,119 +1,115 @@
 /* General styling for the root layout */
 .root {
-    -fx-background-color: linear-gradient(to bottom, #e8f1f2, #cde7f0); /* Light blue gradient */
-    -fx-padding: 30px; /* Spacious padding for comfortable layout */
+    -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
+    -fx-padding: 30px; /* Padding around the edges */
 }
 
-/* Title styling for greeting label */
-#greetingLabel {
-    -fx-font-size: 45px;
-    -fx-font-weight: bold;
-    -fx-text-fill: linear-gradient(to right, #f39c12, #d35400); /* Vibrant orange gradient */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 2, 2); /* Subtle shadow for depth */
-    -fx-text-alignment: center;
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
 }
 
 /* General button styling */
 .button {
-    -fx-text-fill: white; /* White text for all buttons */
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-border-radius: 10px; /* Rounded corners */
-    -fx-padding: 8px 15px; /* Comfortable padding */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 2); /* Shadow for depth */
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Orange-brown text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
+}
+
+.button:hover {
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
 /* View Reports button */
 #btnViewReports {
-    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); /* Green gradient */
-    -fx-border-color: #388e3c; /* Border matches bottom color */
-    -fx-border-width: 2px;
+    -fx-background-color: #171717;  /* Dark background */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Font size for View Reports button */
 }
 
 #btnViewReports:hover {
-    -fx-background-color: linear-gradient(to bottom, #388e3c, #4caf50); /* Reverse gradient on hover */
-    -fx-border-color: #4caf50;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Yellow background on hover */
+    -fx-text-fill: #171717;  /* Dark text color on hover */
 }
 
 /* Subscriber Requests button */
 #btnSubscriberRequests {
-    -fx-background-color: linear-gradient(to bottom, #ff9800, #f57c00); /* Orange gradient */
-    -fx-border-color: #f57c00;
-    -fx-border-width: 2px;
+    -fx-background-color: #171717;  /* Dark background */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Font size for Subscriber Requests button */
 }
 
 #btnSubscriberRequests:hover {
-    -fx-background-color: linear-gradient(to bottom, #f57c00, #ff9800); /* Reverse gradient on hover */
-    -fx-border-color: #ff9800;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Yellow background on hover */
+    -fx-text-fill: #171717;  /* Dark text color on hover */
 }
 
 /* Search Book button */
 #btnSearchBook {
-    -fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2); /* Blue gradient */
-    -fx-border-color: #1976d2;
-    -fx-border-width: 2px;
+    -fx-background-color: #171717;  /* Dark background */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Font size for Search Book button */
 }
 
 #btnSearchBook:hover {
-    -fx-background-color: linear-gradient(to bottom, #1976d2, #2196f3); /* Reverse gradient on hover */
-    -fx-border-color: #2196f3;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Yellow background on hover */
+    -fx-text-fill: #171717;  /* Dark text color on hover */
 }
 
 /* Search Subscriber button */
 #btnSearchSubscriber {
-    -fx-background-color: linear-gradient(to bottom, #9c27b0, #7b1fa2); /* Purple gradient */
-    -fx-border-color: #7b1fa2;
-    -fx-border-width: 2px;
+    -fx-background-color: #171717;  /* Dark background */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Font size for Search Subscriber button */
 }
 
 #btnSearchSubscriber:hover {
-    -fx-background-color: linear-gradient(to bottom, #7b1fa2, #9c27b0); /* Reverse gradient on hover */
-    -fx-border-color: #9c27b0;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Yellow background on hover */
+    -fx-text-fill: #171717;  /* Dark text color on hover */
 }
 
 /* Return to Main Menu button */
 #btnReturnToMainMenu {
-    -fx-background-color: linear-gradient(to bottom, #607d8b, #455a64); /* Gray-blue gradient */
-    -fx-border-color: #455a64;
-    -fx-border-width: 2px;
-    -fx-font-size: 14px;
+    -fx-background-color: #171717;  /* Dark background */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 16px;  /* Font size for Return to Main Menu button */
+    -fx-font-weight: bold;
 }
 
 #btnReturnToMainMenu:hover {
-    -fx-background-color: linear-gradient(to bottom, #455a64, #607d8b); /* Reverse gradient on hover */
-    -fx-border-color: #607d8b;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F;  /* Yellow background on hover */
+    -fx-text-fill: #171717;  /* Dark text color on hover */
 }
 
 /* Exit button */
 #btnExit {
-    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); /* Red gradient */
-    -fx-border-color: #c0392b;
-    -fx-border-width: 2px;
-    -fx-font-size: 14px;
+    -fx-background-color: #171717;  /* Dark background */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 14px;  /* Font size for Exit button */
 }
 
 #btnExit:hover {
-    -fx-background-color: linear-gradient(to bottom, #c0392b, #e74c3c); /* Reverse gradient on hover */
-    -fx-border-color: #e74c3c;
-    -fx-cursor: hand;
-    }
-    
-   /* Scan Barcode button */
+    -fx-background-color: #DE8F5F;  /* Yellow background on hover */
+    -fx-text-fill: #171717;  /* Dark text color on hover */
+}
+
+/* Scan Barcode button */
 #btnScanBarcode {
-    -fx-background-color: linear-gradient(to bottom, #009688, #00796b); /* Teal gradient */
-    -fx-border-color: #00796b; /* Border matches bottom color */
-    -fx-border-width: 2px;
-    -fx-font-size: 14px;
+    -fx-background-color: #171717;  /* Dark background */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 14px;  /* Font size for Scan Barcode button */
 }
 
 #btnScanBarcode:hover {
-    -fx-background-color: linear-gradient(to bottom, #00796b, #009688); /* Reverse gradient on hover */
-    -fx-border-color: #009688;
-    -fx-cursor: hand;
-
+    -fx-background-color: #DE8F5F;  /* Yellow background on hover */
+    -fx-text-fill: #171717;  /* Dark text color on hover */
 }

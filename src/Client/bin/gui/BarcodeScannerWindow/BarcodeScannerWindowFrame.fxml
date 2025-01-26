@@ -7,15 +7,15 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="255.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BarcodeScannerWindow.BarcodeScannerWindowController">
+<AnchorPane prefHeight="255.0" prefWidth="539.0" stylesheets="@BarcodeScannerWindowFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BarcodeScannerWindow.BarcodeScannerWindowController">
    <children>
-      <Button id="btnSend" fx:id="btnSend" layoutX="387.0" layoutY="104.0" mnemonicParsing="false" onAction="#Send" text="Send" />
-      <Button id="btnBack" fx:id="btnBack" layoutX="490.0" layoutY="1.0" mnemonicParsing="false" onAction="#getBackBtn" text="Back" />
-      <Label layoutX="109.0" layoutY="108.0" text="Enter Book ID:" />
-      <TextField fx:id="borrowedBookIDtxt" layoutX="207.0" layoutY="104.0" promptText="EX: 0011" />
-      <Label alignment="CENTER" layoutX="102.0" layoutY="1.0" prefHeight="50.0" prefWidth="334.0" text="Scan Barcode" textAlignment="CENTER">
+      <Button id="btnSend" fx:id="btnSend" layoutX="213.0" layoutY="190.0" mnemonicParsing="false" onAction="#Send" prefHeight="31.0" prefWidth="95.0" text="Send" />
+      <Button id="btnBack" fx:id="btnBack" layoutX="8.0" layoutY="11.0" mnemonicParsing="false" onAction="#getBackBtn" text="← Back" />
+      <Label layoutX="179.0" layoutY="109.0" text="Book ID" />
+      <TextField fx:id="borrowedBookIDtxt" layoutX="179.0" layoutY="136.0" promptText="EX: 0011" />
+      <Label id="headerText" alignment="CENTER" layoutX="94.0" layoutY="1.0" prefHeight="50.0" prefWidth="334.0" text="Scan Barcode" textAlignment="CENTER">
          <font>
-            <Font size="34.0" />
+            <Font size="39.0" />
          </font>
       </Label>
       <Label fx:id="borrowedBookIDDynamicLabel" layoutX="109.0" layoutY="137.0" textFill="#4dc03e">
@@ -23,6 +23,6 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Line endX="176.19998168945312" endY="7.62939453125E-6" layoutX="223.0" layoutY="50.0" startX="-100.0" />
+      <Line endX="176.19998168945312" endY="7.62939453125E-6" layoutX="222.0" layoutY="66.0" startX="-100.0" />
    </children>
 </AnchorPane>

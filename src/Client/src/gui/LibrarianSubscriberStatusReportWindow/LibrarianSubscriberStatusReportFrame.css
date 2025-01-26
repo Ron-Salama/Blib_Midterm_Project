@@ -28,3 +28,27 @@
 .default-color1.chart-bar {
     -fx-bar-fill: blue;
 }
+
+/* General styling for all buttons */
+.button {
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
+}
+
+.button:hover {
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
+}
+
+/* Specific adjustments for the Back button */
+#btnBack {
+    -fx-font-size: 16px;
+}
