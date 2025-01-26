@@ -37,9 +37,9 @@
          </font>
       </Button>
       
-      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="146.0" layoutY="213.0" promptText="Timmy Turner" />
-      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="146.0" layoutY="277.0" promptText="0554877854" />
-      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="146.0" layoutY="341.0" promptText="Timmile@gmail.com" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="146.0" layoutY="213.0" promptText="EX: Timmey_Turner" />
+      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="146.0" layoutY="277.0" promptText="EX: 0554877854" />
+      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="146.0" layoutY="341.0" promptText="EX: Timmile@gmail.com" />
       
       <Line endX="100.0" startX="-100.0" />
       <Line endX="100.0" layoutX="235.0" layoutY="104.0" startX="-100.0" />
@@ -48,7 +48,7 @@
          <font>
             <Font size="25.0" />
          </font></Text>
-      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="146.0" layoutY="157.0" promptText="123456" />
-      <Label id="registerDynamicLabel" fx:id="registerDynamicLabel" layoutX="24.0" layoutY="439.0" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="146.0" layoutY="157.0" promptText="EX: 123456" />
+      <Label id="registerDynamicLabel" fx:id="registerDynamicLabel" alignment="CENTER" layoutX="24.0" layoutY="439.0" />
    </children>
 </AnchorPane>

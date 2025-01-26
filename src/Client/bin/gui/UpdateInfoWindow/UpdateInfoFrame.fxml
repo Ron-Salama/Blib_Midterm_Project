@@ -8,32 +8,32 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="434.0" prefWidth="444.0" stylesheets="@UpdateInfoFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UpdateInfoWindow.UpdateInfoController">
+<AnchorPane prefHeight="526.0" prefWidth="542.0" stylesheets="@UpdateInfoFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UpdateInfoWindow.UpdateInfoController">
    <children>
-      <Label id="lblSubscriber_id" layoutX="142.0" layoutY="56.0" text="ID" />
-      <Label id="lblSubscriber_name" layoutX="141.0" layoutY="118.0" text="Full Name" />
-      <Label id="lblPhoneNumber" layoutX="142.0" layoutY="180.0" text="Phone Number" />
-      <Label id="lblSubscriber_email" layoutX="141.0" layoutY="242.0" text="Email" />
+      <Label id="lblSubscriber_id" layoutX="182.0" layoutY="83.0" text="ID" />
+      <Label id="lblSubscriber_name" layoutX="181.0" layoutY="145.0" text="Full Name" />
+      <Label id="lblPhoneNumber" layoutX="182.0" layoutY="207.0" text="Phone Number" />
+      <Label id="lblSubscriber_email" layoutX="181.0" layoutY="269.0" text="Email" />
       
       <Button id="btnReturnToMainMenu" fx:id="btnReturnToSubscriberForm" layoutY="2.0" mnemonicParsing="false" onAction="#btnReturnToSubscriberForm" prefHeight="40.0" prefWidth="84.0" text="← Back" />
-      <Button id="btnRegister" fx:id="btnUpdate" layoutX="142.0" layoutY="339.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="85.0" prefWidth="179.0" text="Update">
+      <Button id="btnRegister" fx:id="btnUpdate" layoutX="182.0" layoutY="366.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="85.0" prefWidth="179.0" text="Update">
          <font>
             <Font size="32.0" />
          </font>
       </Button>
       
-      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="141.0" layoutY="148.0" />
-      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="141.0" layoutY="210.0" />
-      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="142.0" layoutY="273.0" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="181.0" layoutY="175.0" />
+      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="181.0" layoutY="237.0" />
+      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="182.0" layoutY="300.0" />
       
       <Line endX="100.0" startX="-100.0" />
-      <Line endX="129.5" layoutX="241.0" layoutY="43.0" startX="-130.5" />
+      <Line endX="162.5" layoutX="271.0" layoutY="58.0" startX="-145.5" />
       
-      <Text layoutX="127.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Personal Information">
+      <Text layoutX="129.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Personal Information">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
          </font></Text>
-      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="141.0" layoutY="86.0" />
-      <Label fx:id="UpdateStatus" layoutX="68.0" layoutY="374.0" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="181.0" layoutY="113.0" />
+      <Label fx:id="UpdateStatus" alignment="CENTER" layoutX="81.0" layoutY="464.0" />
    </children>
 </AnchorPane>

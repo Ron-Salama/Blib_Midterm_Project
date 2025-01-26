@@ -9,7 +9,7 @@
 <AnchorPane prefHeight="488.0" prefWidth="451.0" stylesheets="@IPInputFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
    <children>
       <!-- Welcome Label -->
-      <Label id="welcomeLabel" fx:id="welcomeLabel" ellipsisString="Welcome to Blib system" layoutX="56.0" layoutY="94.0" prefHeight="105.0" prefWidth="343.0" text="Welcome to Blib system" textAlignment="CENTER" textFill="#a63333" textOverrun="WORD_ELLIPSIS">
+      <Label id="welcomeLabel" fx:id="welcomeLabel" ellipsisString="Welcome to Blib system" layoutX="56.0" layoutY="94.0" prefHeight="105.0" prefWidth="343.0" text="Welcome to BLib system" textAlignment="CENTER" textFill="#a63333" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font name="Arial Narrow" size="20.0" />
          </font>
@@ -28,7 +28,7 @@
       <TextField fx:id="IPtxt" layoutX="148.0" layoutY="263.0" prefHeight="28.0" prefWidth="159.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
 
       <!-- Awaiting Login Text -->
-      <Label fx:id="awaitingLoginText" alignment="CENTER" layoutX="94.0" layoutY="307.0" prefHeight="20.0" prefWidth="302.0" textFill="RED">
+      <Label fx:id="awaitingLoginText" alignment="CENTER" layoutX="79.0" layoutY="376.0" prefHeight="20.0" prefWidth="302.0" textFill="RED">
          <font>
             <Font size="20.0" />
          </font>

@@ -1,7 +1,7 @@
 /* General styling for the entire window */
 AnchorPane {
     -fx-background-color: #f4f4f9;  /* Light background */
-    -fx-padding: 30px;  /* Padding around the edges */
+    -fx-padding: 10px;  /* Padding around the edges */
 }
 
 

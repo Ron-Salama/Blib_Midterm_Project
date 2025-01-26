@@ -1,7 +1,14 @@
 /* General background and padding for the AnchorPane */
 AnchorPane {
     -fx-background-color: #f4f4f9; /* Light background for the whole screen */
-    -fx-padding: 30px; /* Padding around the edges */
+    -fx-padding: 10px; /* Padding around the edges */
+}
+
+/* Extension Label for dynamic titles */
+#extensionDynamicLabel {
+    -fx-font-size: 55px;  /* Match header size for consistency */
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;  /* Slightly lighter text color */
 }
 
 
@@ -76,13 +83,6 @@ AnchorPane {
     -fx-font-size: 34px;  /* Larger font size for header */
     -fx-font-weight: bold;
     -fx-text-fill: #000000;  /* Dark text color */
-}
-
-/* Extension Label for dynamic titles */
-#extensionDynamicLabel {
-    -fx-font-size: 34px;  /* Match header size for consistency */
-    -fx-font-weight: bold;
-    -fx-text-fill: #333333;  /* Slightly lighter text color */
 }
 
 /* Styling for Title Elements */

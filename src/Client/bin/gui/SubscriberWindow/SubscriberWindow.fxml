@@ -34,15 +34,15 @@
          </font>
       </Label>
 
-      <Label id="myStatusLabel" fx:id="myStatusLabel" alignment="CENTER" layoutX="396.0" layoutY="223.0" prefHeight="30.0" prefWidth="416.0" textFill="#DE8F5F">
+      <Label id="myStatusLabel" fx:id="myStatusLabel" alignment="CENTER" layoutX="416.0" layoutY="224.0" prefHeight="30.0" prefWidth="416.0" textFill="#DE8F5F">
          <font>
-            <Font size="24.0" />
+            <Font size="30.0" />
          </font>
       </Label>
 
-      <Label id="frozenUntilAndDaysLeftDynamicText" fx:id="frozenUntilAndDaysLeftDynamicText" alignment="CENTER" layoutX="418.0" layoutY="258.0" prefHeight="64.0" prefWidth="373.0" textFill="#de8f5f">
+      <Label id="frozenUntilAndDaysLeftDynamicText" fx:id="frozenUntilAndDaysLeftDynamicText" alignment="CENTER" layoutX="457.0" layoutY="260.0" prefHeight="90.0" prefWidth="373.0">
          <font>
-            <Font size="18.0" />
+            <Font size="30.0" />
          </font>
       </Label>
 
