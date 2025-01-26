@@ -929,6 +929,7 @@ public class EchoServer extends AbstractServer {
                 }
                 ConnectToDb.insertRequest(dbConnection, "Borrow For Subscriber", subscriberId, subscriberName,
                         bookName, bookId, borrowDate, returnDate, extendTime);
+                client.sendToClient("sucessfully inserted the request");
                 // Decrease available copies
                 ConnectToDb.decreaseAvaliabeNumCopies(dbConnection, bookId);
             } catch (Exception e) {
