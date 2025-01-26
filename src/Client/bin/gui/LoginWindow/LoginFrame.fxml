@@ -7,28 +7,31 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="255.0" prefWidth="539.0" stylesheets="@LoginFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginWindow.LoginController">
+<AnchorPane prefHeight="488.0" prefWidth="451.0" stylesheets="@LoginFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginWindow.LoginController">
    <children>
-      <Button id="btnSubscriberInfo" fx:id="btnSend" layoutX="217.0" layoutY="194.0" mnemonicParsing="false" onAction="#Send" prefHeight="50.0" prefWidth="115.0" text="Send" />
+      <Button id="btnSubscriberInfo" fx:id="btnSend" layoutX="168.0" layoutY="257.0" mnemonicParsing="false" onAction="#Send" prefHeight="50.0" prefWidth="115.0" text="Send">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
       <Button id="btnExit" fx:id="btnExit" layoutY="2.0" mnemonicParsing="false" onAction="#getExitBtn" text="← Back" />
-      <Label layoutX="193.0" layoutY="119.0" prefHeight="20.0" prefWidth="24.0" styleClass="small-text" text="ID">
+      <Label layoutX="144.0" layoutY="182.0" prefHeight="20.0" prefWidth="24.0" styleClass="small-text" text="ID">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <TextField fx:id="idtxt" layoutX="195.0" layoutY="139.0" promptText="123465" />
+      <TextField fx:id="idtxt" layoutX="146.0" layoutY="202.0" promptText="123465" />
       <Label fx:id="awaitingLoginText" layoutX="263.0" layoutY="109.0" textFill="#4dc03e">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Text layoutX="224.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+      <Text layoutX="156.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
          <font>
-            <Font size="36.0" />
+            <Font size="51.0" />
          </font>
       </Text>
-      <Text layoutX="211.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back!">
+      <Text layoutX="138.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back!">
          <font>
-            <Font size="17.0" />
+            <Font size="24.0" />
          </font>
       </Text>
    </children>

@@ -46,7 +46,7 @@
 
 /* General text styling (smaller font) */
 .text {
-    -fx-font-size: 14px;  /* Standard text size */
+    -fx-font-size: 16px;  /* Standard text size */
     -fx-font-weight: normal;
     -fx-text-fill: #333;
 }

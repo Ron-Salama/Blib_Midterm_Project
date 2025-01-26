@@ -6,61 +6,61 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1049.0" prefWidth="1340.0" styleClass="AncorPane" stylesheets="@SubscriberWindow.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberWindow.SubscriberWindowController">
+<AnchorPane maxHeight="940.0" prefHeight="750.0" prefWidth="1305.0" styleClass="AncorPane" stylesheets="@SubscriberWindow.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberWindow.SubscriberWindowController">
    <children>
 
       <!-- Other buttons -->
-      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="716.0" layoutY="538.0" mnemonicParsing="false" onAction="#openBorrowWindow" prefHeight="156.0" prefWidth="246.0" text="Borrow">
+      <Button id="btnBorrow" fx:id="btnBorrow" layoutX="624.0" layoutY="534.0" mnemonicParsing="false" onAction="#openBorrowWindow" prefHeight="156.0" prefWidth="246.0" text="Borrow">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
 
-      <Button id="btnSearch" fx:id="btnSearch" layoutX="431.0" layoutY="538.0" mnemonicParsing="false" onAction="#search" prefHeight="156.0" prefWidth="246.0" text="Search">
+      <Button id="btnSearch" fx:id="btnSearch" layoutX="339.0" layoutY="534.0" mnemonicParsing="false" onAction="#search" prefHeight="156.0" prefWidth="246.0" text="Search">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
 
-      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="431.0" layoutY="728.0" mnemonicParsing="false" onAction="#openMyBooksWindow" prefHeight="156.0" prefWidth="246.0" text="My Books">
+      <Button id="btnMyBooks" fx:id="btnMyBooks" layoutX="339.0" layoutY="724.0" mnemonicParsing="false" onAction="#openMyBooksWindow" prefHeight="156.0" prefWidth="246.0" text="My Books">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
 
-      <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="187.0" layoutY="27.0" prefHeight="90.0" prefWidth="1019.0" wrapText="true">
+      <Label id="greetingLabel" fx:id="greetingLabel" alignment="CENTER" layoutX="134.0" layoutY="95.0" prefHeight="90.0" prefWidth="1019.0" wrapText="true">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
 
-      <Label id="myStatusLabel" fx:id="myStatusLabel" alignment="CENTER" layoutX="468.0" layoutY="113.0" prefHeight="30.0" prefWidth="416.0" textFill="#DE8F5F">
+      <Label id="myStatusLabel" fx:id="myStatusLabel" alignment="CENTER" layoutX="396.0" layoutY="223.0" prefHeight="30.0" prefWidth="416.0" textFill="#DE8F5F">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
 
-      <Label id="frozenUntilAndDaysLeftDynamicText" fx:id="frozenUntilAndDaysLeftDynamicText" alignment="CENTER" layoutX="490.0" layoutY="148.0" prefHeight="64.0" prefWidth="373.0" textFill="#de8f5f">
+      <Label id="frozenUntilAndDaysLeftDynamicText" fx:id="frozenUntilAndDaysLeftDynamicText" alignment="CENTER" layoutX="418.0" layoutY="258.0" prefHeight="64.0" prefWidth="373.0" textFill="#de8f5f">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
 
-      <Button id="btnMyReservations" fx:id="btnMyReservations" ellipsisString="My Reservations" layoutX="716.0" layoutY="728.0" mnemonicParsing="false" onAction="#openMyReservationsWindow" prefHeight="156.0" prefWidth="246.0" text="My Reservations">
+      <Button id="btnMyReservations" fx:id="btnMyReservations" ellipsisString="My Reservations" layoutX="624.0" layoutY="724.0" mnemonicParsing="false" onAction="#openMyReservationsWindow" prefHeight="156.0" prefWidth="246.0" text="My Reservations">
          <font>
             <Font size="25.0" />
          </font>
       </Button>
       <Rectangle fx:id="roundedSquare21" arcHeight="20" arcWidth="20" fill="WHITE" height="57.0" layoutX="46.0" layoutY="433.0" width="64.0" />
 
-      <Button id="btnBack" fx:id="btnBack" ellipsisString="←" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="35.0" prefWidth="90.0" text="Logout" textFill="WHITE">
+      <Button id="btnBack" fx:id="btnBack" ellipsisString="←" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#getbtnBack" prefHeight="35.0" prefWidth="90.0" text="Logout" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
       <Rectangle fx:id="roundedSquare212" arcHeight="20" arcWidth="20" fill="WHITE" height="57.0" layoutX="46.0" layoutY="529.0" width="64.0" />
 
-      <Button id="btnUpdate" fx:id="btnUpdate" layoutX="431.0" layoutY="466.0" mnemonicParsing="false" onAction="#update" prefHeight="48.0" prefWidth="530.0" text="Update Information">
+      <Button id="btnUpdate" fx:id="btnUpdate" layoutX="339.0" layoutY="462.0" mnemonicParsing="false" onAction="#update" prefHeight="48.0" prefWidth="530.0" text="Update Information">
          <font>
             <Font size="7.0" />
          </font>

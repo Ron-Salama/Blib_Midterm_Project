@@ -8,21 +8,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="@SubscriberRegisterWindowFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController">
+<AnchorPane prefHeight="550.0" prefWidth="451.0" stylesheets="@SubscriberRegisterWindowFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRegisterWindow.SubscriberRegisterWindowFrameController">
    <children>
-      <Label id="lblSubscriber_id" layoutX="227.0" layoutY="104.0" text="ID">
+      <Label id="lblSubscriber_id" layoutX="151.0" layoutY="127.0" text="ID">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label id="lblSubscriber_name" layoutX="226.0" layoutY="164.0" text="Full Name">
+      <Label id="lblSubscriber_name" layoutX="150.0" layoutY="187.0" text="Full Name">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label id="lblPhoneNumber" layoutX="224.0" layoutY="227.0" text="Phone Number">
+      <Label id="lblPhoneNumber" layoutX="148.0" layoutY="250.0" text="Phone Number">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label id="lblSubscriber_email" layoutX="224.0" layoutY="288.0" text="Email">
+      <Label id="lblSubscriber_email" layoutX="148.0" layoutY="311.0" text="Email">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -31,24 +31,24 @@
          <font>
             <Font size="29.0" />
          </font></Button>
-      <Button id="btnRegister" fx:id="btnRegister" layoutX="218.0" layoutY="395.0" mnemonicParsing="false" onAction="#btnRegister" prefHeight="86.0" prefWidth="187.0" text="Register" textAlignment="CENTER">
+      <Button id="btnRegister" fx:id="btnRegister" layoutX="141.0" layoutY="393.0" mnemonicParsing="false" onAction="#btnRegister" prefHeight="45.0" prefWidth="187.0" text="Register" textAlignment="CENTER">
          <font>
             <Font size="32.0" />
          </font>
       </Button>
       
-      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="222.0" layoutY="190.0" promptText="Timmy Turner" />
-      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="222.0" layoutY="254.0" promptText="0554877854" />
-      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="222.0" layoutY="318.0" promptText="Timmile@gmail.com" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_name" layoutX="146.0" layoutY="213.0" promptText="Timmy Turner" />
+      <TextField id="txtSubscriber_phoneNumber" fx:id="txtSubscriber_phoneNumber" layoutX="146.0" layoutY="277.0" promptText="0554877854" />
+      <TextField id="txtSubscriber_email" fx:id="txtSubscriber_email" layoutX="146.0" layoutY="341.0" promptText="Timmile@gmail.com" />
       
       <Line endX="100.0" startX="-100.0" />
-      <Line endX="100.0" layoutX="311.0" layoutY="53.0" startX="-100.0" />
+      <Line endX="100.0" layoutX="235.0" layoutY="104.0" startX="-100.0" />
       
-      <Text layoutX="227.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Account">
+      <Text layoutX="151.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Account">
          <font>
             <Font size="25.0" />
          </font></Text>
-      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="222.0" layoutY="134.0" promptText="123456" />
-      <Label id="registerDynamicLabel" fx:id="registerDynamicLabel" layoutX="123.0" layoutY="271.0" />
+      <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="146.0" layoutY="157.0" promptText="123456" />
+      <Label id="registerDynamicLabel" fx:id="registerDynamicLabel" layoutX="24.0" layoutY="439.0" />
    </children>
 </AnchorPane>
