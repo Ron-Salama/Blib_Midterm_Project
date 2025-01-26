@@ -36,6 +36,6 @@
       <ToggleButton fx:id="ReturnForSubscriber" layoutX="258.0" layoutY="59.0" mnemonicParsing="false" onAction="#ReturnForSubscriber" prefHeight="41.0" prefWidth="131.0" text="Return" />
       <ToggleButton fx:id="Register" layoutX="389.0" layoutY="59.0" mnemonicParsing="false" onAction="#Register" prefHeight="41.0" prefWidth="131.0" text="Register" />
       <CheckBox fx:id="isLost" layoutX="587.0" layoutY="358.0" mnemonicParsing="false" text="Lost" />
-      <Label fx:id="feedbackLabel" alignment="CENTER" layoutX="108.0" layoutY="21.0" prefHeight="25.0" prefWidth="419.0" />
+      <Label fx:id="feedbackLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="108.0" layoutY="21.0" prefHeight="25.0" prefWidth="419.0" />
    </children>
 </AnchorPane>
