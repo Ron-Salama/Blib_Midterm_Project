@@ -1,6 +1,13 @@
 /* General background and padding for the AnchorPane */
 .root {
-    -fx-background-color: #f4f4f9;  /* Light background color */
+    -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
+    -fx-padding: 30px;  /* Padding around the edges */
+}
+
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
 }
 
 /* Styling for the main login label */
@@ -8,6 +15,7 @@
     -fx-font-size: 34px;  /* Large font size for the title */
     -fx-font-weight: bold;  /* Bold font weight for emphasis */
     -fx-text-fill: #333;  /* Dark text color for contrast */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
 }
 
 /* Styling for the "Enter User ID" label */
@@ -15,56 +23,81 @@
     -fx-font-size: 14px;  /* Slightly smaller text */
     -fx-font-weight: bold;
     -fx-text-fill: #333;  /* Dark gray color */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
 }
 
 /* Styling for the TextField */
 .text-field {
-    -fx-background-color: #fff;  /* White background for the text field */
-    -fx-border-color: #ccc;  /* Light gray border */
+    -fx-background-color: #ffffff;  /* White background for the text field */
+    -fx-border-color: #cccccc;  /* Light gray border */
     -fx-border-radius: 5px;  /* Rounded corners */
     -fx-font-size: 14px;  /* Readable font size */
     -fx-text-fill: #333;  /* Dark text color */
-    -fx-focus-color: #4e91f5;  /* Focused color when clicked */
+    -fx-focus-color: #007bff;  /* Blue focus color when clicked */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); /* Outline effect */
+}
+
+/* Focused Text Field styling (when user clicks on it) */
+.text-field:focused {
+    -fx-border-color: #007bff;  /* Blue border when focused */
+    -fx-effect: dropshadow(gaussian, #007bff, 5, 0.3, 0, 1); /* Blue outline on focus */
+}
+
+/* Header text styling (larger font) */
+.header {
+    -fx-font-size: 44px;  /* Larger font size for the header */
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* General text styling (smaller font) */
+.text {
+    -fx-font-size: 14px;  /* Standard text size */
+    -fx-font-weight: normal;
+    -fx-text-fill: #333;
+}
+
+/* Small text styling (smallest font) */
+.small-text {
+    -fx-font-size: 12px;  /* Smallest font size for this text */
+    -fx-font-weight: normal;
+    -fx-text-fill: #333;
 }
 
 /* Styling for the buttons */
 .button {
-    -fx-background-color: #4e91f5;  /* Blue background for the button */
-    -fx-text-fill: white;  /* White text color */
-    -fx-font-size: 14px;  /* Button text size */
-    -fx-font-weight: bold;  /* Bold text for emphasis */
-    -fx-border-radius: 5px;  /* Rounded corners */
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
 .button:hover {
-    -fx-background-color: #3577d4;  /* Darker blue background on hover */
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
-/* Exit button (red) styling */
+/* Exit button styling */
 #btnExit {
-    -fx-background-color: #e74c3c;  /* Red background for the Exit button */
-}
-
-#btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red on hover for Exit button */
+    -fx-font-size: 16px;  /* Font size for the Exit button */
 }
 
 /* Styling for awaiting login text (green) */
 #awaitingLoginText {
-    -fx-font-size: 20px;  /* Larger font size for feedback text */
+    -fx-font-size: 36px;  /* Larger font size for feedback text */
     -fx-font-weight: bold;  /* Bold text for emphasis */
     -fx-text-fill: #4dc03e;  /* Green text color */
 }
 
 /* Add margins and spacing between components */
 .text-field, .button {
-    -fx-spacing: 10px;
-}
-
-#btnExit {
-    -fx-margin-top: 20px;  /* Space between the Exit button and other components */
+    -fx-spacing: 24px;
 }
 
 /* Adjust positioning of the labels and buttons for better alignment */

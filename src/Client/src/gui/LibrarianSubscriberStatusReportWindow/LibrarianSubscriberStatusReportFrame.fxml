@@ -12,7 +12,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="518.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianSubscriberStatusReportWindow.LibrarianSubscriberStatusReportController">
+<AnchorPane prefHeight="518.0" prefWidth="1076.0" stylesheets="@LibrarianSubscriberStatusReportFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianSubscriberStatusReportWindow.LibrarianSubscriberStatusReportController">
     <children>
         <!-- ScatterChart -->
         <ScatterChart fx:id="scatterChart" layoutX="38.0" layoutY="112.0" prefHeight="400.0" prefWidth="600.0">
@@ -46,9 +46,9 @@
         </BarChart>
         
         <!-- Buttons and ComboBox -->
-        <Button fx:id="back" layoutX="1006.0" layoutY="20.0" mnemonicParsing="false" onAction="#back" text="Back" />
+        <Button id="btnBack" fx:id="back" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" text="← Back" />
         <ComboBox fx:id="comboMonths" layoutX="438.0" layoutY="45.0" prefWidth="150.0" />
-        <Button fx:id="update" layoutX="599.0" layoutY="45.0" mnemonicParsing="false" onAction="#update" text="update" />
+        <Button fx:id="update" layoutX="599.0" layoutY="35.0" mnemonicParsing="false" onAction="#update" text="update" />
       <Label layoutX="48.0" layoutY="103.0" text="Currently Frozen/Unfrozen Status" />
       <Label layoutX="513.0" layoutY="543.0" text="Monthly Frozen/Unfrozen Status" />
     </children>

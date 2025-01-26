@@ -1,6 +1,45 @@
 /* General background and padding for the AnchorPane */
 .root {
     -fx-background-color: #f4f4f9;  /* Light background color */
+    -fx-padding: 30px;  /* Padding around the edges */
+}
+
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
+}
+
+/* General styling for all buttons */
+.button {
+    -fx-background-color: #171717;  /* Dark background for the button */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 24px;  /* Adjust font size */
+    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold button text */
+    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Keep border consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
+}
+
+.button:hover {
+    -fx-background-color: #DE8F5F;  /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
+}
+
+/* Button Selected State (Click Effect) */
+.button:pressed {
+    -fx-background-color: #2ecc71;  /* Green color when button is clicked/selected */
+    -fx-text-fill: white;  /* White text color when clicked */
+}
+
+/* Label styling */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;  /* Dark gray color */
 }
 
 /* Styling for the main login label */
@@ -11,13 +50,6 @@
 }
 
 /* Styling for the "Enter User ID" label */
-.label {
-    -fx-font-size: 14px;  /* Slightly smaller text */
-    -fx-font-weight: bold;
-    -fx-text-fill: #333;  /* Dark gray color */
-}
-
-/* Styling for the TextField */
 .text-field {
     -fx-background-color: #fff;  /* White background for the text field */
     -fx-border-color: #ccc;  /* Light gray border */
@@ -25,31 +57,18 @@
     -fx-font-size: 14px;  /* Readable font size */
     -fx-text-fill: #333;  /* Dark text color */
     -fx-focus-color: #4e91f5;  /* Focused color when clicked */
+    -fx-padding: 10px;  /* Padding inside text field */
 }
 
-/* Styling for the buttons */
-.button {
-    -fx-background-color: #4e91f5;  /* Blue background for the button */
-    -fx-text-fill: white;  /* White text color */
-    -fx-font-size: 14px;  /* Button text size */
-    -fx-font-weight: bold;  /* Bold text for emphasis */
-    -fx-border-radius: 5px;  /* Rounded corners */
-    -fx-cursor: hand;  /* Change cursor to hand when hovering */
-    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
+/* Focused Text Field styling (when user clicks on it) */
+.text-field:focused {
+    -fx-border-color: #007bff;  /* Blue border when focused */
+    -fx-effect: dropshadow(gaussian, #007bff, 5, 0.3, 0, 1); /* Blue outline on focus */
 }
 
-.button:hover {
-    -fx-background-color: #3577d4;  /* Darker blue background on hover */
-}
 
-/* Exit button (red) styling */
-#btnExit {
-    -fx-background-color: #e74c3c;  /* Red background for the Exit button */
-}
 
-#btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red on hover for Exit button */
-}
+
 
 /* Styling for awaiting login text (green) */
 #awaitingLoginText {
@@ -63,27 +82,43 @@
     -fx-spacing: 10px;
 }
 
-#btnExit {
-    -fx-margin-top: 20px;  /* Space between the Exit button and other components */
+#btnBack {
+     -fx-font-size: 16px;
 }
 
-/* Adjust positioning of the labels and buttons for better alignment */
-#btnSend {
-    -fx-layout-x: 347.0;
-    -fx-layout-y: 104.0;
+#headerText{
+	-fx-font-size: 34px;
 }
 
-#btnExit {
-    -fx-layout-x: 376.0;
-    -fx-layout-y: 14.0;
+/* Update Button */
+#btnUpdate {
+    -fx-pref-height: 77px;  /* Set specific height for the button */
+    -fx-pref-width: 146px;  /* Set specific width for the button */
+    -fx-background-color: #28a745; /* Green background for back and update buttons */
+    -fx-text-fill: #ffffff; /* White text for contrast */
+    -fx-border-radius: 8; /* Rounded corners */
+    -fx-padding: 10 20; /* Spacing inside buttons */
 }
 
-#idtxt {
-    -fx-layout-x: 189.0;
-    -fx-layout-y: 104.0;
+/* Hover effect for Update button */
+#btnUpdate:hover {
+    -fx-background-color: #218838; /* Darker green on hover */
 }
 
-#awaitingLoginText {
-    -fx-layout-x: 109.0;
-    -fx-layout-y: 137.0;
+/* Styling for separator lines */
+.line {
+    -fx-stroke: #cccccc; /* Light grey color for lines */
+    -fx-stroke-width: 1; /* Thickness of the lines */
+}
+
+/* Title Text styling */
+#text {
+    -fx-font-size: 20px; /* Larger font for the title */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-fill: #000000; /* Dark color for text */
+}
+
+/* Input Fields and Labels Spacing */
+.Label, .TextField, .ComboBox, .DatePicker, .ToggleButton {
+    -fx-spacing: 8;
 }

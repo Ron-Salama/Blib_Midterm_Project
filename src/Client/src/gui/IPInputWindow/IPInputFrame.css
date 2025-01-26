@@ -1,69 +1,78 @@
-@import url("../../styles/mainStyleSheet.css");
 
-/* General styles for the AnchorPane */
+
+/* General background and padding for the AnchorPane */
 .root {
-    -fx-background-color: #f4f4f9;  /* Light background color */
+    -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
+    -fx-padding: 30px;  /* Padding around the edges */
+}
+
+/* Font setup for Rubik Bold */
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('../../assets/Rubik/static/Rubik-Bold.ttf'); /* Navigate from CSS file to font */
 }
 
 /* Styling for the "Welcome to Blib system" label */
 #welcomeLabel {
     -fx-background-color: #4e91f5;  /* Blue background */
-    -fx-text-fill: white;  /* White text color */
-    -fx-font-size: 20px;  /* Larger font size */
+    -fx-text-fill: #ffffff;  /* White text color */
+    -fx-font-size: 24px;  /* Larger font size for titles */
     -fx-font-weight: bold;  /* Bold text */
-    -fx-padding: 10px;  /* Padding around the text */
+    -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
+    -fx-padding: 15px;  /* Padding around the text */
     -fx-alignment: center;  /* Center the text within the label */
-    -fx-border-radius: 5px;  /* Optional rounded corners for a softer look */
-    -fx-background-radius: 5px;  /* Rounded corners for the background */
+    -fx-border-radius: 10px;  /* Softer rounded corners */
+    -fx-background-radius: 10px;  /* Rounded corners for the background */
 }
 
-/* Styling for the Label (Server IP) */
+/* Styling for labels */
 .label {
-    -fx-font-size: 14px;  /* Slightly larger text for clarity */
-    -fx-font-weight: bold;  /* Make the label text bold */
-    -fx-text-fill: #333;  /* Dark gray text for good contrast */
+    -fx-font-size: 14px;  /* Consistent text size for clarity */
+    -fx-font-weight: bold;  /* Bold text for emphasis */
+    -fx-text-fill: #333;  /* Dark gray text for contrast */
+    -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
 }
 
 /* TextField styling */
 .text-field {
-    -fx-background-color: #fff;  /* White background for the input field */
-    -fx-border-color: #ccc;  /* Light gray border for the text field */
-    -fx-border-radius: 5px;  /* Rounded corners for the text field */
+    -fx-background-color: #ffffff;  /* White background for input fields */
+    -fx-border-color: #cccccc;  /* Light gray border for the text field */
+    -fx-border-radius: 5px;  /* Rounded corners for input fields */
     -fx-font-size: 14px;  /* Clear font size for text */
     -fx-text-fill: #333;  /* Dark text color */
-    -fx-focus-color: #4e91f5;  /* Focus color on text field */
+    -fx-focus-color: #4e91f5;  /* Blue focus color */
+    -fx-effect: dropshadow(gaussian, #4e91f5, 5, 0.3, 0, 1); /* Outline effect */
 }
 
 /* Button Styling */
 .button {
-    -fx-background-color: #4e91f5;  /* Blue background for buttons */
-    -fx-text-fill: white;  /* White text on buttons */
-    -fx-font-size: 14px;  /* Button text size */
-    -fx-font-weight: bold;  /* Bold text for emphasis */
-    -fx-border-radius: 5px;  /* Rounded corners on buttons */
-    -fx-cursor: hand;  /* Change cursor to hand when hovering */
+    -fx-background-color: #171717;  /* Dark background for buttons */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
+    -fx-font-size: 18px;  /* Slightly larger font size for emphasis */
+    -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
+    -fx-font-weight: bold;  /* Bold text */
+    -fx-border-radius: 20px;  /* Rounded corners */
+    -fx-cursor: hand;  /* Change cursor to hand on hover */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
 }
 
 .button:hover {
-    -fx-background-color: #3577d4;  /* Darken button background on hover */
+    -fx-background-color: #DE8F5F;  /* Background changes to yellow on hover */
+    -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
 /* Exit Button Styling (Red) */
 #btnExit {
     -fx-background-color: #e74c3c;  /* Red background for the Exit button */
+    -fx-text-fill: #ffffff;  /* White text for contrast */
+    -fx-font-size: 16px;  /* Adjusted font size for smaller buttons */
 }
 
 #btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red on hover for Exit button */
+    -fx-background-color: #c0392b;  /* Darker red on hover */
 }
 
-/* Add some spacing between components */
+/* Add spacing between text fields and buttons */
 .text-field, .button {
-    -fx-spacing: 10px;
-}
-
-/* Add spacing between the buttons themselves */
-#btnExit {
-    -fx-margin-top: 10px;
+    -fx-spacing: 24px;  /* Consistent spacing between components */
 }

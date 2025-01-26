@@ -4,28 +4,32 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BorrowBookWindow.BorrowBookController">
+<AnchorPane prefHeight="500.0" prefWidth="675.0" stylesheets="@BorrowBookFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BorrowBookWindow.BorrowBookController">
    <children>
 
       <!-- Server IP Label -->
-      <Label layoutX="139.658" layoutY="85.0" text="Book ID:" />
+      <Label layoutX="272.0" layoutY="94.0" text="Book ID:" />
 
       <!-- TextField for IP input -->
-      <TextField fx:id="IDtxt" layoutX="233.0" layoutY="81.0" onAction="#Clear" promptText="Ex: 0011" stylesheets="@BorrowBookFrame.css" />
+      <TextField fx:id="IDtxt" layoutX="281.0" layoutY="125.0" onAction="#Clear" promptText="Ex: 0011" stylesheets="@BorrowBookFrame.css" />
 
       <!-- Send Button -->
-      <Button id="btnSubscriberInfo" fx:id="btnSubmit" layoutX="427.0" layoutY="84.0" mnemonicParsing="false" onAction="#Submit" text="Submit" />
+      <Button id="btnSubscriberInfo" fx:id="btnSubmit" layoutX="333.0" layoutY="169.0" mnemonicParsing="false" onAction="#Submit" text="Submit" />
 
       <!-- Exit Button -->
-      <Button id="btnExit" fx:id="btnBack" layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="Back" />
-      <Button id="btnSearch" fx:id="btnSearch" layoutX="581.0" layoutY="447.0" mnemonicParsing="false" onAction="#openSearchWindow" prefHeight="32.0" prefWidth="67.0" text="Search" />
-      <Label layoutX="283.0" layoutY="31.0" text="Borrow Book" />
+      <Button id="btnExit" fx:id="btnBack" layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#Back" text="← Back" />
+      <Button id="btnSearch" fx:id="btnSearch" layoutX="581.0" layoutY="450.0" mnemonicParsing="false" onAction="#openSearchWindow" prefHeight="45.0" prefWidth="100.0" text="Search" />
+      <Label id="header" layoutX="263.0" layoutY="2.0" text="Borrow Book">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
       <Button id="btnSubmit" fx:id="btnSubmitToLibrarian" layoutX="28.0" layoutY="450.0" mnemonicParsing="false" onAction="#Submit_Borrow_Request" text="Submit Borrow Request" />
-      <Button id="btnMainMenu" fx:id="btnMainMenu" layoutX="475.0" layoutY="14.0" mnemonicParsing="false" onAction="#Main_Menu" text="Return To Main Menu" />
-      <Label fx:id="Book_Description" layoutX="34.0" layoutY="134.0" text="" />
-      <Button id="btnSubmit" fx:id="btnReserve" layoutX="203.0" layoutY="450.0" mnemonicParsing="false" onAction="#Submit_Reserve_Request" text="Submit Reserve Request" />
-      <Label fx:id="awaitingTextID" layoutX="200.0" layoutY="364.0" text="awaitingText" textFill="#d71e1e" />
-      <Label fx:id="RequestStatus" layoutX="233.0" layoutY="126.0" />
+      <Button id="btnMainMenu" fx:id="btnMainMenu" layoutX="594.0" layoutY="14.0" mnemonicParsing="false" onAction="#Main_Menu" text="Logout" />
+      <Label fx:id="Book_Description" layoutX="28.0" layoutY="141.0" text="" />
+      <Button id="btnSubmit" fx:id="btnReserve" layoutX="243.0" layoutY="450.0" mnemonicParsing="false" onAction="#Submit_Reserve_Request" text="Submit Reserve Request" />
+      <Label fx:id="awaitingTextID" layoutX="347.0" layoutY="364.0" text="awaitingText" textFill="#d71e1e" />
+      <Label fx:id="RequestStatus" layoutX="476.0" layoutY="114.0" />
    </children>
 </AnchorPane>

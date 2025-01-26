@@ -9,10 +9,10 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="533.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyBooksWindow.MyBooksController">
+<AnchorPane prefHeight="533.0" prefWidth="659.0" stylesheets="@MyBooksFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyBooksWindow.MyBooksController">
    <children>
-      <Button id="btnExit" fx:id="btnExit" layoutX="992.0" layoutY="22.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
-      <Line endX="225.00003051757812" endY="25.5175724029541" layoutX="321.0" layoutY="1.0" startX="412.8000183105469" startY="25.517587661743164" />
+      <Button id="btnExit" fx:id="btnExit" layoutX="1153.0" layoutY="22.0" mnemonicParsing="false" onAction="#getExitBtn" styleClass="Button" text="Logout" />
+      <Line endX="206.66668701171875" endY="25.517597198486328" layoutX="320.0" layoutY="21.0" startX="427.33331298828125" startY="25.517597198486328" />
       <TableView fx:id="tableView" layoutY="219.0" prefHeight="314.0" prefWidth="1245.0">
         <columns>
           <TableColumn fx:id="tableID" prefWidth="98.39999198913574" text="Book ID" />
@@ -23,16 +23,19 @@
             <TableColumn fx:id="tableActions" prefWidth="376.66656494140625" text="Actions" />
         </columns>
       </TableView>
-      <Button id="btnExit" fx:id="btnBack" layoutX="25.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
-      <Button id="btnExit" fx:id="btnHistory" layoutX="1104.0" layoutY="168.0" mnemonicParsing="false" onAction="#navigateToHistory" prefHeight="38.0" prefWidth="130.0" text="History">
+      <Button id="btnExit" fx:id="btnBackF" layoutX="25.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" styleClass="Button" text="← Back" />
+      <Button id="btnExit" fx:id="btnHistory" layoutX="1104.0" layoutY="168.0" mnemonicParsing="false" onAction="#navigateToHistory" prefHeight="38.0" prefWidth="130.0" styleClass="Button" text="History">
          <font>
             <Font size="17.0" />
          </font>
       </Button>
       <Label id="extensionDynamicLabel" fx:id="extensionDynamicLabel" layoutX="159.0" layoutY="133.0" prefHeight="71.0" prefWidth="850.0" />
-      <Label id="extensionDynamicLabel" fx:id="title" layoutX="597.0" layoutY="-4.0" prefHeight="38.0" prefWidth="505.0" text="My books" />
-      <TextField fx:id="TXTFview" layoutX="344.0" layoutY="90.0" />
-      <Label fx:id="LBLview" layoutX="170.0" layoutY="94.0" text="Input Subscriber ID to View:" />
-      <Button fx:id="btnView" layoutX="512.0" layoutY="90.0" mnemonicParsing="false" onAction="#updateView" text="View" />
+      <Label id="extensionDynamicLabel" fx:id="title" layoutX="584.0" layoutY="-1.0" prefHeight="38.0" prefWidth="505.0" styleClass="text" text="My books">
+         <font>
+            <Font size="31.0" />
+         </font></Label>
+      <TextField fx:id="TXTFview" layoutX="213.0" layoutY="88.0" />
+      <Label fx:id="LBLview" layoutX="213.0" layoutY="51.0" text="Subscriber ID" />
+      <Button fx:id="btnView" layoutX="260.0" layoutY="133.0" mnemonicParsing="false" onAction="#updateView" styleClass="Button" text="View" />
    </children>
 </AnchorPane>
