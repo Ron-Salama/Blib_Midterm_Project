@@ -90,6 +90,8 @@ public class BorrowBookController extends BaseController implements Initializabl
     // Number of reserved copies of the selected book.
     int reservedCopiesNum;
     
+    int availables;
+    
     // Status indicating whether the book can be borrowed.
     String borrowStatus = "CAN_BORROW";  // String to hold the borrow status
 
@@ -152,8 +154,12 @@ public class BorrowBookController extends BaseController implements Initializabl
             );
             bookName = ChatClient.BorrowedBookInfo[1];
             copiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[4]);
+            availables=Integer.parseInt(ChatClient.BorrowedBookInfo[6]);
             reservedCopiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[7]);
-            
+            System.out.println("ava"+availables);
+            System.out.println("res"+reservedCopiesNum);
+            boolean condition=reservedCopiesNum >= availables;
+            System.out.println(condition);
             // Update borrow status based on available copies
             if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
                 borrowStatus = "NO_COPIES";
@@ -170,6 +176,10 @@ public class BorrowBookController extends BaseController implements Initializabl
             borrowStatus = "BOOK_NOT_FOUND";
             Book_Description.setText("No Book Found");
             btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found 
+        }
+        if( reservedCopiesNum >= availables ) {
+        	 awaitingTextID.setText("There are reserves for the  " + bookName + "\nSorry");
+        	btnSubmitToLibrarian.setDisable(true);
         }
     }
 
