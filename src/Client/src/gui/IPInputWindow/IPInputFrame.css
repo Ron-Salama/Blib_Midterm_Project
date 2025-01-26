@@ -8,8 +8,8 @@
 
 /* Styling for the "Welcome to Blib system" label */
 #welcomeLabel {
-    -fx-background-color: #4e91f5;  /* Blue background */
-    -fx-text-fill: #ffffff;  /* White text color */
+    -fx-background-color: #171717;  /* Dark background for buttons */
+    -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 24px;  /* Larger font size for titles */
     -fx-font-weight: bold;  /* Bold text */
     -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
@@ -23,7 +23,7 @@
 .label {
     -fx-font-size: 14px;  /* Consistent text size for clarity */
     -fx-font-weight: bold;  /* Bold text for emphasis */
-    -fx-text-fill: #333;  /* Dark gray text for contrast */
+    -fx-text-fill: rgb(0, 0, 0);  /* Dark gray text for contrast */
     -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
 }
 
@@ -35,7 +35,7 @@
     -fx-font-size: 14px;  /* Clear font size for text */
     -fx-text-fill: #333;  /* Dark text color */
     -fx-focus-color: #4e91f5;  /* Blue focus color */
-    -fx-effect: dropshadow(gaussian, #4e91f5, 5, 0.3, 0, 1); /* Outline effect */
+    -fx-effect: dropshadow(gaussian, rgb(0, 0, 0), 5, 0.3, 0, 1); /* Outline effect */
 }
 
 /* Button Styling */
@@ -46,6 +46,8 @@
     -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
     -fx-font-weight: bold;  /* Bold text */
     -fx-border-radius: 20px;  /* Rounded corners */
+    -fx-background-radius: 20px; /* Ensure background matches border rounding */
+    -fx-padding: 10px 20px;  /* Add internal spacing */
     -fx-cursor: hand;  /* Change cursor to hand on hover */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
 }
@@ -55,15 +57,9 @@
     -fx-text-fill: #171717;  /* Text color changes to dark on hover */
 }
 
-/* Exit Button Styling (Red) */
-#btnExit {
-    -fx-background-color: #e74c3c;  /* Red background for the Exit button */
-    -fx-text-fill: #ffffff;  /* White text for contrast */
-    -fx-font-size: 16px;  /* Adjusted font size for smaller buttons */
-}
 
-#btnExit:hover {
-    -fx-background-color: #c0392b;  /* Darker red on hover */
+#btnExit {
+   -fx-font-size: 16px;    /* Darker red on hover */
 }
 
 /* Add spacing between text fields and buttons */

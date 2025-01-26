@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="286.0" prefWidth="387.0" stylesheets="@IPInputFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
+<AnchorPane prefHeight="365.0" prefWidth="490.0" stylesheets="@IPInputFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.IPInputWindow.IPInputController">
    <children>
       <!-- Welcome Label -->
-      <Label fx:id="welcomeLabel" ellipsisString="Welcome to Blib system" layoutX="67.0" layoutY="55.0" prefWidth="280.0" text="Welcome to Blib system">
+      <Label id="welcomeLabel" fx:id="welcomeLabel" ellipsisString="Welcome to Blib system" layoutX="94.0" layoutY="83.0" prefWidth="280.0" text="Welcome to Blib system" textAlignment="CENTER" textFill="#a63333">
          <font>
             <Font size="20.0" />
          </font>
@@ -22,22 +22,22 @@
       </Label>
 
       <!-- Server IP Label -->
-      <Label ellipsisString="Enter Server IP:" layoutX="138.0" layoutY="149.0" text="Enter Server IP:" />
+      <Label ellipsisString="Enter Server IP:" layoutX="166.0" layoutY="168.0" text="Enter Server IP:" />
 
       <!-- TextField for IP input -->
-      <TextField fx:id="IPtxt" layoutX="138.0" layoutY="168.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
+      <TextField fx:id="IPtxt" layoutX="166.0" layoutY="187.0" promptText="Ex: 127.0.0.1" stylesheets="@IPInputFrame.css" />
 
       <!-- Awaiting Login Text -->
-      <Label fx:id="awaitingLoginText" alignment="CENTER" layoutX="67.0" layoutY="120.0" prefHeight="20.0" prefWidth="302.0" textFill="RED">
+      <Label fx:id="awaitingLoginText" alignment="CENTER" layoutX="94.0" layoutY="307.0" prefHeight="20.0" prefWidth="302.0" textFill="RED">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
 
       <!-- Send Button -->
-      <Button id="btnSubscriberInfo" fx:id="btnSend" ellipsisString="Send" layoutX="149.0" layoutY="220.0" mnemonicParsing="false" onAction="#Send" prefHeight="41.0" prefWidth="131.0" text="Send" />
+      <Button id="btnSubscriberInfo" fx:id="btnSend" ellipsisString="Send" layoutX="165.0" layoutY="239.0" mnemonicParsing="false" onAction="#Send" prefHeight="41.0" prefWidth="159.0" text="Send" />
 
       <!-- Exit Button -->
-      <Button id="btnExit" fx:id="btnExit" layoutY="-5.0" mnemonicParsing="false" onAction="#getExitBtn" prefHeight="39.0" prefWidth="139.0" text="Exit the system" />
+      <Button id="btnExit" fx:id="btnExit" layoutY="5.0" mnemonicParsing="false" onAction="#getExitBtn" prefHeight="49.0" prefWidth="159.0" text="Exit the system" />
    </children>
 </AnchorPane>

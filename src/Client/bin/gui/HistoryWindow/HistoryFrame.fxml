@@ -8,13 +8,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="533.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HistoryWindow.HistoryController">
+<AnchorPane prefHeight="533.0" prefWidth="659.0" stylesheets="@HistoryFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HistoryWindow.HistoryController">
    <children>
-      <Button id="btnExit" fx:id="btnBack" layoutX="32.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" text="Back" />
-      <Button id="btnExit" fx:id="btnExit" layoutX="1069.0" layoutY="22.0" mnemonicParsing="false" onAction="#getExitBtn" text="Return to Main Menu" />
-      <Text layoutX="544.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My History" textAlignment="CENTER" wrappingWidth="178.13675498962402">
+      <Button id="btnExit" fx:id="btnBack" layoutX="37.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" text="← Back" />
+      <Button id="btnExit" fx:id="btnExit" layoutX="1170.0" layoutY="22.0" mnemonicParsing="false" onAction="#getExitBtn" text="Logout" textFill="#865959" />
+      <Text layoutX="538.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My History" textAlignment="CENTER" wrappingWidth="178.13675498962402">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="System Bold" size="34.0" />
          </font>
       </Text>
       <TableView fx:id="tableView" layoutY="229.0" prefHeight="314.0" prefWidth="1255.0">
@@ -22,6 +22,6 @@
             <TableColumn fx:id="tableDescription" prefWidth="1254.0" text="Description" />
          </columns>
       </TableView>
-      <Line endX="225.00003051757812" endY="25.5175724029541" layoutX="315.0" layoutY="22.0" startX="412.8000183105469" startY="25.517587661743164" />
+      <Line endX="205.0" endY="25.517578125" layoutX="310.0" layoutY="37.0" startX="430.3333740234375" startY="25.517578125" />
    </children>
 </AnchorPane>

@@ -7,8 +7,8 @@
 
 /* Text and Titles */
 .text {
-    -fx-fill: #333333;  /* Dark text color for visibility */
-    -fx-font-size: 20px; /* Larger font size for titles */
+ 
+    -fx-font-size: 16px; /* Larger font size for titles */
     -fx-font-weight: bold; /* Bold text for emphasis */
 }
 
