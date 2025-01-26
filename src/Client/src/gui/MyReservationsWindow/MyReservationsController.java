@@ -248,7 +248,7 @@ public class MyReservationsController extends BaseController implements Initiali
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                     setGraphic(null);
                 } else {
-                    ReservedBook reservedBook = getTableRow().getItem();
+                    ReservedBook reservedBook = (ReservedBook) getTableRow().getItem();
                     String isAccountFrozen = currentSub.getStatus();
 
                     // Determine button state and message
