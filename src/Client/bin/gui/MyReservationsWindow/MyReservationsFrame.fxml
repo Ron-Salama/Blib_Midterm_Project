@@ -5,24 +5,25 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="750.0" prefWidth="1305.0" stylesheets="@MyReservationsFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyReservationsWindow.MyReservationsController">
    <children>
       <!-- Title Label -->
-      <Label fx:id="title" layoutX="581.0" layoutY="10.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="My Reservations">
+      <Label fx:id="title" layoutX="574.0" layoutY="10.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="My Reservations">
          <font>
-            <Font size="38.0" />
+            <Font size="36.0" />
          </font></Label>
       
       <!-- Back Button -->
-      <Button fx:id="btnBack" layoutX="48.0" layoutY="10.0" mnemonicParsing="false" onAction="#getBackBtn" prefHeight="30.0" prefWidth="81.0" style="-fx-font-size: 14px;" text="← Back" />
+      <Button fx:id="btnBack" layoutX="22.0" layoutY="10.0" mnemonicParsing="false" onAction="#getBackBtn" prefHeight="30.0" prefWidth="81.0" style="-fx-font-size: 14px;" text="← Back" />
 
       <!-- Exit Button -->
-      <Button fx:id="btnExit" layoutX="1166.0" layoutY="10.0" mnemonicParsing="false" onAction="#getExitBtn" prefHeight="30.0" prefWidth="91.0" style="-fx-font-size: 14px;" text="Logout" />
+      <Button fx:id="btnExit" layoutX="1194.0" layoutY="10.0" mnemonicParsing="false" onAction="#getExitBtn" prefHeight="30.0" prefWidth="91.0" style="-fx-font-size: 14px;" text="Logout" />
 
       <!-- TableView -->
-      <TableView fx:id="tableView" layoutX="48.0" layoutY="119.0" prefHeight="590.0" prefWidth="1209.0">
+      <TableView fx:id="tableView" layoutX="22.0" layoutY="119.0" prefHeight="590.0" prefWidth="1263.0">
         <columns>
           <!-- Book ID Column -->
           <TableColumn fx:id="tableId" prefWidth="100.0" text="Book ID" />
@@ -40,6 +41,7 @@
 
       <!-- Feedback Label for Status Updates -->
       <Label fx:id="feedBack" layoutX="450.0" layoutY="50.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+      <Line endX="95.0" layoutX="646.0" layoutY="40.0" startX="-88.0" />
 
    </children>
 </AnchorPane>

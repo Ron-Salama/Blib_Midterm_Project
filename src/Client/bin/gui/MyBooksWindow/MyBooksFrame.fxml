@@ -29,7 +29,7 @@
             <Font size="17.0" />
          </font>
       </Button>
-      <Label id="extensionDynamicLabel" fx:id="extensionDynamicLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="394.0" layoutY="81.0" prefHeight="71.0" prefWidth="850.0" />
+      <Label id="extensionDynamicLabel" fx:id="extensionDynamicLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="253.0" layoutY="81.0" prefHeight="71.0" prefWidth="850.0" />
       <Label id="extensionDynamicLabel" fx:id="title" layoutX="567.0" layoutY="3.0" prefHeight="38.0" prefWidth="505.0" styleClass="text" text="My books">
          <font>
             <Font size="46.0" />

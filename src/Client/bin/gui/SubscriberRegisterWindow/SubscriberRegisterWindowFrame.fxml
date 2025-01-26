@@ -49,6 +49,6 @@
             <Font size="25.0" />
          </font></Text>
       <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="146.0" layoutY="157.0" promptText="EX: 123456" />
-      <Label id="registerDynamicLabel" fx:id="registerDynamicLabel" layoutX="24.0" layoutY="439.0" />
+      <Label id="registerDynamicLabel" fx:id="registerDynamicLabel" alignment="CENTER" layoutX="24.0" layoutY="439.0" />
    </children>
 </AnchorPane>

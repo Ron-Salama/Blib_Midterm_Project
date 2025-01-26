@@ -263,8 +263,38 @@ public class MyBooksController extends BaseController implements Initializable {
             private final HBox buttonBox = new HBox(10, extendButton, returnButton);
 
             {
+                // Apply styles to the buttons
+                String buttonStyle = "-fx-background-color: #171717; " +
+                                     "-fx-text-fill: #DE8F5F; " +
+                                     "-fx-font-size: 16px; " +
+                                     "-fx-font-family: 'Rubik Bold'; " +
+                                     "-fx-font-weight: bold; " +
+                                     "-fx-cursor: hand; " +
+                                     "-fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); " +
+                                     "-fx-background-radius: 20px; " +
+                                     "-fx-border-radius: 20px; " +
+                                     "-fx-padding: 5px 15px;";
+
+                String hoverStyle = "-fx-background-color: #DE8F5F; " +
+                        "-fx-text-fill: #171717; " +
+                        "-fx-background-radius: 20px; " + // Ensure rounded corners
+                        "-fx-border-radius: 20px;";       // Ensure consistent border radius
+
+                
+
+                extendButton.setStyle(buttonStyle);
+                returnButton.setStyle(buttonStyle);
+
+                // Add hover effect using setOnMouseEntered and setOnMouseExited
+                extendButton.setOnMouseEntered(e -> extendButton.setStyle(hoverStyle));
+                extendButton.setOnMouseExited(e -> extendButton.setStyle(buttonStyle));
+
+                returnButton.setOnMouseEntered(e -> returnButton.setStyle(hoverStyle));
+                returnButton.setOnMouseExited(e -> returnButton.setStyle(buttonStyle));
+
                 buttonBox.setStyle("-fx-alignment: CENTER;");
-             // Extend Button Action
+
+                // Extend Button Action
                 extendButton.setOnAction(event -> {
                     BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
                     if (borrowedBook != null) {
@@ -273,10 +303,10 @@ public class MyBooksController extends BaseController implements Initializable {
                         String ignore = "ignore";
                         String librarianMessage = ",Extended Successfully by Librarian " + librarianViewing + ":" + LibrarianName;
                         String body = currentSub.getSubscriber_name() + "," +
-                                currentSub.getSubscriber_id() + "," +
-                                borrowedBook.getName() + "," +
-                                borrowedBook.getBorrowId() + "," +
-                                clock.timeNow() + "," + ignore;
+                                      currentSub.getSubscriber_id() + "," +
+                                      borrowedBook.getName() + "," +
+                                      borrowedBook.getBorrowId() + "," +
+                                      clock.timeNow() + "," + ignore;
 
                         ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
                         waitForServerResponse();
@@ -285,41 +315,35 @@ public class MyBooksController extends BaseController implements Initializable {
                             if (borrowedBook.getTimeLeftToReturn() < 7 && borrowedBook.getTimeLeftToReturn() > 0) {
                                 extendedReturnDate = clock.extendReturnDate(borrowedBook.getReturnDate(), 14);
                                 ClientUI.chat.accept("UpdateReturnDate:" + borrowedBook.getBorrowId() + "," + extendedReturnDate);
-                                // if the extension isn't from subscribers window
-                                if(librarianViewing == -1) {
-                                	librarianMessage=",Extended Successfully by" + " The" + " Subscriber";
-                                	 ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
+                                if (librarianViewing == -1) {
+                                    librarianMessage = ",Extended Successfully by the Subscriber";
+                                    ClientUI.chat.accept("NewExtensionApprovedBySubscriber:" + clock.timeNow() + "," + currentSub.getSubscriber_id() + "," + currentSub.getSubscriber_name() + "," + borrowedBook.getName() + "," + extendedReturnDate + ";");
                                 }
                                 ClientUI.chat.accept("UpdateHistoryInDB:" + body + librarianMessage);
                                 waitForServerResponse();
-                                showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;"); // XXX
+                                showColoredLabelMessageOnGUI(extensionDynamicLabel, "Extension approved!", "-fx-text-fill: green;");
                                 tableView.refresh();
                                 tableReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
                                 tableView.getItems().clear();
                                 try {
-									loadBooks();
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+                                    loadBooks();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             } else {
-
-                               showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non negative.", "-fx-text-fill: red;",3);
+                                showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Return time must be 7 days or less and non-negative.", "-fx-text-fill: red;", 3);
                             }
                         } else {
-                        	showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;",3);
-
+                            showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "Extension denied! Book already reserved.", "-fx-text-fill: red;", 3);
                         }
                     }
                 });
 
+                // Return Button Action
                 returnButton.setOnAction(event -> {
                     BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
-                    
-                    
                     System.out.println("Return book: " + borrowedBook.getName());
                     ClientUI.chat.accept("Return request: Subscriber ID is:" + currentSub.getSubscriber_id() + " " + currentSub.getSubscriber_name() + " Borrow info: " + borrowedBook);
-                    // Send information about the request to the librarians.
                     waitForServerResponse();
                     showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "The book \"" + borrowedBook.getName() + "\" has returned back to the library.", "-fx-text-fill: green;", 3);
                     returnButton.setDisable(true); // Lock the button so the user can't press this button infinitely.
@@ -337,7 +361,7 @@ public class MyBooksController extends BaseController implements Initializable {
             }
         });
     }
-    
+
     /**
      * Navigates to the History Window when the History button is clicked.
      *
