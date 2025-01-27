@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="940.0" prefHeight="750.0" prefWidth="1305.0" styleClass="AncorPane" stylesheets="@SubscriberWindow.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberWindow.SubscriberWindowController">
+<AnchorPane maxHeight="940.0" prefHeight="750.0" prefWidth="1305.0" styleClass="AncorPane" stylesheets="@SubscriberWindow.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberWindow.SubscriberWindowController">
    <children>
 
       <!-- Other buttons -->

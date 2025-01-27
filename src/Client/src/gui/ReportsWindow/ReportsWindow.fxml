@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="492.0" prefWidth="853.0" stylesheets="@ReportsWindow.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReportsWindow.ReportsWindowController">
+<AnchorPane prefHeight="492.0" prefWidth="853.0" stylesheets="@ReportsWindow.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReportsWindow.ReportsWindowController">
    <children>
    
       <Button id="btnBorrowDates" fx:id="btnBorrowDates" alignment="CENTER" layoutX="218.0" layoutY="320.0" mnemonicParsing="false" onAction="#openBorrowedBooksReport" prefHeight="112.0" prefWidth="466.0" text="View Borrow Dates Report" />

@@ -9,7 +9,7 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="502.0" prefWidth="650.0" stylesheets="@SubscriberRequestsWindowsFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
+<AnchorPane prefHeight="502.0" prefWidth="650.0" stylesheets="@SubscriberRequestsWindowsFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberRequestsWindows.SubscriberRequestsWindowsController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="545.0" layoutY="13.0" mnemonicParsing="false" onAction="#getExitBtn" text="Logout" />
       <TextField fx:id="TXTF1" layoutX="71.0" layoutY="344.0" />

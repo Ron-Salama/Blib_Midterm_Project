@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="533.0" prefWidth="659.0" stylesheets="@HistoryFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HistoryWindow.HistoryController">
+<AnchorPane prefHeight="533.0" prefWidth="659.0" stylesheets="@HistoryFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HistoryWindow.HistoryController">
    <children>
       <Button id="btnExit" fx:id="btnBack" layoutX="26.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" text="← Back" />
       <Button id="btnExit" fx:id="btnExit" layoutX="1188.0" layoutY="22.0" mnemonicParsing="false" onAction="#getExitBtn" text="Logout" textFill="#865959" />

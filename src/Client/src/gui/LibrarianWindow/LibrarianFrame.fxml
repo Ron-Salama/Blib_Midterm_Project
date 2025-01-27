@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="900.0" stylesheets="@LibrarianFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianWindow.LibrarianController">
+<AnchorPane prefHeight="1000.0" prefWidth="900.0" stylesheets="@LibrarianFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianWindow.LibrarianController">
    <children>
       <Button id="btnViewReports" fx:id="btnViewReports" alignment="CENTER" layoutX="514.0" layoutY="677.0" mnemonicParsing="false" onAction="#navigateToViewReports" prefHeight="112.0" prefWidth="255.0" text="Reports" />
       <Button id="btnSubscriberRequests" fx:id="btnSubscriberRequests" alignment="CENTER" layoutX="233.0" layoutY="677.0" mnemonicParsing="false" onAction="#navigateToSubscriberRequests" prefHeight="112.0" prefWidth="255.0" text="Requests" />

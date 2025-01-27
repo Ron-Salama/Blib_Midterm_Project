@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="526.0" prefWidth="542.0" stylesheets="@UpdateInfoFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UpdateInfoWindow.UpdateInfoController">
+<AnchorPane prefHeight="526.0" prefWidth="542.0" stylesheets="@UpdateInfoFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UpdateInfoWindow.UpdateInfoController">
    <children>
       <Label id="lblSubscriber_id" layoutX="182.0" layoutY="83.0" text="ID" />
       <Label id="lblSubscriber_name" layoutX="181.0" layoutY="145.0" text="Full Name" />

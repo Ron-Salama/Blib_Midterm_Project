@@ -21,7 +21,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
-
 /**
  * Controller class for the message log window. Displays a dynamic log of messages received by the server.
  * <p>This class monitors the server log file for updates and displays new log entries in a TextArea.
@@ -29,7 +28,7 @@ import javafx.scene.control.TextArea;
  */
 public class ServerLogFrameController extends BaseController implements Initializable {
 	/** The TextArea where the log entries are displayed. */
-    @FXML
+	@FXML
     private TextArea logTextArea;
 
     /** The Label displaying the server's IP address. */

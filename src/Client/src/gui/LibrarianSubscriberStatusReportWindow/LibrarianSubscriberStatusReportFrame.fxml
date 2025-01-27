@@ -12,7 +12,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="518.0" prefWidth="1076.0" stylesheets="@LibrarianSubscriberStatusReportFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianSubscriberStatusReportWindow.LibrarianSubscriberStatusReportController">
+<AnchorPane prefHeight="518.0" prefWidth="1076.0" stylesheets="@LibrarianSubscriberStatusReportFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianSubscriberStatusReportWindow.LibrarianSubscriberStatusReportController">
     <children>
         <!-- ScatterChart -->
         <ScatterChart fx:id="scatterChart" layoutX="38.0" layoutY="112.0" prefHeight="400.0" prefWidth="600.0">
