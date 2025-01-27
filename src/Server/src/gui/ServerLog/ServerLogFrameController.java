@@ -16,10 +16,13 @@ import java.util.ResourceBundle;
 
 import gui.baseController.BaseController;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import server.EchoServer;
 
 /**
  * Controller class for the message log window. Displays a dynamic log of messages received by the server.
@@ -30,7 +33,9 @@ public class ServerLogFrameController extends BaseController implements Initiali
 	/** The TextArea where the log entries are displayed. */
 	@FXML
     private TextArea logTextArea;
-
+	@FXML
+    private Button exitServer;
+	
     /** The Label displaying the server's IP address. */
     @FXML 
     private Label serverIPDynamicText;
@@ -57,7 +62,12 @@ public class ServerLogFrameController extends BaseController implements Initiali
 			e.printStackTrace();
 		}
     }
-
+    public void exitServer(ActionEvent event)  throws Exception {
+    	//EchoServer.Terminated = true;
+    	System.out.println("Server Terminated");
+    	System.exit(0);
+    }
+    
     /**
      * Starts a file watcher to monitor the log file for updates and dynamically update the TextArea.
      * <p>The file watcher runs in a separate thread to detect modifications to the log file and 

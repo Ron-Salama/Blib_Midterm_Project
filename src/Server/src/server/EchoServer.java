@@ -31,7 +31,7 @@ public class EchoServer extends AbstractServer {
 
     /** The default port on which the server listens. */
     final public static int DEFAULT_PORT = 5555;
-
+    public static Boolean Terminated = false;
     /** A single {@link Connection} used by the TaskScheduler thread for daily tasks. */
     public static Connection taskSchedulerConnection;
 
