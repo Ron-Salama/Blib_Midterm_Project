@@ -176,13 +176,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             	}
             	
             } else if (availables < reservedCopiesNum){
-            	if(copiesNum>reservedCopiesNum) {
-            	    borrowStatus = "ALL_COPIES_RESERVED_CAN_RESERVE";
-            		awaitingTextID.setText("The copies available are reserved but you can reserve it,Would you like to Reserve it?");
-            		btnSubmitToLibrarian.setDisable(true); // Disable the button if no available copies
-            		  btnReserve.setVisible(true);
-                } else {
-            	    borrowStatus = "ALL_COPIES_RESERVED_CANT_RESERVE";
+            	    borrowStatus = "ALL_COPIES_RESERVED";
             	    awaitingTextID.setText("All copies of " + bookName + " are reserved. Please try again later.");
             	    btnSubmitToLibrarian.setDisable(true); // Disable the button if no available copies
             	    btnReserve.setVisible(false);
@@ -207,6 +201,7 @@ public class BorrowBookController extends BaseController implements Initializabl
         }
 
     }
+
 
     /**
      * Submits a borrow request for the selected book.
