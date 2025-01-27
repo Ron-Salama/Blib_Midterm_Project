@@ -43,7 +43,7 @@ public class TaskScheduler {
 				}
             	
             	// Notify in CMD and Log that the daily tasks finished running.
-                EchoServer.outputInOutputStreamAndLog("Server daily tasks done.");
+                EchoServer.outputInOutputStreamAndLog("\nServer daily tasks done.\n\n");
             }
         };
         // Schedule the daily task to run once every day.
