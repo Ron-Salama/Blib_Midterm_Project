@@ -1,60 +1,66 @@
 /* Root layout styling */
 .root {
-    -fx-background-color: linear-gradient(to bottom, #e8f1f2, #cde7f0); /* Light blue gradient */
-    -fx-padding: 30px; /* Spacious padding for comfortable layout */
+    -fx-background-color: #f4f4f9; /* Light background for the whole screen */
+    -fx-padding: 10px; /* Padding around the edges */
 }
 
-/* Dynamic label styling */
+/* Dynamic label styling (updated to match .label in the first CSS file) */
 #dynamicLabel {
-    -fx-font-size: 16px;
+    -fx-font-size: 14px; /* Match label font size */
     -fx-font-weight: bold;
-    -fx-text-fill: #d35400; /* Vibrant orange color for text */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 1, 1); /* Subtle shadow for depth */
+    -fx-text-fill: #333; /* Dark gray color */
+   
 }
 
 /* General button styling */
 .button {
-    -fx-text-fill: white; /* White text for all buttons */
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-border-radius: 10px; /* Rounded corners */
-    -fx-padding: 4px 8px; /* Comfortable padding */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 2); /* Shadow for depth */
+    -fx-background-color: #171717; /* Dark background for buttons */
+    -fx-text-fill: #DE8F5F; /* Yellow text color */
+    -fx-font-size: 24px; /* Adjust font size to match */   
+    -fx-font-weight: bold; /* Bold button text */
+    -fx-cursor: hand; /* Change cursor to hand when hovering */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); /* Drop shadow effect */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Consistent with background */
+    -fx-padding: 5px 15px; /* Adjust padding for better button shape */
 }
 
 /* Done button styling */
 #btnDone {
-    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); /* Green gradient */
-    -fx-border-color: #388e3c; /* Border matches bottom color */
-    -fx-border-width: 2px;
+    -fx-background-color: #171717; /* Dark background for consistency */
+    -fx-text-fill: #DE8F5F; /* Yellow text color */
+    -fx-font-family: 'Rubik Bold';
+    -fx-font-weight: bold;
 }
 
 #btnDone:hover {
-    -fx-background-color: linear-gradient(to bottom, #388e3c, #4caf50); /* Reverse gradient on hover */
-    -fx-border-color: #4caf50;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F; /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717; /* Text color changes to dark on hover */
 }
 
 /* Exit button styling */
 #btnExit {
-    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); /* Red gradient */
-    -fx-border-color: #c0392b;
-    -fx-border-width: 2px;
-    -fx-font-size: 12px;
+    -fx-background-color: #171717; /* Match button style */
+    -fx-text-fill: #DE8F5F;
+    -fx-font-size: 16px; /* Match font size */
+    -fx-font-family: 'Rubik Bold';
+    -fx-font-weight: bold;
 }
 
 #btnExit:hover {
-    -fx-background-color: linear-gradient(to bottom, #c0392b, #e74c3c); /* Reverse gradient on hover */
-    -fx-border-color: #e74c3c;
-    -fx-cursor: hand;
+    -fx-background-color: #DE8F5F; /* Background color changes to yellow on hover */
+    -fx-text-fill: #171717; /* Text color changes to dark on hover */
 }
 
 /* TextField styling */
 #portxt {
-    -fx-border-color: #1976d2; /* Blue border */
-    -fx-border-width: 2px;
+    -fx-background-color: #ffffff; /* White background for text field */
+    -fx-border-color: #cccccc; /* Light gray border */
     -fx-border-radius: 5px; /* Rounded corners */
-    -fx-padding: 5px;
-    -fx-font-size: 14px;
-    -fx-background-color: #ffffff; /* White background */
+    -fx-font-size: 14px; /* Match font size */
+    -fx-text-fill: #333; /* Dark text color */
+    -fx-focus-color: #007bff; /* Blue focus color when clicked */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); /* Outline effect */
 }
+
+
