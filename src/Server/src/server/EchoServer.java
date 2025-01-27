@@ -383,6 +383,7 @@ public class EchoServer extends AbstractServer {
      * @throws SQLException if a database access error occurs
      */
     private void HandleLost(ConnectionToClient client, String body) throws IOException, SQLException {
+    	try{
         String[] messageParts = body.split(",");
         String subscriberName = messageParts[0].trim();
         String subscriberId = messageParts[1].trim();
@@ -408,7 +409,16 @@ public class EchoServer extends AbstractServer {
         }
         }
         else {
-        	client.sendToClient(returnstatus);
+        	client.sendToClient("Return request status: "+returnstatus);
+        }
+        }
+        catch (Exception e) {
+            try {
+                client.sendToClient("An error occurred while processing the book return: " + e.getMessage());
+            } catch (IOException ioException) {
+                System.err.println("Failed to send error message to client: " + ioException.getMessage());
+            }
+            e.printStackTrace();
         }
     }
 
