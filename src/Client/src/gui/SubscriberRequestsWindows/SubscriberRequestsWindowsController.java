@@ -568,39 +568,43 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 	 * request.
 	 */
 	private void autofillRequestData() {
-		String selectedRequest = RequestCB.getValue();
-		clearTextFields();
+	    String selectedRequest = RequestCB.getValue(); // Get the specific request from RequestCB
+	    String selectedName = RequestedByCB.getValue(); // Get the selected subscriber name from RequestedByCB
+	    clearTextFields();
 
-		if (selectedRequest != null && !selectedRequest.isEmpty()) {
-			List<String[]> selectedRequests = new ArrayList<>();
-			String selectedRequestType = requestType;
+	    if (selectedRequest != null && !selectedRequest.isEmpty() && selectedName != null && !selectedName.isEmpty()) {
+	        List<String[]> selectedRequests = new ArrayList<>();
+	        String selectedRequestType = requestType;
 
-			if ("Registers".equals(selectedRequestType)) {
-				selectedRequests = RegisterRequests;
-			} else if ("Borrow For Subscriber".equals(selectedRequestType)) {
-				selectedRequests = borrowRequests;
-				TXTF5.setText(clock.timeNow());
-				datePicker.setValue(clock.convertStringToLocalDate(clock.extendReturnDate(clock.timeNow(), 14)));
-			} else if ("Return For Subscriber".equals(selectedRequestType)) {
-				selectedRequests = ReturnRequests;
-				TXTF5.setText(clock.timeNow());
-				datePicker.setValue(clock.convertStringToLocalDateTime(clock.timeNow()).toLocalDate());
-			}
+	        // Identify the appropriate request list based on type
+	        if ("Registers".equals(selectedRequestType)) {
+	            selectedRequests = RegisterRequests;
+	        } else if ("Borrow For Subscriber".equals(selectedRequestType)) {
+	            selectedRequests = borrowRequests;
+	            TXTF5.setText(clock.timeNow());
+	            datePicker.setValue(clock.convertStringToLocalDate(clock.extendReturnDate(clock.timeNow(), 14)));
+	        } else if ("Return For Subscriber".equals(selectedRequestType)) {
+	            selectedRequests = ReturnRequests;
+	            TXTF5.setText(clock.timeNow());
+	            datePicker.setValue(clock.convertStringToLocalDateTime(clock.timeNow()).toLocalDate());
+	        }
 
-			for (String[] request : selectedRequests) {
-				String formattedRequest = formatRequest(selectedRequestType, request);
-
-				if (formattedRequest.equals(selectedRequest)) {
-					TXTF1.setText(request[2]); // Subscriber Name
-					TXTF2.setText(request[1]); // Subscriber ID
-					TXTF3.setText(request[3]); // Book Name or Email
-					TXTF4.setText(request[4]); // Book ID or Phone Number
-					TXTF5.setText(request[5]); // Borrow/Return Time if applicable
-					break;
-				}
-			}
-		}
+	        // Find the specific request that matches both subscriber name and request
+	        for (String[] request : selectedRequests) {
+	            String formattedRequest = formatRequest(selectedRequestType, request); // Format the request
+	            // Check if both the formatted request and subscriber name match
+	            if (formattedRequest.equals(selectedRequest) && request[2].equals(selectedName)) {
+	                TXTF1.setText(request[2]); // Subscriber Name
+	                TXTF2.setText(request[1]); // Subscriber ID
+	                TXTF3.setText(request[3]); // Book Name or Email
+	                TXTF4.setText(request[4]); // Book ID or Phone Number
+	                TXTF5.setText(request[5]); // Borrow/Return Time if applicable
+	                break;
+	            }
+	        }
+	    }
 	}
+
 
 	/**
 	 * Formats a request into a string suitable for display in the

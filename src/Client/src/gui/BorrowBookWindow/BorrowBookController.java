@@ -175,7 +175,14 @@ public class BorrowBookController extends BaseController implements Initializabl
             		btnSubmitToLibrarian.setDisable(true); // Disable if there are no copies available
             	}
             	
-            } else {
+            } else if (availables <= reservedCopiesNum){
+            	    borrowStatus = "ALL_COPIES_RESERVED";
+            	    awaitingTextID.setText("All copies of " + bookName + " are reserved. Please try again later.");
+            	    btnSubmitToLibrarian.setDisable(true); // Disable the button if no available copies
+            	    btnReserve.setVisible(false);
+
+            }
+            else {
                 borrowStatus = "CAN_BORROW";
                 awaitingTextID.setText("");
                 btnReserve.setVisible(false);
