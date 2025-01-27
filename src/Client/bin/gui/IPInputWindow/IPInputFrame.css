@@ -10,7 +10,6 @@
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 24px;  /* Larger font size for titles */
     -fx-font-weight: bold;  /* Bold text */
-    -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
     -fx-padding: 15px;  /* Padding around the text */
     -fx-alignment: center;  /* Center the text within the label */
     -fx-border-radius: 10px;  /* Softer rounded corners */
@@ -41,7 +40,6 @@
     -fx-background-color: #171717;  /* Dark background for buttons */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 18px;  /* Slightly larger font size for emphasis */
-    -fx-font-family: 'Rubik Bold';  /* Use Rubik Bold font */
     -fx-font-weight: bold;  /* Bold text */
     -fx-border-radius: 20px;  /* Rounded corners */
     -fx-background-radius: 20px; /* Ensure background matches border rounding */

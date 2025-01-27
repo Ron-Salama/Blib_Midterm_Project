@@ -29,7 +29,6 @@
 #btnDone {
     -fx-background-color: #171717; /* Dark background for consistency */
     -fx-text-fill: #DE8F5F; /* Yellow text color */
-    -fx-font-family: 'Rubik Bold';
     -fx-font-weight: bold;
 }
 
@@ -43,7 +42,6 @@
     -fx-background-color: #171717; /* Match button style */
     -fx-text-fill: #DE8F5F;
     -fx-font-size: 16px; /* Match font size */
-    -fx-font-family: 'Rubik Bold';
     -fx-font-weight: bold;
 }
 
