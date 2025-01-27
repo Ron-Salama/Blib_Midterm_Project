@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="716.0" prefWidth="1309.0" stylesheets="@BorrowBookFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BorrowBookWindow.BorrowBookController">
+<AnchorPane prefHeight="716.0" prefWidth="1309.0" stylesheets="@BorrowBookFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BorrowBookWindow.BorrowBookController">
    <children>
 
       <!-- Server IP Label -->
@@ -30,8 +30,8 @@
       <Button id="btnMainMenu" fx:id="btnMainMenu" layoutX="1211.0" layoutY="14.0" mnemonicParsing="false" onAction="#Main_Menu" text="Logout" />
       <Label fx:id="Book_Description" layoutX="28.0" layoutY="192.0" text="" />
       <Button id="btnSubmit" fx:id="btnReserve" layoutX="268.0" layoutY="639.0" mnemonicParsing="false" onAction="#Submit_Reserve_Request" text="Submit Reserve Request" />
-      <Label fx:id="awaitingTextID" layoutX="585.0" layoutY="440.0" text="awaitingText" textFill="#d71e1e" />
-      <Label fx:id="RequestStatus" alignment="CENTER" layoutX="751.0" layoutY="181.0" />
+      <Label id="awaitingText" fx:id="awaitingTextID" layoutX="18.0" layoutY="543.0" text="awaitingText" textFill="#d71e1e" />
+      <Label id="feedbackText" fx:id="RequestStatus" alignment="CENTER" layoutX="745.0" layoutY="146.0" />
       <Line endX="100.0" layoutX="644.0" layoutY="70.0" startX="-100.0" />
    </children>
 </AnchorPane>
