@@ -19,7 +19,6 @@
     -fx-background-color: #171717;  /* Dark background for the button */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 24px;  /* Adjust font size */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
@@ -40,7 +39,6 @@
     -fx-background-color: #171717;  /* Dark background for the button */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 24px;  /* Adjust font size */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
@@ -59,7 +57,6 @@
     -fx-background-color: #171717;  /* Dark background for the button */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 24px;  /* Adjust font size */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
@@ -78,7 +75,6 @@
     -fx-background-color: #171717;  /* Dark background for the button */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 16px;  /* Adjust font size */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
@@ -97,7 +93,6 @@
     -fx-background-color: #171717;  /* Dark background for the button */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 16px;
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */

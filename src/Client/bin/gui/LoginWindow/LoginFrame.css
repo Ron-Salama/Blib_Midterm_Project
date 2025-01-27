@@ -9,7 +9,6 @@
     -fx-font-size: 34px;  /* Large font size for the title */
     -fx-font-weight: bold;  /* Bold font weight for emphasis */
     -fx-text-fill: #333;  /* Dark text color for contrast */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
 }
 
 /* Styling for the "Enter User ID" label */
@@ -17,7 +16,6 @@
     -fx-font-size: 14px;  /* Slightly smaller text */
     -fx-font-weight: bold;
     -fx-text-fill: #333;  /* Dark gray color */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
 }
 
 /* Styling for the TextField */
@@ -63,7 +61,6 @@
     -fx-background-color: #171717;  /* Dark background for the button */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 24px;  /* Adjust font size */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */

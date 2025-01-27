@@ -265,7 +265,6 @@ public class MyBooksController extends BaseController implements Initializable {
                 String buttonStyle = "-fx-background-color: #171717; " +
                                      "-fx-text-fill: #DE8F5F; " +
                                      "-fx-font-size: 16px; " +
-                                     "-fx-font-family: 'Rubik Bold'; " +
                                      "-fx-font-weight: bold; " +
                                      "-fx-cursor: hand; " +
                                      "-fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); " +

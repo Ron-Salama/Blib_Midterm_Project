@@ -1,12 +1,12 @@
 /* Styling for the Gantt chart */
 .chart-title {
-    -fx-font-size: 20px;
+    -fx-font-size: 28px;
     -fx-font-weight: bold;
     -fx-text-fill: #333;
 }
 
 .chart-legend {
-    -fx-font-size: 12px;
+    -fx-font-size: 16px;
 }
 
 .chart-bar {
@@ -14,11 +14,11 @@
 }
 
 .chart-x-axis-label {
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
 }
 
 .chart-y-axis-label {
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
 }
 
 .default-color0.chart-bar {
@@ -33,7 +33,6 @@
     -fx-background-color: #171717;  /* Dark background for the button */
     -fx-text-fill: #DE8F5F;  /* Yellow text color */
     -fx-font-size: 24px;  /* Adjust font size */
-    -fx-font-family: 'Rubik Bold';  /* Rubik Bold font */
     -fx-font-weight: bold;  /* Bold button text */
     -fx-cursor: hand;  /* Change cursor to hand when hovering */
     -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1);  /* Drop shadow effect */
