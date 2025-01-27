@@ -391,7 +391,7 @@ public class EchoServer extends AbstractServer {
         String bookTime = messageParts[4].trim();
         String returnTime = messageParts[5].trim();
         String returnstatus = ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid);
-        if(returnstatus.equals("Book returned successfully")) {
+        if(returnstatus.equalsIgnoreCase("Book returned successfully")) {
         boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection, "Return For Subscriber", subscriberId, bookid);
         boolean reduceamount = ConnectToDb.decreaseNumCopies(dbConnection, bookid);
         if (reduceamount && requestDeleted) {
