@@ -201,15 +201,18 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         // Fetch data
         List<String> frozenData = getAllFrozenData();
 
-        // Get the latest day’s data for the main PieChart
-        String latestRecord = getLatestRecord(frozenData);
-        if (latestRecord != null) {
-            String[] recordFields = latestRecord.split(",");
+        // Get the second-latest day’s data for the main PieChart
+        String secondLatestRecord = getSecondLatestRecord(frozenData);
+        
+        if (secondLatestRecord != null) {
+            String[] recordFields = secondLatestRecord.split(",");
             if (recordFields.length >= 5) {
                 String dateStr = recordFields[0];
                 int borrowedCount = Integer.parseInt(recordFields[3]);
                 int returnedCount = Integer.parseInt(recordFields[4]);
-
+                System.out.println("Second Latest - Borrowed: " + borrowedCount);
+                System.out.println("Second Latest - Returned: " + returnedCount);
+                
                 // Create the main pie chart sections
                 PieChart.Data borrowedData = new PieChart.Data("Borrowed: " + borrowedCount, borrowedCount);
                 PieChart.Data returnedData = new PieChart.Data("Late: " + returnedCount, returnedCount);
@@ -278,15 +281,17 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         avgPieChart.layout();
     }
 
+
     /**
-     * Retrieves the latest frozen subscriber record from a list of frozen data.
+     * Retrieves the Second to latest frozen subscriber record from a list of frozen data.
      *
      * @param frozenData A list of frozen subscriber records as strings, where each string contains the date and other relevant details.
-     * @return The latest frozen record as a string, or null if no record is found.
+     * @return The Second latest frozen record as a string, or null if no record is found.
      */
-    private String getLatestRecord(List<String> frozenData) {
-        String latestRecord = null;
+    private String getSecondLatestRecord(List<String> frozenData) {
+        String secondLatestRecord = null;
         LocalDate latestDate = LocalDate.MIN;
+        LocalDate secondLatestDate = LocalDate.MIN;
 
         for (String record : frozenData) {
             String[] recordFields = record.split(",");
@@ -294,16 +299,38 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
                 String dateStr = recordFields[0];
                 LocalDate recordDate = LocalDate.parse(dateStr);
 
-                // Find the latest record
+                // Find the latest record and the second-latest record
                 if (recordDate.isAfter(latestDate)) {
+                    // Update the second-latest date before updating the latest
+                    secondLatestDate = latestDate;
+                    secondLatestRecord = getRecordForDate(frozenData, secondLatestDate);
+                    
                     latestDate = recordDate;
-                    latestRecord = record;
+                } else if (recordDate.isAfter(secondLatestDate) && !recordDate.isEqual(latestDate)) {
+                    // Only update if the date is earlier than the latest date but after the second latest
+                    secondLatestDate = recordDate;
+                    secondLatestRecord = record;
                 }
             }
         }
-        return latestRecord;
+        return secondLatestRecord;
     }
-    
+
+    // Helper method to get the record for a specific date
+    private String getRecordForDate(List<String> frozenData, LocalDate date) {
+        for (String record : frozenData) {
+            String[] recordFields = record.split(",");
+            if (recordFields.length >= 5) {
+                String dateStr = recordFields[0];
+                LocalDate recordDate = LocalDate.parse(dateStr);
+                if (recordDate.isEqual(date)) {
+                    return record;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Populates the bar chart with borrowed and returned book data filtered by the selected month.
      *

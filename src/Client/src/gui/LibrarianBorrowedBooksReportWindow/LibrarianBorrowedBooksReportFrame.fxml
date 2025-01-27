@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="923.0" prefWidth="1735.0" stylesheets="@LibrarianBorrowedBooksReportFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianBorrowedBooksReportWindow.LibrarianBorrowedBooksReportController">
+<AnchorPane prefHeight="923.0" prefWidth="1735.0" stylesheets="@LibrarianBorrowedBooksReportFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianBorrowedBooksReportWindow.LibrarianBorrowedBooksReportController">
     <children>
         <!-- BarChart -->
         <BarChart fx:id="barChart" layoutX="3.0" layoutY="552.0" prefHeight="371.0" prefWidth="1425.0" stylesheets="@LibrarianBorrowedBooksReportFrame.css">
@@ -45,7 +45,7 @@
          </font></Label>
       <PieChart fx:id="pieChart" layoutX="1364.0" layoutY="108.0" prefHeight="335.0" prefWidth="346.0" />
       <PieChart fx:id="avgPieChart" layoutX="1465.0" layoutY="624.0" prefHeight="239.0" prefWidth="231.0" />
-      <Label layoutX="1454.0" layoutY="83.0" text="Today's Borrowed/Late Status">
+      <Label layoutX="1454.0" layoutY="83.0" text="Currently Borrowed/Late Status">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
@@ -71,15 +71,15 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Label fx:id="MPB" layoutX="1023.0" layoutY="120.0" text="Most Popular Books:">
+      <Label fx:id="MPB" layoutX="898.0" layoutY="120.0" text="Most Popular Books:">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label fx:id="LUB" layoutX="1025.0" layoutY="213.0" text="Longest Unreturned Books:">
+      <Label fx:id="LUB" layoutX="972.0" layoutY="214.0" text="Longest Unreturned Books:">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label fx:id="ERB" layoutX="1025.0" layoutY="266.0" text="Earliest Returned Books:">
+      <Label fx:id="ERB" layoutX="962.0" layoutY="267.0" text="Earliest Returned Books:">
          <font>
             <Font size="16.0" />
          </font></Label>
