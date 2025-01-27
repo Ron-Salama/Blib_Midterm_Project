@@ -59,8 +59,14 @@ Button:hover {
     -fx-font-size: 16px; 
 }
 
+#awaitingText{
+	-fx-font-size: 24px; 
+	-fx-text-fill: red; 
+}
 
-
+#feedbackText{
+	-fx-font-size: 24px; 
+}
 
 
 
