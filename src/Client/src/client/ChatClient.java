@@ -203,7 +203,6 @@ public class ChatClient extends AbstractClient
 	    	handleAllBorrowInformation(response.substring("allBorrowInfo:".length()));
 	    } else if(response.equals("Book already borrowed")){
 	    	alreadyborrowed = true;
-	    	System.out.println(alreadyborrowed);
 	    } else if(response.equals("AlreadyBorrowed")){
 	    	handleAlreadyBorrowedResponse();
 	    } else if(response.equals("NotBorrowed")){
