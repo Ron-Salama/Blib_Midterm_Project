@@ -1649,4 +1649,55 @@ public class ConnectToDb {
         // If an exception occurs or no result is found, return false by default
         return false;
     }
+
+    public static void deleterequests(Connection conn) {
+        // Define the date format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String todayDate = LocalDate.now().format(formatter);
+
+        // SQL queries
+        String fetchISBNQuery = "SELECT ISBN FROM reserved_books";
+        String deleteByDateQuery = "DELETE FROM reserved_books WHERE time_left_to_retrieve = ?";
+        String checkNumCopiesQuery = "SELECT NumCopies FROM books WHERE ISBN = ?";
+        String deleteFromReservedBooksQuery = "DELETE FROM reserved_books WHERE ISBN = ?";
+        String deleteFromBooksQuery = "DELETE FROM books WHERE ISBN = ?";
+
+        try (PreparedStatement fetchISBNStmt = conn.prepareStatement(fetchISBNQuery);
+             PreparedStatement deleteByDateStmt = conn.prepareStatement(deleteByDateQuery);
+             PreparedStatement checkNumCopiesStmt = conn.prepareStatement(checkNumCopiesQuery);
+             PreparedStatement deleteReservedStmt = conn.prepareStatement(deleteFromReservedBooksQuery);
+             PreparedStatement deleteBooksStmt = conn.prepareStatement(deleteFromBooksQuery)) {
+
+            // Case 1: Delete rows from reserved_books where time_left_to_retrieve equals today's date
+            deleteByDateStmt.setString(1, todayDate);
+            int rowsDeletedByDate = deleteByDateStmt.executeUpdate();
+            System.out.println("Deleted " + rowsDeletedByDate + " rows from reserved_books with today's date.");
+
+            // Case 2: Check NumCopies for each ISBN in reserved_books and delete from both tables if NumCopies = 0
+            try (ResultSet rs = fetchISBNStmt.executeQuery()) {
+                while (rs.next()) {
+                    String isbn = rs.getString("ISBN");
+
+                    // Check NumCopies in books table
+                    checkNumCopiesStmt.setString(1, isbn);
+                    try (ResultSet copiesRs = checkNumCopiesStmt.executeQuery()) {
+                        if (copiesRs.next() && copiesRs.getInt("NumCopies") == 0) {
+                            // Delete from reserved_books
+                            deleteReservedStmt.setString(1, isbn);
+                            int reservedDeleted = deleteReservedStmt.executeUpdate();
+
+                            // Delete from books
+                            deleteBooksStmt.setString(1, isbn);
+                            int booksDeleted = deleteBooksStmt.executeUpdate();
+
+                            System.out.println("Deleted " + reservedDeleted + " rows from reserved_books and " 
+                                + booksDeleted + " rows from books for ISBN: " + isbn);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error occurred: " + e.getMessage());
+        }
+    }
 }
