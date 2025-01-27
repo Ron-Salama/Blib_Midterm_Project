@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1305.0" stylesheets="@MyBooksFrame.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyBooksWindow.MyBooksController">
+<AnchorPane prefHeight="750.0" prefWidth="1305.0" stylesheets="@MyBooksFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyBooksWindow.MyBooksController">
    <children>
       <Button id="btnExit" fx:id="btnExit" layoutX="1251.0" layoutY="20.0" mnemonicParsing="false" onAction="#getExitBtn" styleClass="Button" text="Logout" />
       <TableView fx:id="tableView" layoutX="30.0" layoutY="242.0" prefHeight="524.0" prefWidth="1305.0">
@@ -17,8 +17,8 @@
           <TableColumn fx:id="tableName" prefWidth="293.0" text="Book Name" />
             <TableColumn fx:id="tableBorrowDate" minWidth="4.0" prefWidth="150.0" text="Borrowed Date" />
             <TableColumn fx:id="tableReturnDate" minWidth="0.0" prefWidth="126.0" text="Return Date" />
-            <TableColumn fx:id="tableTimeLeft" prefWidth="199.3333740234375" text="Time Left to Return (In Days)" />
-            <TableColumn fx:id="tableActions" prefWidth="415.0" text="Actions" />
+            <TableColumn fx:id="tableTimeLeft" prefWidth="237.0" text="Time Left to Return (In Days)" />
+            <TableColumn fx:id="tableActions" prefWidth="378.0" text="Actions" />
         </columns>
       </TableView>
       <Button id="btnExit" fx:id="btnBackF" layoutX="25.0" layoutY="22.0" mnemonicParsing="false" onAction="#backFromUser" styleClass="Button" text="← Back" />
