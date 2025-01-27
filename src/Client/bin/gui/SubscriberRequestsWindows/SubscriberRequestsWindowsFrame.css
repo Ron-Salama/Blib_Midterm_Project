@@ -92,7 +92,9 @@
     -fx-font-size: 16px;
 }
 
-
+#feedbackText{
+	 -fx-font-size: 24px;
+}
 
 #btnAccept:hover {
     -fx-background-color: #27ae60; /* Darker green on hover */
@@ -100,7 +102,9 @@
 }
 
 
-
+#barcode{
+	 -fx-font-size: 16px;
+}
 
 
 /* Input Fields and Labels Spacing */
