@@ -49,13 +49,13 @@
       <Label layoutX="728.0" layoutY="120.0" text="Most Popular Books:" />
       <Label layoutX="728.0" layoutY="214.0" text="Longest Book To Be Returned:" />
       <Label layoutX="726.0" layoutY="267.0" text="Closest Book To Be Returned:" />
-      <Label fx:id="MPB" layoutX="882.0" layoutY="120.0" text="Most Popular Books:" />
-      <Label fx:id="LUB" layoutX="903.0" layoutY="214.0" text="Longest Unreturned Books:" />
-      <Label fx:id="ERB" layoutX="903.0" layoutY="267.0" text="Earliest Returned Books:" />
+      <Label fx:id="MPB" layoutX="956.0" layoutY="120.0" text="Most Popular Books:" />
+      <Label fx:id="LUB" layoutX="977.0" layoutY="214.0" text="Longest Unreturned Books:" />
+      <Label fx:id="ERB" layoutX="977.0" layoutY="267.0" text="Earliest Returned Books:" />
       <Label layoutX="724.0" layoutY="323.0" text="Longest Unreturned Books:" />
       <Label layoutX="728.0" layoutY="380.0" text="Shortest Time Of Unreturned Books:" />
-      <Label fx:id="LUB1" layoutX="878.0" layoutY="323.0" text="Longest Unreturned Books:" />
-      <Label fx:id="ERB1" layoutX="935.0" layoutY="380.0" text="Earliest Returned Books:" />
+      <Label fx:id="LUB1" layoutX="952.0" layoutY="323.0" text="Longest Unreturned Books:" />
+      <Label fx:id="ERB1" layoutX="1009.0" layoutY="380.0" text="Earliest Returned Books:" />
 
       
     </children>
