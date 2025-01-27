@@ -10,8 +10,7 @@
 #greetingLabel {
     -fx-font-size: 34px;
     -fx-font-weight: bold;
-    -fx-text-fill: black; /* Set the text color to black */
-   
+    -fx-text-fill: black; /* Set the text color to black */  
     -fx-text-alignment: center;
 }
 
