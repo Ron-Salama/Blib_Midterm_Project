@@ -131,14 +131,12 @@ public class ChatClient extends AbstractClient
   	@Override
   	public void handleMessageFromServer(Object msg) 
   	{
-	    System.out.println("--> handleMessageFromServer");
 	    if (!(msg instanceof String)) {
-	        System.out.println("Invalid message type received.");
+	        System.err.println("Invalid message type received.");
 	        return;
 	    }
 
 	    String response = (String) msg;
-	    System.out.println(msg);
 	    // Dispatch handling based on message prefix
 	    if (response.startsWith("Client connected to IP:")) {
 	    	isIPValid = true;
@@ -298,15 +296,13 @@ public class ChatClient extends AbstractClient
   	private void handleBookReservedResponse(String data) {
 	    switch (data.trim()) {
 	        case "Yes":
-	            System.out.println("The book is reserved.");
 	            ChatClient.isBookReservedFlag = true;
 	            break;
 	        case "No":
-	            System.out.println("The book is not reserved.");
 	            ChatClient.isBookReservedFlag = false;
 	            break;
 	        default:
-	            System.out.println("Error checking book reservation status: " + data);
+	            System.err.println("Error checking book reservation status: " + data);
 	            break;
 	    }
 	}
@@ -319,12 +315,11 @@ public class ChatClient extends AbstractClient
   	private void handleAllBorrowInformation(String data) {
 	    // Check if no books were found
 	    if (data.equals("NoBooksFound")) {
-	        System.out.println("No borrowed books found.");
 	        ChatClient.BorrowedBookInfoForReports.clear();
 	    } 
 	    // Check if there's an error in fetching data
 	    else if (data.startsWith("Error")) {
-	        System.out.println("Error fetching borrowed books: " + data);
+	        System.err.println("Error fetching borrowed books: " + data);
 	    } 
 	    else {
 	        // Remove the "allBorrowInfo:" prefix
@@ -371,7 +366,7 @@ public class ChatClient extends AbstractClient
   	 * Handles a failure in fetching return requests by logging a message to the console.
   	 */
   	private void handleReturnRequestfailure() {
-  		System.out.print("Fetch return request failed");
+  		System.err.print("Fetch return request failed");
   	}
 
   	/**
@@ -393,7 +388,7 @@ public class ChatClient extends AbstractClient
 		    if (RegisterDetails.length == 8) {
 		    	br.add(new String[][]{RegisterDetails}); // Add the book details array to the br list
 		    } else {
-		    	System.out.println("Invalid book data received: " + String.join(",", RegisterDetails));
+		    	System.err.println("Invalid book data received: " + String.join(",", RegisterDetails));
 		    }
 		}
 	}
@@ -405,10 +400,9 @@ public class ChatClient extends AbstractClient
 	 */
 	private void handleBorrowedBooksResponse(String data) {
 	    if (data.equals("NoBooksFound")) {
-	        System.out.println("No borrowed books found.");
 	        ChatClient.borrowedBookList.clear();
 	    } else if (data.startsWith("Error")) {
-	        System.out.println("Error fetching borrowed books: " + data);
+	        System.err.println("Error fetching borrowed books: " + data);
 	    } else {
 	        String[] bookStrings = data.split(";"); // Split rows
 	        ChatClient.borrowedBookList.clear();
@@ -434,10 +428,9 @@ public class ChatClient extends AbstractClient
 	 */
 	private void handleReservedBooksResponse(String data) {
 	    if (data.equals("NoBooksFound")) {
-	        System.out.println("No Reserved books found.");
 	        ChatClient.reservedBookList.clear();
 	    } else if (data.startsWith("Error")) {
-	        System.out.println("Error fetching Reserved books: " + data);
+	        System.err.println("Error fetching Reserved books: " + data);
 	    } else {
 	        String[] bookStrings = data.split(";"); // Split rows
 	        ChatClient.reservedBookList.clear();
@@ -463,10 +456,9 @@ public class ChatClient extends AbstractClient
 	private void handleBookInfo(String data) {
 	    try {
 	        if (data.equals("NoBooksFound")) {
-	            System.out.println("No books found in the database.");
 	            BorrowedBookInfo = null;
 	        } else if (data.startsWith("Error")) {
-	            System.out.println("Error from server: " + data);
+	            System.err.println("Error from server: " + data);
 	            BorrowedBookInfo = null;
 	        } else {
 	            BorrowedBookInfo = data.split(",");
@@ -543,7 +535,7 @@ public class ChatClient extends AbstractClient
 	        if (RegisterDetails.length == 8) {
 	            br.add(new String[][]{RegisterDetails}); // Add the book details array to the br list
 	        } else {
-	            System.out.println("Invalid book data received: " + String.join(",", RegisterDetails));
+	            System.err.println("Invalid book data received: " + String.join(",", RegisterDetails));
 	        }
 	    }
 	}
@@ -568,7 +560,7 @@ public class ChatClient extends AbstractClient
 	        if (bookDetails.length == 8) {
 	            br.add(new String[][]{bookDetails}); // Add the book details array to the br list
 	        } else {
-	            System.out.println("Invalid book data received: " + String.join(",", bookDetails));
+	            System.err.println("Invalid book data received: " + String.join(",", bookDetails));
 	        }
 	    }
 	}
@@ -587,7 +579,7 @@ public class ChatClient extends AbstractClient
 	        	myHistoryInfo.add(activity);
 	        }
 	    } catch (Exception e) {
-	        System.out.println("Error parsing My History data: " + e.getMessage());
+	        System.err.println("Error parsing My History data: " + e.getMessage());
 	    }
 	}
 
@@ -598,9 +590,8 @@ public class ChatClient extends AbstractClient
 	 */
 	private void handleBookData(String data) {
 	    if (data.equals("NoBooksFound")) {
-	        System.out.println("No books found in the database.");
 	    } else if (data.startsWith("Error")) {
-	        System.out.println("Error from server: " + data);
+	        System.err.println("Error from server: " + data);
 	    } else {
 	        parseBookData(data);
 	    }
@@ -628,7 +619,7 @@ public class ChatClient extends AbstractClient
 	            bookList.add(new Book(isbn, name, description, subject, copies, location, availableCopies, reservedCopies));
 	        }
 	    } catch (Exception e) {
-	        System.out.println("Error parsing book data: " + e.getMessage());
+	        System.err.println("Error parsing book data: " + e.getMessage());
 	    }
 	}
   
@@ -697,7 +688,7 @@ public class ChatClient extends AbstractClient
           s1.setSubscriber_email(email);
           s1.setStatus(status);
       	} catch (Exception e) {
-      		System.out.println("Error parsing subscriber data: " + e.getMessage());
+      		System.err.println("Error parsing subscriber data: " + e.getMessage());
       		s1.setSubscriber_id(-1); // Mark as not found
       	}
 	}
@@ -717,7 +708,7 @@ public class ChatClient extends AbstractClient
 	      l1.setLibrarian_id(Integer.parseInt(librarianId));
 	      l1.setLibrarian_name(librarianName);
 	  } catch (Exception e) {
-	      System.out.println("Error parsing librarian data: " + e.getMessage());
+	      System.err.println("Error parsing librarian data: " + e.getMessage());
 	      l1.setLibrarian_id(-1); // Mark as not found
 	      }
 	  }
@@ -785,7 +776,7 @@ public class ChatClient extends AbstractClient
 	            // Add the formatted string to the list
 	            dataList.add(formattedRecordData);
 	        } catch (Exception e) {
-	            System.out.println("Error processing record data: " + recordData);  // Debugging line
+	            System.err.println("Error processing record data: " + recordData);  // Debugging line
 	            e.printStackTrace();  // Print the stack trace for debugging
 	        }
 	    }
@@ -820,7 +811,6 @@ public class ChatClient extends AbstractClient
 	        String[] subscriberInformation = subscriberData.split(","); // Split the information of the subscriber
 	        
 	        if (subscriberInformation.length < 6) {  // Ensure that there's enough data
-	            //System.out.println("Invalid data: " + subscriberData);  // Debugging line
 	            continue;  // Skip invalid data
 	        }
 	        

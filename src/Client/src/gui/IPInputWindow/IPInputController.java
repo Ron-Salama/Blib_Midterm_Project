@@ -68,7 +68,7 @@ public class IPInputController extends BaseController {
     
         if (!ChatClient.isIPValid) {
         	showColoredLabelMessageOnGUI(awaitingLoginText, "Invalid IP address.", "-fx-text-fill: red;");
-            System.out.println("ALERT: Invalid IP detected!");
+            System.err.println("ALERT: Invalid IP detected!");
         } else {
         	String labelMessage = "Connected successfully to IP: " + ip;
         	showColoredLabelMessageOnGUI(awaitingLoginText, labelMessage, "-fx-text-fill: green;");
@@ -109,7 +109,6 @@ public class IPInputController extends BaseController {
      * @throws Exception if an error occurs while exiting.
      */
     public void getExitBtn(ActionEvent event) throws Exception {
-    	System.out.println("Exit BLib library system");
     	if (ChatClient.isIPValid != true) { // Meaning there`s no connection and the client exists by itself.
     		System.exit(1);
     	}

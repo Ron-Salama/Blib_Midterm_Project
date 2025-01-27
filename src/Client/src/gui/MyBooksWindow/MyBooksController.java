@@ -184,7 +184,6 @@ public class MyBooksController extends BaseController implements Initializable {
                 tableView.getItems().clear();
                 tableView.getItems().addAll(ChatClient.borrowedBookList);
             } else {
-                System.out.println("No borrowed books to display.");
                 tableView.getItems().clear();
             }
         }else {
@@ -193,7 +192,6 @@ public class MyBooksController extends BaseController implements Initializable {
                     tableView.getItems().clear();
                     tableView.getItems().addAll(ChatClient.borrowedBookList);
                 } else {
-                    System.out.println("No borrowed books to display.");
                     tableView.getItems().clear();
                 }
             });
@@ -342,7 +340,6 @@ public class MyBooksController extends BaseController implements Initializable {
                 // Return Button Action
                 returnButton.setOnAction(event -> {
                     BorrowedBook borrowedBook = getTableView().getItems().get(getIndex());
-                    System.out.println("Return book: " + borrowedBook.getName());
                     ClientUI.chat.accept("Return request: Subscriber ID is:" + currentSub.getSubscriber_id() + " " + currentSub.getSubscriber_name() + " Borrow info: " + borrowedBook);
                     waitForServerResponse();
                     showColoredLabelMessageOnGUIAndMakeItDisappearAfterDelay(extensionDynamicLabel, "The book \"" + borrowedBook.getName() + "\" has returned back to the library.", "-fx-text-fill: green;", 3);

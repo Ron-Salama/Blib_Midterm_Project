@@ -72,7 +72,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
         List<String> reservedBooksData = ConnectToDb.fetchAllReservedBooks(EchoServer.taskSchedulerConnection);
 
         if (reservedBooksData == null || reservedBooksData.isEmpty()) {
-            System.out.println("No reserved books found.");
             return;
         }
 
@@ -132,12 +131,9 @@ public class ReserveRequestDailyTasksController extends BaseController {
                 for (Integer reserveId : reserveIdsToDelete) {
                     deleteReservation(conn, reserveId);
                 }
-                System.out.println("Deleted " + reserveIdsToDelete.size() + " old reservation(s).");
             } catch (SQLException e) {
                 System.err.println("Error deleting reservations: " + e.getMessage());
             }
-        } else {
-            System.out.println("No reservations need deletion.");
         }
     }
 
@@ -164,7 +160,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
             }
 
             if (isbn == null) {
-                System.err.println("Reservation with ID " + reserveId + " not found. Skipping deletion.");
                 return;
             }
 
@@ -173,7 +168,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
             try (PreparedStatement deletePstmt = conn.prepareStatement(deleteQuery)) {
                 deletePstmt.setInt(1, reserveId);
                 deletePstmt.executeUpdate();
-                System.out.println("Reservation with ID " + reserveId + " deleted.");
             }
 
             // Step 3: Decrement the reservedCopiesNum for the corresponding ISBN
@@ -181,7 +175,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
             try (PreparedStatement updatePstmt = conn.prepareStatement(updateCopiesQuery)) {
                 updatePstmt.setString(1, isbn);
                 updatePstmt.executeUpdate();
-                System.out.println("Decremented reservedCopiesNum for book with ISBN " + isbn);
             }
 
         } catch (SQLException e) {
@@ -206,7 +199,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
         List<String> reservationRequests = ConnectToDb.fetchAllReservedBooksWhereBookIsAvailable(EchoServer.taskSchedulerConnection);
 
         if (reservationRequests == null || reservationRequests.isEmpty()) {
-            System.out.println("No reservations require retrieval notification.");
             return;
         }
 
@@ -230,7 +222,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
             String subscriberData = ConnectToDb.fetchSubscriberData(EchoServer.taskSchedulerConnection, String.valueOf(subscriberId));
             String subscriberName = parseSubscriberName(subscriberData);
             if ("No subscriber found".equals(subscriberName)) {
-                System.out.println("No subscriber found for ID: " + subscriberId);
                 continue;
             }
 

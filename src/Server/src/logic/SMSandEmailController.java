@@ -139,7 +139,7 @@ public class SMSandEmailController extends BaseController {
         message.append("We are looking forward to your visit.\nSee you soon!");
 
         // Placeholder for actual email logic
-        System.out.println(message.toString());
+        EchoServer.outputInOutputStreamAndLog(message.toString());
     }
 
     /**

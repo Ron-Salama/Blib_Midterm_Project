@@ -33,7 +33,7 @@ public class ServerUI extends Application {
 	        }
 	        catch(Throwable t)
 	        {
-	        	System.out.println("ERROR - Could not connect!");
+	        	System.err.println("ERROR - Could not connect!");
 	        }
 	    	
 	        EchoServer sv = new EchoServer(port);
@@ -44,7 +44,7 @@ public class ServerUI extends Application {
 	        } 
 	        catch (Exception ex) 
 	        {
-	          System.out.println("ERROR - Could not listen for clients!");
+	          System.err.println("ERROR - Could not listen for clients!");
 	        }
 	}
 }

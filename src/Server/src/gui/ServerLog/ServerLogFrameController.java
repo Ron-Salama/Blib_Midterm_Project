@@ -86,7 +86,7 @@ public class ServerLogFrameController extends BaseController implements Initiali
                     key.reset();
                 }
             } catch (IOException | InterruptedException e) {
-                System.out.println("Error watching log file: " + e.getMessage());
+                System.err.println("Error watching log file: " + e.getMessage());
             }
         });
 
@@ -118,7 +118,7 @@ public class ServerLogFrameController extends BaseController implements Initiali
             // Update the file pointer to the current position
             filePointer = reader.getFilePointer();
         } catch (IOException e) {
-            System.out.println("Error reading the log file: " + e.getMessage());
+            System.err.println("Error reading the log file: " + e.getMessage());
         }
     }
 }

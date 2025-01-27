@@ -494,7 +494,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 					if (request.length == 8) {
 						ReturnRequests.add(request);
 					} else {
-						System.out.println(
+						System.err.println(
 								"Invalid Return request data at index " + i + ": " + String.join(",", request));
 					}
 				}
@@ -512,8 +512,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 				}
 			}
 			RequestedByCB.setItems(requestedByList);
-		} else {
-			System.out.println("No borrow requests available.");
 		}
 	}
 
@@ -647,7 +645,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 					if (request.length == 8) {
 						borrowRequests.add(request);
 					} else {
-						System.out.println(
+						System.err.println(
 								"Invalid borrow request data at index " + i + ": " + String.join(",", request));
 					}
 				}
@@ -665,8 +663,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 				}
 			}
 			RequestedByCB.setItems(requestedByList);
-		} else {
-			System.out.println("No borrow requests available.");
 		}
 	}
 
@@ -685,7 +681,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 					if (request.length == 8) {
 						RegisterRequests.add(request);
 					} else {
-						System.out.println(
+						System.err.println(
 								"Invalid register request data at index " + i + ": " + String.join(",", request));
 					}
 				}
@@ -697,8 +693,6 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 				requestedByList.add(registerRequest[2]); // name at index 2
 			}
 			RequestedByCB.setItems(requestedByList);
-		} else {
-			System.out.println("No register requests available.");
 		}
 	}
 

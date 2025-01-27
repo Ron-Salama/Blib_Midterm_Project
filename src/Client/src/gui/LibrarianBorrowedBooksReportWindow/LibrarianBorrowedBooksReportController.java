@@ -564,7 +564,7 @@ public class LibrarianBorrowedBooksReportController extends BaseController {
         if (ChatClient.allFrozenDataForReport != null) {
             frozenData.addAll(ChatClient.allFrozenDataForReport);
         } else {
-            System.out.println("Error: No frozen subscriber data received.");
+            System.err.println("Error: No frozen subscriber data received.");
         }
 
         return frozenData;

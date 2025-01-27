@@ -237,7 +237,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         if (ChatClient.allFrozenDataForReport != null) {
             frozenData.addAll(ChatClient.allFrozenDataForReport);
         } else {
-            System.out.println("Error: No frozen subscriber data received.");
+            System.err.println("Error: No frozen subscriber data received.");
         }
 
         return frozenData;
@@ -284,7 +284,6 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         if (!frozenAccountsSeries.getData().isEmpty()) {
             scatterChart.getData().add(frozenAccountsSeries);
         } else {
-            System.out.println("No data available for the selected month.");
         }
 
         // Update the PieChart data for the selected month
@@ -310,7 +309,7 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         if (ChatClient.allSubscriberDataForReport != null) {
             subscribers.addAll(ChatClient.allSubscriberDataForReport);
         } else {
-            System.out.println("Error: No subscriber data received.");
+            System.err.println("Error: No subscriber data received.");
         }
 
         return subscribers;

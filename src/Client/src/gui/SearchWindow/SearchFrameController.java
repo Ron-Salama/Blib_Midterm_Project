@@ -204,7 +204,7 @@ public class SearchFrameController extends BaseController implements Initializab
             }
             tableView.getItems().addAll(ChatClient.bookList);
         } else {
-            System.out.println("No books to display.");
+            System.err.println("No books to display.");
         }
     }
 
@@ -293,7 +293,7 @@ public class SearchFrameController extends BaseController implements Initializab
                 });
             }
         } else {
-            System.out.println("No books to display.");
+            System.err.println("No books to display.");
         }
     }
 

@@ -83,7 +83,6 @@ public class ServerPortFrameController extends BaseController {
 
         if (p.trim().isEmpty()) {
             showColoredLabelMessageOnGUI(dynamicLabel, "You must enter a port number.", "-fx-text-fill: red;");
-            System.out.println("You must enter a port number");
         } else {
             // Hide the current window
             ((Node) event.getSource()).getScene().getWindow().hide();
@@ -122,7 +121,6 @@ public class ServerPortFrameController extends BaseController {
      * @throws Exception If any error occurs during the exit process.
      */
     public void getExitBtn(ActionEvent event) throws Exception {
-        System.out.println("BLib Server Exit");
         System.exit(0);
     }
 
