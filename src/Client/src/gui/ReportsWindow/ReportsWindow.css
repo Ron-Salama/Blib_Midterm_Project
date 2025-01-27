@@ -1,7 +1,7 @@
 /* General styling for the root layout */
 .root {
     -fx-background-color: #f4f4f9;  /* Light background for the whole screen */
-    -fx-padding: 30px; /* Padding around the edges */
+    -fx-padding: 10px; /* Padding around the edges */
 }
 
 
