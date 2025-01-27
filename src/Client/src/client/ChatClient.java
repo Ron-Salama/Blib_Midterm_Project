@@ -229,25 +229,71 @@ public class ChatClient extends AbstractClient
 	}
   
   	
+  	
+  	/**
+  	 * Handles the response when a subscriber has already submitted a borrow request for the book.
+  	 * <p>
+  	 * Updates the {@code BorrowBookController.result} field to {@code "AlreadyRequested"}.
+  	 * </p>
+  	 */
   	private void handleAlreadyRequestedResponse() {
     	BorrowBookController.result = "AlreadyRequested";
 }
   	
+  	
+  	/**
+  	 * Handles the response when a subscriber has not submitted a borrow request for the book.
+  	 * <p>
+  	 * Updates the {@code BorrowBookController.result} field to {@code "NotRequested"}.
+  	 * </p>
+  	 */
   	private void handleNotRequestedResponse() {
     	BorrowBookController.result = "NotRequested";
 }
-
+  	
+  	
+  	/**
+  	 * Handles the response when a subscriber has already borrowed the book.
+  	 * <p>
+  	 * Updates the {@code BorrowBookController.result} field to {@code "AlreadyBorrowed"}.
+  	 * </p>
+  	 */
 	private void handleAlreadyBorrowedResponse() {
 		BorrowBookController.result = "AlreadyBorrowed";
 }
+	
+	
+	
+	/**
+	 * Handles the response when a subscriber has not borrowed the book.
+	 * <p>
+	 * Updates the {@code BorrowBookController.result} field to {@code "NotBorrowed"}.
+	 * </p>
+	 */
 	private void handleNotBorrowedResponse() {
     	BorrowBookController.result = "NotBorrowed";
 }
 	
+	
+	
+	/**
+	 * Handles the response when a subscriber has not reserved the book.
+	 * <p>
+	 * Updates the {@code BorrowBookController.result} field to {@code "NotReserved"}.
+	 * </p>
+	 */
     private void handleNotReservedResponse() {
     	BorrowBookController.result = "NotReserved";
 }
-
+    
+    
+    
+    /**
+     * Handles the response when a subscriber has already reserved the book.
+     * <p>
+     * Updates the {@code BorrowBookController.result} field to {@code "AlreadyReserved"}.
+     * </p>
+     */
 	private void handleAlreadyReservedResponse() {
 		BorrowBookController.result = "AlreadyReserved";
 }

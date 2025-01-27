@@ -202,12 +202,9 @@ public class EchoServer extends AbstractServer {
                 case "Reserve":
                     handleReserveRequestCase(client, body);
                     break;
-
-                //*************************************************** 
                 case "ReserveSuccess":
                     handleReserveSuccessCase(client, body);
                     break;
-                //***************************************************
                 case "ExistingReservationCheck":
                     handleExistingReservationCheck(client, body);
                     break;
@@ -217,7 +214,6 @@ public class EchoServer extends AbstractServer {
                 case "AlreadyRequestedCheck":
                     handleAlreadyRequestedCheck(client, body);
                     break;
-                //***************************************************
                 case "FetchBorrowRequest":
                     handleFetchBorrowRequestCase(client, body);
                     break;
@@ -250,12 +246,10 @@ public class EchoServer extends AbstractServer {
                     SubmitBorrowRequest(client, body);
                     break;
 
-                //***********************************************
                 case "SubmitRetrieve":
                     SubmitRetrieve(client, body);
                     break;
-                //***********************************************
-
+                    
                 case "Return request":
                     handlereturnrequest(client, body);
                     break;
@@ -338,7 +332,16 @@ public class EchoServer extends AbstractServer {
     
     
     
-    
+    /**
+     * Handles a request to check if a subscriber has already submitted a borrow request for a specific book.
+     * <p>
+     * Expected message format: <br>
+     * {@code CheckRequest:subscriberId,bookId}
+     * </p>
+     *
+     * @param client the {@link ConnectionToClient} sending the request
+     * @param body   the request details as a comma-separated string containing subscriber ID and book ID
+     */
     private void handleAlreadyRequestedCheck(ConnectionToClient client, String body) {
     	// Parse the body to extract subscriber ID and book ID
    	 	String[] parts = body.split(",");
@@ -376,6 +379,21 @@ public class EchoServer extends AbstractServer {
 		
 	}
 
+    
+    
+    
+    
+    
+    /**
+     * Handles a request to check if a subscriber has already borrowed a specific book.
+     * <p>
+     * Expected message format: <br>
+     * {@code CheckBorrowed:subscriberId,bookId}
+     * </p>
+     *
+     * @param client the {@link ConnectionToClient} sending the request
+     * @param body   the request details as a comma-separated string containing subscriber ID and book ID
+     */
 	private void handleAlreadyBorrowedCheck(ConnectionToClient client, String body) {
     	// Parse the body to extract subscriber ID and book ID
     	 String[] parts = body.split(",");
@@ -408,6 +426,19 @@ public class EchoServer extends AbstractServer {
          
 	}
 
+	
+	
+	
+	/**
+	 * Handles a request to check if a subscriber has already reserved a specific book.
+	 * <p>
+	 * Expected message format: <br>
+	 * {@code CheckReservation:subscriberId,bookId}
+	 * </p>
+	 *
+	 * @param client the {@link ConnectionToClient} sending the request
+	 * @param body   the request details as a comma-separated string containing subscriber ID and book ID
+	 */
     private void handleExistingReservationCheck(ConnectionToClient client, String body) {
         // Parse the body to extract subscriber ID and book ID
         String[] parts = body.split(",");
