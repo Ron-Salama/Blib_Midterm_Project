@@ -425,6 +425,58 @@ public class ConnectToDb {
         return borrowedBooks;
     }
 
+    
+    
+    
+    
+    
+    
+    /**
+     * Fetches all borrow requests for a given subscriber ID.
+     *
+     * @param conn         A valid database connection.
+     * @param subscriberId The subscriber's ID.
+     * @return A list of borrow request data as formatted strings.
+     */
+    public static List<String> fetchBorrowRequestsBySubscriberId(Connection conn, String subscriberId) {
+        String query = "SELECT * FROM requests WHERE requestType = 'Borrow For Subscriber' AND requestedByID = ?";
+        List<String> borrowRequests = new ArrayList<>();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, subscriberId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String requestData = rs.getString("requestType") + ","
+                                       + rs.getString("requestedByID") + ","
+                                       + rs.getString("requestedByName") + ","
+                                       + rs.getString("bookName") + ","
+                                       + rs.getString("bookId") + ","
+                                       + rs.getString("borrowTime") + ","
+                                       + rs.getString("returnTime") + ","
+                                       + rs.getString("extendTime");
+                    borrowRequests.add(requestData);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching borrow requests: " + e.getMessage());
+        }
+
+        return borrowRequests;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Fetches all reserved books for a given subscriber ID.
      *
