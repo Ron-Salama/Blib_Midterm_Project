@@ -49,8 +49,9 @@ public class ReserveRequestDailyTasksController extends BaseController {
      *     <li>{@link #sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary()}: notify subscribers 
      *         about books that are available for pickup.</li>
      * </ol>
+     * @throws SQLException 
      */
-    public void reserveRequestsDailyActivity() {
+    public void reserveRequestsDailyActivity() throws SQLException {
         deleteOldRequests();
         sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary();
     }
@@ -66,8 +67,9 @@ public class ReserveRequestDailyTasksController extends BaseController {
      *       {@code reservedCopiesNum} is decremented for that book's ISBN.</li>
      * </ul>
      * </p>
+     * @throws SQLException 
      */
-    public void deleteOldRequests() {
+    public void deleteOldRequests() throws SQLException {
         // Fetch data of all reserved books
         List<String> reservedBooksData = ConnectToDb.fetchAllReservedBooks(EchoServer.taskSchedulerConnection);
 
@@ -117,10 +119,6 @@ public class ReserveRequestDailyTasksController extends BaseController {
 
                 if (daysDifference <= 0) {
                     reserveIdsToDelete.add(reserveId);
-                    
-                    
-                    
-                    
                 }
             }
         }
@@ -193,9 +191,10 @@ public class ReserveRequestDailyTasksController extends BaseController {
      *   <li>Logs/prints the message for each subscriber.</li>
      * </ul>
      * </p>
+     * @throws SQLException 
      */
-    public void sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary() {
-        // 1. Fetch all "available" reservations
+    public void sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary() throws SQLException {
+    	// 1. Fetch all "available" reservations
         List<String> reservationRequests = ConnectToDb.fetchAllReservedBooksWhereBookIsAvailable(EchoServer.taskSchedulerConnection);
 
         if (reservationRequests == null || reservationRequests.isEmpty()) {

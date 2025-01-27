@@ -1199,6 +1199,9 @@ public class ConnectToDb {
             pstmt.setString(1, status);
             pstmt.setInt(2, subscriberID);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error freezing subscriber: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -1218,6 +1221,9 @@ public class ConnectToDb {
             pstmt.setString(1, status);
             pstmt.setInt(2, subscriberID);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error unfreezing subscriber: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -1228,7 +1234,7 @@ public class ConnectToDb {
      * @param borrowedBookID The book ID used in the request.
      * @return A comma-separated string with the request details.
      */
-    public static String fetchBorrowRequestGivenBorrowedBookID(Connection conn, String borrowedBookID) {
+    public static String fetchBorrowRequestGivenBorrowedBookID(Connection conn, String borrowedBookID) throws SQLException{
         String query = "SELECT * FROM requests WHERE bookId = ? AND requestType = 'Borrow For Subscriber'";
         StringBuilder bookInfo = new StringBuilder();
 
@@ -1259,24 +1265,25 @@ public class ConnectToDb {
      * @param conn A valid database connection.
      * @return A list of reserved book data as formatted strings.
      */
-    public static List<String> fetchAllReservedBooksWhereBookIsAvailable(Connection conn) {
+    public static List<String> fetchAllReservedBooksWhereBookIsAvailable(Connection conn) throws SQLException {
         String query = "SELECT * FROM blib.reserved_books WHERE time_left_to_retrieve != 'Book is not available yet'";
         List<String> reservedBooks = new ArrayList<>();
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 String bookData = rs.getInt("reserve_id") + ","
-                                + rs.getInt("subscriber_id") + ","
-                                + rs.getString("name") + ","
-                                + rs.getString("reserve_time") + ","
-                                + rs.getString("time_left_to_retrieve") + ","
-                                + rs.getString("ISBN");
+                                  + rs.getInt("subscriber_id") + ","
+                                  + rs.getString("name") + ","
+                                  + rs.getString("reserve_time") + ","
+                                  + rs.getString("time_left_to_retrieve") + ","
+                                  + rs.getString("ISBN");
                 reservedBooks.add(bookData);
             }
         } catch (SQLException e) {
-            System.err.println("Error fetching reserved books: " + e.getMessage());
+            e.printStackTrace();
         }
+
         return reservedBooks;
     }
 
@@ -1328,7 +1335,7 @@ public class ConnectToDb {
      * @param conn A valid database connection.
      * @return A list of reserved book data as formatted strings.
      */
-    public static List<String> fetchAllReservedBooks(Connection conn) {
+    public static List<String> fetchAllReservedBooks(Connection conn) throws SQLException {
         String query = "SELECT * FROM blib.reserved_books";
         List<String> reservedBooks = new ArrayList<>();
 
@@ -1619,7 +1626,7 @@ public class ConnectToDb {
      * @return {@code true} if the book is already borrowed by the subscriber, {@code false} otherwise
      * @throws SQLException if a database access error occurs
 	 */
-    public static boolean bookalreadyborrowed(Connection dbConnection, String subscriberId, String bookId) {
+    public static boolean bookalreadyborrowed(Connection dbConnection, String subscriberId, String bookId) throws SQLException {
         String query = "SELECT COUNT(*) FROM borrowed_books WHERE subscriber_id = ? AND ISBN = ?";
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
