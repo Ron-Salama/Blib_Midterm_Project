@@ -36,8 +36,9 @@ public class ConnectToDb {
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            System.out.println("Driver definition succeed");
         } catch (Exception ex) {
-            System.err.println("Driver definition failed");
+            System.out.println("Driver definition failed");
             throw new SQLException("Driver loading failed", ex);
         }
 
@@ -102,7 +103,7 @@ public class ConnectToDb {
                 result.add(row);
             }
         } catch (SQLException e) {
-            System.err.println("Error while fetching data: " + e.getMessage());
+            System.out.println("Error while fetching data: " + e.getMessage());
         }
         return result;
     }
@@ -136,7 +137,7 @@ public class ConnectToDb {
             }
             result.add(fullResult.toString());
         } catch (SQLException e) {
-            System.err.println("Error while fetching data: " + e.getMessage());
+            System.out.println("Error while fetching data: " + e.getMessage());
         }
         return result;
     }
@@ -172,7 +173,7 @@ public class ConnectToDb {
             }
             result.add(fullResult.toString());
         } catch (SQLException e) {
-            System.err.println("Error while fetching data: " + e.getMessage());
+            System.out.println("Error while fetching data: " + e.getMessage());
         }
         return result;
     }
@@ -237,7 +238,7 @@ public class ConnectToDb {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error while fetching subscriber data: " + e.getMessage());
+            System.out.println("Error while fetching subscriber data: " + e.getMessage());
             return "Error fetching subscriber data.";
         }
     }
@@ -265,7 +266,7 @@ public class ConnectToDb {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error while fetching subscriber data: " + e.getMessage());
+            System.out.println("Error while fetching subscriber data: " + e.getMessage());
             return "Error fetching subscriber data.";
         }
     }
@@ -289,7 +290,7 @@ public class ConnectToDb {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error fetching history data: " + e.getMessage());
+            System.out.println("Error fetching history data: " + e.getMessage());
         }
         return historyData;
     }
@@ -303,6 +304,7 @@ public class ConnectToDb {
      * @return "True" if the insertion is successful, otherwise "False".
      */
     public static String updateSubscriberDB(Connection conn, String body) {
+        System.out.println("Starting subscriber registration.");
         // Split the input body into parts
         String[] details = body.split(",");
 
@@ -338,7 +340,10 @@ public class ConnectToDb {
                         insertHistoryStmt.setString(2, ""); // Initialize history as empty
 
                         insertHistoryStmt.executeUpdate();
+                        System.out.println("Subscriber ID inserted into detailed_subscription_history for ID: " + subscriberId);
                     }
+                } else {
+                    System.out.println("Subscriber ID already exists in detailed_subscription_history: " + subscriberId);
                 }
             }
 
@@ -353,9 +358,10 @@ public class ConnectToDb {
 
                 int insertSubscriberRows = insertSubscriberStmt.executeUpdate();
                 if (insertSubscriberRows > 0) {
+                    System.out.println("New subscriber inserted successfully with ID: " + subscriberId);
                     return "True";
                 } else {
-                    System.err.println("Failed to insert new subscriber with ID: " + subscriberId);
+                    System.out.println("Failed to insert new subscriber with ID: " + subscriberId);
                     return "False";
                 }
             }
@@ -537,6 +543,7 @@ public class ConnectToDb {
 
             if (!rs.isBeforeFirst()) {
                 // No data
+                System.out.println("No data found in books table.");
                 return booksList;
             }
             while (rs.next()) {
@@ -561,7 +568,7 @@ public class ConnectToDb {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error while fetching books data: " + e.getMessage());
+            System.out.println("Error while fetching books data: " + e.getMessage());
             return null;
         }
         return booksList;
@@ -614,6 +621,7 @@ public class ConnectToDb {
      */
     public static void updateSubscriber(Connection conn, String subscriberId, String phone, String email) throws SQLException {
         String query = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
+        System.out.println("Updating subscriber: " + subscriberId + " with phone: " + phone + " and email: " + email);
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, phone);
@@ -621,8 +629,9 @@ public class ConnectToDb {
             pstmt.setInt(3, Integer.parseInt(subscriberId));
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
+                System.out.println("Update successful: " + affectedRows + " row(s) affected.");
             } else {
-                System.err.println("Update failed: No rows updated. Subscriber ID might not exist.");
+                System.out.println("Update failed: No rows updated. Subscriber ID might not exist.");
             }
         }
     }
@@ -662,7 +671,7 @@ public class ConnectToDb {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error while fetching book info: " + e.getMessage());
+            System.out.println("Error while fetching book info: " + e.getMessage());
             return "Error fetching book info.";
         }
     }
@@ -698,8 +707,12 @@ public class ConnectToDb {
             pstmt.setString(7, (returnTime != null && !returnTime.isEmpty()) ? returnTime : "temp");
             pstmt.setString(8, (extendTime != null && !extendTime.isEmpty()) ? extendTime : "temp");
 
-
-            pstmt.executeUpdate();
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
+            } else {
+                System.out.println("Insert failed: No rows inserted.");
+            }
         }
     }
 
@@ -729,10 +742,13 @@ public class ConnectToDb {
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int reserveId = generatedKeys.getInt(1);
+                        System.out.println("Insert successful, generated reserveId: " + reserveId);
                     } else {
-                        System.err.println("Insert failed: No generated keys returned.");
+                        System.out.println("Insert failed: No generated keys returned.");
                     }
                 }
+            } else {
+                System.out.println("Insert failed: No rows inserted.");
             }
         }
     }
@@ -782,6 +798,12 @@ public class ConnectToDb {
         String query = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum - 1 WHERE ISBN = ? AND NumCopies > 0";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, bookId);
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                System.out.println("No copies available or invalid bookId: " + bookId);
+            } else {
+                System.out.println("Successfully decreased AvailableCopiesNum for bookId: " + bookId);
+            }
         }
     }
 
@@ -796,6 +818,12 @@ public class ConnectToDb {
         String query = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum + 1 WHERE ISBN = ? AND ReservedCopiesNum >= 0";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, bookId);
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                System.out.println("invalid bookId: " + bookId);
+            } else {
+                System.out.println("Successfully incremented ReservedCopesNum for bookId: " + bookId);
+            }
         }
     }
 
@@ -810,7 +838,12 @@ public class ConnectToDb {
         String query = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum - 1 WHERE ISBN = ? AND ReservedCopiesNum > 0";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, bookId);
-
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                System.out.println("Invalid bookId: " + bookId + " or no reserved copies left.");
+            } else {
+                System.out.println("Successfully decremented ReservedCopiesNum for bookId: " + bookId);
+            }
         }
     }
 
@@ -908,8 +941,10 @@ public class ConnectToDb {
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
+                System.out.println("Insert successful: " + affectedRows + " row(s) inserted.");
                 return true;
             } else {
+                System.out.println("Insert failed: No rows inserted.");
                 return false;
             }
         }
@@ -923,7 +958,10 @@ public class ConnectToDb {
      * @throws SQLException If any SQL operation fails.
      */
     public static void updateHistoryInDB(Connection conn, String body) throws SQLException {
+        System.out.println("Updating history with body: " + body);
         String[] details = body.split(",");
+        System.out.println("Parsed details length: " + details.length);
+
         String checkSql = "SELECT history FROM detailed_subscription_history WHERE detailed_subscription_history = ?";
         String insertSql = "INSERT INTO detailed_subscription_history (detailed_subscription_history, history) VALUES (?, ?)";
         String updateHistorySql = "UPDATE detailed_subscription_history SET history = ? WHERE detailed_subscription_history = ?";
@@ -931,6 +969,7 @@ public class ConnectToDb {
         String sqlMessage = details[6].trim(); // The text message to record in history
         try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
             checkStmt.setString(1, details[1].trim());
+            System.out.println("Checking history for subscriber ID: " + details[1].trim());
 
             try (ResultSet rs = checkStmt.executeQuery()) {
                 String historyMessage = details[4] + "," 
@@ -945,16 +984,29 @@ public class ConnectToDb {
                     }
                     String newHistory = existingHistory + historyMessage;
 
+                    System.out.println("Updating history: " + newHistory);
                     try (PreparedStatement updateStmt = conn.prepareStatement(updateHistorySql)) {
                         updateStmt.setString(1, newHistory);
                         updateStmt.setString(2, details[1].trim());
+                        int rowsAffected = updateStmt.executeUpdate();
+                        if (rowsAffected > 0) {
+                            System.out.println("History updated successfully for subscriber with ID " + details[1].trim());
+                        } else {
+                            System.out.println("Failed to update history for subscriber with ID " + details[1].trim());
+                        }
                     }
                 } else {
                     // Subscriber not found in history, insert new
+                    System.out.println("Subscriber not found. Inserting new subscriber with ID: " + details[1].trim());
                     try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
                         insertStmt.setString(1, details[1].trim());
                         insertStmt.setString(2, historyMessage);
-
+                        int rowsInserted = insertStmt.executeUpdate();
+                        if (rowsInserted > 0) {
+                            System.out.println("New subscriber inserted and history updated for ID " + details[1].trim());
+                        } else {
+                            System.out.println("Failed to insert new subscriber with ID " + details[1].trim());
+                        }
                     }
                 }
             }
@@ -1007,6 +1059,7 @@ public class ConnectToDb {
      * @return True if a request was deleted, false otherwise.
      */
     public static boolean deleteRequest(Connection dbConnection, String requestType, String subscriberId, String bookID) {
+        System.out.println("delete request: Type: " + requestType + ", Subscriber id: " + subscriberId + ", book id: " + bookID);
         String query = "DELETE FROM requests WHERE requestType = ? AND requestedByID = ? AND bookId = ?";
 
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
@@ -1028,6 +1081,7 @@ public class ConnectToDb {
      * @return True if the request was deleted, false otherwise.
      */
     public static boolean deleteRegisterRequest(Connection dbConnection, String subscriberId) {
+        System.out.println("delete register request for Subscriber id:" + subscriberId);
         String query = "DELETE FROM requests WHERE requestType = 'Request For Register' AND requestedByID = ?";
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
             stmt.setString(1, subscriberId);
@@ -1046,6 +1100,7 @@ public class ConnectToDb {
      * @return True if successfully updated, false otherwise.
      */
     public static boolean incrementBookCount(Connection dbConnection, String bookID) {
+        System.out.println("book id for increment" + bookID);
         String query = "UPDATE books SET AvailableCopiesNum = AvailableCopiesNum + 1 WHERE ISBN = ?";
 
         try (PreparedStatement stmt = dbConnection.prepareStatement(query)) {
@@ -1065,6 +1120,8 @@ public class ConnectToDb {
      * @return True if the update was successful, false otherwise.
      */
     public static boolean updateFirstReservation(Connection dbConnection, String bookID) {
+        System.out.println("Book ID to update first reservation: " + bookID);
+
         try {
             String fetchReservationQuery = 
                 "SELECT reserve_id FROM reserved_books WHERE ISBN = ? AND time_left_to_retrieve = 'Book is not available yet' ORDER BY reserve_id ASC LIMIT 1";
@@ -1076,6 +1133,7 @@ public class ConnectToDb {
                     if (rs.next()) {
                         smallestReserveId = rs.getInt("reserve_id");
                     } else {
+                        System.out.println("No reservations with 'Book is not available yet' found for book with ISBN: " + bookID);
                         return false;
                     }
                 }
@@ -1092,8 +1150,10 @@ public class ConnectToDb {
 
                 int rowsAffected = updateStmt.executeUpdate();
                 if (rowsAffected > 0) {
+                    System.out.println("Updated reservation with reserve_id: " + smallestReserveId);
                     return true;
                 } else {
+                    System.out.println("Failed to update reservation with reserve_id: " + smallestReserveId);
                     return false;
                 }
             }
@@ -1138,10 +1198,15 @@ public class ConnectToDb {
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
             preparedStatement.setString(1, extendedReturnDate);
             preparedStatement.setInt(2, borrowId);
-
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Return date updated successfully for Borrow ID: " + borrowId);
+            } else {
+                System.out.println("No record found for Borrow ID: " + borrowId);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Failed to update the return date for Borrow ID: " + borrowId);
+            System.out.println("Failed to update the return date for Borrow ID: " + borrowId);
         }
     }
 
@@ -1199,6 +1264,7 @@ public class ConnectToDb {
     public static void unfreezeSubscriber(Connection conn, int subscriberID) throws SQLException {
         String query = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
         String status = "Not Frozen";
+        System.out.println("Updating subscriber: " + subscriberID + " with status: " + status);
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, status);
@@ -1301,8 +1367,10 @@ public class ConnectToDb {
             pstmt.setString(1, bookId);
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
+                System.out.println("No copies available or invalid bookId: " + bookId);
                 return false;
             } else {
+                System.out.println("Successfully decreased AvailableCopiesNum for bookId: " + bookId);
                 return true;
             }
         }
@@ -1465,6 +1533,7 @@ public class ConnectToDb {
      */
     public static int FetchYesterdaylates(Connection conn) throws SQLException {
         String yesterday = EchoServer.clock.convertStringToLocalDate(EchoServer.clock.timeNow()).minusDays(1).toString();
+        System.out.println("Yesterday's Date: " + yesterday);
         String query = "SELECT COUNT(*) FROM borrowed_books WHERE STR_TO_DATE(Return_Time, '%d-%m-%Y') < STR_TO_DATE(?, '%Y-%m-%d')";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
