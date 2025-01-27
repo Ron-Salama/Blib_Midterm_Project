@@ -18,47 +18,48 @@ import javafx.scene.control.TextField;
  * This window allows the user to register a new subscriber by entering required details.
  */
 public class SubscriberRegisterWindowFrameController extends BaseController implements Initializable {
-    // This label is used to display the text "Subscriber ID" in the registration form.
+    
+	/** This label is used to display the text "Subscriber ID" in the registration form. */
     @FXML
     private Label lblSubscriber_id;
     
-    // This label is used to display the text "Subscriber Name" in the registration form.
+    /** This label is used to display the text "Subscriber Name" in the registration form. */
     @FXML
     private Label lblSubscriber_name;
     
-    // This label is used to display the text "Subscriber Phone Number" in the registration form.
+    /** This label is used to display the text "Subscriber Phone Number" in the registration form. */
     @FXML
     private Label lblSubscriber_phoneNumber;
     
-    // This label is used to display the text "Subscriber Email" in the registration form.
+    /** This label is used to display the text "Subscriber Email" in the registration form. */
     @FXML
     private Label lblSubscriber_email;
 
-    // This label will display success or error messages related to registration.
+    /** This label will display success or error messages related to registration. */
     @FXML
     private Label registerDynamicLabel;
 
-    // This text field is used for the user to input the Subscriber ID during registration.
+    /** This text field is used for the user to input the Subscriber ID during registration. */
     @FXML
     private TextField txtSubscriber_id;
     
-    // This text field is used for the user to input the Subscriber's Name during registration.
+    /** This text field is used for the user to input the Subscriber's Name during registration. */
     @FXML
     private TextField txtSubscriber_name;
     
-    // This text field is used for the user to input the Subscriber's Phone Number during registration.
+    /** This text field is used for the user to input the Subscriber's Phone Number during registration. */
     @FXML
     private TextField txtSubscriber_phoneNumber;
     
-    // This text field is used for the user to input the Subscriber's Email during registration.
+    /** This text field is used for the user to input the Subscriber's Email during registration. */
     @FXML
     private TextField txtSubscriber_email;
 
-    // This button allows the user to navigate back to the main menu of the system.
+    /** This button allows the user to navigate back to the main menu of the system. */
     @FXML
     private Button btnReturnToMainMenu = null;
     
-    // This button is used to submit the registration form and register the subscriber.
+    /** This button is used to submit the registration form and register the subscriber. */
     @FXML
     private Button btnRegister = null;
     
@@ -120,7 +121,6 @@ public class SubscriberRegisterWindowFrameController extends BaseController impl
     			"/gui/MainMenu/MainMenuFrame.css",
     			"MainMenu");
     }
-
 
     /**
      * Validates the registration form to ensure that all required fields are filled.

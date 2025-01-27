@@ -18,23 +18,23 @@ import javafx.stage.Stage;
  */
 public class IPInputController extends BaseController {
 
-    // Button to exit the application.
+    /** Button to exit the application. */
     @FXML
     private Button btnExit = null;
 
-    // Button to send the entered IP address for validation.
+    /** Button to send the entered IP address for validation. */
     @FXML
     private Button btnSend = null;
 
-    // TextField where the user inputs the IP address.
+    /** TextField where the user inputs the IP address. */
     @FXML
     private TextField IPtxt;
 
-    // Label showing messages related to the connection status.
+    /** Label showing messages related to the connection status. */
     @FXML
     private Label awaitingLoginText;
 
-    // Label displaying a welcome message.
+    /** Label displaying a welcome message. */
     @FXML
     private Label welcomeLabel;
 

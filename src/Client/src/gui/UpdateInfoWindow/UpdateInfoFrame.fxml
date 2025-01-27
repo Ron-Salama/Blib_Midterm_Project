@@ -34,6 +34,6 @@
             <Font size="24.0" />
          </font></Text>
       <TextField id="txtSubscriber_name" fx:id="txtSubscriber_id" layoutX="181.0" layoutY="113.0" />
-      <Label fx:id="UpdateStatus" alignment="CENTER" layoutX="81.0" layoutY="464.0" />
+      <Label fx:id="UpdateStatus" alignment="CENTER" layoutX="67.0" layoutY="468.0" prefHeight="30.0" prefWidth="407.0" />
    </children>
 </AnchorPane>

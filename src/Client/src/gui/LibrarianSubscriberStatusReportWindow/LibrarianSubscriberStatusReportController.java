@@ -31,65 +31,65 @@ import logic.SubscriberData;
  */
 public class LibrarianSubscriberStatusReportController extends BaseController {
 	
-	// TableView to display subscriber data 
+	/** TableView to display subscriber data */ 
 	@FXML
 	private TableView<SubscriberData> subscriberTable; 
 
-	// TableColumn for displaying Subscriber ID
+	/** TableColumn for displaying Subscriber ID */
 	@FXML
 	private TableColumn<SubscriberData, String> colSubscriberId;
 
-	// TableColumn for displaying Subscriber Name
+	/** TableColumn for displaying Subscriber Name */
 	@FXML
 	private TableColumn<SubscriberData, String> colSubscriberName;
 
-	// TableColumn for displaying the Frozen At date
+	/** TableColumn for displaying the Frozen At date */
 	@FXML
 	private TableColumn<SubscriberData, String> colFrozenAt;
 
-	// TableColumn for displaying the Expected Release date 
+	/** TableColumn for displaying the Expected Release date */ 
 	@FXML
 	private TableColumn<SubscriberData, String> colExpectedRelease;
 	
-	// Scatter chart for visualizing frozen subscriber data 
+	/** Scatter chart for visualizing frozen subscriber data */ 
     @FXML
     private ScatterChart<String, String> scatterChart;
 
-    // X-axis for the scatter chart
+    /** X-axis for the scatter chart */
     @FXML
     private CategoryAxis xAxis;
 
-    // Y-axis for the scatter chart
+    /** Y-axis for the scatter chart */
     @FXML
     private CategoryAxis yAxis;
 
-    // Pie chart for displaying the proportion of frozen and unfrozen subscribers 
+    /** Pie chart for displaying the proportion of frozen and unfrozen subscribers */ 
     @FXML
     private PieChart pieChartFrozen;
    
-    // Bar chart for displaying frozen and not frozen data statistics 
+    /** Bar chart for displaying frozen and not frozen data statistics */ 
     @FXML
     private BarChart barChart;
    
-    // X-axis for the bar chart
+    /** X-axis for the bar chart */
     @FXML
     private CategoryAxis barXAxis;
     
-    //  Y-axis for the bar chart
+    /**  Y-axis for the bar chart */
     @FXML
     private NumberAxis barYAxis;
 
-    // ComboBox for selecting the month
+    /** ComboBox for selecting the month */
     @FXML
     private ComboBox<String> comboMonths;
 
-    // The year to be displayed in reports
+    /** The year to be displayed in reports */
     private int year = 2025;
     
-    // The current month selected for reporting
+    /** The current month selected for reporting */
     private Month month = Month.JANUARY;
     
-    // The controller for time-related functionalities
+    /** The controller for time-related functionalities */
     private ClientTimeDiffController clock = ChatClient.clock;
     
     /**
@@ -250,8 +250,6 @@ public class LibrarianSubscriberStatusReportController extends BaseController {
         xAxis.setLabel("Freeze Date");
         yAxis.setLabel("Frozen Subscriber");
         yAxis.setAutoRanging(true);
-
-
     }
 
     /**

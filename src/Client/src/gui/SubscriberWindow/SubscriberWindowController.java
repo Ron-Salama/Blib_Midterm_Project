@@ -28,7 +28,8 @@ import logic.Subscriber;
  * the "My Books" and "Borrow" windows.</p>
  */
 public class SubscriberWindowController extends BaseController implements Initializable {
-	// Private instance of the clock used for date-time functions.
+	
+	/** Private instance of the clock used for date-time functions. */
 	private ClientTimeDiffController clock = new ClientTimeDiffController();
 	
 	/** The button to open the Search window. */

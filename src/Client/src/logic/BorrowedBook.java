@@ -7,10 +7,6 @@ package logic;
  * identifiers, the subscriber who borrowed it, book details, and time information
  * such as borrow date, return date, and the time left to return the book.
  * </p>
- * 
- * @author 
- * @version 1.0
- * @since 2025-01-01
  */
 public class BorrowedBook {
 

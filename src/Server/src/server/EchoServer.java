@@ -203,11 +203,9 @@ public class EchoServer extends AbstractServer {
                     handleReserveRequestCase(client, body);
                     break;
 
-                //*************************************************** 
                 case "ReserveSuccess":
                     handleReserveSuccessCase(client, body);
                     break;
-                //***************************************************
 
                 case "FetchBorrowRequest":
                     handleFetchBorrowRequestCase(client, body);
@@ -241,11 +239,9 @@ public class EchoServer extends AbstractServer {
                     SubmitBorrowRequest(client, body);
                     break;
 
-                //***********************************************
                 case "SubmitRetrieve":
                     SubmitRetrieve(client, body);
                     break;
-                //***********************************************
 
                 case "Return request":
                     handlereturnrequest(client, body);

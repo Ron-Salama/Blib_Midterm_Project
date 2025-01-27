@@ -28,10 +28,10 @@ import logic.Subscriber;
 public class BorrowBookController extends BaseController implements Initializable {
 	
 	
-    // The currently logged-in subscriber.
+    /** The currently logged-in subscriber. */
     Subscriber currentSub = SubscriberWindowController.currentSubscriber;
     
-    // Controller for managing time differences and calculating dates.
+    /** Controller for managing time differences and calculating dates. */
     ClientTimeDiffController clockController = new ClientTimeDiffController();
     
     /** Exit button to close the application. */
@@ -78,21 +78,22 @@ public class BorrowBookController extends BaseController implements Initializabl
     @FXML
     private Label RequestStatus = null;
 
-    // Stores the book ID entered by the user.
+    /** Stores the book ID entered by the user. */
     String bookId = "";
     
-    // Stores the name of the selected book.
+    /** Stores the name of the selected book. */
     String bookName = "";
     
-    // Number of copies of the selected book.
+    /** Number of copies of the selected book. */
     int copiesNum;
     
-    // Number of reserved copies of the selected book.
+    /** Number of reserved copies of the selected book. */
     int reservedCopiesNum;
     
+    /** Stores the available copies in the library in the current moment. */
     int availables;
     
-    // Status indicating whether the book can be borrowed.
+    /** Status indicating whether the book can be borrowed. */
     String borrowStatus = "CAN_BORROW";  // String to hold the borrow status
 
     /**

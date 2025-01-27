@@ -19,10 +19,6 @@ package logic;
  * Subscriber newSub = new Subscriber(123, 1, "Alice", "555-1234", "alice@example.com", "Not Frozen");
  * }</pre>
  * </p>
- * 
- * @author  
- * @version 1.0
- * @since 2025-01-01
  */
 public class Subscriber {
 

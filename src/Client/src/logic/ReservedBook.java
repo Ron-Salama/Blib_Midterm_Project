@@ -6,7 +6,8 @@ package logic;
  * such as the reserve ID, subscriber ID, book name, reserve date, time left to retrieve the book, and the book's ISBN.</p>
  */
 public class ReservedBook {
-    /** The unique identifier for the reserving record. */
+    
+	/** The unique identifier for the reserving record. */
     private int reserveId;
     
     /** The unique identifier for the subscriber who reserved the book. */

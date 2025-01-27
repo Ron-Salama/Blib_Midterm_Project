@@ -41,10 +41,6 @@ import logic.Librarian;
  * Implements {@link Initializable} to set up UI components after the FXML is
  * loaded.
  * </p>
- *
- * @author
- * @version 1.0
- * @since 2025-01-01
  */
 public class SubscriberRequestsWindowsController extends BaseController implements Initializable {
 
@@ -827,7 +823,7 @@ public class SubscriberRequestsWindowsController extends BaseController implemen
 				btnAccept.setDisable(true);
 			}
 
-			// Register
+		// Register
 		} else if ("Registers".equals(selectedRequestType)) {
 			String SName = TXTF1.getText();
 			String SID = TXTF2.getText();

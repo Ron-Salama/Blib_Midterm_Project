@@ -16,27 +16,27 @@ import javafx.scene.control.Label;
  * It provides navigation options to different reports and the Main Menu.
  */
 public class ReportsWindowController extends BaseController implements Initializable  {
-	// This button allows the user to navigate back to the Librarian View.
+	
+	/** This button allows the user to navigate back to the Librarian View. */
     @FXML
     private Button btnBack = null;
     
-    // This button opens the Borrowed Books Status Report window.
+    /** This button opens the Borrowed Books Status Report window. */
     @FXML
     private Button btnBorrowDates = null;
     
-    // This button opens the Subscriber Status Report window
+    /** This button opens the Subscriber Status Report window */
     @FXML
     private Button btnSubscriberStatus = null;
     
-    // This button allows the user to navigate back to the Main Menu.
+    /** This button allows the user to navigate back to the Main Menu. */
     @FXML
     private Button btnReturnToMainMenu = null;
     
-    // This label displays a greeting message to the user.
+    /** This label displays a greeting message to the user. */
     @FXML
     private Label greetingLabel = null;
  
-    
     /**
      * Initializes the controller, though no specific initialization is performed here.
      *

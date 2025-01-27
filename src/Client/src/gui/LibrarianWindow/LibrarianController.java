@@ -23,38 +23,38 @@ import logic.Librarian;
  */
 public class LibrarianController extends BaseController implements Initializable  {
     
-	// The current librarian instance
+	/** The current librarian instance */
     public static Librarian currentLibrarian;
     
-    // Button to exit the application
+    /** Button to exit the application */
     @FXML
     private Button btnExit = null;
 
-    // Button to return to the main menu 
+    /** Button to return to the main menu */ 
     @FXML
     private Button btnReturnToMainMenu = null;
 
-    // Button to search for books 
+    /** Button to search for books */ 
     @FXML
     private Button btnSearchBook = null;
 
-    // Button to search for subscribers 
+    /** Button to search for subscribers */ 
     @FXML
     private Button btnSearchSubscriber = null;
 
-    // Button to view subscriber requests 
+    /** Button to view subscriber requests */ 
     @FXML
     private Button btnSubscriberRequests = null;
 
-    // Button to view reports
+    /** Button to view reports */
     @FXML
     private Button btnViewReports = null;
 
-    // Label to display a greeting message to the librarian 
+    /** Label to display a greeting message to the librarian */ 
     @FXML
     private Label greetingLabel = null;
     
-    // Text area to display updates for new return dates from subscribers 
+    /** Text area to display updates for new return dates from subscribers */ 
     @FXML
     private TextArea returnDateUpdatesTextArea;
     

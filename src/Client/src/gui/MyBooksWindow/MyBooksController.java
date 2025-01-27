@@ -31,90 +31,90 @@ import logic.Subscriber;
  */
 public class MyBooksController extends BaseController implements Initializable {
     
-	// Flag indicating whether the view is for searching books. 
+	/** Flag indicating whether the view is for searching books. */ 
 	public static String FlagForSearch = "";
     
-	// Label for displaying dynamic messages
+	/** Label for displaying dynamic messages */
     @FXML
 	private Label extensionDynamicLabel;
     
-    // Label for the window title
+    /** Label for the window title */
     @FXML
 	private Label title;
     
-    // Label for showing additional information about the view
+    /** Label for showing additional information about the view */
     @FXML
     private Label LBLview;
     
-    // Button for exiting the window
+    /** Button for exiting the window */
 	@FXML
     private Button btnExit;
 	
-	// Button for navigating back
+	/** Button for navigating back */
     @FXML
     private Button btnBack;
     
-    // Button for viewing details
+    /** Button for viewing details */
     @FXML
     private Button btnView;
     
-    // Button for viewing history
+    /** Button for viewing history */
     @FXML
     private Button btnHistory;
     
-    // Table displaying borrowed books
+    /** Table displaying borrowed books */
     @FXML
     private TableView<BorrowedBook> tableView;
 
-    // Column for ISBN
+    /** Column for ISBN */
     @FXML
     private TableColumn<BorrowedBook, Integer> tableID;
     
-    // Column for borrow date
+    /** Column for borrow date */
     @FXML
     private TableColumn<BorrowedBook, String> tableBorrowDate;
     
-    // Column for return date
+    /** Column for return date */
     @FXML
     private TableColumn<BorrowedBook, String> tableReturnDate;
     
-    // Column for book name
+    /** Column for book name */
     @FXML
     private TableColumn<BorrowedBook, String> tableName;
     
-    // Column for time left to return
+    /** Column for time left to return */
     @FXML
     private TableColumn<BorrowedBook, Integer> tableTimeLeft;
     
-    // Column for actions (extend, return)
+    /** Column for actions (extend, return) */
     @FXML
     private TableColumn<BorrowedBook, Void> tableActions;
 
-    // Input field for book name search
+    /** Input field for book name search */
     @FXML
     private TextField nameInput;
     
-    // Input field for subscriber ID to view their books
+    /** Input field for subscriber ID to view their books */
     @FXML
     private TextField TXTFview;
 
-    // Input field for book name search
+    /** Input field for book name search */
     @FXML
     private TextField descriptionInput;
     
-    // Current subscriber being viewed or interacting with.
+    /** Current subscriber being viewed or interacting with. */
     public static Subscriber currentSub = new Subscriber (0,0,null,null,null,null);
     
-    // Indicates if a librarian is currently viewing a subscriber's history.
+    /** Indicates if a librarian is currently viewing a subscriber's history. */
     public static int librarianViewing = -1;
     
-    // The name of the librarian viewing the subscriber.
+    /** The name of the librarian viewing the subscriber. */
     public static String LibrarianName;
     
-    // Flag indicating whether the view is for a subscriber or a librarian.
+    /** Flag indicating whether the view is for a subscriber or a librarian. */
     public static Boolean viewing = false;
     
-    // Flag indicating if the history view is being used.
+    /** Flag indicating if the history view is being used. */
     public static Boolean fromHistory = false;
     
     /**

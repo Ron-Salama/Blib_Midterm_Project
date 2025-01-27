@@ -33,17 +33,8 @@ import logic.Book;
  * 
  * <p>Implements {@link Initializable} to set up UI components after the FXML 
  * is loaded.</p>
- * 
- * @author 
- * @version 1.0
- * @since 2025-01-01
  */
 public class SearchFrameController extends BaseController implements Initializable {
-
-    /**
-     * Holds an instance reference of this controller.
-     */
-    private SearchFrameController sfc;
 
     /**
      * A flag used to differentiate the calling context for the SearchFrame.

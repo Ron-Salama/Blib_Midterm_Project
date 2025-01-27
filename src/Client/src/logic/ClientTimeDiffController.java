@@ -58,6 +58,13 @@ public class ClientTimeDiffController {
         return !sevenDaysFromDeadline.isAfter(today);
     }
     
+    /**
+     * Checks if there is enough time before a deadline to complete an action.
+     *
+     * @param deadLine        the deadline as a LocalDateTime object.
+     * @param timeNeededBeforeDeadline the number of days needed before the deadline
+     * @return {@code true} if there is enough time; otherwise, {@code false}
+     */
     public Boolean hasEnoughTimeBeforeDeadline(LocalDateTime deadLine, int timeNeededBeforeDeadline) {
     	return hasEnoughTimeBeforeDeadline(deadLine.toString(), timeNeededBeforeDeadline);
     }
@@ -196,6 +203,12 @@ public class ClientTimeDiffController {
         return localDate.atStartOfDay();
     }
     
+    /**
+     * Converts a date string into a {@code LocalDate} object.
+     *
+     * @param stringToConvert the date string to convert
+     * @return the corresponding {@code LocalDate} object
+     */
     public LocalDate convertStringToLocalDate(String stringToConvert) {
     	return LocalDate.parse(stringToConvert, getDateFormatter());
     }
@@ -230,14 +243,35 @@ public class ClientTimeDiffController {
         return monthsBetween >= 1;
     }
 
+    /**
+     * Checks if a month has passed between two dates.
+     *
+     * @param startDateAsString the starting date
+     * @param endDate   the ending date as a LOcalDate object.
+     * @return {@code true} if at least one month has passed; otherwise, {@code false}
+     */
     public boolean hasMonthPassed(String startDateAsString, LocalDate endDate) {
     	return hasMonthPassed(convertStringToLocalDateTime(startDateAsString).toLocalDate(), endDate);
     }
     
+    /**
+     * Checks if a month has passed between two dates.
+     *
+     * @param startDate the starting date as a LocalDate object.
+     * @param endDateAsString   the ending date as a string.
+     * @return {@code true} if at least one month has passed; otherwise, {@code false}
+     */
     public boolean hasMonthPassed(LocalDate startDate, String endDateAsString) {
     	return hasMonthPassed(startDate, convertStringToLocalDateTime(endDateAsString).toLocalDate());
     }
     
+    /**
+     * Checks if a month has passed between two dates.
+     *
+     * @param startDateAsString the starting date as a String.
+     * @param endDateAsString   the ending date as a String.
+     * @return {@code true} if at least one month has passed; otherwise, {@code false}
+     */
     public boolean hasMonthPassed(String startDateAsString, String endDateAsString) {
     	return hasMonthPassed(convertStringToLocalDateTime(startDateAsString).toLocalDate(), convertStringToLocalDateTime(endDateAsString).toLocalDate());
     }
@@ -338,6 +372,14 @@ public class ClientTimeDiffController {
     	return earliestDate.toString();
     }
     
+    /**
+     * Converts a date string from the format "yyyy-MM-dd" to "dd-MM-yyyy".
+     *
+     * @param dateStr the date string in "yyyy-MM-dd" format
+     * @return the date string converted to "dd-MM-yyyy" format
+     * @throws DateTimeParseException if the input date string is not in the expected format
+     */
+
     public String convertDateFormat(String dateStr) 
     {
     	

@@ -32,17 +32,8 @@ import logic.Subscriber;
  *
  * <p>Implements {@link Initializable} to allow for custom initialization
  * after the FXML file has been loaded.</p>
- *
- * @author 
- * @version 1.0
- * @since 2025-01-01
  */
 public class MyReservationsController extends BaseController implements Initializable {
-
-    /**
-     * A reference to this controller.
-     */
-    private MyReservationsController mrc;  
 
     /**
      * A controller that tracks client-side time differences.

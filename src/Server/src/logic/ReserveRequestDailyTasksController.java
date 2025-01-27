@@ -34,10 +34,6 @@ import server.EchoServer;
  * </p>
  * 
  * <p>Extends {@link BaseController} to utilize shared methods (e.g. parseBorrowedBook if needed).</p>
- * 
- * @author  
- * @version 1.0
- * @since 2025-01-01
  */
 public class ReserveRequestDailyTasksController extends BaseController {
 

@@ -28,10 +28,6 @@ import server.EchoServer;
  * 
  * <p>In a larger deployment, methods like {@link #sendSMSandEmail(String, List, String, String)} 
  * would connect to actual SMS/email gateways instead of just logging messages via the server console.</p>
- * 
- * @author  
- * @version 1.0
- * @since 2025-01-01
  */
 public class SMSandEmailController extends BaseController {
 

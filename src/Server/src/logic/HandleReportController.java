@@ -11,6 +11,7 @@ import server.EchoServer;
  * and updates the corresponding records in the database.</p>
  */
 public class HandleReportController {
+	
 	/**
      * Generates a report for the previous day's library activities. This includes:
      * <ul>

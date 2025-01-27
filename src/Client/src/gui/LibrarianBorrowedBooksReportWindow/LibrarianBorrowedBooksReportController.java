@@ -38,90 +38,90 @@ import logic.ClientTimeDiffController;
  */
 public class LibrarianBorrowedBooksReportController extends BaseController {
 
-	// The BarChart for visualizing book statistics (borrowed, early returns, late returns).
+	/** The BarChart for visualizing book statistics (borrowed, early returns, late returns). */
     @FXML
     private BarChart<String, Number> barChart;
     
-    // The X-Axis of the BarChart, representing categories (e.g., book names).
+    /** The X-Axis of the BarChart, representing categories (e.g., book names). */
     @FXML
     private CategoryAxis barXAxis;
     
-    // The Y-Axis of the BarChart, representing numeric values (e.g., counts of events).
+    /** The Y-Axis of the BarChart, representing numeric values (e.g., counts of events). */
     @FXML
     private NumberAxis barYAxis;
     
-    // A VBox container for holding the PieChart that displays the average data.
+    /** A VBox container for holding the PieChart that displays the average data. */
     @FXML
     private VBox avgPieChartContainer;
     
-    // A ComboBox for filtering the book data based on selected criteria (e.g., book ID or name).
+    /** A ComboBox for filtering the book data based on selected criteria (e.g., book ID or name). */
     @FXML
     private ComboBox<String> bookFilterComboBox;
     
-    // A Label displaying the "Most Borrowed" book statistics.
+    /** A Label displaying the "Most Borrowed" book statistics. */
     @FXML
     private Label MPB;
     
-    // A Label displaying the "Least Used" book statistics.
+    /** A Label displaying the "Least Used" book statistics. */
     @FXML
     private Label LUB;
     
-    // A Label displaying the "Early Returns" statistics for books.
+    /** A Label displaying the "Early Returns" statistics for books. */
     @FXML
     private Label ERB;
     
-    // A Label displaying the "Least Used" book statistics (alternative).
+    /** A Label displaying the "Least Used" book statistics (alternative). */
     @FXML
     private Label LUB1;
     
-    // A Label displaying the "Early Returns" statistics (alternative).
+    /** A Label displaying the "Early Returns" statistics (alternative). */
     @FXML
     private Label ERB1;
     
-    // A ComboBox for selecting the month to display statistics.
+    /** A ComboBox for selecting the month to display statistics. */
     @FXML
     private ComboBox<String> monthComboBox;
     
-    // A PieChart for displaying the overall statistics (e.g., distribution of borrowings).
+    /** A PieChart for displaying the overall statistics (e.g., distribution of borrowings). */
     @FXML
     private PieChart pieChart;
     
-    // A PieChart displaying the daily average data for the book statistics.
+    /** A PieChart displaying the daily average data for the book statistics. */
     @FXML
     private PieChart avgPieChart;
 
-    // A TableView displaying a list of book data (ID, name, borrowed count, etc.).
+    /** A TableView displaying a list of book data (ID, name, borrowed count, etc.). */
     @FXML
     private TableView<BookData> bookDataTable;
     
-    // A TableColumn displaying the book ID.
+    /** A TableColumn displaying the book ID. */
     @FXML
     private TableColumn<BookData, String> bookIdColumn;
     
-    // A TableColumn displaying the book name.
+    /** A TableColumn displaying the book name. */
     @FXML
     private TableColumn<BookData, String> bookNameColumn;
     
-    // A TableColumn displaying the number of times the book has been borrowed.
+    /** A TableColumn displaying the number of times the book has been borrowed. */
     @FXML
     private TableColumn<BookData, Integer> timesBorrowedColumn;
     
-    // A TableColumn displaying the number of early returns for each book.
+    /** A TableColumn displaying the number of early returns for each book. */
     @FXML
     private TableColumn<BookData, Integer> earlyReturnsColumn;
     
-    // A TableColumn displaying the number of late returns for each book.
+    /** A TableColumn displaying the number of late returns for each book. */
     @FXML
     private TableColumn<BookData, Integer> lateReturnsColumn;
     
-    // A TableColumn displaying the number of lost books.
+    /** A TableColumn displaying the number of lost books. */
     @FXML
     private TableColumn<BookData, Integer> lostColumn;
     
-    // A reference to the ClientTimeDiffController for managing time-based operations.
+    /** A reference to the ClientTimeDiffController for managing time-based operations. */
     private ClientTimeDiffController clock = ChatClient.clock;
     
-    // A Map that holds book data, where the key is the book ID and the value is the corresponding BookData object.
+    /** A Map that holds book data, where the key is the book ID and the value is the corresponding BookData object. */
     private Map<String, BookData> bookDataMap = new HashMap<>();
 
     /**

@@ -6,6 +6,7 @@ package logic;
  * and the expected date when their account will be released from the frozen status.</p>
  */
 public class SubscriberData {
+	
 	/** The unique identifier for the subscriber. */
     private String subscriberId;
     

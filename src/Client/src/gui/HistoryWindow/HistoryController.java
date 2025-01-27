@@ -24,23 +24,23 @@ import logic.Subscriber;
  */
 public class HistoryController extends BaseController implements Initializable {
     
-	// Button to navigate back to the MyBooks window.
+	/** Button to navigate back to the MyBooks window. */
 	@FXML
     private Button btnBack = null;
     
-    // Button to exit the current window and return to the Main Menu.
+    /** Button to exit the current window and return to the Main Menu. */
     @FXML
     private Button btnExit = null;
     
-    // TableView to display the history of books the subscriber has interacted with.
+    /** TableView to display the history of books the subscriber has interacted with. */
     @FXML
     private TableView<String> tableView;
     
-    // TableColumn to display book descriptions in the TableView.
+    /** TableColumn to display book descriptions in the TableView. */
     @FXML
     private TableColumn<String, String> tableDescription;
    
-    // The current subscriber whose history is being viewed.
+    /** The current subscriber whose history is being viewed. */
     private Subscriber currentSubscriber = null;
     
     /**

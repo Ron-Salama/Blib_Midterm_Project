@@ -290,5 +290,4 @@ public class ServerTimeDiffController {
         LocalDateTime currentDateTime = LocalDateTime.now();
         return hasWeekPassed(startDateTime, currentDateTime);
     }
-
 }

@@ -1610,6 +1610,18 @@ public class ConnectToDb {
         return date.format(outputFormatter);
     }
     
+    /**
+     * Checks if a book is already borrowed by a subscriber.
+     * 
+     * <p>This method queries the database to determine whether a subscriber 
+     * has already borrowed a specific book based on the subscriber's ID and the book's ISBN.</p>
+     * 
+     * @param dbConnection the database connection to execute the query
+     * @param subscriberId the ID of the subscriber
+     * @param bookId       the ISBN of the book
+     * @return {@code true} if the book is already borrowed by the subscriber, {@code false} otherwise
+     * @throws SQLException if a database access error occurs
+	 */
     public static boolean bookalreadyborrowed(Connection dbConnection, String subscriberId, String bookId) {
         String query = "SELECT COUNT(*) FROM borrowed_books WHERE subscriber_id = ? AND ISBN = ?";
 
@@ -1633,6 +1645,4 @@ public class ConnectToDb {
         // If an exception occurs or no result is found, return false by default
         return false;
     }
-
 }
-
