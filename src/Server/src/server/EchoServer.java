@@ -390,22 +390,26 @@ public class EchoServer extends AbstractServer {
         String bookid = messageParts[3].trim();
         String bookTime = messageParts[4].trim();
         String returnTime = messageParts[5].trim();
-
+        String returnstatus = ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid);
+        if(returnstatus.equals("Book returned successfully")) {
         boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection, "Return For Subscriber", subscriberId, bookid);
         boolean reduceamount = ConnectToDb.decreaseNumCopies(dbConnection, bookid);
         if (reduceamount && requestDeleted) {
             client.sendToClient("return request was committed and deleted but the book is lost and "+"Successfully decreased NumCopies for bookId: " + bookid);
         }
         else if (!reduceamount && requestDeleted) {
-            client.sendToClient("request deleted but NumCopies of bookId:"+bookid+"wasnt decreased");
+            client.sendToClient("request deleted but NumCopies of bookId: "+bookid+" wasnt decreased");
         }
         else if(reduceamount && !requestDeleted) {
-        	client.sendToClient("NumCopies of bookId:"+bookid+"was decreased but request wasnt deleted");
+        	client.sendToClient("NumCopies of bookId: "+bookid+" was decreased but request wasnt deleted");
         }
         else {
-        	client.sendToClient("NumCopies of bookId:"+bookid+"wasnt decreased and request wasnt deleted");
+        	client.sendToClient("NumCopies of bookId: "+bookid+" wasnt decreased and request wasnt deleted");
         }
-        client.sendToClient(ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid));
+        }
+        else {
+        	client.sendToClient(returnstatus);
+        }
     }
 
     /**
