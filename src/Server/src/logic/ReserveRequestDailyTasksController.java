@@ -49,8 +49,9 @@ public class ReserveRequestDailyTasksController extends BaseController {
      *     <li>{@link #sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary()}: notify subscribers 
      *         about books that are available for pickup.</li>
      * </ol>
+     * @throws SQLException 
      */
-    public void reserveRequestsDailyActivity() {
+    public void reserveRequestsDailyActivity() throws SQLException {
         deleteRequests();
         sendMailToSubscriberThatNeedsToRetrieveBookFromTheLibrary();
     }
@@ -62,8 +63,9 @@ public class ReserveRequestDailyTasksController extends BaseController {
      * <ul>
      * </ul>
      * </p>
+     * @throws SQLException 
      */
-    public void deleteRequests() {
+    public void deleteRequests() throws SQLException{
     	Connection conn =EchoServer.taskSchedulerConnection;
         ConnectToDb.deleterequests(conn);
     }

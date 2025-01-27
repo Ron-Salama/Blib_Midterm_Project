@@ -397,8 +397,9 @@ public class EchoServer extends AbstractServer {
      *
      * @param client the {@link ConnectionToClient} sending the request
      * @param body   the request details as a comma-separated string containing subscriber ID and book ID
+     * @throws SQLException 
      */
-	private void handleAlreadyBorrowedCheck(ConnectionToClient client, String body) {
+	private void handleAlreadyBorrowedCheck(ConnectionToClient client, String body) throws SQLException {
     	// Parse the body to extract subscriber ID and book ID
     	 String[] parts = body.split(",");
          String subscriberId = parts[0];

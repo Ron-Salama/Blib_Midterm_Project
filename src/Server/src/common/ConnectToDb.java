@@ -1619,7 +1619,7 @@ public class ConnectToDb {
      * @return {@code true} if the book is already borrowed by the subscriber, {@code false} otherwise
      * @throws SQLException if a database access error occurs
 	 */
-    public static boolean bookalreadyborrowed(Connection dbConnection, String subscriberId, String bookId) {
+    public static boolean bookalreadyborrowed(Connection dbConnection, String subscriberId, String bookId) throws SQLException{
         String query = "SELECT COUNT(*) FROM borrowed_books WHERE subscriber_id = ? AND ISBN = ?";
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
@@ -1643,7 +1643,7 @@ public class ConnectToDb {
         return false;
     }
 
-    public static void deleterequests(Connection conn) {
+    public static void deleterequests(Connection conn) throws SQLException{
         // Define the date format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String todayDate = LocalDate.now().format(formatter);
