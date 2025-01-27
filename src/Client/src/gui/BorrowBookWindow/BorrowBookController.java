@@ -151,22 +151,27 @@ public class BorrowBookController extends BaseController implements Initializabl
                 "Location on Shelf: " + ChatClient.BorrowedBookInfo[5] + "\n" +
                 "Available Copies Number: " + ChatClient.BorrowedBookInfo[6] + "\n" +
                 "Reserved Copies Number: " + ChatClient.BorrowedBookInfo[7] + "\n"
-            	
             );
             bookName = ChatClient.BorrowedBookInfo[1];
             copiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[4]);
             availables=Integer.parseInt(ChatClient.BorrowedBookInfo[6]);
             reservedCopiesNum = Integer.parseInt(ChatClient.BorrowedBookInfo[7]);
-            System.out.println("ava"+availables);
-            System.out.println("res"+reservedCopiesNum);
-            boolean condition=reservedCopiesNum >= availables;
-            System.out.println(condition);
+
             // Update borrow status based on available copies
             if (Integer.parseInt(ChatClient.BorrowedBookInfo[6]) <= 0) {
-                borrowStatus = "NO_COPIES";
-                btnReserve.setVisible(true);
-                awaitingTextID.setText("There are no more Copies of the book " + bookName + "\nWould you like to Reserve it?");
-                btnSubmitToLibrarian.setDisable(true); // Disable if there are no copies
+            	if(copiesNum==0) {
+                    awaitingTextID.setText(bookName + " is currently unavailable. Please try again later");
+                    btnSubmitToLibrarian.setDisable(true); // Disable if there are no copies
+                    borrowStatus = "NO_COPIES";
+
+            	}
+            	else {            		
+            		borrowStatus = "NO_COPIES";
+            		btnReserve.setVisible(true);
+            		awaitingTextID.setText("There are no more Copies of the book " + bookName + "\nWould you like to Reserve it?");
+            		btnSubmitToLibrarian.setDisable(true); // Disable if there are no copies available
+            	}
+            	
             } else {
                 borrowStatus = "CAN_BORROW";
                 awaitingTextID.setText("");
@@ -178,10 +183,7 @@ public class BorrowBookController extends BaseController implements Initializabl
             Book_Description.setText("No Book Found");
             btnSubmitToLibrarian.setDisable(true); // Disable the button if no book is found 
         }
-        if( reservedCopiesNum >= availables ) {
-        	 awaitingTextID.setText("There are reserves for the  " + bookName + "\nSorry");
-        	btnSubmitToLibrarian.setDisable(true);
-        }
+
     }
 
     /**
@@ -223,7 +225,7 @@ public class BorrowBookController extends BaseController implements Initializabl
      * @throws Exception if an error occurs during the reservation process
      */
     public void Submit_Reserve_Request(ActionEvent event) throws Exception {
-        if (reservedCopiesNum == copiesNum) {
+        if (reservedCopiesNum == copiesNum) { // if numOfCopies == 0 print error and disable button
             // All copies are reserved
             showColoredLabelMessageOnGUI(RequestStatus, 
                 "All the current copies of the book are reserved.\nPlease try to reserve at a later time when a copy is\navailable to be reserved.", 

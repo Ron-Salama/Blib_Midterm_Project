@@ -392,13 +392,18 @@ public class EchoServer extends AbstractServer {
         String returnTime = messageParts[5].trim();
 
         boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection, "Return For Subscriber", subscriberId, bookid);
-        if (requestDeleted) {
-            client.sendToClient("return request was committed and deleted but the book is lost");
-        }
-
         boolean reduceamount = ConnectToDb.decreaseNumCopies(dbConnection, bookid);
-        if (reduceamount) {
-            client.sendToClient("Successfully decreased NumCopies for bookId: " + bookid);
+        if (reduceamount && requestDeleted) {
+            client.sendToClient("return request was committed and deleted but the book is lost and "+"Successfully decreased NumCopies for bookId: " + bookid);
+        }
+        else if (!reduceamount && requestDeleted) {
+            client.sendToClient("request deleted but NumCopies of bookId:"+bookid+"wasnt decreased");
+        }
+        else if(reduceamount && !requestDeleted) {
+        	client.sendToClient("NumCopies of bookId:"+bookid+"was decreased but request wasnt deleted");
+        }
+        else {
+        	client.sendToClient("NumCopies of bookId:"+bookid+"wasnt decreased and request wasnt deleted");
         }
         client.sendToClient(ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid));
     }
@@ -1190,19 +1195,17 @@ public class EchoServer extends AbstractServer {
             String returnRequestStatus = ConnectToDb.returnbook(this.dbConnection, subscriberId, bookid);
             if ("Book returned successfully".equalsIgnoreCase(returnRequestStatus)) {
                 boolean requestDeleted = ConnectToDb.deleteRequest(this.dbConnection, "Return For Subscriber", subscriberId, bookid);
-                if (!requestDeleted) {
-                    client.sendToClient("Warning: Book returned successfully, but the request could not be removed from the request table.");
-                } else {
-                    client.sendToClient("return request was commited and deleted");
-                }
-
+                // tries to handle next reservation if any
                 boolean bookUpdated = ConnectToDb.incrementBookCount(this.dbConnection, bookid);
-                if (bookUpdated) {
-                    client.sendToClient("Book return processed successfully. Book availability updated.");
-                    // tries to handle next reservation if any
-                    ConnectToDb.updateFirstReservation(this.dbConnection, bookid);
-                } else {
-                    client.sendToClient("Warning: Book returned successfully, but the book availability could not be updated.");
+                if (requestDeleted && bookUpdated) {
+                	 client.sendToClient("Book return processed successfully and request was deleted. Book availability updated.");
+                     ConnectToDb.updateFirstReservation(this.dbConnection, bookid);
+                } else if (!requestDeleted && bookUpdated) {
+                    client.sendToClient("return request wasnt deleted but book availability was updated");
+                } else if(requestDeleted && !bookUpdated) {
+                	client.sendToClient("request was deleted but book availability wasnt updated");
+                }else {
+                	 client.sendToClient("return request wasnt deleted and book availability wasnt updated");
                 }
             } else {
                 client.sendToClient("Return request status: " + returnRequestStatus);
