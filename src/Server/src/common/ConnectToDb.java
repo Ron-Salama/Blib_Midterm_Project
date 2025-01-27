@@ -699,6 +699,7 @@ public class ConnectToDb {
             pstmt.setString(8, (extendTime != null && !extendTime.isEmpty()) ? extendTime : "temp");
 
 
+            pstmt.executeUpdate();
         }
     }
 
