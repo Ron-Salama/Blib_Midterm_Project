@@ -43,26 +43,30 @@ This system will be developed as a **Full Stack Application** using a **Client-S
 ---
 
 ## 💻 **Development Environment**  
-
-### **Phase 1:**  
+  
 - Focused on local LAN-based functionality.  
 - Client-server interactions with database-backed operations.  
-
-### **Phase 2 (Future):**  
-- Expand to web and mobile interfaces.  
-- Seamless integration with internet and smartphone apps.  
 
 ---
 
 ## 🏗 **Development Guidelines**  
 - **Team Collaboration:** All members must actively contribute to all project aspects.  
 - **Reuse:** Design reusable architecture and UI components.  
-- **Academic Integrity:** Avoid using work from other groups or past projects.  
+
 
 ---
 
 ## 🖼 **Screenshots** (Future Section)  
-**_Add screenshots of the application once it’s developed._**
+
+![Main menu window](assets/main_menu.png)
+
+---
+
+![Subscriber window](assets/subscriber_window.png)
+
+---
+
+![Search window](assets/search_window.png)
 
 ---
 
