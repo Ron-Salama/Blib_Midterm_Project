@@ -154,18 +154,10 @@ public class ChatClient extends AbstractClient
             handleBorrowedBooksResponse(response.substring("BorrowedBooks:".length()));
 	    } else if (response.startsWith("ReservedBooks:")) {
             handleReservedBooksResponse(response.substring("ReservedBooks:".length()));
-            //******************************************************
-            
-            
-            
 	    } else if (response.startsWith("AlreadyReserved")) {
 	        handleAlreadyReservedResponse();
 	    } else if (response.startsWith("NotReserved")) {
 	        handleNotReservedResponse();
-	    	
-	    	
-	    	
-	    	//******************************************************
         } else if (response.startsWith("librarian_id:")) {
 	        handleLibrarianData(response);
 	    } else if (response.startsWith("Subscriber updated successfully.")) {
