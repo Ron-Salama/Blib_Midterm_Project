@@ -303,7 +303,7 @@ public class MyBooksController extends BaseController implements Initializable {
                         String body = currentSub.getSubscriber_name() + "," +
                                       currentSub.getSubscriber_id() + "," +
                                       borrowedBook.getName() + "," +
-                                      borrowedBook.getBorrowId() + "," +
+                                      borrowedBook.getISBN() + "," +
                                       clock.timeNow() + "," + ignore;
 
                         ClientUI.chat.accept("IsBookReserved:" + borrowedBook.getISBN());
