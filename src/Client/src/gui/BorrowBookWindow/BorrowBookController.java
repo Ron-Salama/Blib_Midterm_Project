@@ -175,20 +175,25 @@ public class BorrowBookController extends BaseController implements Initializabl
             		btnSubmitToLibrarian.setDisable(true); // Disable if there are no copies available
             	}
             	
-            } else if (availables <= reservedCopiesNum){
+            } else if (availables < reservedCopiesNum){
             	if(copiesNum>reservedCopiesNum) {
             	    borrowStatus = "ALL_COPIES_RESERVED_CAN_RESERVE";
             		awaitingTextID.setText("The copies available are reserved but you can reserve it,Would you like to Reserve it?");
             		btnSubmitToLibrarian.setDisable(true); // Disable the button if no available copies
             		  btnReserve.setVisible(true);
-            	}
-            	else {
+                } else {
             	    borrowStatus = "ALL_COPIES_RESERVED_CANT_RESERVE";
             	    awaitingTextID.setText("All copies of " + bookName + " are reserved. Please try again later.");
             	    btnSubmitToLibrarian.setDisable(true); // Disable the button if no available copies
             	    btnReserve.setVisible(false);
-            	}
-            	}
+
+            }  else if (availables == reservedCopiesNum){
+            	borrowStatus = "NO_COPIES";
+        		btnReserve.setVisible(true);
+        		awaitingTextID.setText("Someone already has a reservation on this book " + bookName + "\nWould you like to Reserve the next copy?");
+        		btnSubmitToLibrarian.setDisable(true); // Disable if there are no copies available
+
+        }
             else {
                 borrowStatus = "CAN_BORROW";
                 awaitingTextID.setText("");
@@ -321,6 +326,13 @@ public class BorrowBookController extends BaseController implements Initializabl
             // Disable the Reserve button
             btnReserve.setDisable(true);
 
+        } else if (reservedCopiesNum == availables ){
+        	
+        	showColoredLabelMessageOnGUI(RequestStatus, 
+                    "Book already has a reservation on it\nPlease wait until the reserver\nretrieves it, then you can reserve it\nOr you can submit a borrow request\nin 2 days if he doesn't retrieve it.", 
+                    "-fx-text-fill: red;");
+        	
+        	
         } else {
             showColoredLabelMessageOnGUI(RequestStatus, 
                 "Book is available, no need to reserve.", 
