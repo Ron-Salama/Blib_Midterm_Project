@@ -710,7 +710,7 @@ public class EchoServer extends AbstractServer {
 
             // Insert the return request into the database
             ConnectToDb.insertRequest(this.dbConnection, requestType, subscriberId, subscriberName,
-                                      bookName, bookID, borrowDate, returnDate, "temp");
+                                      bookName, bookID, borrowDate, returnDate, timeLeft);
 
             client.sendToClient("Return request submitted, awaiting librarian approval.");
         } catch (SQLException e) {

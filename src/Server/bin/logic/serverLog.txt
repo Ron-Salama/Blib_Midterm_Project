@@ -14,21 +14,43 @@ You have the following reservations ready for retrieval:
 
 Please retrieve your books before the specified time to avoid cancellation.
 
-Dear Gary_Snail,
-You need to return the following books tomorrow:
-- The Hobbit
-We are looking forward to your visit.
-See you soon!
 Extension daily cleanup done.
 
 Server daily tasks done.
 
 
-Message received: IP:172.20.10.3 from YuvalDesktop (172.20.10.3)
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
 Client connected.
-Client IP:172.20.10.3
-Client Hostname: YuvalDesktop
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
 Connection Status: Connected
-Message received: Fetch:4 from YuvalDesktop (172.20.10.3)
-Message received: GetBorrowedBooks:4 from YuvalDesktop (172.20.10.3)
-Message received: Return request: Subscriber ID is:4 Squidward_Tentacles Borrow info: 0322 The Grapes of Wrath 14-12-2024 28-12-2024 -30 from YuvalDesktop (172.20.10.3)
+Message received: Fetch:5 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:5 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:5 Mr_Krabs Borrow info: 0299 The Lord of the Rings: The Return of the King 01-01-2025 15-01-2025 -12 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:6 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:6 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:6 Sandy_Cheeks Borrow info: 0366 Life of Pi 22-12-2024 05-01-2025 -22 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:8 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:4 from 10.0.0.8 (10.0.0.8)
+Message received: GetBorrowedBooks:4 from 10.0.0.8 (10.0.0.8)
+Message received: Return request: Subscriber ID is:4 Squidward_Tentacles Borrow info: 0322 The Grapes of Wrath 14-12-2024 28-12-2024 -30 from 10.0.0.8 (10.0.0.8)
+Message received: Fetch:1111 from 10.0.0.8 (10.0.0.8)
+Message received: PullNewExtenstion: from 10.0.0.8 (10.0.0.8)
+Message received: FetchRegisterRequest: from 10.0.0.8 (10.0.0.8)
+Message received: Fetch return request: from 10.0.0.8 (10.0.0.8)
+Message received: FetchBorrowRequest: from 10.0.0.8 (10.0.0.8)
+Message received: PullNewExtenstion: from 10.0.0.8 (10.0.0.8)
+Message received: EXIT: from 10.0.0.8 (10.0.0.8)
+Client disconnected.
+Client IP: 10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Disconnected
+Message received: IP:10.0.0.8 from 10.0.0.8 (10.0.0.8)
+Client connected.
+Client IP:10.0.0.8
+Client Hostname: 10.0.0.8
+Connection Status: Connected
+Message received: Fetch:10 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0055 from 10.0.0.8 (10.0.0.8)
+Message received: GetBookInfo:0099 from 10.0.0.8 (10.0.0.8)
+Message received: BorrowRequest:10,Mrs_Puff,0099,The Great Gatsby,27-01-2025,10-02-2025 from 10.0.0.8 (10.0.0.8)

@@ -700,7 +700,7 @@ public class ConnectToDb {
             pstmt.setString(5, bookId);
             pstmt.setString(6, (borrowTime != null && !borrowTime.isEmpty()) ? borrowTime : "temp");
             pstmt.setString(7, (returnTime != null && !returnTime.isEmpty()) ? returnTime : "temp");
-            pstmt.setString(8, (extendTime != null && !extendTime.isEmpty()) ? extendTime : "temp");
+            pstmt.setString(8, extendTime);
 
             pstmt.executeUpdate();
         }
