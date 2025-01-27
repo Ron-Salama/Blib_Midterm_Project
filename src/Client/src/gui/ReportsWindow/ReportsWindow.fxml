@@ -17,6 +17,6 @@
          <font>
             <Font size="29.0" />
          </font></Label>
-      <Line endX="128.00006103515625" endY="-1.52587890625E-5" layoutX="437.0" layoutY="60.0" startX="-100.0" />
+      <Line endX="128.00006103515625" endY="-1.52587890625E-5" layoutX="437.0" layoutY="57.0" startX="-100.0" />
    </children>
 </AnchorPane>

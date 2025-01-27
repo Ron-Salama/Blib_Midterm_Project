@@ -11,7 +11,7 @@
     -fx-font-size: 34px;
     -fx-font-weight: bold;
     -fx-text-fill: black; /* Set the text color to black */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 2, 2); /* Subtle shadow for depth */
+   
     -fx-text-alignment: center;
 }
 
