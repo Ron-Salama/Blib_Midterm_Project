@@ -1670,8 +1670,7 @@ public class ConnectToDb {
 
             // Case 1: Delete rows from reserved_books where time_left_to_retrieve equals today's date
             deleteByDateStmt.setString(1, todayDate);
-            int rowsDeletedByDate = deleteByDateStmt.executeUpdate();
-            System.out.println("Deleted " + rowsDeletedByDate + " rows from reserved_books with today's date.");
+            deleteByDateStmt.executeUpdate();
 
             // Case 2: Check NumCopies for each ISBN in reserved_books and delete from both tables if NumCopies = 0
             try (ResultSet rs = fetchISBNStmt.executeQuery()) {
@@ -1684,14 +1683,12 @@ public class ConnectToDb {
                         if (copiesRs.next() && copiesRs.getInt("NumCopies") == 0) {
                             // Delete from reserved_books
                             deleteReservedStmt.setString(1, isbn);
-                            int reservedDeleted = deleteReservedStmt.executeUpdate();
+                            deleteReservedStmt.executeUpdate();
 
                             // Delete from books
                             deleteBooksStmt.setString(1, isbn);
-                            int booksDeleted = deleteBooksStmt.executeUpdate();
+                            deleteBooksStmt.executeUpdate();
 
-                            System.out.println("Deleted " + reservedDeleted + " rows from reserved_books and " 
-                                + booksDeleted + " rows from books for ISBN: " + isbn);
                         }
                     }
                 }
