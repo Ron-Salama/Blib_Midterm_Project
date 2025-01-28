@@ -261,33 +261,58 @@ public class MyBooksController extends BaseController implements Initializable {
             private final HBox buttonBox = new HBox(10, extendButton, returnButton);
 
             {
-                // Apply styles to the buttons
-                String buttonStyle = "-fx-background-color: #171717; " +
-                                     "-fx-text-fill: #DE8F5F; " +
-                                     "-fx-font-size: 16px; " +
-                                     "-fx-font-weight: bold; " +
-                                     "-fx-cursor: hand; " +
-                                     "-fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); " +
-                                     "-fx-background-radius: 20px; " +
-                                     "-fx-border-radius: 20px; " +
-                                     "-fx-padding: 5px 15px;";
+            	// Styles for returnButton (unchanged)
+            	String buttonStyle = "-fx-background-color: #171717; " +
+            	                     "-fx-text-fill: #DE8F5F; " +
+            	                     "-fx-font-size: 16px; " +
+            	                     "-fx-font-family: 'Rubik Bold'; " +
+            	                     "-fx-font-weight: bold; " +
+            	                     "-fx-cursor: hand; " +
+            	                     "-fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); " +
+            	                     "-fx-background-radius: 20px; " +
+            	                     "-fx-border-radius: 20px; " +
+            	                     "-fx-padding: 5px 15px;";
 
-                String hoverStyle = "-fx-background-color: #DE8F5F; " +
-                        "-fx-text-fill: #171717; " +
-                        "-fx-background-radius: 20px; " + // Ensure rounded corners
-                        "-fx-border-radius: 20px;";       // Ensure consistent border radius
+            	String hoverStyle = "-fx-background-color: #DE8F5F; " +
+            	                    "-fx-text-fill: #171717; " +
+            	                    "-fx-background-radius: 20px; " +
+            	                    "-fx-border-radius: 20px; " +
+            	                    "-fx-padding: 5px 15px;";
 
-                
+            	// Wider style for extendButton
+            	String extendButtonStyle = "-fx-background-color: #171717; " +
+            	                           "-fx-text-fill: #DE8F5F; " +
+            	                           "-fx-font-size: 16px; " +
+            	                           "-fx-font-family: 'Rubik Bold'; " +
+            	                           "-fx-font-weight: bold; " +
+            	                           "-fx-cursor: hand; " +
+            	                           "-fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 1); " +
+            	                           "-fx-background-radius: 20px; " +
+            	                           "-fx-border-radius: 20px; " +
+            	                           "-fx-padding: 5px 20px; " + // Wider padding
+            	                           "-fx-min-width: 220px; " +  // Wider button
+            	                           "-fx-max-width: 220px;";
 
-                extendButton.setStyle(buttonStyle);
-                returnButton.setStyle(buttonStyle);
+            	String extendButtonHoverStyle = "-fx-background-color: #DE8F5F; " +
+            	                                "-fx-text-fill: #171717; " +
+            	                                "-fx-background-radius: 20px; " +
+            	                                "-fx-border-radius: 20px; " +
+            	                                "-fx-padding: 5px 20px; " +
+            	                                "-fx-min-width: 220px; " +
+            	                                "-fx-max-width: 220px;";
 
-                // Add hover effect using setOnMouseEntered and setOnMouseExited
-                extendButton.setOnMouseEntered(e -> extendButton.setStyle(hoverStyle));
-                extendButton.setOnMouseExited(e -> extendButton.setStyle(buttonStyle));
+            	// Apply styles to buttons
+            	extendButton.setStyle(extendButtonStyle);
+            	returnButton.setStyle(buttonStyle);
 
-                returnButton.setOnMouseEntered(e -> returnButton.setStyle(hoverStyle));
-                returnButton.setOnMouseExited(e -> returnButton.setStyle(buttonStyle));
+            	// Hover effects for extendButton
+            	extendButton.setOnMouseEntered(e -> extendButton.setStyle(extendButtonHoverStyle));
+            	extendButton.setOnMouseExited(e -> extendButton.setStyle(extendButtonStyle));
+
+            	// Hover effects for returnButton (unchanged)
+            	returnButton.setOnMouseEntered(e -> returnButton.setStyle(hoverStyle));
+            	returnButton.setOnMouseExited(e -> returnButton.setStyle(buttonStyle));
+
 
                 buttonBox.setStyle("-fx-alignment: CENTER;");
 
