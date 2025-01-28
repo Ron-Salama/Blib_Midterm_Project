@@ -290,16 +290,16 @@ public class MyBooksController extends BaseController implements Initializable {
             	                           "-fx-background-radius: 20px; " +
             	                           "-fx-border-radius: 20px; " +
             	                           "-fx-padding: 5px 20px; " + // Wider padding
-            	                           "-fx-min-width: 220px; " +  // Wider button
-            	                           "-fx-max-width: 220px;";
+            	                           "-fx-min-width: 250px; " +  // Wider button
+            	                           "-fx-max-width: 250px;";
 
             	String extendButtonHoverStyle = "-fx-background-color: #DE8F5F; " +
             	                                "-fx-text-fill: #171717; " +
             	                                "-fx-background-radius: 20px; " +
             	                                "-fx-border-radius: 20px; " +
             	                                "-fx-padding: 5px 20px; " +
-            	                                "-fx-min-width: 220px; " +
-            	                                "-fx-max-width: 220px;";
+            	                                "-fx-min-width: 250px; " +
+            	                                "-fx-max-width: 250px;";
 
             	// Apply styles to buttons
             	extendButton.setStyle(extendButtonStyle);

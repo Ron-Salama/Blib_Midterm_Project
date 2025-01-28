@@ -18,7 +18,7 @@
             <Font size="39.0" />
          </font>
       </Label>
-      <Label fx:id="borrowedBookIDDynamicLabel" alignment="CENTER" layoutX="156.0" layoutY="255.0" textFill="#4dc03e">
+      <Label fx:id="borrowedBookIDDynamicLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="36.0" layoutY="255.0" prefHeight="20.0" prefWidth="441.0" textFill="#4dc03e">
          <font>
             <Font size="20.0" />
          </font>
