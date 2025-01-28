@@ -1650,7 +1650,7 @@ public class ConnectToDb {
         return false;
     }
 
-    public static void deleterequests(Connection conn) {
+    public static void deleterequests(Connection conn) throws SQLException{
         // Define the date format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String todayDate = LocalDate.now().format(formatter);
