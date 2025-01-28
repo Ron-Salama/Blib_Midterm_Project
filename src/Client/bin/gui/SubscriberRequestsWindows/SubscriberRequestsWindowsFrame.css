@@ -101,7 +101,9 @@
 
 
 
-
+#feedbackText{
+	-fx-font-size: 24px;
+}
 
 /* Input Fields and Labels Spacing */
 .Label, .TextField, .ComboBox, .DatePicker, .ToggleButton {
