@@ -1650,25 +1650,39 @@ public class ConnectToDb {
         return false;
     }
 
-    public static void deleterequests(Connection conn) throws SQLException{
+    public static void deleterequests(Connection conn) throws SQLException {
         // Define the date format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String todayDate = LocalDate.now().format(formatter);
 
         // SQL queries
-        String fetchISBNQuery = "SELECT ISBN FROM reserved_books";
+        String fetchISBNQuery = "SELECT ISBN FROM reserved_books WHERE time_left_to_retrieve = ?";
         String deleteByDateQuery = "DELETE FROM reserved_books WHERE time_left_to_retrieve = ?";
+        String decreaseReservedCopiesQuery = "UPDATE books SET ReservedCopiesNum = ReservedCopiesNum - 1 WHERE ISBN = ?";
         String checkNumCopiesQuery = "SELECT NumCopies FROM books WHERE ISBN = ?";
         String deleteFromReservedBooksQuery = "DELETE FROM reserved_books WHERE ISBN = ?";
         String deleteFromBooksQuery = "DELETE FROM books WHERE ISBN = ?";
 
         try (PreparedStatement fetchISBNStmt = conn.prepareStatement(fetchISBNQuery);
              PreparedStatement deleteByDateStmt = conn.prepareStatement(deleteByDateQuery);
+             PreparedStatement decreaseReservedStmt = conn.prepareStatement(decreaseReservedCopiesQuery);
              PreparedStatement checkNumCopiesStmt = conn.prepareStatement(checkNumCopiesQuery);
              PreparedStatement deleteReservedStmt = conn.prepareStatement(deleteFromReservedBooksQuery);
              PreparedStatement deleteBooksStmt = conn.prepareStatement(deleteFromBooksQuery)) {
 
-            // Case 1: Delete rows from reserved_books where time_left_to_retrieve equals today's date
+            // Case 1: Fetch ISBNs for rows where time_left_to_retrieve equals today's date
+            fetchISBNStmt.setString(1, todayDate);
+            try (ResultSet rs = fetchISBNStmt.executeQuery()) {
+                while (rs.next()) {
+                    String isbn = rs.getString("ISBN");
+
+                    // Decrease ReservedCopiesNum for this ISBN
+                    decreaseReservedStmt.setString(1, isbn);
+                    decreaseReservedStmt.executeUpdate();
+                }
+            }
+
+            // Delete rows from reserved_books where time_left_to_retrieve equals today's date
             deleteByDateStmt.setString(1, todayDate);
             deleteByDateStmt.executeUpdate();
 
@@ -1688,7 +1702,6 @@ public class ConnectToDb {
                             // Delete from books
                             deleteBooksStmt.setString(1, isbn);
                             deleteBooksStmt.executeUpdate();
-
                         }
                     }
                 }
